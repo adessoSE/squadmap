@@ -11,7 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class WorkingOn {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private long workingOnId;
     private LocalDate since;
     private LocalDate until;

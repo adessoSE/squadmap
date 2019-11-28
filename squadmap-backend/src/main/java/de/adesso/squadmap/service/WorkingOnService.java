@@ -2,6 +2,7 @@ package de.adesso.squadmap.service;
 
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.models.WorkingOn;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,11 +10,8 @@ import java.util.Optional;
 @Service
 public class WorkingOnService {
 
+    @Autowired
     private WorkingOnRepository workingOnRepository;
-
-    public WorkingOnService(WorkingOnRepository workingOnRepository) {
-        this.workingOnRepository = workingOnRepository;
-    }
 
     public Iterable<WorkingOn> findAll() {
         return workingOnRepository.findAll();

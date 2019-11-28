@@ -2,6 +2,7 @@ package de.adesso.squadmap.service;
 
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.models.Project;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,11 +10,8 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
+    @Autowired
     private ProjectRepository projectRepository;
-
-    public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
 
     public Iterable<Project> findAll() {
         return projectRepository.findAll();

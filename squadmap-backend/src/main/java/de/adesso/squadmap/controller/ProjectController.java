@@ -2,20 +2,20 @@ package de.adesso.squadmap.controller;
 
 import de.adesso.squadmap.service.ProjectService;
 import de.adesso.squadmap.models.Project;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RestController("/project")
+@RestController
+@CrossOrigin
+@RequestMapping("/project")
 public class ProjectController {
 
+    @Autowired
     private ProjectService projectService;
 
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
-
-    @GetMapping("")
+    @GetMapping("/all")
     public Iterable<Project> getAllProjects() {
         return projectService.findAll();
     }

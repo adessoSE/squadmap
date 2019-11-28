@@ -26,7 +26,7 @@ public class EmployeeController {
         return employeeService.findEmployeeById(employeeId);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/create")
     public void createEmployee(Employee employee) {
         employeeService.createEmployee(employee);
     }
