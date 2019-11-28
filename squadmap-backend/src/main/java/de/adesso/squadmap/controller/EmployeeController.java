@@ -1,9 +1,8 @@
 package de.adesso.squadmap.controller;
 
 import de.adesso.squadmap.models.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import de.adesso.squadmap.service.EmployeeService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -12,8 +11,11 @@ import java.util.Optional;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
     private EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping("/all")
     public Iterable<Employee> getAllEmployees() {

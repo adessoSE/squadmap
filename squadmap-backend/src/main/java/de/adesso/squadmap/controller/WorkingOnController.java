@@ -1,8 +1,7 @@
 package de.adesso.squadmap.controller;
 
-import de.adesso.squadmap.service.WorkingOnService;
 import de.adesso.squadmap.models.WorkingOn;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.adesso.squadmap.service.WorkingOnService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @RequestMapping("/workingOn")
 public class WorkingOnController {
 
-    @Autowired
     private WorkingOnService workingOnService;
+
+    public WorkingOnController(WorkingOnService workingOnService) {
+        this.workingOnService = workingOnService;
+    }
 
     @GetMapping("/all")
     public Iterable<WorkingOn> getAllWorkingOn() {

@@ -2,15 +2,18 @@ package de.adesso.squadmap.service;
 
 import de.adesso.squadmap.models.Employee;
 import de.adesso.squadmap.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class EmployeeService {
-    @Autowired
+
     EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public Iterable<Employee> findAllEmployees() {
         return employeeRepository.findAll();

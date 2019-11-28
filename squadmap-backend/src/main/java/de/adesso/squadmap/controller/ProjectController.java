@@ -1,8 +1,7 @@
 package de.adesso.squadmap.controller;
 
-import de.adesso.squadmap.service.ProjectService;
 import de.adesso.squadmap.models.Project;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.adesso.squadmap.service.ProjectService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @RequestMapping("/project")
 public class ProjectController {
 
-    @Autowired
     private ProjectService projectService;
+
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
     @GetMapping("/all")
     public Iterable<Project> getAllProjects() {
