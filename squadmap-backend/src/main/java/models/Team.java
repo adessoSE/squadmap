@@ -8,6 +8,6 @@ import java.util.List;
 public class Team {
     private long teamId;
     private String name;
-    private Employee teamleader;
+    private Employee teamLeader;
     private List<Employee> employees;
 }
