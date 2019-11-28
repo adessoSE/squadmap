@@ -14,5 +14,5 @@ public class Employee {
     private String email;
     private String phone;
     private boolean isExternal;
-    private List<Team> teams;
+    private List<Project> projects;
 }
