@@ -1,4 +1,4 @@
-package models;
+package de.adesso.squadmap.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

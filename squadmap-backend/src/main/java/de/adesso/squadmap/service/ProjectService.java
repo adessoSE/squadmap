@@ -1,7 +1,7 @@
-package service;
+package de.adesso.squadmap.service;
 
-import repository.ProjectRepository;
-import models.Project;
+import de.adesso.squadmap.repository.ProjectRepository;
+import de.adesso.squadmap.models.Project;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

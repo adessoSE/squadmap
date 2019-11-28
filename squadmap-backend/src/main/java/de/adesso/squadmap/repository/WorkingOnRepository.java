@@ -1,6 +1,6 @@
-package repository;
+package de.adesso.squadmap.repository;
 
-import models.WorkingOn;
+import de.adesso.squadmap.models.WorkingOn;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 

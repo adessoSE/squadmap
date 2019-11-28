@@ -1,9 +1,9 @@
-package controller;
+package de.adesso.squadmap.controller;
 
-import models.Employee;
+import de.adesso.squadmap.models.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import service.EmployeeService;
+import de.adesso.squadmap.service.EmployeeService;
 
 import java.util.Optional;
 

@@ -1,9 +1,9 @@
-package service;
+package de.adesso.squadmap.service;
 
-import models.Employee;
+import de.adesso.squadmap.models.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.EmployeeRepository;
+import de.adesso.squadmap.repository.EmployeeRepository;
 
 import java.util.Optional;
 

@@ -1,7 +1,7 @@
-package controller;
+package de.adesso.squadmap.controller;
 
-import service.WorkingOnService;
-import models.WorkingOn;
+import de.adesso.squadmap.service.WorkingOnService;
+import de.adesso.squadmap.models.WorkingOn;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
