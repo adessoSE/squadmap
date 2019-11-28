@@ -1,6 +1,6 @@
-package Service;
+package service;
 
-import Repository.WorkingOnRepository;
+import repository.WorkingOnRepository;
 import models.WorkingOn;
 import org.springframework.stereotype.Service;
 

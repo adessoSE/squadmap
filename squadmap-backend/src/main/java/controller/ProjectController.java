@@ -1,6 +1,6 @@
-package Controller;
+package controller;
 
-import Service.ProjectService;
+import service.ProjectService;
 import models.Project;
 import org.springframework.web.bind.annotation.*;
 

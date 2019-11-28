@@ -1,4 +1,4 @@
-package Repository;
+package repository;
 
 import models.Project;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

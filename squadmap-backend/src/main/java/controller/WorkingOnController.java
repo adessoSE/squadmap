@@ -1,6 +1,6 @@
-package Controller;
+package controller;
 
-import Service.WorkingOnService;
+import service.WorkingOnService;
 import models.WorkingOn;
 import org.springframework.web.bind.annotation.*;
 
