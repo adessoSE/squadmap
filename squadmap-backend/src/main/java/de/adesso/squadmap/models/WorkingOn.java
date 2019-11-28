@@ -1,19 +1,18 @@
 package de.adesso.squadmap.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import org.neo4j.ogm.annotation.*;
 
 import java.time.LocalDate;
 
 @Data
 @RelationshipEntity(type = "WORKING_ON")
-@AllArgsConstructor
+@NoArgsConstructor
 public class WorkingOn {
 
     @Id
     @GeneratedValue
-    private long workingOnId;
+    private Long workingOnId;
     private LocalDate since;
     private LocalDate until;
 
@@ -22,5 +21,10 @@ public class WorkingOn {
     @EndNode
     private Project project;
 
-    public WorkingOn(){}
+    public WorkingOn(Employee employee, Project project, LocalDate since, LocalDate until){
+        this.employee = employee;
+        this.project = project;
+        this.since = since;
+        this.until = until;
+    }
 }

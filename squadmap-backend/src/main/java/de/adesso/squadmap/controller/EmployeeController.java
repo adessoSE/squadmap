@@ -17,7 +17,6 @@ public class EmployeeController {
 
     @GetMapping("/all")
     public Iterable<Employee> getAllEmployees() {
-        System.out.println("hallo");
         return employeeService.findAllEmployees();
     }
 

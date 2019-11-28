@@ -2,7 +2,7 @@ package de.adesso.squadmap.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -14,21 +14,30 @@ import java.util.List;
 
 @Data
 @NodeEntity
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Employee {
     @Id
     @GeneratedValue
-    private long employeeId;
-    private final String firstName;
-    private final String lastName;
-    private final LocalDate birthday;
-    private final String email;
-    private final String phone;
-    private final boolean isExternal;
+    private Long employeeId;
+    private String firstName;
+    private String lastName;
+    private LocalDate birthday;
+    private String email;
+    private String phone;
+    private Boolean isExternal;
 
     @Relationship(type = "WORKING_ON", direction = Relationship.OUTGOING)
     @EqualsAndHashCode.Exclude
     private List<WorkingOn> projects = new ArrayList<>();
+
+    public Employee(String firstName, String lastName, LocalDate birthday, String email, String phone, boolean isExternal) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.email = email;
+        this.phone = phone;
+        this.isExternal = isExternal;
+    }
 }
 
 
