@@ -17,27 +17,27 @@ public class WorkingOnController {
 
     @GetMapping("")
     public Iterable<WorkingOn> getAllWorkingOn() {
-        return workingOnService.getAllWorkingOn();
+        return workingOnService.findAll();
     }
 
     @GetMapping("/{workingOnId}")
     public Optional<WorkingOn> getWorkingOnById(@PathVariable long workingOnId) {
-        return workingOnService.getWorkingOnById(workingOnId);
+        return workingOnService.findById(workingOnId);
     }
 
     @PostMapping("/create")
     public WorkingOn createWorkingOn(WorkingOn workingOn) {
-        return workingOnService.saveWorkingOn(workingOn);
+        return workingOnService.save(workingOn);
     }
 
     @PutMapping("/update/{workingOnId}")
     public WorkingOn updateWorkingOn(@PathVariable long workingOnId, WorkingOn workingOn) {
-        return workingOnService.saveWorkingOn(workingOn);
+        return workingOnService.save(workingOn);
     }
 
     @DeleteMapping("/delete/{workingOnId}")
     public void deleteWorkingOn(@PathVariable long workingOnId) {
-        workingOnService.deleteWorkingOnById(workingOnId);
+        workingOnService.deleteById(workingOnId);
     }
 
 }

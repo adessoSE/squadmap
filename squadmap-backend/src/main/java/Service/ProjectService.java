@@ -15,19 +15,19 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Iterable<Project> getAllProjects() {
+    public Iterable<Project> findAll() {
         return projectRepository.findAll();
     }
 
-    public Optional<Project> getProjectById(long id) {
+    public Optional<Project> findById(long id) {
         return projectRepository.findById(id);
     }
 
-    public Project saveProject(Project project) {
+    public Project save(Project project) {
         return projectRepository.save(project);
     }
 
-    public void deleteProjectById(long projectId) {
+    public void deleteById(long projectId) {
         projectRepository.deleteById(projectId);
     }
 }
