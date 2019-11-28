@@ -20,15 +20,15 @@ public class Project {
 
     @Id
     @GeneratedValue
-    long projectId;
-    String title;
-    String description;
-    LocalDate since;
-    LocalDate until;
-    boolean isExternal;
+    private long projectId;
+    private String title;
+    private String description;
+    private LocalDate since;
+    private LocalDate until;
+    private boolean isExternal;
     @Relationship(type ="Working_ON", direction = Relationship.INCOMING)
     @EqualsAndHashCode.Exclude
-    List<WorkingOn> employees = new ArrayList<>();
+    private List<WorkingOn> employees = new ArrayList<>();
 
     public Project(){}
 }
