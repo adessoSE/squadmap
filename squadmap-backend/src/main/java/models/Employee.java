@@ -1,9 +1,8 @@
 package models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -14,21 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NodeEntity
+@RequiredArgsConstructor
 public class Employee {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private long employeeId;
-    private String firstName;
-    private String lastName;
-    private LocalDate birthday;
-    private String email;
-    private String phone;
-    private boolean isExternal;
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate birthday;
+    private final String email;
+    private final String phone;
+    private final boolean isExternal;
 
     @Relationship(type = "WORKING_ON", direction = Relationship.OUTGOING)
     @EqualsAndHashCode.Exclude
     private List<WorkingOn> projects = new ArrayList<>();
-
-    public Employee(){}
 }
+
+
