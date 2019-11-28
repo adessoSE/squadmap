@@ -3,8 +3,10 @@ package models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NodeEntity
 public class Employee {
     @Id @GeneratedValue
     private long employeeId;
@@ -22,7 +25,6 @@ public class Employee {
     private String email;
     private String phone;
     private boolean isExternal;
-    private List<Project> projects;
 
     @Relationship(type = "WORKING_ON", direction = Relationship.OUTGOING)
     @EqualsAndHashCode.Exclude
