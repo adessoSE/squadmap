@@ -1,6 +1,7 @@
 package de.adesso.squadmap.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.*;
@@ -18,7 +19,8 @@ public class WorkingOn {
     private LocalDate since;
     private LocalDate until;
 
-    @JsonIgnore
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @StartNode
     private Employee employee;
     @EndNode

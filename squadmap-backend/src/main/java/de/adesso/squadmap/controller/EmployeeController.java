@@ -28,17 +28,17 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public Employee createEmployee(Employee employee) {
+    public Employee createEmployee(@RequestBody() Employee employee) {
         return employeeService.createEmployee(employee);
     }
 
     @PutMapping("/update")
-    public Employee updateEmployee(Employee employee) {
+    public Employee updateEmployee(@RequestBody Employee employee) {
         return employeeService.updateEmployee(employee);
     }
 
     @DeleteMapping("/delete")
-    public void deleteEmployee(Employee employee) {
+    public void deleteEmployee(@RequestBody Employee employee) {
         employeeService.deleteEmployee(employee);
     }
 

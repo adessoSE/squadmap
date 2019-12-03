@@ -28,17 +28,17 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public Project createProject(Project project) {
+    public Project createProject(@RequestBody Project project) {
         return projectService.saveProject(project);
     }
 
     @PutMapping("/update")
-    public Project updateProject(Project project) {
+    public Project updateProject(@RequestBody Project project) {
         return projectService.saveProject(project);
     }
 
     @DeleteMapping("/delete")
-    public void deleteProject(Project project) {
+    public void deleteProject(@RequestBody Project project) {
         projectService.deleteProject(project);
     }
 

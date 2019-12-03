@@ -28,17 +28,17 @@ public class WorkingOnController {
     }
 
     @PostMapping("/create")
-    public WorkingOn createWorkingOn(WorkingOn workingOn) {
+    public WorkingOn createWorkingOn(@RequestBody WorkingOn workingOn) {
         return workingOnService.saveWorkingOn(workingOn);
     }
 
     @PutMapping("/update")
-    public WorkingOn updateWorkingOn(WorkingOn workingOn) {
+    public WorkingOn updateWorkingOn(@RequestBody WorkingOn workingOn) {
         return workingOnService.saveWorkingOn(workingOn);
     }
 
     @DeleteMapping("/delete")
-    public void deleteWorkingOn(WorkingOn workingOn) {
+    public void deleteWorkingOn(@RequestBody WorkingOn workingOn) {
         workingOnService.deleteWorkingOn(workingOn);
     }
 
