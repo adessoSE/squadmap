@@ -1,6 +1,8 @@
 package de.adesso.squadmap.models;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.*;
 
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ public class WorkingOn {
     private LocalDate since;
     private LocalDate until;
 
+    @JsonIgnore
     @StartNode
     private Employee employee;
     @EndNode

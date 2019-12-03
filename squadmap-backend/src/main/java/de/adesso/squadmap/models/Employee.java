@@ -1,7 +1,7 @@
 package de.adesso.squadmap.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -26,8 +26,8 @@ public class Employee {
     private String phone;
     private Boolean isExternal;
 
-    @Relationship(type = "WORKING_ON", direction = Relationship.OUTGOING)
-    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties("employee")
+    @Relationship(type = "WORKING_ON")
     private List<WorkingOn> projects = new ArrayList<>();
 
     public Employee(String firstName, String lastName, LocalDate birthday, String email, String phone, boolean isExternal) {
