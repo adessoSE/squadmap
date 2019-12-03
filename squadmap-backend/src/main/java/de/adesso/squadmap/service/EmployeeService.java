@@ -24,12 +24,6 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
-        employee = new Employee(employee.getFirstName(),
-                employee.getLastName(),
-                employee.getBirthday(),
-                employee.getEmail(),
-                employee.getPhone(),
-                employee.getIsExternal());
         return employeeRepository.save(employee);
     }
 
