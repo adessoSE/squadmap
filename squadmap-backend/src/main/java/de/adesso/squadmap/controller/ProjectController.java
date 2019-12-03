@@ -19,26 +19,31 @@ public class ProjectController {
 
     @GetMapping("/all")
     public Iterable<Project> getAllProjects() {
-        return projectService.findAll();
+        return projectService.findAllProjects();
     }
 
     @GetMapping("/{projectId}")
     public Optional<Project> getProjectById(@PathVariable long projectId) {
-        return projectService.findById(projectId);
+        return projectService.findProjectById(projectId);
     }
 
     @PostMapping("/create")
     public Project createProject(Project project) {
-        return projectService.save(project);
+        return projectService.saveProject(project);
     }
 
-    @PutMapping("/update/{projectId}")
-    public Project updateProject(@PathVariable long projectId, Project project) {
-        return projectService.save(project);
+    @PutMapping("/update")
+    public Project updateProject(Project project) {
+        return projectService.saveProject(project);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteProject(Project project) {
+        projectService.deleteProject(project);
     }
 
     @DeleteMapping("/delete/{projectId}")
     public void deleteProject(@PathVariable long projectId) {
-        projectService.deleteById(projectId);
+        projectService.deleteProjectById(projectId);
     }
 }

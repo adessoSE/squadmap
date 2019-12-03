@@ -15,19 +15,21 @@ public class WorkingOnService {
         this.workingOnRepository = workingOnRepository;
     }
 
-    public Iterable<WorkingOn> findAll() {
+    public Iterable<WorkingOn> findAllWorkingOn() {
         return workingOnRepository.findAll();
     }
 
-    public Optional<WorkingOn> findById(long workingOnId) {
+    public Optional<WorkingOn> findWorkingOnById(long workingOnId) {
         return workingOnRepository.findById(workingOnId);
     }
 
-    public WorkingOn save(WorkingOn workingOn) {
+    public WorkingOn saveWorkingOn(WorkingOn workingOn) {
         return workingOnRepository.save(workingOn);
     }
 
-    public void deleteById(long workingOnId) {
+    public void deleteWorkingOn(WorkingOn workingOn){ workingOnRepository.delete(workingOn); }
+
+    public void deleteWorkingOnById(long workingOnId) {
         workingOnRepository.deleteById(workingOnId);
     }
 }

@@ -19,26 +19,31 @@ public class WorkingOnController {
 
     @GetMapping("/all")
     public Iterable<WorkingOn> getAllWorkingOn() {
-        return workingOnService.findAll();
+        return workingOnService.findAllWorkingOn();
     }
 
     @GetMapping("/{workingOnId}")
     public Optional<WorkingOn> getWorkingOnById(@PathVariable long workingOnId) {
-        return workingOnService.findById(workingOnId);
+        return workingOnService.findWorkingOnById(workingOnId);
     }
 
     @PostMapping("/create")
     public WorkingOn createWorkingOn(WorkingOn workingOn) {
-        return workingOnService.save(workingOn);
+        return workingOnService.saveWorkingOn(workingOn);
     }
 
-    @PutMapping("/update/{workingOnId}")
-    public WorkingOn updateWorkingOn(@PathVariable long workingOnId, WorkingOn workingOn) {
-        return workingOnService.save(workingOn);
+    @PutMapping("/update")
+    public WorkingOn updateWorkingOn(WorkingOn workingOn) {
+        return workingOnService.saveWorkingOn(workingOn);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteWorkingOn(WorkingOn workingOn) {
+        workingOnService.deleteWorkingOn(workingOn);
     }
 
     @DeleteMapping("/delete/{workingOnId}")
     public void deleteWorkingOn(@PathVariable long workingOnId) {
-        workingOnService.deleteById(workingOnId);
+        workingOnService.deleteWorkingOnById(workingOnId);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public class EmployeeService {
 
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -23,21 +23,23 @@ public class EmployeeService {
         return employeeRepository.findById(employeeId);
     }
 
-    public void createEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) {
         employee = new Employee(employee.getFirstName(),
                 employee.getLastName(),
                 employee.getBirthday(),
                 employee.getEmail(),
                 employee.getPhone(),
                 employee.getIsExternal());
-        employeeRepository.save(employee);
+        return employeeRepository.save(employee);
     }
 
-    public void updateEmployee(Employee employee) {
-        employeeRepository.save(employee);
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     public void deleteEmployee(Employee employee) {
         employeeRepository.delete(employee);
     }
+
+    public void deleteById(long employeeId){ employeeRepository.deleteById(employeeId); }
 }
