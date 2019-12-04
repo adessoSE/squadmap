@@ -1,20 +1,24 @@
 package de.adesso.squadmap.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @NodeEntity
 public class Employee {
 
-    @Id@GeneratedValue
-    Long employeeId;
+    @Id
+    @GeneratedValue
+    private Long employeeId;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
@@ -23,5 +27,20 @@ public class Employee {
     private Boolean isExternal;
 
     @Relationship(type = "WORKING_ON")
-    private List<WorkingOn> projects;
+    private List<WorkingOn> projects = new ArrayList<>();
+
+    public Employee(
+            String firstName,
+            String lastName,
+            LocalDate birthday,
+            String email,
+            String phone,
+            boolean isExternal) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.email = email;
+        this.phone = phone;
+        this.isExternal = isExternal;
+    }
 }
