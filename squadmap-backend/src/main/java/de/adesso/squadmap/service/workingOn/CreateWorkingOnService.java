@@ -9,7 +9,7 @@ public class CreateWorkingOnService implements CreateWorkingOnUseCase {
 
 
     @Override
-    public void createWorkingOn(CreateWorkingOnCommand command) {
-
+    public Long createWorkingOn(CreateWorkingOnCommand command) {
+        return null;
     }
 }

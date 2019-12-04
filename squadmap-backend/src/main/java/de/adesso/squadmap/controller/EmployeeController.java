@@ -47,8 +47,8 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public void createEmployee(@PathVariable CreateEmployeeCommand command) {
-        createEmployeeUseCase.createEmployee(command);
+    public Long createEmployee(@RequestBody CreateEmployeeCommand command) {
+        return createEmployeeUseCase.createEmployee(command);
     }
 
     @PutMapping("/update/{employeeId}")

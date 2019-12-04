@@ -17,7 +17,7 @@ public class CreateEmployeeService implements CreateEmployeeUseCase {
     }
 
     @Override
-    public void createEmployee(CreateEmployeeCommand command) {
+    public Long createEmployee(CreateEmployeeCommand command) {
         Employee employee = new Employee(
                 command.getFirstName(),
                 command.getLastName(),
@@ -25,6 +25,6 @@ public class CreateEmployeeService implements CreateEmployeeUseCase {
                 command.getEmail(),
                 command.getPhone(),
                 command.getIsExternal());
-        employeeRepository.save(employee);
+        return employeeRepository.save(employee).getEmployeeId();
     }
 }

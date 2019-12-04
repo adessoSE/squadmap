@@ -10,7 +10,7 @@ public class CreateProjectService implements CreateProjectUseCase {
 
 
     @Override
-    public void createProject(CreateProjectCommand command) {
-
+    public Long createProject(CreateProjectCommand command) {
+        return null;
     }
 }

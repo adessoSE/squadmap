@@ -2,9 +2,7 @@ package de.adesso.squadmap.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.neo4j.ogm.annotation.EndNode;
-import org.neo4j.ogm.annotation.RelationshipEntity;
-import org.neo4j.ogm.annotation.StartNode;
+import org.neo4j.ogm.annotation.*;
 
 import java.time.LocalDate;
 
@@ -13,6 +11,8 @@ import java.time.LocalDate;
 @RelationshipEntity(type = "WORKING_ON")
 public class WorkingOn {
 
+    @Id@GeneratedValue
+    private Long workingOnId;
     private LocalDate since;
     private LocalDate until;
 
@@ -22,13 +22,14 @@ public class WorkingOn {
     private Project project;
 
     public WorkingOn(
-            LocalDate since,
-            LocalDate until,
             Employee employee,
-            Project project) {
-        this.since = since;
-        this.until = until;
+            Project project,
+            LocalDate since,
+            LocalDate until
+            ) {
         this.employee = employee;
         this.project = project;
+        this.since = since;
+        this.until = until;
     }
 }
