@@ -3,8 +3,8 @@ package de.adesso.squadmap.utility;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
-import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
+import de.adesso.squadmap.port.driver.employee.get.GetProjectResponseWithoutEmployee;
+import de.adesso.squadmap.port.driver.employee.get.GetWorkingOnResponseWithoutEmployee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,19 +12,17 @@ import java.util.List;
 public class EmployeeMapper {
 
     public static GetEmployeeResponse mapEmployeeToEmployeeResponse(Employee employee) {
-        List<GetWorkingOnResponse> workingOnResponses = new ArrayList<>();
+        List<GetWorkingOnResponseWithoutEmployee> workingOnResponses = new ArrayList<>();
         employee.getProjects().forEach(workingOn ->
-                workingOnResponses.add(new GetWorkingOnResponse(
+                workingOnResponses.add(new GetWorkingOnResponseWithoutEmployee(
                         workingOn.getWorkingOnId(),
-                        null,
-                        new GetProjectResponse(
+                        new GetProjectResponseWithoutEmployee(
                                 workingOn.getProject().getProjectId(),
                                 workingOn.getProject().getTitle(),
                                 workingOn.getProject().getDescription(),
                                 workingOn.getProject().getSince(),
                                 workingOn.getProject().getUntil(),
-                                workingOn.getProject().getIsExternal(),
-                                null),
+                                workingOn.getProject().getIsExternal()),
                         workingOn.getSince(),
                         workingOn.getUntil())));
         GetEmployeeResponse response = new GetEmployeeResponse(
@@ -39,7 +37,7 @@ public class EmployeeMapper {
         return response;
     }
 
-    public static Employee mapCreateEmployeeCommandToEmployee(CreateEmployeeCommand command){
+    public static Employee mapCreateEmployeeCommandToEmployee(CreateEmployeeCommand command) {
         return new Employee(
                 command.getFirstName(),
                 command.getLastName(),

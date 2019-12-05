@@ -1,7 +1,5 @@
 package de.adesso.squadmap.port.driver.workingOn.get;
 
-import de.adesso.squadmap.domain.Employee;
-import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import lombok.AllArgsConstructor;

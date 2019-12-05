@@ -1,16 +1,15 @@
-package de.adesso.squadmap.port.driver.employee.get;
+package de.adesso.squadmap.port.driver.project.get;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetEmployeeResponse {
+public class GetEmployeeResponseWithoutProject {
 
     private Long employeeId;
     private String firstName;
@@ -19,5 +18,4 @@ public class GetEmployeeResponse {
     private String email;
     private String phone;
     private Boolean isExternal;
-    private List<GetWorkingOnResponseWithoutEmployee> projects;
 }

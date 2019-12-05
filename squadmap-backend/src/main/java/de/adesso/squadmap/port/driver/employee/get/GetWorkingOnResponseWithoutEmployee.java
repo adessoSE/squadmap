@@ -1,4 +1,4 @@
-package de.adesso.squadmap.port.driver.workingOn.create;
+package de.adesso.squadmap.port.driver.employee.get;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,11 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateWorkingOnCommand {
+public class GetWorkingOnResponseWithoutEmployee {
 
-    private long employeeId;
-    private long projectId;
+    private Long workingOnId;
+    private GetProjectResponseWithoutEmployee project;
     private LocalDate since;
     private LocalDate until;
 }
+

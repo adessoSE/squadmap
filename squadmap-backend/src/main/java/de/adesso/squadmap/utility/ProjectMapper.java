@@ -1,10 +1,10 @@
 package de.adesso.squadmap.utility;
 
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
+import de.adesso.squadmap.port.driver.project.get.GetEmployeeResponseWithoutProject;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
+import de.adesso.squadmap.port.driver.project.get.GetWorkingOnResponseWithoutProject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +12,18 @@ import java.util.List;
 public class ProjectMapper {
 
     public static GetProjectResponse mapProjectToGetProjectResponse(Project project) {
-        List<GetWorkingOnResponse> workingOnResponses = new ArrayList<>();
+        List<GetWorkingOnResponseWithoutProject> workingOnResponses = new ArrayList<>();
         project.getEmployees().forEach(workingOn ->
-                workingOnResponses.add(new GetWorkingOnResponse(
+                workingOnResponses.add(new GetWorkingOnResponseWithoutProject(
                         workingOn.getWorkingOnId(),
-                        new GetEmployeeResponse(
+                        new GetEmployeeResponseWithoutProject(
                                 workingOn.getEmployee().getEmployeeId(),
                                 workingOn.getEmployee().getFirstName(),
                                 workingOn.getEmployee().getLastName(),
                                 workingOn.getEmployee().getBirthday(),
                                 workingOn.getEmployee().getEmail(),
                                 workingOn.getEmployee().getPhone(),
-                                workingOn.getEmployee().getIsExternal(),
-                                null),
-                        null,
+                                workingOn.getEmployee().getIsExternal()),
                         workingOn.getSince(),
                         workingOn.getUntil())));
         GetProjectResponse response = new GetProjectResponse(
@@ -39,7 +37,7 @@ public class ProjectMapper {
         return response;
     }
 
-    public static Project mapCreateProjectCommandToProject(CreateProjectCommand command){
+    public static Project mapCreateProjectCommandToProject(CreateProjectCommand command) {
         return new Project(
                 command.getTitle(),
                 command.getDescription(),

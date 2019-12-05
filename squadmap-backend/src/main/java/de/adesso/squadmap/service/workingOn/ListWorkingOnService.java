@@ -1,6 +1,5 @@
 package de.adesso.squadmap.service.workingOn;
 
-import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
 import de.adesso.squadmap.port.driver.workingOn.get.ListWorkingOnUseCase;
 import de.adesso.squadmap.repository.WorkingOnRepository;
