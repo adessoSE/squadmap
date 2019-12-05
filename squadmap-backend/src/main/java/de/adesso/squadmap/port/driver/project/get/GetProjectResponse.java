@@ -1,6 +1,7 @@
 package de.adesso.squadmap.port.driver.project.get;
 
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,5 @@ public class GetProjectResponse {
     private LocalDate since;
     private LocalDate until;
     private Boolean isExternal;
-    private List<GetEmployeeResponse> employees;
+    private List<GetWorkingOnResponse> employees;
 }

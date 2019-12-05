@@ -10,11 +10,12 @@ public class WorkingOnMapper {
     public static GetWorkingOnResponse mapWorkingOnToWorkingOnResponse(WorkingOn workingOn) {
         GetEmployeeResponse employee = EmployeeMapper.mapEmployeeToEmployeeResponse(workingOn.getEmployee());
         GetProjectResponse project = ProjectMapper.mapProjectToGetProjectResponse(workingOn.getProject());
-        return new GetWorkingOnResponse(
+        GetWorkingOnResponse response = new GetWorkingOnResponse(
                 workingOn.getWorkingOnId(),
                 employee,
                 project,
                 workingOn.getSince(),
                 workingOn.getUntil());
+        return response;
     }
 }

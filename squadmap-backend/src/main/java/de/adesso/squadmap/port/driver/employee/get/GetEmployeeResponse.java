@@ -1,6 +1,7 @@
 package de.adesso.squadmap.port.driver.employee.get;
 
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
+import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,5 @@ public class GetEmployeeResponse {
     private String email;
     private String phone;
     private Boolean isExternal;
-    private List<GetProjectResponse> projects;
+    private List<GetWorkingOnResponse> projects;
 }
