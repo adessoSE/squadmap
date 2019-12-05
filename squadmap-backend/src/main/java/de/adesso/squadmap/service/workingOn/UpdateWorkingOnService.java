@@ -4,6 +4,7 @@ import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnUseCase;
 import de.adesso.squadmap.repository.WorkingOnRepository;
+import de.adesso.squadmap.utility.WorkingOnMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +18,6 @@ public class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
 
     @Override
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
-        WorkingOn workingOn = workingOnRepository.findById(workingOnId).orElse(null);
-        workingOn.setEmployee(command.getEmployee());
-        workingOn.setProject(command.getProject());
-        workingOn.setSince(command.getSince());
-        workingOn.setUntil(command.getUntil());
+        workingOnRepository.save(WorkingOnMapper.mapUpdateWorkingOnCommandToWorkingOn(command, workingOnId));
     }
 }

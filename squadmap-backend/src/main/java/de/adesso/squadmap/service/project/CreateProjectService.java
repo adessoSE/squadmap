@@ -4,6 +4,7 @@ import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
+import de.adesso.squadmap.utility.ProjectMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -18,12 +19,7 @@ public class CreateProjectService implements CreateProjectUseCase {
 
     @Override
     public Long createProject(CreateProjectCommand command) {
-        Project project = new Project(
-                command.getTitle(),
-                command.getDescription(),
-                command.getSince(),
-                command.getUntil(),
-                command.getIsExternal());
+        Project project = ProjectMapper.mapCreateProjectCommandToProject(command);
         return projectRepository.save(project).getProjectId();
     }
 }

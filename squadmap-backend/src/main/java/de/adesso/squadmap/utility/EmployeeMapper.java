@@ -1,6 +1,7 @@
 package de.adesso.squadmap.utility;
 
 import de.adesso.squadmap.domain.Employee;
+import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
@@ -36,5 +37,15 @@ public class EmployeeMapper {
                 employee.getIsExternal(),
                 workingOnResponses);
         return response;
+    }
+
+    public static Employee mapCreateEmployeeCommandToEmployee(CreateEmployeeCommand command){
+        return new Employee(
+                command.getFirstName(),
+                command.getLastName(),
+                command.getBirthday(),
+                command.getEmail(),
+                command.getPhone(),
+                command.getIsExternal());
     }
 }
