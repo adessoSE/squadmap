@@ -15,8 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UpdateWorkingOnCommand {
 
-    private GetEmployeeResponse employee;
-    private GetProjectResponse project;
+    private long employeeId;
+    private long projectId;
     private LocalDate since;
     private LocalDate until;
 }

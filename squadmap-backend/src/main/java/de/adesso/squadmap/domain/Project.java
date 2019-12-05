@@ -1,7 +1,9 @@
 package de.adesso.squadmap.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -26,6 +28,8 @@ public class Project {
     private Boolean isExternal;
 
     @Relationship(type = "WORKING_ON", direction = Relationship.INCOMING)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<WorkingOn> employees = new ArrayList<>();
 
     public Project(
