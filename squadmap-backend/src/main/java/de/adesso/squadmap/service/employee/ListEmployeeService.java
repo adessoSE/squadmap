@@ -3,6 +3,7 @@ package de.adesso.squadmap.service.employee;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
+import de.adesso.squadmap.utility.EmployeeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,14 +22,7 @@ public class ListEmployeeService implements ListEmployeeUseCase {
     public List<GetEmployeeResponse> listEmployees() {
         List<GetEmployeeResponse> responses = new ArrayList<>();
         employeeRepository.findAll().forEach(employee ->
-            responses.add(new GetEmployeeResponse(
-                    employee.getEmployeeId(),
-                    employee.getFirstName(),
-                    employee.getLastName(),
-                    employee.getBirthday(),
-                    employee.getEmail(),
-                    employee.getPhone(),
-                    employee.getIsExternal())));
+            responses.add(EmployeeMapper.mapEmployeeToEmployeeResponse(employee)));
         return responses;
     }
 }

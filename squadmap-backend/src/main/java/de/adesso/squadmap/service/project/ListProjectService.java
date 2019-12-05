@@ -3,6 +3,7 @@ package de.adesso.squadmap.service.project;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.ListProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
+import de.adesso.squadmap.utility.ProjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,13 +22,7 @@ public class ListProjectService implements ListProjectUseCase {
     public List<GetProjectResponse> listProjects() {
         List<GetProjectResponse> responses = new ArrayList<>();
         projectRepository.findAll().forEach(project ->
-                responses.add(new GetProjectResponse(
-                        project.getProjectId(),
-                        project.getTitle(),
-                        project.getDescription(),
-                        project.getSince(),
-                        project.getUntil(),
-                        project.getIsExternal())));
+                        responses.add(ProjectMapper.mapProjectToGetProjectResponse(project)));
         return responses;
     }
 }

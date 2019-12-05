@@ -4,6 +4,7 @@ import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
+import de.adesso.squadmap.utility.ProjectMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +19,6 @@ public class GetProjectService implements GetProjectUseCase {
     @Override
     public GetProjectResponse getProject(Long projectId) {
         Project project = projectRepository.findById(projectId).orElse(null);
-        return new GetProjectResponse(
-                project.getProjectId(),
-                project.getTitle(),
-                project.getDescription(),
-                project.getSince(),
-                project.getUntil(),
-                project.getIsExternal());
+        return ProjectMapper.mapProjectToGetProjectResponse(project);
     }
 }

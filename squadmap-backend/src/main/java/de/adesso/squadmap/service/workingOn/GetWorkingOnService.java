@@ -4,6 +4,7 @@ import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
 import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.repository.WorkingOnRepository;
+import de.adesso.squadmap.utility.WorkingOnMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,11 +19,6 @@ public class GetWorkingOnService implements GetWorkingOnUseCase {
     @Override
     public GetWorkingOnResponse getWorkingOn(Long workingOnId) {
         WorkingOn workingOn = workingOnRepository.findById(workingOnId).orElse(null);
-        return new GetWorkingOnResponse(
-                workingOn.getWorkingOnId(),
-                workingOn.getEmployee(),
-                workingOn.getProject(),
-                workingOn.getSince(),
-                workingOn.getUntil());
+        return WorkingOnMapper.mapWorkingOnToWorkingOnResponse(workingOn);
     }
 }
