@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeleteProjectService implements DeleteProjectUseCase {
 
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
 
     public DeleteProjectService(ProjectRepository projectRepository){
         this.projectRepository = projectRepository;

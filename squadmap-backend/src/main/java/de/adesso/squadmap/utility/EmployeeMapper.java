@@ -5,13 +5,15 @@ import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.employee.get.GetProjectResponseWithoutEmployee;
 import de.adesso.squadmap.port.driver.employee.get.GetWorkingOnResponseWithoutEmployee;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class EmployeeMapper {
 
-    public static GetEmployeeResponse mapEmployeeToEmployeeResponse(Employee employee) {
+    public GetEmployeeResponse mapEmployeeToEmployeeResponse(Employee employee) {
         List<GetWorkingOnResponseWithoutEmployee> workingOnResponses = new ArrayList<>();
         employee.getProjects().forEach(workingOn ->
                 workingOnResponses.add(new GetWorkingOnResponseWithoutEmployee(
@@ -25,7 +27,7 @@ public class EmployeeMapper {
                                 workingOn.getProject().getIsExternal()),
                         workingOn.getSince(),
                         workingOn.getUntil())));
-        GetEmployeeResponse response = new GetEmployeeResponse(
+        return new GetEmployeeResponse(
                 employee.getEmployeeId(),
                 employee.getFirstName(),
                 employee.getLastName(),
@@ -34,10 +36,10 @@ public class EmployeeMapper {
                 employee.getPhone(),
                 employee.getIsExternal(),
                 workingOnResponses);
-        return response;
+
     }
 
-    public static Employee mapCreateEmployeeCommandToEmployee(CreateEmployeeCommand command) {
+    public Employee mapCreateEmployeeCommandToEmployee(CreateEmployeeCommand command) {
         return new Employee(
                 command.getFirstName(),
                 command.getLastName(),

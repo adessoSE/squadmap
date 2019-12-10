@@ -13,16 +13,18 @@ import java.util.List;
 public class ListEmployeeService implements ListEmployeeUseCase {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper employeeMapper;
 
-    public ListEmployeeService(EmployeeRepository employeeRepository){
+    public ListEmployeeService(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper){
         this.employeeRepository = employeeRepository;
+        this.employeeMapper = employeeMapper;
     }
 
     @Override
     public List<GetEmployeeResponse> listEmployees() {
         List<GetEmployeeResponse> responses = new ArrayList<>();
         employeeRepository.findAll().forEach(employee ->
-            responses.add(EmployeeMapper.mapEmployeeToEmployeeResponse(employee)));
+            responses.add(employeeMapper.mapEmployeeToEmployeeResponse(employee)));
         return responses;
     }
 }

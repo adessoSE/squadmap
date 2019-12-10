@@ -13,16 +13,18 @@ import java.util.List;
 public class ListWorkingOnService implements ListWorkingOnUseCase {
 
     private final WorkingOnRepository workingOnRepository;
+    private final WorkingOnMapper workingOnMapper;
 
-    public ListWorkingOnService(WorkingOnRepository workingOnRepository) {
+    public ListWorkingOnService(WorkingOnRepository workingOnRepository, WorkingOnMapper workingOnMapper) {
         this.workingOnRepository = workingOnRepository;
+        this.workingOnMapper = workingOnMapper;
     }
 
     @Override
     public List<GetWorkingOnResponse> listWorkingOn() {
         List<GetWorkingOnResponse> responses = new ArrayList<>();
         workingOnRepository.findAll().forEach(workingOn ->
-                responses.add(WorkingOnMapper.mapWorkingOnToWorkingOnResponse(workingOn)));
+                responses.add(workingOnMapper.mapWorkingOnToWorkingOnResponse(workingOn)));
         return responses;
     }
 }

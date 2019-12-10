@@ -1,19 +1,19 @@
-package de.adesso.squadmap.serviceTest.project;
+package de.adesso.squadmap.serviceTest.workingOn;
 
-import de.adesso.squadmap.repository.ProjectRepository;
-import de.adesso.squadmap.service.project.DeleteProjectService;
+import de.adesso.squadmap.repository.WorkingOnRepository;
+import de.adesso.squadmap.service.workingOn.ListWorkingOnService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-public class DeleteProjectTest {
+public class GetWorkingOnServiceTest {
 
     @Autowired
-    private DeleteProjectService service;
+    private ListWorkingOnService service;
     @MockBean
-    private ProjectRepository projectRepository;
+    private WorkingOnRepository workingOnRepository;
 
     @BeforeEach
     public void setUp() {

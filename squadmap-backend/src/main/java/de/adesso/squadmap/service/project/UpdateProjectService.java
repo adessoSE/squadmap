@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UpdateProjectService implements UpdateProjectUseCase {
 
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
 
     public UpdateProjectService(ProjectRepository projectRepository){
         this.projectRepository = projectRepository;

@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetProjectService implements GetProjectUseCase {
 
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
 
-    public GetProjectService(ProjectRepository projectRepository){
+    public GetProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper){
         this.projectRepository = projectRepository;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -23,6 +25,6 @@ public class GetProjectService implements GetProjectUseCase {
             throw new ProjectNotFoundException();
         }
         Project project = projectRepository.findById(projectId).orElse(null);
-        return ProjectMapper.mapProjectToGetProjectResponse(project);
+        return projectMapper.mapProjectToGetProjectResponse(project);
     }
 }

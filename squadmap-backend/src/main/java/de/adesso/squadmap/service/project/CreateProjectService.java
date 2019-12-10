@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreateProjectService implements CreateProjectUseCase {
 
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
 
-    public CreateProjectService(ProjectRepository projectRepository){
+    public CreateProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper){
         this.projectRepository = projectRepository;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class CreateProjectService implements CreateProjectUseCase {
         if(projectRepository.existsByTitle(command.getTitle())){
             throw new ProjectAlreadyExistsException();
         }
-        Project project = ProjectMapper.mapCreateProjectCommandToProject(command);
+        Project project = projectMapper.mapCreateProjectCommandToProject(command);
         return projectRepository.save(project).getProjectId();
     }
 }
