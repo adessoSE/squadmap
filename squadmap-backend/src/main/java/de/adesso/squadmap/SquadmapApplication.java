@@ -25,6 +25,7 @@ public class SquadmapApplication {
     }
 
     @Bean
+    @Profile("!test")
     CommandLineRunner demo(EmployeeRepository employeeRepository, ProjectRepository projectRepository, WorkingOnRepository workingOnRepository) {
         return args -> {
             employeeRepository.deleteAll();
