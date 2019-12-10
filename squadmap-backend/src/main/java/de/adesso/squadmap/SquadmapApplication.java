@@ -20,6 +20,7 @@ import java.util.Arrays;
 @EnableNeo4jRepositories("de.adesso.squadmap.repository")
 public class SquadmapApplication {
 
+    //testcomment
     public static void main(String[] args) {
         SpringApplication.run(SquadmapApplication.class, args);
     }
