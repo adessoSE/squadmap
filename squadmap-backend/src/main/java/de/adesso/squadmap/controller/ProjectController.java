@@ -37,27 +37,27 @@ public class ProjectController {
     }
 
     @GetMapping("/all")
-    public List<GetProjectResponse> getAllProjects(){
+    public List<GetProjectResponse> getAllProjects() {
         return listProjectUseCase.listProjects();
     }
 
     @GetMapping("/{projectId}")
-    public GetProjectResponse getProject(@PathVariable long projectId){
+    public GetProjectResponse getProject(@PathVariable long projectId) {
         return getProjectUseCase.getProject(projectId);
     }
 
     @PostMapping("/create")
-    public Long createProject(@RequestBody CreateProjectCommand command){
+    public Long createProject(@RequestBody CreateProjectCommand command) {
         return createProjectUseCase.createProject(command);
     }
 
     @PutMapping("/update/{projectId}")
-    public void updateProject(@RequestBody UpdateProjectCommand command, @PathVariable long projectId){
+    public void updateProject(@RequestBody UpdateProjectCommand command, @PathVariable long projectId) {
         updateProjectUseCase.updateProject(command, projectId);
     }
 
     @DeleteMapping("/delete/{projectId}")
-    public void deleteProject(@PathVariable long projectId){
+    public void deleteProject(@PathVariable long projectId) {
         deleteProjectUseCase.deleteProject(projectId);
     }
 }

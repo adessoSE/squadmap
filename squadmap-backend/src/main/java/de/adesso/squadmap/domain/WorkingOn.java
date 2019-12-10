@@ -11,7 +11,8 @@ import java.time.LocalDate;
 @RelationshipEntity(type = "WORKING_ON")
 public class WorkingOn {
 
-    @Id@GeneratedValue
+    @Id
+    @GeneratedValue
     private Long workingOnId;
     private LocalDate since;
     private LocalDate until;
@@ -26,7 +27,7 @@ public class WorkingOn {
             Project project,
             LocalDate since,
             LocalDate until
-            ) {
+    ) {
         this.employee = employee;
         this.project = project;
         this.since = since;
