@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectRepository extends Neo4jRepository<Project, Long> {
+
+    boolean existsByTitle(String title);
 }
