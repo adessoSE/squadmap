@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,5 +20,5 @@ public class GetEmployeeResponse {
     private String email;
     private String phone;
     private Boolean isExternal;
-    private List<GetWorkingOnResponseWithoutEmployee> projects;
+    private List<GetWorkingOnResponseWithoutEmployee> projects = new ArrayList();
 }

@@ -5,13 +5,15 @@ import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.port.driver.project.get.GetEmployeeResponseWithoutProject;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.GetWorkingOnResponseWithoutProject;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProjectMapper {
 
-    public static GetProjectResponse mapProjectToGetProjectResponse(Project project) {
+    public GetProjectResponse mapProjectToGetProjectResponse(Project project) {
         List<GetWorkingOnResponseWithoutProject> workingOnResponses = new ArrayList<>();
         project.getEmployees().forEach(workingOn ->
                 workingOnResponses.add(new GetWorkingOnResponseWithoutProject(
@@ -37,7 +39,7 @@ public class ProjectMapper {
         return response;
     }
 
-    public static Project mapCreateProjectCommandToProject(CreateProjectCommand command) {
+    public Project mapCreateProjectCommandToProject(CreateProjectCommand command) {
         return new Project(
                 command.getTitle(),
                 command.getDescription(),

@@ -3,6 +3,9 @@ package de.adesso.squadmap.service.workingOn;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
+import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.WorkingOnAlreadyExistsException;
 import de.adesso.squadmap.port.driver.workingOn.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.port.driver.workingOn.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
@@ -25,8 +28,17 @@ public class CreateWorkingOnService implements CreateWorkingOnUseCase {
 
     @Override
     public Long createWorkingOn(CreateWorkingOnCommand command) {
+        if (!employeeRepository.existsById(command.getEmployeeId())) {
+            throw new EmployeeNotFoundException();
+        }
+        if (!projectRepository.existsById(command.getProjectId())) {
+            throw new ProjectNotFoundException();
+        }
         Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
         Project project = projectRepository.findById(command.getProjectId()).orElse(null);
+        if (workingOnRepository.existsByEmployeeAndProject(employee, project)) {
+            throw new WorkingOnAlreadyExistsException();
+        }
         WorkingOn workingOn = new WorkingOn(
                 employee,
                 project,

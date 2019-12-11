@@ -8,6 +8,7 @@ import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.repository.WorkingOnRepository;
+import de.adesso.squadmap.exceptions.WorkingOnNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +26,9 @@ public class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
 
     @Override
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
+        if(!workingOnRepository.existsById(workingOnId)){
+            throw new WorkingOnNotFoundException();
+        }
         Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
         Project project = projectRepository.findById(command.getProjectId()).orElse(null);
         WorkingOn workingOn = workingOnRepository.findById(workingOnId).orElse(null);

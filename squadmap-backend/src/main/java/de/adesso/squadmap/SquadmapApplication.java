@@ -17,9 +17,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 @SpringBootApplication
-@EnableNeo4jRepositories
+@EnableNeo4jRepositories("de.adesso.squadmap.repository")
 public class SquadmapApplication {
-
+    
     public static void main(String[] args) {
         SpringApplication.run(SquadmapApplication.class, args);
     }

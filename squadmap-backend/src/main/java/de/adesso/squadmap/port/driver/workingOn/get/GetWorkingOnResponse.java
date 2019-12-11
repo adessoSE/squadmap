@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetWorkingOnResponse {
-
     private Long workingOnId;
     private GetEmployeeResponse employee;
     private GetProjectResponse project;

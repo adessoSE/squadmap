@@ -12,17 +12,19 @@ import java.util.List;
 @Service
 public class ListProjectService implements ListProjectUseCase {
 
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
 
-    public ListProjectService(ProjectRepository projectRepository){
+    public ListProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper){
         this.projectRepository = projectRepository;
+        this.projectMapper = projectMapper;
     }
 
     @Override
     public List<GetProjectResponse> listProjects() {
         List<GetProjectResponse> responses = new ArrayList<>();
         projectRepository.findAll().forEach(project ->
-                        responses.add(ProjectMapper.mapProjectToGetProjectResponse(project)));
+                        responses.add(projectMapper.mapProjectToGetProjectResponse(project)));
         return responses;
     }
 }

@@ -4,6 +4,7 @@ import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
+import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,9 @@ public class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
     @Override
     public void updateEmployee(UpdateEmployeeCommand command, Long employeeId) {
+        if(!employeeRepository.existsById(employeeId)){
+            throw new EmployeeNotFoundException();
+        }
         Employee employee = employeeRepository.findById(employeeId).orElse(null);
         employee.setFirstName(command.getFirstName());
         employee.setLastName(command.getLastName());

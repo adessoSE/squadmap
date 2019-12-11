@@ -11,15 +11,17 @@ import org.springframework.stereotype.Service;
 public class CreateEmployeeService implements CreateEmployeeUseCase {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper employeeMapper;
 
 
-    public CreateEmployeeService(EmployeeRepository employeeRepository) {
+    public CreateEmployeeService(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
+        this.employeeMapper = employeeMapper;
     }
 
     @Override
     public Long createEmployee(CreateEmployeeCommand command) {
-        Employee employee = EmployeeMapper.mapCreateEmployeeCommandToEmployee(command);
+        Employee employee = employeeMapper.mapCreateEmployeeCommandToEmployee(command);
         return employeeRepository.save(employee).getEmployeeId();
     }
 }
