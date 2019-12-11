@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+  <a class="navbar-brand">Squadmap</a>
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="">Map</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="project">Projekte</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="employee">Mitarbeiter</a>
+    </li>
+
+    <!-- Dropdown -->
+    <li class="nav-item dropdown" dropdown>
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" dropdownToggle>
+        Hinzufügen
+      </a>
+      <div class="dropdown-menu" *dropdownMenu>
+        <a class="dropdown-item" href="#">Projekt</a>
+        <a class="dropdown-item" href="#">Mitarbeiter</a>
+      </div>
+    </li>
+  </ul>
+</nav>
