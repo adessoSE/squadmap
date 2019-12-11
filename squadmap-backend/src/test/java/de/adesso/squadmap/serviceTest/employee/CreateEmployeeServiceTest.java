@@ -4,7 +4,9 @@ import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.CreateEmployeeService;
-import de.adesso.squadmap.utility.EmployeeMapper;
+import de.adesso.squadmap.utility.CreateCommandToEmployeeMapper;
+import de.adesso.squadmap.utility.EmployeeToResponseMapper;
+import de.adesso.squadmap.utility.Mapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class CreateEmployeeServiceTest {
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
-    private EmployeeMapper employeeMapper;
+    private CreateCommandToEmployeeMapper employeeMapper;
 
     @Test
     public void checkIfCreateEmployeeCreatesAnEmployee() {
@@ -34,7 +36,7 @@ public class CreateEmployeeServiceTest {
         Employee testEmployee = new Employee();
         testEmployee.setEmployeeId(employeeId);
         CreateEmployeeCommand testCommand = new CreateEmployeeCommand();
-        Mockito.when(employeeMapper.mapCreateEmployeeCommandToEmployee(testCommand)).thenReturn(testEmployee);
+        Mockito.when(employeeMapper.map(testCommand)).thenReturn(testEmployee);
         Mockito.when(employeeRepository.save(testEmployee)).thenReturn(testEmployee);
 
         //when
@@ -43,6 +45,6 @@ public class CreateEmployeeServiceTest {
         //then
         assertThat(found).isEqualTo(employeeId);
         verify(employeeRepository, times(1)).save(testEmployee);
-        verify(employeeMapper, times(1)).mapCreateEmployeeCommandToEmployee(testCommand);
+        verify(employeeMapper, times(1)).map(testCommand);
     }
 }

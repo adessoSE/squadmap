@@ -4,17 +4,18 @@ import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
-import de.adesso.squadmap.utility.ProjectMapper;
 import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.utility.Mapper;
+import de.adesso.squadmap.utility.ProjectToResponseMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GetProjectService implements GetProjectUseCase {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper projectMapper;
+    private final Mapper<Project, GetProjectResponse> projectMapper;
 
-    public GetProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper){
+    public GetProjectService(ProjectRepository projectRepository, ProjectToResponseMapper projectMapper){
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }
@@ -25,6 +26,6 @@ public class GetProjectService implements GetProjectUseCase {
             throw new ProjectNotFoundException();
         }
         Project project = projectRepository.findById(projectId).orElse(null);
-        return projectMapper.mapProjectToGetProjectResponse(project);
+        return projectMapper.map(project);
     }
 }

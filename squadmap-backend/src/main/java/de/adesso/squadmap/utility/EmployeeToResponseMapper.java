@@ -1,7 +1,6 @@
 package de.adesso.squadmap.utility;
 
 import de.adesso.squadmap.domain.Employee;
-import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.employee.get.GetProjectResponseWithoutEmployee;
 import de.adesso.squadmap.port.driver.employee.get.GetWorkingOnResponseWithoutEmployee;
@@ -11,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class EmployeeMapper {
+public class EmployeeToResponseMapper implements Mapper<Employee, GetEmployeeResponse> {
 
-    public GetEmployeeResponse mapEmployeeToEmployeeResponse(Employee employee) {
+    @Override
+    public GetEmployeeResponse map(Employee employee) {
         List<GetWorkingOnResponseWithoutEmployee> workingOnResponses = new ArrayList<>();
         employee.getProjects().forEach(workingOn ->
                 workingOnResponses.add(new GetWorkingOnResponseWithoutEmployee(
@@ -36,16 +36,5 @@ public class EmployeeMapper {
                 employee.getPhone(),
                 employee.getIsExternal(),
                 workingOnResponses);
-
-    }
-
-    public Employee mapCreateEmployeeCommandToEmployee(CreateEmployeeCommand command) {
-        return new Employee(
-                command.getFirstName(),
-                command.getLastName(),
-                command.getBirthday(),
-                command.getEmail(),
-                command.getPhone(),
-                command.getIsExternal());
     }
 }

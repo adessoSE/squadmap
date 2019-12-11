@@ -5,7 +5,8 @@ import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.GetEmployeeService;
-import de.adesso.squadmap.utility.EmployeeMapper;
+import de.adesso.squadmap.utility.EmployeeToResponseMapper;
+import de.adesso.squadmap.utility.Mapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class GetEmployeeServiceTest {
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
-    private EmployeeMapper employeeMapper;
+    private EmployeeToResponseMapper employeeMapper;
 
     @Test
     public void checkIfGetEmployeeReturnsTheEmployee() {
@@ -39,7 +40,7 @@ public class GetEmployeeServiceTest {
         GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse();
         Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(true);
         Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(testEmployee));
-        Mockito.when(employeeMapper.mapEmployeeToEmployeeResponse(testEmployee)).thenReturn(getEmployeeResponse);
+        Mockito.when(employeeMapper.map(testEmployee)).thenReturn(getEmployeeResponse);
 
         //when
         GetEmployeeResponse response = service.getEmployee(employeeId);
@@ -48,7 +49,7 @@ public class GetEmployeeServiceTest {
         assertThat(response).isEqualTo(getEmployeeResponse);
         verify(employeeRepository, times(1)).existsById(employeeId);
         verify(employeeRepository, times(1)).findById(employeeId);
-        verify(employeeMapper, times(1)).mapEmployeeToEmployeeResponse(testEmployee);
+        verify(employeeMapper, times(1)).map(testEmployee);
     }
 
     @Test

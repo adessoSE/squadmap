@@ -1,7 +1,6 @@
 package de.adesso.squadmap.utility;
 
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.port.driver.project.get.GetEmployeeResponseWithoutProject;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.GetWorkingOnResponseWithoutProject;
@@ -11,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProjectMapper {
+public class ProjectToResponseMapper implements Mapper<Project, GetProjectResponse> {
 
-    public GetProjectResponse mapProjectToGetProjectResponse(Project project) {
+    @Override
+    public GetProjectResponse map(Project project) {
         List<GetWorkingOnResponseWithoutProject> workingOnResponses = new ArrayList<>();
         project.getEmployees().forEach(workingOn ->
                 workingOnResponses.add(new GetWorkingOnResponseWithoutProject(
@@ -37,14 +37,5 @@ public class ProjectMapper {
                 project.getIsExternal(),
                 workingOnResponses);
         return response;
-    }
-
-    public Project mapCreateProjectCommandToProject(CreateProjectCommand command) {
-        return new Project(
-                command.getTitle(),
-                command.getDescription(),
-                command.getSince(),
-                command.getUntil(),
-                command.getIsExternal());
     }
 }
