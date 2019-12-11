@@ -4,8 +4,9 @@ import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
-import de.adesso.squadmap.utility.ProjectMapper;
+import de.adesso.squadmap.utility.CreateCommandToProjectMapper;
 import de.adesso.squadmap.exceptions.ProjectAlreadyExistsException;
+import de.adesso.squadmap.utility.Mapper;
 import org.springframework.stereotype.Service;
 
 
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Service;
 public class CreateProjectService implements CreateProjectUseCase {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper projectMapper;
+    private final Mapper<CreateProjectCommand, Project> projectMapper;
 
-    public CreateProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper){
+    public CreateProjectService(ProjectRepository projectRepository, CreateCommandToProjectMapper projectMapper){
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }
@@ -25,7 +26,7 @@ public class CreateProjectService implements CreateProjectUseCase {
         if(projectRepository.existsByTitle(command.getTitle())){
             throw new ProjectAlreadyExistsException();
         }
-        Project project = projectMapper.mapCreateProjectCommandToProject(command);
+        Project project = projectMapper.map(command);
         return projectRepository.save(project).getProjectId();
     }
 }

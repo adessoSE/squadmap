@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class UpdateEmployeeServiceTest {
+class UpdateEmployeeServiceTest {
 
     @Autowired
     private UpdateEmployeeService service;
@@ -30,7 +30,7 @@ public class UpdateEmployeeServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Test
-    public void checkIfUpdateEmployeeUpdatesTheEmployee() {
+    void checkIfUpdateEmployeeUpdatesTheEmployee() {
         //given
         long employeeId = 1;
         Employee employee = new Employee();
@@ -55,13 +55,13 @@ public class UpdateEmployeeServiceTest {
     }
 
     @Test
-    public void checkIfUpdateEmployeeThrowsExceptionWhenNotFound() {
+    void checkIfUpdateEmployeeThrowsExceptionWhenNotFound() {
         //given
         long employeeId = 1;
         UpdateEmployeeCommand command = new UpdateEmployeeCommand();
         Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(false);
 
-        //when
+        //then
         assertThrows(EmployeeNotFoundException.class, () ->
                 service.updateEmployee(command, employeeId));
     }

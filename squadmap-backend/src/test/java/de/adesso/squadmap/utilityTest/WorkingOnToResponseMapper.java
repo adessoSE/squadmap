@@ -1,7 +1,9 @@
 package de.adesso.squadmap.utilityTest;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-public class EmployeeMapperTest {
+@ActiveProfiles("test")
+public class WorkingOnToResponseMapper {
 }

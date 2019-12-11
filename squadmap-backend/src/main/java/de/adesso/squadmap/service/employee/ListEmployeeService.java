@@ -1,9 +1,11 @@
 package de.adesso.squadmap.service.employee;
 
+import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
-import de.adesso.squadmap.utility.EmployeeMapper;
+import de.adesso.squadmap.utility.EmployeeToResponseMapper;
+import de.adesso.squadmap.utility.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,9 +15,9 @@ import java.util.List;
 public class ListEmployeeService implements ListEmployeeUseCase {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeeMapper employeeMapper;
+    private final Mapper<Employee, GetEmployeeResponse> employeeMapper;
 
-    public ListEmployeeService(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper){
+    public ListEmployeeService(EmployeeRepository employeeRepository, EmployeeToResponseMapper employeeMapper){
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
     }
@@ -24,7 +26,7 @@ public class ListEmployeeService implements ListEmployeeUseCase {
     public List<GetEmployeeResponse> listEmployees() {
         List<GetEmployeeResponse> responses = new ArrayList<>();
         employeeRepository.findAll().forEach(employee ->
-            responses.add(employeeMapper.mapEmployeeToEmployeeResponse(employee)));
+            responses.add(employeeMapper.map(employee)));
         return responses;
     }
 }

@@ -1,9 +1,11 @@
 package de.adesso.squadmap.service.project;
 
+import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.ListProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
-import de.adesso.squadmap.utility.ProjectMapper;
+import de.adesso.squadmap.utility.Mapper;
+import de.adesso.squadmap.utility.ProjectToResponseMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,9 +15,9 @@ import java.util.List;
 public class ListProjectService implements ListProjectUseCase {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper projectMapper;
+    private final Mapper<Project, GetProjectResponse> projectMapper;
 
-    public ListProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper){
+    public ListProjectService(ProjectRepository projectRepository, ProjectToResponseMapper projectMapper){
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }
@@ -24,7 +26,7 @@ public class ListProjectService implements ListProjectUseCase {
     public List<GetProjectResponse> listProjects() {
         List<GetProjectResponse> responses = new ArrayList<>();
         projectRepository.findAll().forEach(project ->
-                        responses.add(projectMapper.mapProjectToGetProjectResponse(project)));
+                        responses.add(projectMapper.map(project)));
         return responses;
     }
 }

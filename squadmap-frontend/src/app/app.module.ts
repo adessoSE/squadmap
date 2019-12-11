@@ -2,13 +2,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {NgModule} from '@angular/core';
-import {NavigationComponent} from './models/navigation/navigation.component';
+import {NavigationComponent} from './navigation/navigation.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
-import {ProjectComponent} from './models/project/project.component';
-import {EmployeeComponent} from './models/employee/employee.component';
-import {PageNotFoundComponent} from './models/employee/page-not-found/page-not-found.component';
+import {ProjectComponent} from './project/project.component';
+import {EmployeeComponent} from './employee/employee.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -30,9 +30,9 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     NavigationComponent,
-    ProjectComponent,
     EmployeeComponent,
-    PageNotFoundComponent,
+    ProjectComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
