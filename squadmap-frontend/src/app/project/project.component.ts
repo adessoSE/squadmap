@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {EmployeeModel} from '../models/employee.model';
+import {EmployeeService} from '../service/employee.service';
 
 @Component({
   selector: 'app-project',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor() { }
+  private employeeList: EmployeeModel[] = [];
+  public searchText: string;
+
+
+  constructor(private employeeService: EmployeeService) { }
 
   ngOnInit() {
+    this.employeeList = this.employeeService.getEmployees();
   }
 
 }

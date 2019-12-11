@@ -9,6 +9,9 @@ import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {ProjectComponent} from './project/project.component';
 import {EmployeeComponent} from './employee/employee.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {FormsModule} from '@angular/forms';
+import {FilterPipe} from './pipes/filer.pipe';
+import {HttpClientModule} from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -24,7 +27,7 @@ const routes: Routes = [
     path: '**',
     component: PageNotFoundComponent
   }
-]
+];
 
 @NgModule({
   declarations: [
@@ -32,14 +35,17 @@ const routes: Routes = [
     NavigationComponent,
     EmployeeComponent,
     ProjectComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
