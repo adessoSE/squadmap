@@ -1,16 +1,48 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouterModule, Routes} from '@angular/router';
+import {AppComponent} from './app.component';
+import {NgModule} from '@angular/core';
+import {NavigationComponent} from './navigation/navigation.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {ProjectComponent} from './project/project.component';
+import {EmployeeComponent} from './employee/employee.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 
-import { AppComponent } from './app.component';
+const routes: Routes = [
+  {
+    path: 'employee',
+    component: EmployeeComponent
+  },
+  {
+    path: 'project',
+    component: ProjectComponent
+  },
+
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  }
+]
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavigationComponent,
+    EmployeeComponent,
+    ProjectComponent,
+    PageNotFoundComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    BsDropdownModule.forRoot(),
+    CollapseModule.forRoot(),
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
