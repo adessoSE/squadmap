@@ -1,22 +1,51 @@
 package de.adesso.squadmap.serviceTest.project;
 
+import de.adesso.squadmap.domain.Project;
+import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.ListProjectService;
-import org.junit.jupiter.api.BeforeEach;
+import de.adesso.squadmap.utility.ProjectToResponseMapper;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-public class ListProjectServiceTest {
+@ActiveProfiles("test")
+class ListProjectServiceTest {
 
     @Autowired
     private ListProjectService service;
     @MockBean
     private ProjectRepository projectRepository;
+    @MockBean
+    private ProjectToResponseMapper projectMapper;
 
-    @BeforeEach
-    public void setUp() {
+    @Test
+    void checkIfListProjectsListsAllProjects() {
+        //given
+        Project project = new Project();
+        List<Project> allProjects = Collections.singletonList(project);
+        GetProjectResponse response = new GetProjectResponse();
+        Mockito.when(projectRepository.findAll()).thenReturn(allProjects);
+        Mockito.when(projectMapper.map(project)).thenReturn(response);
 
+        //when
+        List<GetProjectResponse> found = service.listProjects();
+
+        //then
+        assertThat(found).isEqualTo(Collections.singletonList(response));
+        verify(projectRepository, times(1)).findAll();
+        verify(projectMapper, times(1)).map(project);
     }
 }

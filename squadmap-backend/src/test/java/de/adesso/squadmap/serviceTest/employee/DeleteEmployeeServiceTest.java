@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class DeleteEmployeeServiceTest {
+class DeleteEmployeeServiceTest {
 
     @Autowired
     private DeleteEmployeeService service;
@@ -24,7 +24,7 @@ public class DeleteEmployeeServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Test
-    public void checkIfDeleteEmployeeDeletesTheEmployee() {
+    void checkIfDeleteEmployeeDeletesTheEmployee() {
         //given
         long employeeId = 1;
         Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(true);
@@ -39,12 +39,12 @@ public class DeleteEmployeeServiceTest {
     }
 
     @Test
-    public void checkIfDeleteEmployeeThrowsExceptionWhenNotFound() throws EmployeeNotFoundException {
+    void checkIfDeleteEmployeeThrowsExceptionWhenNotFound() throws EmployeeNotFoundException {
         //given
         long employeeId = 1;
         Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(false);
 
-        //when
+        //then
         assertThrows(EmployeeNotFoundException.class, () ->
                 service.deleteEmployee(employeeId));
     }

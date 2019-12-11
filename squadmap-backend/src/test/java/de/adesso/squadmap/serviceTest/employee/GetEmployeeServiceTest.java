@@ -5,7 +5,7 @@ import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.GetEmployeeService;
-import de.adesso.squadmap.utility.EmployeeMapper;
+import de.adesso.squadmap.utility.EmployeeToResponseMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,42 +22,42 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class GetEmployeeServiceTest {
+class GetEmployeeServiceTest {
 
     @Autowired
     private GetEmployeeService service;
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
-    private EmployeeMapper employeeMapper;
+    private EmployeeToResponseMapper employeeMapper;
 
     @Test
-    public void checkIfGetEmployeeReturnsTheEmployee() {
+    void checkIfGetEmployeeReturnsTheEmployee() {
         //given
         long employeeId = 1;
-        Employee testEmployee = new Employee();
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse();
+        Employee employee = new Employee();
+        GetEmployeeResponse response = new GetEmployeeResponse();
         Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(testEmployee));
-        Mockito.when(employeeMapper.mapEmployeeToEmployeeResponse(testEmployee)).thenReturn(getEmployeeResponse);
+        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        Mockito.when(employeeMapper.map(employee)).thenReturn(response);
 
         //when
-        GetEmployeeResponse response = service.getEmployee(employeeId);
+        GetEmployeeResponse found = service.getEmployee(employeeId);
 
         //then
-        assertThat(response).isEqualTo(getEmployeeResponse);
+        assertThat(found).isEqualTo(response);
         verify(employeeRepository, times(1)).existsById(employeeId);
         verify(employeeRepository, times(1)).findById(employeeId);
-        verify(employeeMapper, times(1)).mapEmployeeToEmployeeResponse(testEmployee);
+        verify(employeeMapper, times(1)).map(employee);
     }
 
     @Test
-    public void checkIfGetEmployeeThrowsExceptionWhenNotFound() {
+    void checkIfGetEmployeeThrowsExceptionWhenNotFound() {
         //given
         long employeeId = 1;
         Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(false);
 
-        //when
+        //then
         assertThrows(EmployeeNotFoundException.class, () ->
                 service.getEmployee(employeeId));
     }

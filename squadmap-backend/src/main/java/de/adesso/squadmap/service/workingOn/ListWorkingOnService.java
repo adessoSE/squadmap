@@ -1,9 +1,11 @@
 package de.adesso.squadmap.service.workingOn;
 
+import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
 import de.adesso.squadmap.port.driver.workingOn.get.ListWorkingOnUseCase;
 import de.adesso.squadmap.repository.WorkingOnRepository;
-import de.adesso.squadmap.utility.WorkingOnMapper;
+import de.adesso.squadmap.utility.Mapper;
+import de.adesso.squadmap.utility.WorkingOnToResponseMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,9 +15,9 @@ import java.util.List;
 public class ListWorkingOnService implements ListWorkingOnUseCase {
 
     private final WorkingOnRepository workingOnRepository;
-    private final WorkingOnMapper workingOnMapper;
+    private final Mapper<WorkingOn, GetWorkingOnResponse> workingOnMapper;
 
-    public ListWorkingOnService(WorkingOnRepository workingOnRepository, WorkingOnMapper workingOnMapper) {
+    public ListWorkingOnService(WorkingOnRepository workingOnRepository, WorkingOnToResponseMapper workingOnMapper) {
         this.workingOnRepository = workingOnRepository;
         this.workingOnMapper = workingOnMapper;
     }
@@ -24,7 +26,7 @@ public class ListWorkingOnService implements ListWorkingOnUseCase {
     public List<GetWorkingOnResponse> listWorkingOn() {
         List<GetWorkingOnResponse> responses = new ArrayList<>();
         workingOnRepository.findAll().forEach(workingOn ->
-                responses.add(workingOnMapper.mapWorkingOnToWorkingOnResponse(workingOn)));
+                responses.add(workingOnMapper.map(workingOn)));
         return responses;
     }
 }

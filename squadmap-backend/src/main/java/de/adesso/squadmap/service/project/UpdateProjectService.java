@@ -1,6 +1,7 @@
 package de.adesso.squadmap.service.project;
 
 import de.adesso.squadmap.domain.Project;
+import de.adesso.squadmap.exceptions.ProjectAlreadyExistsException;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
@@ -22,6 +23,9 @@ public class UpdateProjectService implements UpdateProjectUseCase {
             throw new ProjectNotFoundException();
         }
         Project project = projectRepository.findById(projectId).orElse(null);
+        if(projectRepository.existsByTitle(command.getTitle()) && !project.getTitle().equals(command.getTitle())){
+            throw new ProjectAlreadyExistsException();
+        }
         project.setTitle(command.getTitle());
         project.setDescription(command.getDescription());
         project.setSince(command.getSince());
