@@ -55,7 +55,7 @@ class CreateWorkingOnServiceTest {
         Mockito.when(projectRepository.existsById(projectId)).thenReturn(true);
         Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         Mockito.when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        Mockito.when(workingOnRepository.existsByEmployeeAndProject(employee, project)).thenReturn(false);
+        Mockito.when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
         Mockito.when(workingOnRepository.save(any(WorkingOn.class))).thenReturn(workingOn);
 
         //when
@@ -67,7 +67,7 @@ class CreateWorkingOnServiceTest {
         verify(projectRepository, times(1)).existsById(projectId);
         verify(employeeRepository, times(1)).findById(employeeId);
         verify(projectRepository, times(1)).findById(projectId);
-        verify(workingOnRepository, times(1)).existsByEmployeeAndProject(employee, project);
+        verify(workingOnRepository, times(1)).existsByEmployeeAndProject(employeeId, projectId);
         verify(workingOnRepository, times(1)).save(any(WorkingOn.class));
     }
 
@@ -109,7 +109,7 @@ class CreateWorkingOnServiceTest {
         Mockito.when(projectRepository.existsById(projectId)).thenReturn(true);
         Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         Mockito.when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        Mockito.when(workingOnRepository.existsByEmployeeAndProject(employee, project)).thenReturn(true);
+        Mockito.when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(true);
 
         //then
         assertThrows(WorkingOnAlreadyExistsException.class, () ->
