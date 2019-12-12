@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {EmployeeModel} from '../models/employee.model';
-import {EmployeeService} from '../service/employee.service';
+import {Component, OnInit} from '@angular/core';
+import {ProjectModel} from '../models/project.model';
+import {ProjectService} from '../service/project.service';
 
 @Component({
   selector: 'app-project',
@@ -9,14 +9,16 @@ import {EmployeeService} from '../service/employee.service';
 })
 export class ProjectComponent implements OnInit {
 
-  private employeeList: EmployeeModel[] = [];
+  private projectList: ProjectModel[] = [];
   public searchText: string;
+  public checkedOldProjects: boolean;
+  public checkedExternalProjects: boolean;
 
 
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
-    this.employeeList = this.employeeService.getEmployees();
+    this.projectList = this.projectService.getProjects();
   }
 
 }

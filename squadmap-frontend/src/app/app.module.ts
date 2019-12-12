@@ -10,13 +10,19 @@ import {ProjectComponent} from './project/project.component';
 import {EmployeeComponent} from './employee/employee.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {FormsModule} from '@angular/forms';
-import {FilterPipe} from './pipes/filer.pipe';
+import {FilterPipe} from './pipes/filter.pipe';
 import {HttpClientModule} from '@angular/common/http';
+import {FilterEmployeePipe} from './pipes/filterEmployee.pipe';
+import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
 
 const routes: Routes = [
   {
     path: 'employee',
     component: EmployeeComponent
+  },
+  {
+    path: 'employee/:id',
+    component: EmployeeDetailComponent
   },
   {
     path: 'project',
@@ -37,6 +43,8 @@ const routes: Routes = [
     ProjectComponent,
     PageNotFoundComponent,
     FilterPipe,
+    FilterEmployeePipe,
+    EmployeeDetailComponent,
   ],
   imports: [
     BrowserModule,

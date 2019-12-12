@@ -1,1 +1,22 @@
-<p>employee works!</p>
+<br>
+<div class="row">
+  <div class="col-md-8">
+    <label class="checkbox-inline" for="searchText" >Search:</label>
+    <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
+  </div>
+</div>
+<br>
+<table class="table">
+  <thead>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let employee of employees | filterEmployees : {searchText: searchText}" (click)="onOpenEmployeeProfile(employee)">
+    <td>{{employee.firstName}}</td>
+    <td>{{employee.lastName}}</td>
+  </tr>
+  </tbody>
+</table>

@@ -8,11 +8,17 @@ import {map} from 'rxjs/operators';
 })
 export class EmployeeService {
 
+
   public employees: EmployeeModel[] = [];
 
   constructor(public http: HttpClient) {}
 
+  getCurrentEmployeeList() {
+    return this.employees;
+  }
+
   getEmployees() {
+    this.employees = [];
     this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {
       Object.values(res).map(recievedData => {
           this.employees.push(new EmployeeModel(
@@ -33,5 +39,15 @@ export class EmployeeService {
         }
       );
     return this.employees;
+  }
+
+  getEmployee(id: number): EmployeeModel {
+    let getEmployee: EmployeeModel;
+    this.employees.filter(employee => {
+      if (employee.employeeId === id) {
+        getEmployee = employee;
+      }
+    });
+    return getEmployee;
   }
 }

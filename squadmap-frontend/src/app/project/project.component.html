@@ -1,31 +1,19 @@
 <br>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-8">
   <label class="checkbox-inline" for="searchText" >Search:</label>
   <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
   </div>
 
   <div class="col-md-2">
   <label class="form-check-inline" for="oldProjects">
-    <input class="form-control" name="oldProjects" type="checkbox" id="oldProjects">Show old Projects:
+    <input class="form-control" name="oldProjects" type="checkbox" id="oldProjects" [(ngModel)]="checkedOldProjects">Show old Projects:
   </label>
   </div>
 
   <div class="col-md-2">
   <label class="form-check-inline" for="externalProjects">
-  <input class="form-control" type="checkbox" id="externalProjects">Show external Projects:
-  </label>
-  </div>
-
-  <div class="col-md-2">
-  <label class="form-check-inline" for="formerEmployees">
-  <input class="form-control" type="checkbox" id="formerEmployees">Show former Employees:
-  </label>
-  </div>
-
-  <div class="col-md-2">
-  <label class="form-check-inline" for="externalEmployees">
-  <input class="form-control" type="checkbox" id="externalEmployees">Show external Employees:
+  <input class="form-control" type="checkbox" id="externalProjects" [(ngModel)]="checkedExternalProjects">Show external Projects:
   </label>
   </div>
 
@@ -34,26 +22,16 @@
 <table class="table">
   <thead>
   <tr>
-    <th>Name</th>
     <th>Project</th>
-    <th>From</th>
+    <th>Since</th>
     <th>Until</th>
   </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let employee of employeeList | filter : searchText">
-    <tr *ngFor="let project of employee.projects">
-      <td [routerLink]="['profile', employee.employeeId]">{{employee.firstName}}</td>
-      <td>{{project.project.title}}</td>
-      <td>{{project.since}}</td>
-      <td>{{project.until}}</td>
+    <tr *ngFor="let project of projectList | filter : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+      <td>{{project.title}}</td>
+      <td>{{project.since.toDateString()}}</td>
+      <td>{{project.until.toDateString()}}</td>
     </tr>
-    <tr *ngIf="employee.projects.length===0">
-      <td>{{employee.firstName}}</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-  </ng-container>
   </tbody>
 </table>
