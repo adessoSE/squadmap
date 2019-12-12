@@ -28,7 +28,7 @@
   </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let project of projectList | filter : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+    <tr *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
       <td>{{project.title}}</td>
       <td>{{project.since.toDateString()}}</td>
       <td>{{project.until.toDateString()}}</td>

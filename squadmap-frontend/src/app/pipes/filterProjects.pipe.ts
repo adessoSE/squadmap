@@ -8,9 +8,9 @@ export interface FilterSettings {
 }
 
 @Pipe({
-  name: 'filter'
+  name: 'filterProjects'
 })
-export class FilterPipe implements PipeTransform {
+export class FilterProjectsPipe implements PipeTransform {
   transform(projectList: ProjectModel[], filter: FilterSettings): ProjectModel[] {
     if (!projectList) { return []; }
     if (!filter.searchText) {

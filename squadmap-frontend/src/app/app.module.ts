@@ -10,9 +10,9 @@ import {ProjectComponent} from './project/project.component';
 import {EmployeeComponent} from './employee/employee.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {FormsModule} from '@angular/forms';
-import {FilterPipe} from './pipes/filter.pipe';
 import {HttpClientModule} from '@angular/common/http';
-import {FilterEmployeePipe} from './pipes/filterEmployee.pipe';
+import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
+import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
 
 const routes: Routes = [
@@ -42,8 +42,8 @@ const routes: Routes = [
     EmployeeComponent,
     ProjectComponent,
     PageNotFoundComponent,
-    FilterPipe,
-    FilterEmployeePipe,
+    FilterProjectsPipe,
+    FilterEmployeesPipe,
     EmployeeDetailComponent,
   ],
   imports: [

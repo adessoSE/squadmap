@@ -14,7 +14,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let employee of employees | filterEmployees : {searchText: searchText}" (click)="onOpenEmployeeProfile(employee)">
+  <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText}" (click)="onOpenEmployeeProfile(employee)">
     <td>{{employee.firstName}}</td>
     <td>{{employee.lastName}}</td>
   </tr>

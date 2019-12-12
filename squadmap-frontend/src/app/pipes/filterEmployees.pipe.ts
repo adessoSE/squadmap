@@ -4,11 +4,10 @@ import {EmployeeModel} from '../models/employee.model';
 interface FilterSettings {
   searchText: string;
 }
-
 @Pipe({
   name: 'filterEmployees'
 })
-export class FilterEmployeePipe implements PipeTransform {
+export class FilterEmployeesPipe implements PipeTransform {
   transform(employeeList: EmployeeModel[], filter: FilterSettings): EmployeeModel[] {
     if (!employeeList) { return []; }
     if (!filter.searchText) {
