@@ -4,15 +4,13 @@ import de.adesso.squadmap.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.DeleteProjectService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -27,8 +25,8 @@ class DeleteProjectServiceTest {
     void checkIfDeleteProjectDeletesTheProject() {
         //given
         long projectId = 1;
-        Mockito.when(projectRepository.existsById(projectId)).thenReturn(true);
-        Mockito.doNothing().when(projectRepository).deleteById(projectId);
+        when(projectRepository.existsById(projectId)).thenReturn(true);
+        doNothing().when(projectRepository).deleteById(projectId);
 
         //when
         service.deleteProject(projectId);
@@ -36,13 +34,14 @@ class DeleteProjectServiceTest {
         //then
         verify(projectRepository, times(1)).existsById(projectId);
         verify(projectRepository, times(1)).deleteById(projectId);
+        verifyNoMoreInteractions(projectRepository);
     }
 
     @Test
     void checkIfDeleteProjectThrowsExceptionWhenProjectNotFound() {
         //given
         long projectId = 1;
-        Mockito.when(projectRepository.existsById(projectId)).thenReturn(false);
+        when(projectRepository.existsById(projectId)).thenReturn(false);
 
         //then
         assertThrows(ProjectNotFoundException.class, () ->

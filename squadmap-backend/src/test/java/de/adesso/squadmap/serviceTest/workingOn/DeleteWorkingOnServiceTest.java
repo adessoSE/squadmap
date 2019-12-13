@@ -4,15 +4,13 @@ import de.adesso.squadmap.exceptions.WorkingOnNotFoundException;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.service.workingOn.DeleteWorkingOnService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -27,8 +25,8 @@ class DeleteWorkingOnServiceTest {
     void checkIfDeleteWorkingOnDeletesTheRelation() {
         //given
         long workingOnId = 1;
-        Mockito.when(workingOnRepository.existsById(workingOnId)).thenReturn(true);
-        Mockito.doNothing().when(workingOnRepository).deleteById(workingOnId);
+        when(workingOnRepository.existsById(workingOnId)).thenReturn(true);
+        doNothing().when(workingOnRepository).deleteById(workingOnId);
 
         //when
         service.deleteWorkingOn(workingOnId);
@@ -36,13 +34,14 @@ class DeleteWorkingOnServiceTest {
         //then
         verify(workingOnRepository, times(1)).existsById(workingOnId);
         verify(workingOnRepository, times(1)).deleteById(workingOnId);
+        verifyNoMoreInteractions(workingOnRepository);
     }
 
     @Test
     void checkIfDeleteWorkingOnThrowsExceptionWhenNotFound() {
         //given
         long workingOnId = 1;
-        Mockito.when(workingOnRepository.existsById(workingOnId)).thenReturn(false);
+        when(workingOnRepository.existsById(workingOnId)).thenReturn(false);
 
         //then
         assertThrows(WorkingOnNotFoundException.class, () ->

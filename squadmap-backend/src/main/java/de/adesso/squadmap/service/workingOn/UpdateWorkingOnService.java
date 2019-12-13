@@ -3,6 +3,8 @@ package de.adesso.squadmap.service.workingOn;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
+import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
@@ -28,6 +30,12 @@ public class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
         if(!workingOnRepository.existsById(workingOnId)){
             throw new WorkingOnNotFoundException();
+        }
+        if(!employeeRepository.existsById(command.getEmployeeId())){
+            throw new EmployeeNotFoundException();
+        }
+        if(!projectRepository.existsById(command.getProjectId())){
+            throw new ProjectNotFoundException();
         }
         Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
         Project project = projectRepository.findById(command.getProjectId()).orElse(null);

@@ -12,7 +12,7 @@ public class WorkingOnToResponseMapper implements Mapper<WorkingOn, GetWorkingOn
     private final EmployeeToResponseMapper employeeMapper;
     private final ProjectToResponseMapper projectMapper;
 
-    public WorkingOnToResponseMapper(EmployeeToResponseMapper employeeMapper, ProjectToResponseMapper projectMapper){
+    public WorkingOnToResponseMapper(EmployeeToResponseMapper employeeMapper, ProjectToResponseMapper projectMapper) {
         this.employeeMapper = employeeMapper;
         this.projectMapper = projectMapper;
     }
