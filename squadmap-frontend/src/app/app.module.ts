@@ -6,9 +6,15 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {ModalModule} from 'ngx-bootstrap';
 import {ProjectComponent} from './project/project.component';
 import {EmployeeComponent} from './employee/employee.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
+import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
+import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
 
 const routes: Routes = [
   {
@@ -16,15 +22,18 @@ const routes: Routes = [
     component: EmployeeComponent
   },
   {
+    path: 'employee/:id',
+    component: EmployeeDetailComponent
+  },
+  {
     path: 'project',
     component: ProjectComponent
   },
-
   {
     path: '**',
     component: PageNotFoundComponent
   }
-]
+];
 
 @NgModule({
   declarations: [
@@ -32,17 +41,25 @@ const routes: Routes = [
     NavigationComponent,
     EmployeeComponent,
     ProjectComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FilterProjectsPipe,
+    FilterEmployeesPipe,
+    EmployeeDetailComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
-    RouterModule.forRoot(routes)
+    ModalModule.forRoot(),
+    RouterModule.forRoot(routes),
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: []
 })
 export class AppModule {
 }
