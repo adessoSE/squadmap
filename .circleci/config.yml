@@ -21,7 +21,7 @@ jobs:
       - run: gradle build
       - run:
           name: Analyze on SonarCloud
-          command: gradle sonarqube -Dsonar.login=${SONAR_TOKEN}
+          command: gradle sonarqube -Dsonar.login=${SONAR_TOKEN} -Dsonar.pullrequest.branch=${}
 
   frontend:
     docker:
