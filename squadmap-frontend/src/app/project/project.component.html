@@ -1,1 +1,37 @@
-<p>project works!</p>
+<br>
+<div class="row">
+  <div class="col-md-8">
+  <label class="checkbox-inline" for="searchText" >Search:</label>
+  <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
+  </div>
+
+  <div class="col-md-2">
+  <label class="form-check-inline" for="oldProjects">
+    <input class="form-control" name="oldProjects" type="checkbox" id="oldProjects" [(ngModel)]="checkedOldProjects">Show old Projects:
+  </label>
+  </div>
+
+  <div class="col-md-2">
+  <label class="form-check-inline" for="externalProjects">
+  <input class="form-control" type="checkbox" id="externalProjects" [(ngModel)]="checkedExternalProjects">Show external Projects:
+  </label>
+  </div>
+
+</div>
+<br>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Project</th>
+    <th>Since</th>
+    <th>Until</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+      <td>{{project.title}}</td>
+      <td>{{project.since.toDateString()}}</td>
+      <td>{{project.until.toDateString()}}</td>
+    </tr>
+  </tbody>
+</table>

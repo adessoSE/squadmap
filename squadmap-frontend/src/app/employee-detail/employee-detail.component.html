@@ -1,0 +1,24 @@
+<h2>{{employee.firstName}} {{employee.lastName}}</h2>
+<img src="" alt="Profile image">
+<br>
+<table>
+  <tr>Something that the employee can do</tr>
+</table>
+<br>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Since</th>
+      <th>Until</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of employee.projects">
+      <td>{{project.project.title}}</td>
+      <td>{{project.since}}</td>
+      <td>{{project.until}}</td>
+    </tr>
+  </tbody>
+</table>
+

@@ -15,12 +15,24 @@
 
     <!-- Dropdown -->
     <li class="nav-item dropdown" dropdown>
-      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" dropdownToggle>
+      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" dropdownToggle>
         Hinzufügen
       </a>
       <div class="dropdown-menu" *dropdownMenu>
-        <a class="dropdown-item" href="#">Projekt</a>
-        <a class="dropdown-item" href="#">Mitarbeiter</a>
+        <button class="dropdown-item" (click)="addEmployeeModal(employee)">Projekt</button>
+        <ng-template #employee>
+          <div class="modal-header">
+            <h4 class="modal-title pull-left">Mitarbeiter hinzufügen</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          <form></form>
+          </div>
+        </ng-template>
+        <button class="dropdown-item" href="#">Mitarbeiter</button>
+
       </div>
     </li>
   </ul>

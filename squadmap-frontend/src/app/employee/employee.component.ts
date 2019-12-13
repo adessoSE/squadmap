@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {EmployeeService} from '../service/employee.service';
+import {EmployeeModel} from '../models/employee.model';
 
 @Component({
   selector: 'app-employee',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeeComponent implements OnInit {
 
-  constructor() { }
+  public employees: EmployeeModel[];
+  public searchText: string;
+
+  constructor(private employeeService: EmployeeService, private router: Router) {
+  }
 
   ngOnInit() {
+    this.employees = this.employeeService.getEmployees();
+  }
+
+  onOpenEmployeeProfile(employee: EmployeeModel) {
+    this.router.navigate(['/employee/' + employee.employeeId]);
   }
 
 }
