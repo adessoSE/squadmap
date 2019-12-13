@@ -10,5 +10,6 @@ export class EmployeeModel {
     public phone: string,
     public isExternal: boolean,
     public projects: WorkingOnModel[]
-  ) {}
+  ) {
+  }
 }

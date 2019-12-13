@@ -18,7 +18,7 @@ export class ProjectService {
         this.projects.push(new ProjectModel(
           recievedData.projectId,
           recievedData.title,
-          recievedData.decription,
+          recievedData.description,
           new Date(recievedData.since),
           new Date(recievedData.until),
           recievedData.isExternal,

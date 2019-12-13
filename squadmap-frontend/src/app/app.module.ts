@@ -6,10 +6,11 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {ModalModule} from 'ngx-bootstrap';
 import {ProjectComponent} from './project/project.component';
 import {EmployeeComponent} from './employee/employee.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
@@ -28,7 +29,6 @@ const routes: Routes = [
     path: 'project',
     component: ProjectComponent
   },
-
   {
     path: '**',
     component: PageNotFoundComponent
@@ -51,12 +51,15 @@ const routes: Routes = [
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
+    ModalModule.forRoot(),
     RouterModule.forRoot(routes),
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: []
 })
 export class AppModule {
 }

@@ -10,9 +10,7 @@ import {EmployeeService} from '../service/employee.service';
 })
 export class EmployeeDetailComponent implements OnInit {
 
-  private employee: EmployeeModel;
-
-  constructor(private route: ActivatedRoute, private employeeService: EmployeeService) { }
+  constructor(private route: ActivatedRoute, private employeeService: EmployeeService, private employee: EmployeeModel) { }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
