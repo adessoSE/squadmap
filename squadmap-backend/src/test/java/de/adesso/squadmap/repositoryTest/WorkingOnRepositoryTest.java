@@ -6,6 +6,7 @@ import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.repository.WorkingOnRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ class WorkingOnRepositoryTest {
     private ProjectRepository projectRepository;
 
     @Test
+    @Disabled
     void checkIfExistsByEmployeeAndProjectReturnsTrueWhenTrue() {
         //given
         Employee employee = new Employee();
@@ -51,6 +53,7 @@ class WorkingOnRepositoryTest {
     }
 
     @Test
+    @Disabled
     void checkIfExistsByEmployeeAndProjectReturnsFalseWhenFalse() {
         //when
         Employee employee = new Employee();
