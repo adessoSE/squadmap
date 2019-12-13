@@ -21,7 +21,7 @@ jobs:
       - run: gradle test
       - run:
           name: Analyze on SonarCloud
-          command: gradle build sonarqube -Dsonar.projectKey="adessoAG_squadmap" -Dsonar.organization="adesso-ag" -Dsonar.host.url="https://sonarcloud.io" -Dsonar.login=${SONAR_TOKEN} -Dsonar.pullrequest.branch=${CIRCLE_BRANCH} -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST}
+          command: gradle build sonarqube -Dsonar.projectKey="adessoAG_squadmap" -Dsonar.organization="adesso-ag" -Dsonar.host.url="https://sonarcloud.io" -Dsonar.login=${SONAR_TOKEN} -Dsonar.pullrequest.branch=${CIRCLE_BRANCH}
 
   frontend:
     docker:
