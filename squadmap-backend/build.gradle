@@ -43,7 +43,7 @@ test {
 
 sonarqube {
 	properties {
-		property "sonar.projectName", "adessoAG_squadmap"
+		property "sonar.projectKey", "adessoAG_squadmap"
 		property "sonar.organization", "adesso-ag"
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.login", "${System.env.SONAR_TOKEN}"
