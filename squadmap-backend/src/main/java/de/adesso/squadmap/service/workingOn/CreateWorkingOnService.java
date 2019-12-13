@@ -34,11 +34,11 @@ public class CreateWorkingOnService implements CreateWorkingOnUseCase {
         if (!projectRepository.existsById(command.getProjectId())) {
             throw new ProjectNotFoundException();
         }
-        Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
-        Project project = projectRepository.findById(command.getProjectId()).orElse(null);
-        if (workingOnRepository.existsByEmployeeAndProject(employee, project)) {
+        if (workingOnRepository.existsByEmployeeAndProject(command.getEmployeeId(), command.getProjectId())) {
             throw new WorkingOnAlreadyExistsException();
         }
+        Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
+        Project project = projectRepository.findById(command.getProjectId()).orElse(null);
         WorkingOn workingOn = new WorkingOn(
                 employee,
                 project,
