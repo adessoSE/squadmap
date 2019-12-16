@@ -1,0 +1,26 @@
+<h2>{{project.title}}</h2>
+<br>
+<table style="overflow: auto">
+  <tr>Something about the project</tr>
+</table>
+<br>
+<h4>Projectmembers:</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Since</th>
+      <th>Until</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of project.employees">
+      <td>{{employee.employee.firstName}}</td>
+      <td>{{employee.employee.lastName}}</td>
+      <td>{{employee.since}}</td>
+      <td>{{employee.until}}</td>
+    </tr>
+  </tbody>
+</table>
+

@@ -30,4 +30,14 @@ export class ProjectService {
     });
     return this.projects;
   }
+
+  getProject(id: number): ProjectModel {
+    let foundProject: ProjectModel;
+    this.projects.filter(project => {
+      if (project.projectId === id) {
+        foundProject = project;
+      }
+    });
+    return foundProject;
+  }
 }

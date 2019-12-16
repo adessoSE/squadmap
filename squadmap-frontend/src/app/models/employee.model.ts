@@ -1,4 +1,4 @@
-import {WorkingOnModel} from './workingOn.model';
+import {WorkingOnProject} from './workingOnProject.model';
 
 export class EmployeeModel {
   constructor(
@@ -9,7 +9,7 @@ export class EmployeeModel {
     public email: string,
     public phone: string,
     public isExternal: boolean,
-    public projects: WorkingOnModel[]
+    public projects: WorkingOnProject[]
   ) {
   }
 }

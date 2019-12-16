@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectModel} from '../models/project.model';
 import {ProjectService} from '../service/project.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-project',
@@ -15,10 +16,13 @@ export class ProjectComponent implements OnInit {
   public checkedExternalProjects: boolean;
 
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, private router: Router) { }
 
   ngOnInit() {
     this.projectList = this.projectService.getProjects();
   }
 
+  onOpenProject(project: ProjectModel) {
+    this.router.navigate(['/project/' + project.projectId]);
+  }
 }

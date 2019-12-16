@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectComponent
+  },
+  {
+    path: 'project/:id',
+    component: ProjectDetailComponent
   },
   {
     path: '**',
@@ -45,6 +50,7 @@ const routes: Routes = [
     FilterProjectsPipe,
     FilterEmployeesPipe,
     EmployeeDetailComponent,
+    ProjectDetailComponent,
   ],
   imports: [
     BrowserModule,
