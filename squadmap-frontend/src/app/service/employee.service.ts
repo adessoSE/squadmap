@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {EmployeeModel} from '../models/employee.model';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {CreateEmployeeModel} from '../models/createEmployee.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +50,31 @@ export class EmployeeService {
       }
     });
     return getEmployee;
+  }
+
+  addEmployee(employee: CreateEmployeeModel) {
+    return this.http.post('http://localhost:8080/employee/create', {
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      birthday: employee.birthday,
+      email: employee.email,
+      phone: employee.phone,
+      isExternal: employee.isExternal
+    });
+  }
+
+  deleteEmployee(employeeId: number) {
+    return this.http.delete('http://localhost:8080/employee/delete/' + employeeId);
+  }
+
+  updateEmployee(employee: CreateEmployeeModel, employeeId: number) {
+    return this.http.put('http://localhost:8080/employee/update/' + employeeId, {
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      birthday: employee.birthday,
+      email: employee.email,
+      phone: employee.phone,
+      isExternal: employee.isExternal
+    });
   }
 }

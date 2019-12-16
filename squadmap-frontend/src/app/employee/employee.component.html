@@ -10,12 +10,19 @@
   <tr>
     <th>First Name</th>
     <th>Last Name</th>
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-  <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText}" (click)="onOpenEmployeeProfile(employee)">
-    <td>{{employee.firstName}}</td>
-    <td>{{employee.lastName}}</td>
+  <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText}" >
+    <td (click)="onOpenEmployeeProfile(employee)">{{employee.firstName}}</td>
+    <td (click)="onOpenEmployeeProfile(employee)">{{employee.lastName}}</td>
+    <td>
+      <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
+      <button class="btn btn-warning" type="button" (click)="onUpdate(employee)">Update</button>
+    </td>
   </tr>
   </tbody>
 </table>
+
+<button class="btn btn-primary" type="button" (click)="onAddEmployee()">Add Dummy Employee</button>
