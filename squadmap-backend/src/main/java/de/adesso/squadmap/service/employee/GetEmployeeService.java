@@ -15,7 +15,7 @@ public class GetEmployeeService implements GetEmployeeUseCase {
     private final EmployeeRepository employeeRepository;
     private final Mapper<Employee, GetEmployeeResponse> employeeMapper;
 
-    public GetEmployeeService(EmployeeRepository employeeRepository, EmployeeToResponseMapper employeeMapper) {
+    public GetEmployeeService(EmployeeRepository employeeRepository, Mapper<Employee, GetEmployeeResponse> employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
     }

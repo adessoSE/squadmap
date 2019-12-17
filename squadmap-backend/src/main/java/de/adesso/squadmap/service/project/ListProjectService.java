@@ -17,7 +17,7 @@ public class ListProjectService implements ListProjectUseCase {
     private final ProjectRepository projectRepository;
     private final Mapper<Project, GetProjectResponse> projectMapper;
 
-    public ListProjectService(ProjectRepository projectRepository, ProjectToResponseMapper projectMapper){
+    public ListProjectService(ProjectRepository projectRepository, Mapper<Project, GetProjectResponse> projectMapper){
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }

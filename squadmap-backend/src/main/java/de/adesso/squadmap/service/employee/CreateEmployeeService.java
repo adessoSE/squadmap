@@ -15,7 +15,7 @@ public class CreateEmployeeService implements CreateEmployeeUseCase {
     private final Mapper<CreateEmployeeCommand, Employee> employeeMapper;
 
 
-    public CreateEmployeeService(EmployeeRepository employeeRepository, CreateCommandToEmployeeMapper employeeMapper) {
+    public CreateEmployeeService(EmployeeRepository employeeRepository, Mapper<CreateEmployeeCommand, Employee> employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
     }

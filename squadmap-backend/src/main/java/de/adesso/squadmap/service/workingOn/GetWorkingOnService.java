@@ -15,7 +15,7 @@ public class GetWorkingOnService implements GetWorkingOnUseCase {
     private final WorkingOnRepository workingOnRepository;
     private final Mapper<WorkingOn, GetWorkingOnResponse> workingOnMapper;
 
-    public GetWorkingOnService(WorkingOnRepository workingOnRepository, WorkingOnToResponseMapper workingOnMapper) {
+    public GetWorkingOnService(WorkingOnRepository workingOnRepository, Mapper<WorkingOn, GetWorkingOnResponse> workingOnMapper) {
         this.workingOnRepository = workingOnRepository;
         this.workingOnMapper = workingOnMapper;
     }

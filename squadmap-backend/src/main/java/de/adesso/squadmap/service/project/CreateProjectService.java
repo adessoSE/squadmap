@@ -16,7 +16,7 @@ public class CreateProjectService implements CreateProjectUseCase {
     private final ProjectRepository projectRepository;
     private final Mapper<CreateProjectCommand, Project> projectMapper;
 
-    public CreateProjectService(ProjectRepository projectRepository, CreateCommandToProjectMapper projectMapper){
+    public CreateProjectService(ProjectRepository projectRepository, Mapper<CreateProjectCommand, Project> projectMapper){
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }

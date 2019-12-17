@@ -15,7 +15,7 @@ public class GetProjectService implements GetProjectUseCase {
     private final ProjectRepository projectRepository;
     private final Mapper<Project, GetProjectResponse> projectMapper;
 
-    public GetProjectService(ProjectRepository projectRepository, ProjectToResponseMapper projectMapper){
+    public GetProjectService(ProjectRepository projectRepository, Mapper<Project, GetProjectResponse> projectMapper){
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }
