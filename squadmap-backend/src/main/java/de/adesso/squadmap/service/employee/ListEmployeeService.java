@@ -4,7 +4,6 @@ import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
-import de.adesso.squadmap.utility.EmployeeToResponseMapper;
 import de.adesso.squadmap.utility.Mapper;
 import org.springframework.stereotype.Service;
 

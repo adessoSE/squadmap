@@ -4,7 +4,6 @@ import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
-import de.adesso.squadmap.utility.CreateCommandToEmployeeMapper;
 import de.adesso.squadmap.utility.Mapper;
 import org.springframework.stereotype.Service;
 
