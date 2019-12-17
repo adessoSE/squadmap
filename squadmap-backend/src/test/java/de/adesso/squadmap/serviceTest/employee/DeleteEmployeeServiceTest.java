@@ -1,6 +1,6 @@
 package de.adesso.squadmap.serviceTest.employee;
 
-import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.DeleteEmployeeService;
 import org.junit.jupiter.api.Test;

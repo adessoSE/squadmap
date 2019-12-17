@@ -1,7 +1,7 @@
 package de.adesso.squadmap.service.project;
 
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;

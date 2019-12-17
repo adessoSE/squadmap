@@ -1,6 +1,6 @@
 package de.adesso.squadmap.serviceTest.project;
 
-import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.DeleteProjectService;
 import org.junit.jupiter.api.Test;

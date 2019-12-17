@@ -32,7 +32,7 @@ class CreateCommandToProjectMapperTest {
         assertThat(project.getDescription()).isEqualTo(command.getDescription());
         assertThat(project.getSince()).isEqualTo(command.getSince());
         assertThat(project.getUntil()).isEqualTo(command.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(command.getIsExternal());
+        assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
         assertThat(project.getEmployees()).isEmpty();
     }
 }

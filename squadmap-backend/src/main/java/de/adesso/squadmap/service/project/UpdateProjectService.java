@@ -1,8 +1,8 @@
 package de.adesso.squadmap.service.project;
 
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.exceptions.ProjectAlreadyExistsException;
-import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectAlreadyExistsException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
@@ -30,7 +30,7 @@ public class UpdateProjectService implements UpdateProjectUseCase {
         project.setDescription(command.getDescription());
         project.setSince(command.getSince());
         project.setUntil(command.getUntil());
-        project.setIsExternal(command.getIsExternal());
+        project.setIsExternal(command.isExternal());
         projectRepository.save(project);
     }
 }

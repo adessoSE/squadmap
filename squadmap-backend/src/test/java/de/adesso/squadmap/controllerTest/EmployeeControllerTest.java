@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,7 +51,8 @@ class EmployeeControllerTest {
     @Test
     void checkIfGetAllEmployeesReturnsAll() throws Exception {
         //given
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(1L, "f", "l", null, "e", "0", true, Collections.emptyList());
+        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(
+                1L, "f", "l", LocalDate.now().minusDays(1), "e.f@g.de", "03456345667", true, Collections.emptyList());
         List<GetEmployeeResponse> allEmployees = Collections.singletonList(getEmployeeResponse);
         when(listEmployeeService.listEmployees()).thenReturn(allEmployees);
 
@@ -69,7 +71,8 @@ class EmployeeControllerTest {
     void checkIfGetEmployeeReturnsTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(1L, "f", "l", null, "e", "0", true, Collections.emptyList());
+        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(
+                1L, "f", "l", LocalDate.now().minusDays(1), "e.f@g.de", "03456345667", true, Collections.emptyList());
         when(getEmployeeService.getEmployee(employeeId)).thenReturn(getEmployeeResponse);
 
         //when
@@ -87,7 +90,8 @@ class EmployeeControllerTest {
     void checkIfCreateEmployeeCreatesTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand("f", "l", null, "e", "0", true);
+        CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand(
+                "f", "l", LocalDate.now().minusDays(1), "e.f@g.de", "+493456345667", true);
         when(createEmployeeService.createEmployee(createEmployeeCommand)).thenReturn(employeeId);
 
         //when
@@ -108,7 +112,8 @@ class EmployeeControllerTest {
     void checkIfUpdateEmployeeUpdatesTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        UpdateEmployeeCommand updateEmployeeCommand = new UpdateEmployeeCommand();
+        UpdateEmployeeCommand updateEmployeeCommand = new UpdateEmployeeCommand(
+                "f", "l", LocalDate.now().minusDays(1), "e.f@g.de", "03456345667", true);
         doNothing().when(updateEmployeeService).updateEmployee(updateEmployeeCommand, employeeId);
 
         //when

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,7 +51,8 @@ class ProjectControllerTest {
     @Test
     void checkIfGetAllProjectsReturnsAll() throws Exception {
         //given
-        GetProjectResponse getProjectResponse = new GetProjectResponse(1L, "t", "d", null, null, true, Collections.emptyList());
+        GetProjectResponse getProjectResponse = new GetProjectResponse(
+                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList());
         List<GetProjectResponse> allProjects = Collections.singletonList(getProjectResponse);
         when(listProjectService.listProjects()).thenReturn(allProjects);
 
@@ -69,7 +71,8 @@ class ProjectControllerTest {
     void checkIfGetProjectReturnsTheProject() throws Exception {
         //given
         long projectId = 1;
-        GetProjectResponse getProjectResponse = new GetProjectResponse(1L, "t", "d", null, null, true, Collections.emptyList());
+        GetProjectResponse getProjectResponse = new GetProjectResponse(
+                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList());
         when(getProjectService.getProject(projectId)).thenReturn(getProjectResponse);
 
         //when
@@ -87,7 +90,8 @@ class ProjectControllerTest {
     void checkIfCreateProjectCreatesTheProject() throws Exception {
         //given
         long projectId = 1;
-        CreateProjectCommand createProjectCommand = new CreateProjectCommand();
+        CreateProjectCommand createProjectCommand = new CreateProjectCommand(
+                "t", "d", LocalDate.now(), LocalDate.now(), true);
         when(createProjectService.createProject(createProjectCommand)).thenReturn(projectId);
 
         //when
@@ -108,7 +112,8 @@ class ProjectControllerTest {
     void checkIfUpdateProjectUpdatesTheProject() throws Exception {
         //given
         long projectId = 1;
-        UpdateProjectCommand updateProjectCommand = new UpdateProjectCommand();
+        UpdateProjectCommand updateProjectCommand = new UpdateProjectCommand(
+                "t", "d", LocalDate.now(), LocalDate.now(), true);
         doNothing().when(updateProjectService).updateProject(updateProjectCommand, projectId);
 
         //when

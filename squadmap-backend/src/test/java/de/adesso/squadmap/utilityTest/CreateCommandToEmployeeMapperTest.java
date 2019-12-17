@@ -33,7 +33,7 @@ class CreateCommandToEmployeeMapperTest {
         assertThat(employee.getBirthday()).isEqualTo(command.getBirthday());
         assertThat(employee.getEmail()).isEqualTo(command.getEmail());
         assertThat(employee.getPhone()).isEqualTo(command.getPhone());
-        assertThat(employee.getIsExternal()).isEqualTo(command.getIsExternal());
+        assertThat(employee.getIsExternal()).isEqualTo(command.isExternal());
         assertThat(employee.getProjects()).isEmpty();
     }
 

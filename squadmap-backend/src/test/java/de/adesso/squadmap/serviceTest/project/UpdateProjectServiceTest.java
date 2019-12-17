@@ -1,8 +1,8 @@
 package de.adesso.squadmap.serviceTest.project;
 
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.exceptions.ProjectAlreadyExistsException;
-import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectAlreadyExistsException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.UpdateProjectService;
@@ -47,7 +47,7 @@ class UpdateProjectServiceTest {
         assertThat(project.getDescription()).isEqualTo(command.getDescription());
         assertThat(project.getSince()).isEqualTo(command.getSince());
         assertThat(project.getUntil()).isEqualTo(command.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(command.getIsExternal());
+        assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
         verify(projectRepository, times(1)).existsById(projectId);
         verify(projectRepository, times(1)).existsByTitle(command.getTitle());
         verify(projectRepository, times(1)).findById(projectId);
@@ -74,7 +74,7 @@ class UpdateProjectServiceTest {
         assertThat(project.getDescription()).isEqualTo(command.getDescription());
         assertThat(project.getSince()).isEqualTo(command.getSince());
         assertThat(project.getUntil()).isEqualTo(command.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(command.getIsExternal());
+        assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
         verify(projectRepository, times(1)).existsById(projectId);
         verify(projectRepository, times(1)).existsByTitle(command.getTitle());
         verify(projectRepository, times(1)).findById(projectId);

@@ -1,7 +1,7 @@
 package de.adesso.squadmap.service.project;
 
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.exceptions.ProjectAlreadyExistsException;
+import de.adesso.squadmap.exceptions.project.ProjectAlreadyExistsException;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;

@@ -1,6 +1,6 @@
 package de.adesso.squadmap.service.project;
 
-import de.adesso.squadmap.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.project.delete.DeleteProjectUseCase;
 import de.adesso.squadmap.repository.ProjectRepository;
 import org.springframework.stereotype.Service;

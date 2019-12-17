@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,9 +53,12 @@ class WorkingOnControllerTest {
     @Test
     void checkIfGetAllWorkingOnReturnsAll() throws Exception {
         //given
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(1L, "f", "l", null, "e", "0", true, Collections.emptyList());
-        GetProjectResponse getProjectResponse = new GetProjectResponse(1L, "t", "d", null, null, true, Collections.emptyList());
-        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse(1L, getEmployeeResponse, getProjectResponse, null, null);
+        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(
+                1L, "f", "l", LocalDate.now(), "e.f@g.de", "0", true, Collections.emptyList());
+        GetProjectResponse getProjectResponse = new GetProjectResponse(
+                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList());
+        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse(
+                1L, getEmployeeResponse, getProjectResponse, LocalDate.now(), LocalDate.now());
         List<GetWorkingOnResponse> allWorkingOn = Collections.singletonList(getWorkingOnResponse);
         when(listWorkingOnService.listWorkingOn()).thenReturn(allWorkingOn);
 
@@ -73,9 +77,12 @@ class WorkingOnControllerTest {
     void checkIfGetWorkingOnReturnsTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(1L, "f", "l", null, "e", "0", true, Collections.emptyList());
-        GetProjectResponse getProjectResponse = new GetProjectResponse(1L, "t", "d", null, null, true, Collections.emptyList());
-        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse(workingOnId, getEmployeeResponse, getProjectResponse, null, null);
+        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(
+                1L, "f", "l", LocalDate.now(), "e.f@g.de", "0", true, Collections.emptyList());
+        GetProjectResponse getProjectResponse = new GetProjectResponse(
+                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList());
+        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse(
+                workingOnId, getEmployeeResponse, getProjectResponse, LocalDate.now(), LocalDate.now());
         when(getWorkingOnService.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
 
         //when
@@ -93,7 +100,8 @@ class WorkingOnControllerTest {
     void checkIfCreateWorkingOnCreatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        CreateWorkingOnCommand createWorkingOnCommand = new CreateWorkingOnCommand();
+        CreateWorkingOnCommand createWorkingOnCommand = new CreateWorkingOnCommand(
+                0, 0, LocalDate.now(), LocalDate.now());
         when(createWorkingOnService.createWorkingOn(createWorkingOnCommand)).thenReturn(workingOnId);
 
         //when
@@ -114,7 +122,8 @@ class WorkingOnControllerTest {
     void checkIfUpdateWorkingOnUpdatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        UpdateWorkingOnCommand updateWorkingOnCommand = new UpdateWorkingOnCommand();
+        UpdateWorkingOnCommand updateWorkingOnCommand = new UpdateWorkingOnCommand(
+                0, 0, LocalDate.now(), LocalDate.now());
         doNothing().when(updateWorkingOnService).updateWorkingOn(updateWorkingOnCommand, workingOnId);
 
         //when

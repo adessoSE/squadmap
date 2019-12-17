@@ -1,6 +1,6 @@
 package de.adesso.squadmap.serviceTest.workingOn;
 
-import de.adesso.squadmap.exceptions.WorkingOnNotFoundException;
+import de.adesso.squadmap.exceptions.workingOn.WorkingOnNotFoundException;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.service.workingOn.DeleteWorkingOnService;
 import org.junit.jupiter.api.Test;

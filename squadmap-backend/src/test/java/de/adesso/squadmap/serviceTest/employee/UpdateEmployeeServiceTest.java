@@ -1,7 +1,7 @@
 package de.adesso.squadmap.serviceTest.employee;
 
 import de.adesso.squadmap.domain.Employee;
-import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.UpdateEmployeeService;
@@ -46,7 +46,7 @@ class UpdateEmployeeServiceTest {
         assertThat(employee.getBirthday()).isEqualTo(command.getBirthday());
         assertThat(employee.getEmail()).isEqualTo(command.getEmail());
         assertThat(employee.getPhone()).isEqualTo(command.getPhone());
-        assertThat(employee.getIsExternal()).isEqualTo(command.getIsExternal());
+        assertThat(employee.getIsExternal()).isEqualTo(command.isExternal());
         verify(employeeRepository, times(1)).existsById(employeeId);
         verify(employeeRepository, times(1)).findById(employeeId);
         verify(employeeRepository, times(1)).save(employee);

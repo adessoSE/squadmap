@@ -1,6 +1,6 @@
 package de.adesso.squadmap.service.workingOn;
 
-import de.adesso.squadmap.exceptions.WorkingOnNotFoundException;
+import de.adesso.squadmap.exceptions.workingOn.WorkingOnNotFoundException;
 import de.adesso.squadmap.port.driver.workingOn.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import org.springframework.stereotype.Service;
