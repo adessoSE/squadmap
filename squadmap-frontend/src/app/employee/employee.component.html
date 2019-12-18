@@ -19,7 +19,7 @@
     <td (click)="onOpenEmployeeProfile(employee)">{{employee.lastName}}</td>
     <td>
       <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
-      <button class="btn btn-warning" type="button" (click)="onUpdate(employee)">Update</button>
+      <button class="btn btn-info" type="button" (click)="onEdit(employee)" disabled>Edit</button>
     </td>
   </tr>
   </tbody>

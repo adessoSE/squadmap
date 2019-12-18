@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ProjectModel} from '../models/project.model';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {CreateProjectModel} from '../models/createProject.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,29 @@ export class ProjectService {
       }
     });
     return foundProject;
+  }
+
+  deleteProject(project: ProjectModel) {
+    return this.http.delete('http://localhost:8080/project/delete/' + project.projectId);
+  }
+
+  updateProject(newProject: ProjectModel, projectId: number) {
+    return this.http.put('http://localhost:8080/project/update/' + projectId, {
+      title: newProject.title,
+      decription: newProject.description,
+      since: newProject.since,
+      until: newProject.until,
+      isExternal: newProject.isExternal
+    });
+  }
+
+  addProject(dummyProject: CreateProjectModel) {
+    return this.http.post('http://localhost:8080/project/create', {
+      title: dummyProject.title,
+      description: dummyProject.description,
+      since: dummyProject.since,
+      until: dummyProject.until,
+      isExternal: dummyProject.isExternal
+    });
   }
 }

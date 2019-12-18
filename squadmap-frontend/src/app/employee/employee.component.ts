@@ -46,4 +46,8 @@ export class EmployeeComponent implements OnInit {
       this.employees = this.employeeService.getEmployees();
     });
   }
+
+  onEdit(employee: EmployeeModel) {
+    // TODO open here create Emoployee componenent
+  }
 }

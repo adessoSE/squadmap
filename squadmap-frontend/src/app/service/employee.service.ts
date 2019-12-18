@@ -14,10 +14,6 @@ export class EmployeeService {
 
   constructor(public http: HttpClient) {}
 
-  getCurrentEmployeeList() {
-    return this.employees;
-  }
-
   getEmployees() {
     this.employees = [];
     this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {
@@ -67,14 +63,14 @@ export class EmployeeService {
     return this.http.delete('http://localhost:8080/employee/delete/' + employeeId);
   }
 
-  updateEmployee(employee: CreateEmployeeModel, employeeId: number) {
+  updateEmployee(newEmployee: CreateEmployeeModel, employeeId: number) {
     return this.http.put('http://localhost:8080/employee/update/' + employeeId, {
-      firstName: employee.firstName,
-      lastName: employee.lastName,
-      birthday: employee.birthday,
-      email: employee.email,
-      phone: employee.phone,
-      isExternal: employee.isExternal
+      firstName: newEmployee.firstName,
+      lastName: newEmployee.lastName,
+      birthday: newEmployee.birthday,
+      email: newEmployee.email,
+      phone: newEmployee.phone,
+      isExternal: newEmployee.isExternal
     });
   }
 }

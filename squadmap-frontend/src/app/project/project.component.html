@@ -25,14 +25,19 @@
     <th>Project</th>
     <th>Since</th>
     <th>Until</th>
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-    <tr id="link" *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}"
-    (click)="onOpenProject(project)">
-      <td>{{project.title}}</td>
-      <td>{{project.since.toDateString()}}</td>
-      <td>{{project.until.toDateString()}}</td>
+    <tr id="link" *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+      <td (click)="onOpenProject(project)">{{project.title}}</td>
+      <td (click)="onOpenProject(project)">{{project.since.toDateString()}}</td>
+      <td (click)="onOpenProject(project)">{{project.until.toDateString()}}</td>
+      <td>
+        <button class="btn btn-danger" type="button" (click)="onDelete(project)">Delete</button>
+        <button class="btn btn-info" type="button" (click)="onUpdate(project)" disabled>Edit</button>
+      </td>
     </tr>
   </tbody>
 </table>
+<button class="btn btn-primary" type="button" (click)="onAddProject()">Add Dummy Project</button>
