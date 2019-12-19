@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EmployeeModel} from '../models/employee.model';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {EmployeeService} from '../service/employee.service';
 
 @Component({
@@ -15,8 +15,16 @@ export class EmployeeDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private employeeService: EmployeeService) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
-      this.employee = this.employeeService.getEmployee(+params.id);
+    this.employee = new EmployeeModel(0, '', '', null, '', '', false, []);
+    this.employeeService.getEmployee(this.route.snapshot.params.id).subscribe(res => {
+      this.employee = new EmployeeModel(
+        res.employeeId,
+        res.firstName,
+        res.lastName, res.birthday,
+        res.email,
+        res.phone,
+        res.isExternal,
+        res.projects);
     });
   }
 

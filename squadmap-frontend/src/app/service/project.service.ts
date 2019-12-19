@@ -32,14 +32,15 @@ export class ProjectService {
     return this.projects;
   }
 
-  getProject(id: number): ProjectModel {
-    let foundProject: ProjectModel;
-    this.projects.filter(project => {
-      if (project.projectId === id) {
-        foundProject = project;
-      }
-    });
-    return foundProject;
+  getProject(id: number) {
+    // let foundProject: ProjectModel;
+    // this.projects.filter(project => {
+    //   if (project.projectId === id) {
+    //     foundProject = project;
+    //   }
+    // });
+    // return foundProject;
+    return this.http.get<ProjectModel>('http://localhost:8080/project/' + id);
   }
 
   deleteProject(project: ProjectModel) {

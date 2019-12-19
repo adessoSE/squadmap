@@ -12,7 +12,7 @@ export class EmployeeService {
 
   public employees: EmployeeModel[] = [];
 
-  constructor(public http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getEmployees() {
     this.employees = [];
@@ -38,14 +38,8 @@ export class EmployeeService {
     return this.employees;
   }
 
-  getEmployee(id: number): EmployeeModel {
-    let getEmployee: EmployeeModel;
-    this.employees.filter(employee => {
-      if (employee.employeeId === id) {
-        getEmployee = employee;
-      }
-    });
-    return getEmployee;
+  getEmployee(id: number) {
+    return this.http.get<EmployeeModel>('http://localhost:8080/employee/' + id);
   }
 
   addEmployee(employee: CreateEmployeeModel) {
