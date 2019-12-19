@@ -16,9 +16,7 @@ export class EmployeeService {
 
   getCurrentEmployees(): EmployeeModel[] {
     if (this.employees.length === 0 ) {
-      this.getEmployees().subscribe(res => {
-        console.log('refreshed');
-      });
+      this.getEmployees().subscribe();
       return this.employees;
     } else {
       return this.employees;

@@ -12,6 +12,7 @@
       <th>Last name</th>
       <th>Since</th>
       <th>Until</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -20,16 +21,38 @@
       <td>{{employee.employee.lastName}}</td>
       <td>{{employee.since}}</td>
       <td>{{employee.until}}</td>
+      <td>
+        <button class="btn btn-info" type="button" (click)="onEdit(employee)" disabled>Edit</button>
+        <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
+      </td>
     </tr>
   </tbody>
 </table>
 <br>
 <br>
-<div class="row">
-  <div class="col-md-8">
-    <label class="checkbox-inline" for="searchText" >Search:</label>
-    <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
+<div *ngIf="isSearching">
+  <div class="row">
+    <div class="col-md-8">
+      <label class="checkbox-inline" for="searchText" >Search:</label>
+      <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" (input)="onSearchForEmployee()" autocomplete="off" ngDefaultControl>
+    </div>
   </div>
+  <table class="table">
+    <tbody>
+    <tr *ngFor="let employee of filteredEmployees | filterEmployees : {searchText: searchText}">
+      <td>{{employee.firstName}}</td>
+      <td>{{employee.lastName}}</td>
+      <td>
+        <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)">Add</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
+<div *ngIf="!isSearching">
+  <button class="btn btn-primary" type="button" (click)="isSearching=true">Add Employee</button>
+</div>
+
+
 
 
