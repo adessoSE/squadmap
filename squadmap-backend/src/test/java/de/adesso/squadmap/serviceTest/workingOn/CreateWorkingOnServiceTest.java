@@ -3,16 +3,15 @@ package de.adesso.squadmap.serviceTest.workingOn;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
-import de.adesso.squadmap.exceptions.EmployeeNotFoundException;
-import de.adesso.squadmap.exceptions.ProjectNotFoundException;
-import de.adesso.squadmap.exceptions.WorkingOnAlreadyExistsException;
+import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.workingOn.WorkingOnAlreadyExistsException;
 import de.adesso.squadmap.port.driver.workingOn.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.service.workingOn.CreateWorkingOnService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,8 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -51,12 +49,12 @@ class CreateWorkingOnServiceTest {
         CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
         WorkingOn workingOn = new WorkingOn(employee, project, command.getSince(), command.getUntil());
         workingOn.setWorkingOnId(workingOnId);
-        Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        Mockito.when(projectRepository.existsById(projectId)).thenReturn(true);
-        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        Mockito.when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        Mockito.when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
-        Mockito.when(workingOnRepository.save(any(WorkingOn.class))).thenReturn(workingOn);
+        when(employeeRepository.existsById(employeeId)).thenReturn(true);
+        when(projectRepository.existsById(projectId)).thenReturn(true);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
+        when(workingOnRepository.save(any(WorkingOn.class))).thenReturn(workingOn);
 
         //when
         long found = service.createWorkingOn(command);
@@ -69,6 +67,9 @@ class CreateWorkingOnServiceTest {
         verify(projectRepository, times(1)).findById(projectId);
         verify(workingOnRepository, times(1)).existsByEmployeeAndProject(employeeId, projectId);
         verify(workingOnRepository, times(1)).save(any(WorkingOn.class));
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(projectRepository);
+        verifyNoMoreInteractions(workingOnRepository);
     }
 
     @Test
@@ -76,7 +77,7 @@ class CreateWorkingOnServiceTest {
         //given
         long employeeId = 1;
         CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, 0, LocalDate.now(), LocalDate.now());
-        Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(false);
+        when(employeeRepository.existsById(employeeId)).thenReturn(false);
 
         //then
         assertThrows(EmployeeNotFoundException.class, () ->
@@ -89,8 +90,8 @@ class CreateWorkingOnServiceTest {
         long employeeId = 1;
         long projectId = 1;
         CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
-        Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        Mockito.when(projectRepository.existsById(projectId)).thenReturn(false);
+        when(employeeRepository.existsById(employeeId)).thenReturn(true);
+        when(projectRepository.existsById(projectId)).thenReturn(false);
 
         //then
         assertThrows(ProjectNotFoundException.class, () ->
@@ -105,11 +106,11 @@ class CreateWorkingOnServiceTest {
         Employee employee = new Employee();
         Project project = new Project();
         CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
-        Mockito.when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        Mockito.when(projectRepository.existsById(projectId)).thenReturn(true);
-        Mockito.when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        Mockito.when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        Mockito.when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(true);
+        when(employeeRepository.existsById(employeeId)).thenReturn(true);
+        when(projectRepository.existsById(projectId)).thenReturn(true);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(true);
 
         //then
         assertThrows(WorkingOnAlreadyExistsException.class, () ->

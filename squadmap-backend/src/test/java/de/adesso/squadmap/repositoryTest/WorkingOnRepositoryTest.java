@@ -8,21 +8,16 @@ import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest()
 @ActiveProfiles("test")
-@Transactional
 class WorkingOnRepositoryTest {
 
     @Autowired
@@ -42,8 +37,6 @@ class WorkingOnRepositoryTest {
         projectRepository.save(project);
         employeeRepository.save(employee);
         workingOnRepository.save(workingOn);
-
-        long count = workingOnRepository.count();
 
         //when
         boolean answer = workingOnRepository.existsByEmployeeAndProject(employee.getEmployeeId(), project.getProjectId());

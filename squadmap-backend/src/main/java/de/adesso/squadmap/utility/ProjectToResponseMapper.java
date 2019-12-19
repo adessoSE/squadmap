@@ -28,7 +28,7 @@ public class ProjectToResponseMapper implements Mapper<Project, GetProjectRespon
                                 workingOn.getEmployee().getIsExternal()),
                         workingOn.getSince(),
                         workingOn.getUntil())));
-        GetProjectResponse response = new GetProjectResponse(
+        return new GetProjectResponse(
                 project.getProjectId(),
                 project.getTitle(),
                 project.getDescription(),
@@ -36,6 +36,5 @@ public class ProjectToResponseMapper implements Mapper<Project, GetProjectRespon
                 project.getUntil(),
                 project.getIsExternal(),
                 workingOnResponses);
-        return response;
     }
 }

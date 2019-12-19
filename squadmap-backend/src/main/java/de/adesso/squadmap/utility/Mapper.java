@@ -1,8 +1,6 @@
 package de.adesso.squadmap.utility;
 
-import org.springframework.stereotype.Component;
+public interface Mapper<I, O> {
 
-public interface Mapper<I,O> {
-
-    public O map(I i);
+    O map(I i);
 }

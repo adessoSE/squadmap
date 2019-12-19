@@ -3,12 +3,14 @@ package de.adesso.squadmap.service.workingOn;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
+import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
+import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
+import de.adesso.squadmap.exceptions.workingOn.WorkingOnNotFoundException;
 import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.repository.WorkingOnRepository;
-import de.adesso.squadmap.exceptions.WorkingOnNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +28,14 @@ public class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
 
     @Override
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
-        if(!workingOnRepository.existsById(workingOnId)){
+        if (!workingOnRepository.existsById(workingOnId)) {
             throw new WorkingOnNotFoundException();
+        }
+        if (!employeeRepository.existsById(command.getEmployeeId())) {
+            throw new EmployeeNotFoundException();
+        }
+        if (!projectRepository.existsById(command.getProjectId())) {
+            throw new ProjectNotFoundException();
         }
         Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
         Project project = projectRepository.findById(command.getProjectId()).orElse(null);
