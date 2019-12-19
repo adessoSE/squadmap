@@ -4,17 +4,15 @@
   <label class="checkbox-inline" for="searchText" >Search:</label>
   <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
   </div>
-
-  <div class="col-md-2">
-  <label class="form-check-inline" for="oldProjects">
-    <input class="form-control" name="oldProjects" type="checkbox" id="oldProjects" [(ngModel)]="checkedOldProjects">Show old Projects:
-  </label>
-  </div>
-
-  <div class="col-md-2">
-  <label class="form-check-inline" for="externalProjects">
-  <input class="form-control" type="checkbox" id="externalProjects" [(ngModel)]="checkedExternalProjects">Show external Projects:
-  </label>
+  <div class="btn-group col-md-4">
+    <div class="checkbox">
+          <input name="oldProjects" type="checkbox" id="oldProjects" [(ngModel)]="checkedOldProjects">
+          <label for="oldProjects">Show old Projects</label>
+        </div>
+        <div class="checkbox">
+          <input name="externalProjects" type="checkbox" id="externalProjects" [(ngModel)]="checkedExternalProjects" checked>
+          <label for="externalProjects">Show external Projects</label>
+        </div>
   </div>
 
 </div>
@@ -25,13 +23,21 @@
     <th>Project</th>
     <th>Since</th>
     <th>Until</th>
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
-      <td>{{project.title}}</td>
-      <td>{{project.since.toDateString()}}</td>
-      <td>{{project.until.toDateString()}}</td>
+    <tr id="link" *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+      <td (click)="onOpenProject(project)">{{project.title}}</td>
+      <td (click)="onOpenProject(project)">{{project.since.toDateString()}}</td>
+      <td (click)="onOpenProject(project)">{{project.until.toDateString()}}</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-info" type="button" (click)="onUpdate(project)" disabled>Edit</button>
+          <button class="btn btn-danger" type="button" (click)="onDelete(project)">Delete</button>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>
+<button class="btn btn-primary" type="button" (click)="onAddProject()">Add Dummy Project</button>

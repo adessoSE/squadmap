@@ -15,6 +15,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   {
@@ -28,6 +31,14 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectComponent
+  },
+  {
+    path: 'project/:id',
+    component: ProjectDetailComponent
+  },
+  {
+    path: 'map',
+    component: MapComponent
   },
   {
     path: '**',
@@ -45,6 +56,8 @@ const routes: Routes = [
     FilterProjectsPipe,
     FilterEmployeesPipe,
     EmployeeDetailComponent,
+    ProjectDetailComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +69,7 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    ButtonsModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

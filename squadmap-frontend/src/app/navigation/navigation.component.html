@@ -4,7 +4,7 @@
   <!-- Links -->
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" routerLink="">Map</a>
+      <a class="nav-link" routerLink="map">Map</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="project">Projekte</a>
@@ -19,7 +19,7 @@
         Hinzufügen
       </a>
       <div class="dropdown-menu" *dropdownMenu>
-        <button class="dropdown-item" (click)="addEmployeeModal(employee)">Projekt</button>
+        <button class="dropdown-item" (click)="addEmployeeModal(employee)">Mitarbeiter</button>
         <ng-template #employee>
           <div class="modal-header">
             <h4 class="modal-title pull-left">Mitarbeiter hinzufügen</h4>
@@ -28,11 +28,39 @@
             </button>
           </div>
           <div class="modal-body">
-          <form></form>
+          <form #employeeForm="ngForm" (ngSubmit)="onCreateEmployee(employeeForm)">
+            <div class="form-group">
+              <label for="firstName">First name:</label>
+              <input type="text" id="firstName" name="firstName" class="form-control" ngModel>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last name:</label>
+              <input type="text" id="lastName" name="lastName" class="form-control" ngModel>
+            </div>
+            <div class="form-group">
+              <label for="birthday">Birthday:</label>
+              <input type="date" id="birthday" name="birthday" class="form-control" ngModel>
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="text" id="email" name="email" class="form-control" ngModel>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone:</label>
+              <input type="text" id="phone" name="phone" class="form-control" ngModel>
+            </div>
+            <div class="form-group">
+              <label for="isExternal">External: </label>
+              <input type="checkbox" id="isExternal" name="isExternal" class="form-control" ngModel>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success">Create Employee</button>
+              <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
+            </div>
+          </form>
           </div>
         </ng-template>
-        <button class="dropdown-item" href="#">Mitarbeiter</button>
-
+        <button class="dropdown-item">Projekt</button>
       </div>
     </li>
   </ul>
