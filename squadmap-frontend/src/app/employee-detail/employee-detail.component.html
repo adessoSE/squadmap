@@ -1,9 +1,28 @@
-<h2>{{employee.firstName}} {{employee.lastName}}</h2>
-<img src="" alt="Profile image">
-<br>
-<table>
-  <tr>Something that the employee can do</tr>
-</table>
+<div>
+  <h2>{{employee.firstName}} {{employee.lastName}}</h2>
+  <img src="" alt="No Picture!">
+</div>
+<div>
+  <table>
+    <tr>
+      <td>Id: </td>
+      <td>{{employee.employeeId}}</td>
+    </tr>
+    <tr>
+      <td>Email: </td>
+      <td>{{employee.email}}</td>
+    </tr>
+    <tr>
+      <td>Phone: </td>
+      <td>{{employee.phone}}</td>
+    </tr>
+    <tr>
+      <td>Birthday: </td>
+      <td>{{employee.birthday}}</td>
+    </tr>
+    <tr>Something that the employee can do</tr>
+  </table>
+</div>
 <br>
 <table class="table">
   <thead>
@@ -15,7 +34,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let project of employee.projects">
-      <td>{{project.project.title}}</td>
+      <td class="project-name">{{project.project.title}}</td>
       <td>{{project.since}}</td>
       <td>{{project.until}}</td>
     </tr>

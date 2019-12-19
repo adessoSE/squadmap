@@ -17,16 +17,16 @@ export class EmployeeService {
   getEmployees() {
     this.employees = [];
     this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {
-      Object.values(res).map(recievedData => {
+      Object.values(res).map(receivedData => {
           this.employees.push(new EmployeeModel(
-            recievedData.employeeId,
-            recievedData.firstName,
-            recievedData.lastName,
-            recievedData.birthday,
-            recievedData.email,
-            recievedData.phone,
-            recievedData.isExternal,
-            recievedData.projects
+            receivedData.employeeId,
+            receivedData.firstName,
+            receivedData.lastName,
+            receivedData.birthday,
+            receivedData.email,
+            receivedData.phone,
+            receivedData.isExternal,
+            receivedData.projects
           ));
         });
         }

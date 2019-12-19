@@ -15,15 +15,15 @@ export class ProjectService {
   getProjects() {
     this.projects = [];
     this.http.get<ProjectModel[]>('http://localhost:8080/project/all').pipe(map(res => {
-      Object.values(res).map(recievedData => {
+      Object.values(res).map(receivedData => {
         this.projects.push(new ProjectModel(
-          recievedData.projectId,
-          recievedData.title,
-          recievedData.description,
-          new Date(recievedData.since),
-          new Date(recievedData.until),
-          recievedData.isExternal,
-          recievedData.employees
+          receivedData.projectId,
+          receivedData.title,
+          receivedData.description,
+          new Date(receivedData.since),
+          new Date(receivedData.until),
+          receivedData.isExternal,
+          receivedData.employees
         ));
       });
     })).subscribe(() => {
@@ -49,7 +49,7 @@ export class ProjectService {
   updateProject(newProject: ProjectModel, projectId: number) {
     return this.http.put('http://localhost:8080/project/update/' + projectId, {
       title: newProject.title,
-      decription: newProject.description,
+      description: newProject.description,
       since: newProject.since,
       until: newProject.until,
       isExternal: newProject.isExternal

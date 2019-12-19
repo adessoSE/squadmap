@@ -27,9 +27,9 @@ export class FilterProjectsPipe implements PipeTransform {
         }
       }
       if (filter.checkedOldProjects) {
-        const aktuellesDatum: Date = new Date();
-        aktuellesDatum.setHours(0);
-        if (project.until < aktuellesDatum) {
+        const currentDate: Date = new Date();
+        currentDate.setHours(0);
+        if (project.until < currentDate) {
           return project;
         }
       }

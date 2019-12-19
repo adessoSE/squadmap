@@ -18,8 +18,10 @@
     <td (click)="onOpenEmployeeProfile(employee)">{{employee.firstName}}</td>
     <td (click)="onOpenEmployeeProfile(employee)">{{employee.lastName}}</td>
     <td>
-      <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
-      <button class="btn btn-info" type="button" (click)="onEdit(employee)" disabled>Edit</button>
+      <div class="btn-group">
+        <button class="btn btn-info" type="button" (click)="onEdit(employee)" disabled>Edit</button>
+        <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
+      </div>
     </td>
   </tr>
   </tbody>
