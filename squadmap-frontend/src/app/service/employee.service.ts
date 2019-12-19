@@ -14,9 +14,20 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
+  getCurrentEmployees(): EmployeeModel[] {
+    if (this.employees.length === 0 ) {
+      this.getEmployees().subscribe(res => {
+        console.log('refreshed');
+      });
+      return this.employees;
+    } else {
+      return this.employees;
+    }
+  }
+
   getEmployees() {
     this.employees = [];
-    this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {
+    return this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {
       Object.values(res).map(receivedData => {
           this.employees.push(new EmployeeModel(
             receivedData.employeeId,
@@ -30,12 +41,7 @@ export class EmployeeService {
           ));
         });
         }
-      ))
-        .subscribe(() => {
-          return this.employees;
-        }
-      );
-    return this.employees;
+      ));
   }
 
   getEmployee(id: number) {

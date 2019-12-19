@@ -18,7 +18,9 @@ export class EmployeeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.employees = this.employeeService.getEmployees();
+    this.employeeService.getEmployees().subscribe(() => {
+      this.employees = this.employeeService.employees;
+    });
   }
 
   onOpenEmployeeProfile(employee: EmployeeModel) {
@@ -29,21 +31,27 @@ export class EmployeeComponent implements OnInit {
     const employee = new CreateEmployeeModel('Test', 'Employee', new Date(), 'test@test.de', '+49', false);
     this.employeeService.addEmployee(employee).subscribe(res => {
       console.log(res);
-      this.employees = this.employeeService.getEmployees();
+      this.employeeService.getEmployees().subscribe(() => {
+        this.employees = this.employeeService.employees;
+      });
     });
   }
 
   onDelete(employee: EmployeeModel) {
     this.employeeService.deleteEmployee(employee.employeeId).subscribe(res => {
       console.log(res);
-      this.employees = this.employeeService.getEmployees();
+      this.employeeService.getEmployees().subscribe(() => {
+        this.employees = this.employeeService.employees;
+      });
     });
   }
 
   onUpdate(employee: EmployeeModel) {
     this.employeeService.updateEmployee(employee, employee.employeeId).subscribe(res => {
       console.log(res);
-      this.employees = this.employeeService.getEmployees();
+      this.employeeService.getEmployees().subscribe(() => {
+        this.employees = this.employeeService.employees;
+      });
     });
   }
 
