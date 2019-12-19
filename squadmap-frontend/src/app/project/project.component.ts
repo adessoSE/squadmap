@@ -20,7 +20,9 @@ export class ProjectComponent implements OnInit {
   constructor(private projectService: ProjectService, private router: Router) { }
 
   ngOnInit() {
-    this.projectList = this.projectService.getProjects();
+    this.projectService.getProjects().subscribe(() => {
+     this.projectList =  this.projectService.projects;
+    });
   }
 
   onOpenProject(project: ProjectModel) {
@@ -30,7 +32,9 @@ export class ProjectComponent implements OnInit {
   onDelete(project: ProjectModel) {
     this.projectService.deleteProject(project).subscribe(res => {
       console.log(res);
-      this.projectList = this.projectService.getProjects();
+      this.projectService.getProjects().subscribe(() => {
+        this.projectList =  this.projectService.projects;
+      });
     });
   }
 
@@ -45,7 +49,9 @@ export class ProjectComponent implements OnInit {
     const dummyProject = new CreateProjectModel('Test-title', 'description', new Date(), new Date(), false);
     this.projectService.addProject(dummyProject).subscribe(res => {
       console.log(res);
-      this.projectList = this.projectService.getProjects();
+      this.projectService.getProjects().subscribe(() => {
+        this.projectList =  this.projectService.projects;
+      });
     });
   }
 }

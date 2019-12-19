@@ -8,13 +8,13 @@ import {CreateProjectModel} from '../models/createProject.model';
   providedIn: 'root'
 })
 export class ProjectService {
-  private projects: ProjectModel[] = [];
+  public projects: ProjectModel[] = [];
 
   constructor(public http: HttpClient) {}
 
   getProjects() {
     this.projects = [];
-    this.http.get<ProjectModel[]>('http://localhost:8080/project/all').pipe(map(res => {
+    return this.http.get<ProjectModel[]>('http://localhost:8080/project/all').pipe(map(res => {
       Object.values(res).map(receivedData => {
         this.projects.push(new ProjectModel(
           receivedData.projectId,
@@ -26,20 +26,10 @@ export class ProjectService {
           receivedData.employees
         ));
       });
-    })).subscribe(() => {
-      return this.projects;
-    });
-    return this.projects;
+    }));
   }
 
   getProject(id: number) {
-    // let foundProject: ProjectModel;
-    // this.projects.filter(project => {
-    //   if (project.projectId === id) {
-    //     foundProject = project;
-    //   }
-    // });
-    // return foundProject;
     return this.http.get<ProjectModel>('http://localhost:8080/project/' + id);
   }
 
