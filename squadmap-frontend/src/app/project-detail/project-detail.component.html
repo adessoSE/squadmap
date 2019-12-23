@@ -16,11 +16,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let employee of project.employees">
+    <tr *ngFor="let employee of project.employees" >
       <td>{{employee.employee.firstName}}</td>
       <td>{{employee.employee.lastName}}</td>
-      <td>{{employee.since}}</td>
-      <td>{{employee.until}}</td>
+      <td>{{employee.since.toDateString()}}</td>
+      <td>{{employee.until.toDateString()}}</td>
       <td>
         <button class="btn btn-info" type="button" (click)="onEdit(employee)" disabled>Edit</button>
         <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
@@ -30,6 +30,8 @@
 </table>
 <br>
 <br>
+
+
 <div *ngIf="isSearching">
   <div class="row">
     <div class="col-md-8">
@@ -43,7 +45,7 @@
       <td>{{employee.firstName}}</td>
       <td>{{employee.lastName}}</td>
       <td>
-        <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)">Add</button>
+        <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)" >Add</button>
       </td>
     </tr>
     </tbody>

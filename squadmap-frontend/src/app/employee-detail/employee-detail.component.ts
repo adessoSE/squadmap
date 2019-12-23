@@ -15,8 +15,13 @@ export class EmployeeDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private employeeService: EmployeeService) { }
 
   ngOnInit() {
-    this.employee = new EmployeeModel(0, '', '', null, '', '', false, []);
+    this.employee = new EmployeeModel(0, '', '', new Date(), '', '', false, []);
     this.employeeService.getEmployee(this.route.snapshot.params.id).subscribe(res => {
+      for (const project of res.projects) {
+        project.since = new Date(project.since);
+        project.until = new Date(project.until);
+      }
+      res.birthday = new Date(res.birthday);
       this.employee = new EmployeeModel(
         res.employeeId,
         res.firstName,
@@ -24,7 +29,7 @@ export class EmployeeDetailComponent implements OnInit {
         res.email,
         res.phone,
         res.isExternal,
-        res.projects);
+        res.projects );
     });
   }
 

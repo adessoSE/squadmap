@@ -48,9 +48,10 @@ export class ProjectComponent implements OnInit {
   onAddProject() {
     const dummyProject = new CreateProjectModel('Test-title', 'description', new Date(), new Date(), false);
     this.projectService.addProject(dummyProject).subscribe(res => {
-      console.log(res);
-      this.projectService.getProjects().subscribe(() => {
-        this.projectList =  this.projectService.projects;
+      this.projectService.getProject(+res).subscribe(project => {
+        project.since = new Date(project.since);
+        project.until = new Date(project.until);
+        this.projectList.push(project);
       });
     });
   }

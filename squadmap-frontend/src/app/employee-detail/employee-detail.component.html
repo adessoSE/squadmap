@@ -18,7 +18,7 @@
     </tr>
     <tr>
       <td>Birthday: </td>
-      <td>{{employee.birthday}}</td>
+      <td>{{employee.birthday.toDateString()}}</td>
     </tr>
     <tr>Something that the employee can do</tr>
   </table>
@@ -35,8 +35,8 @@
   <tbody>
     <tr *ngFor="let project of employee.projects">
       <td class="project-name">{{project.project.title}}</td>
-      <td>{{project.since}}</td>
-      <td>{{project.until}}</td>
+      <td>{{project.since.toDateString()}}</td>
+      <td>{{project.until.toDateString()}}</td>
     </tr>
   </tbody>
 </table>

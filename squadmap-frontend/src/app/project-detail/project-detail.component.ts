@@ -36,13 +36,14 @@ export class ProjectDetailComponent implements OnInit {
       this.isSearching = false;
     } else {
       this.isSearching = true;
+      this.filteredEmployees = [];
       this.filteredEmployees = this.employeeService.getCurrentEmployees();
     }
   }
 
   onAddEmployee(employee: EmployeeModel) {
     this.workingOnService.addEmployeeToProject(employee, this.project).subscribe(() => {
-      this.refreshProject();
+      this.project.employees.push(new WorkingOnEmployeeModel( 0, employee, new Date(), new Date() ));
       this.isSearching = false;
     });
 
@@ -56,6 +57,10 @@ export class ProjectDetailComponent implements OnInit {
 
   refreshProject() {
     this.projectService.getProject( this.route.snapshot.params.id).subscribe( res => {
+      for (const employee of res.employees) {
+        employee.since = new Date(employee.since);
+        employee.until = new Date(employee.until);
+      }
       this.project = new ProjectModel(
         res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.employees
       );

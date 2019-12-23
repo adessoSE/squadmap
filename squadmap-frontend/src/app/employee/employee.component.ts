@@ -28,11 +28,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAddEmployee() {
-    const employee = new CreateEmployeeModel('Test', 'Employee', new Date(), 'test@test.de', '+49', false);
+    const employee = new CreateEmployeeModel('Test', 'Employee',
+      new Date('December 17, 2017 15:00:00'), 'test@test.de', '0162123123', false);
     this.employeeService.addEmployee(employee).subscribe(res => {
-      console.log(res);
-      this.employeeService.getEmployees().subscribe(() => {
-        this.employees = this.employeeService.employees;
+      this.employeeService.getEmployee(+res).subscribe(emp => {
+        this.employees.push(emp);
       });
     });
   }
