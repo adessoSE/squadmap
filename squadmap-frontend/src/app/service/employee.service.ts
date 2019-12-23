@@ -27,6 +27,10 @@ export class EmployeeService {
     this.employees = [];
     return this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {
       Object.values(res).map(receivedData => {
+          for (const project of receivedData.projects) {
+            project.since = new Date(project.since);
+            project.until = new Date(project.until);
+          }
           this.employees.push(new EmployeeModel(
             receivedData.employeeId,
             receivedData.firstName,
@@ -47,7 +51,7 @@ export class EmployeeService {
   }
 
   addEmployee(employee: CreateEmployeeModel) {
-    return this.http.post('http://localhost:8080/employee/create', {
+    return this.http.post<number>('http://localhost:8080/employee/create', {
       firstName: employee.firstName,
       lastName: employee.lastName,
       birthday: employee.birthday,
