@@ -33,6 +33,10 @@ export class ProjectService {
     return this.http.get<ProjectModel>('http://localhost:8080/project/' + id).pipe(map(res => {
       res.since = new Date(res.since);
       res.until = new Date(res.until);
+      for (const workingOn of res.employees) {
+        workingOn.since = new Date(workingOn.since);
+        workingOn.until = new Date(workingOn.until);
+      }
       return res;
     }));
   }
