@@ -17,11 +17,6 @@ export class EmployeeDetailComponent implements OnInit {
   ngOnInit() {
     this.employee = new EmployeeModel(0, '', '', new Date(), '', '', false, []);
     this.employeeService.getEmployee(this.route.snapshot.params.id).subscribe(res => {
-      for (const project of res.projects) {
-        project.since = new Date(project.since);
-        project.until = new Date(project.until);
-      }
-      res.birthday = new Date(res.birthday);
       this.employee = new EmployeeModel(
         res.employeeId,
         res.firstName,

@@ -47,7 +47,14 @@ export class EmployeeService {
   }
 
   getEmployee(id: number) {
-    return this.http.get<EmployeeModel>('http://localhost:8080/employee/' + id);
+    return this.http.get<EmployeeModel>('http://localhost:8080/employee/' + id).pipe(map(res => {
+      res.birthday = new Date(res.birthday);
+      for (const project of res.projects) {
+        project.since = new Date(project.since);
+        project.until = new Date(project.until);
+      }
+      return res;
+    }));
   }
 
   addEmployee(employee: CreateEmployeeModel) {

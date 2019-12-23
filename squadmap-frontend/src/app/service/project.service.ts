@@ -30,7 +30,11 @@ export class ProjectService {
   }
 
   getProject(id: number) {
-    return this.http.get<ProjectModel>('http://localhost:8080/project/' + id);
+    return this.http.get<ProjectModel>('http://localhost:8080/project/' + id).pipe(map(res => {
+      res.since = new Date(res.since);
+      res.until = new Date(res.until);
+      return res;
+    }));
   }
 
   deleteProject(project: ProjectModel) {
