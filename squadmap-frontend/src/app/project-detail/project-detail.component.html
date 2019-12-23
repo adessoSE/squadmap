@@ -28,32 +28,31 @@
     </tr>
   </tbody>
 </table>
-<br>
-<br>
-
-
-<div *ngIf="isSearching">
-  <div class="row">
-    <div class="col-md-8">
-      <label class="checkbox-inline" for="searchText" >Search:</label>
-      <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" (input)="onSearchForEmployee()" autocomplete="off" ngDefaultControl>
-    </div>
+<button class="btn btn-primary" type="button" (click)="onAddEmployeeModal(addEmployeeModal)">Add Employee</button>
+<ng-template #addEmployeeModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select Employee</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <table class="table">
-    <tbody>
-    <tr *ngFor="let employee of filteredEmployees | filterEmployees : {searchText: searchText}">
-      <td>{{employee.firstName}}</td>
-      <td>{{employee.lastName}}</td>
-      <td>
-        <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)" >Add</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-<div *ngIf="!isSearching">
-  <button class="btn btn-primary" type="button" (click)="isSearching=true">Add Employee</button>
-</div>
+  <div class="modal-body">
+    <label class="checkbox-inline" for="searchText" >Search:</label>
+    <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" (input)="onSearchForEmployee()" autocomplete="off" ngDefaultControl>
+    <table class="table">
+      <tbody>
+      <tr *ngFor="let employee of filteredEmployees | filterEmployees : {searchText: searchText}">
+        <td>{{employee.firstName}}</td>
+        <td>{{employee.lastName}}</td>
+        <td>
+          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)" >Add</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
 
 
 
