@@ -1,103 +1,74 @@
 import { Component, OnInit } from '@angular/core';
-import {EmployeeService} from '../service/employee.service';
 import {ProjectService} from '../service/project.service';
-import {Network, DataSet} from 'vis-network';
-import {EmployeeModel} from '../models/employee.model';
 import {ProjectModel} from '../models/project.model';
-import {WorkingOnService} from '../service/workingOn.service';
+import {DataSet, Network} from 'vis-network';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  selector: 'app-map-project-detail',
+  templateUrl: './map-project-detail.component.html',
+  styleUrls: ['./map-project-detail.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapProjectDetailComponent implements OnInit {
 
-  private employees: EmployeeModel[];
-  private projects: ProjectModel[];
+  private project: ProjectModel;
   private dateThreshold: Date;
 
-  constructor(private employeeService: EmployeeService, private projectService: ProjectService) { }
+  constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
 
   ngOnInit() {
     this.dateThreshold = new Date();
     this.dateThreshold.setMonth(this.dateThreshold.getMonth() + 2);
-    this.employees = [];
-    this.projects = [];
-    this.employeeService.getEmployees().subscribe(() => {
-      this.employees = this.employeeService.employees;
-      this.projectService.getProjects().subscribe(() => {
-        this.projects =  this.projectService.projects;
-        this.createMap();
-      });
+    this.projectService.getProject(this.route.snapshot.params.id).subscribe(res => {
+      this.project = new ProjectModel(
+        res.projectId,
+        res.title,
+        res.description,
+        res.since,
+        res.until,
+        res.isExternal,
+        res.employees );
+      this.createMap();
     });
+
   }
+
   createMap() {
     // Nodes
     let nodeList: any[];
     let edgeList: any[];
-    nodeList = [
-      { id: -1,
-        label: 'OpenSource Team' ,
-        color: '#58fd5b',
-        group: 'homeNode'
-      }];
+    nodeList = [];
     edgeList = [];
 
-    this.employees.forEach( employee => {
+    nodeList.push(
+      { id: this.project.projectId,
+        label: this.project.title,
+        title: 'Since: ' + this.project.since.toDateString() +
+          '<br> Until: ' + this.project.until.toDateString() +
+          '<br> Description: ' + this.project.description,
+        color: this.project.isExternal ? '#7b7b7b' : '#ffdf58',
+        url: 'http://localhost:4200/map/' + this.project.projectId,
+        group: 'projectNode'
+      });
+
+    this.project.employees.forEach( employee => {
       nodeList.push(
-        { id: employee.employeeId,
-          label: employee.firstName + ' ' + employee.lastName,
-          title: 'Email: ' + employee.email + '<br> Phone: ' + employee.phone,
-          color: employee.isExternal ? '#7b7b7b' : '#4f99fc',
-          url: 'http://localhost:4200/employee/' + employee.employeeId,
+        { id: employee.employee.employeeId,
+          label: employee.employee.firstName + ' ' + employee.employee.lastName,
+          title: 'Email: ' + employee.employee.email + '<br> Phone: ' + employee.employee.phone,
+          color: employee.employee.isExternal ? '#7b7b7b' : '#4f99fc',
+          url: 'http://localhost:4200/employee/' + employee.employee.employeeId,
           group: 'employeeNode'
-      });
-    });
-
-    this.projects.forEach( project => {
-      nodeList.push(
-        { id: project.projectId,
-          label: project.title,
-          title: 'Since: ' + project.since.toDateString() +
-            '<br> Until: ' + project.until.toDateString() +
-            '<br> Description: ' + project.description,
-          color: project.isExternal ? '#7b7b7b' : '#ffdf58',
-          url: 'http://localhost:4200/map/' + project.projectId,
-          group: 'projectNode'
         });
-    });
-
-
-    // Edges
-    this.projects.forEach( project => {
       edgeList.push(
-        { from: -1,
-          to: project.projectId,
-          title: 'Since: ' + project.since.toDateString() + '<br> Until: ' + project.until.toDateString(),
-          color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-          dashes: project.isExternal
+        { from: employee.employee.employeeId,
+          to: this.project.projectId,
+          title: 'Since: ' + employee.since.toDateString() + '<br> Until: ' + employee.until.toDateString(),
+          color: employee.until < this.dateThreshold ? '#ff0002' : '#000000',
+          arrows: 'to',
+          dashes: employee.employee.isExternal
         });
     });
-
-
-    this.employees.forEach( employee => {
-      employee.projects.forEach( project => {
-        edgeList.push(
-          { from: employee.employeeId,
-            to: project.project.projectId,
-            title: 'Since: ' + project.since.toDateString() + '<br> Until: ' + project.until.toDateString(),
-            color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-            arrows: 'to',
-            dashes: employee.isExternal
-          });
-      });
-    });
-
-
-
-    // TODO Trennung der Klasse, oberer Teil in einen Service Außlagern
-
 
     // create a network
     const nodes = new DataSet(nodeList);
@@ -222,25 +193,5 @@ export class MapComponent implements OnInit {
   deleteEdge(edgeData, callback) {
     // check if edge is workingOn relation then delete edge
     callback(edgeData);
-  }
-
-  isEmployee(id: number): boolean {
-    let i;
-    for (i = 0; i < this.employees.length; i++) {
-      if (this.employees[i].employeeId === id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  isProject(id: number): boolean {
-    let i;
-    for (i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].projectId === id) {
-        return true;
-      }
-    }
-    return false;
   }
 }
