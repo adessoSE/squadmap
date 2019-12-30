@@ -18,6 +18,7 @@ import {EmployeeDetailComponent} from './employee-detail/employee-detail.compone
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { MapComponent } from './map/map.component';
+import { MapProjectDetailComponent } from './map-project-detail/map-project-detail.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
     component: MapComponent
   },
   {
+    path: 'map/:id',
+    component: MapProjectDetailComponent
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
@@ -58,6 +63,7 @@ const routes: Routes = [
     EmployeeDetailComponent,
     ProjectDetailComponent,
     MapComponent,
+    MapProjectDetailComponent,
   ],
   imports: [
     BrowserModule,
