@@ -37,7 +37,33 @@
       <td class="project-name">{{project.project.title}}</td>
       <td>{{project.since.toDateString()}}</td>
       <td>{{project.until.toDateString()}}</td>
+      <td>
+        <button class="btn btn-danger" type="button" (click)="onDeleteProject(project.workingOnId)" >Delete</button>
+      </td>
     </tr>
   </tbody>
 </table>
+<button class="btn btn-primary" (click)="onOpenAddProjectModal(addProjectModal)">Add Project</button>
+<ng-template #addProjectModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Select Project</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="checkbox-inline" for="searchText" >Search:</label>
+    <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText"  autocomplete="off" ngDefaultControl>
+    <table class="table">
+      <tbody>
+      <tr *ngFor="let project of allProjects">
+        <td>{{project.title}}</td>
+        <td>
+          <button class="btn btn-success" type="button" (click)="onAddProject(project)" >Add</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
 

@@ -18,6 +18,15 @@ export class WorkingOnService {
     });
   }
 
+  addProjectToEmployee(project: ProjectModel, employee: EmployeeModel) {
+    return this.http.post('http://localhost:8080/workingOn/create', {
+      employeeId: employee.employeeId,
+      projectId: project.projectId,
+      since: new Date(),
+      until: new Date()
+    });
+  }
+
   removeEmployeeFromProject(id: number) {
     return this.http.delete('http://localhost:8080/workingOn/delete/' + id);
   }

@@ -29,7 +29,7 @@ export class ProjectDetailComponent implements OnInit {
 
   ngOnInit() {
     this.isSearching = false;
-    this.project = new ProjectModel(0,  '', '', null, null, false, []); // vermeidet exceptions beim Aufbau der view
+    this.project = new ProjectModel(0,  '', '', new Date(), new Date(), false, []); // vermeidet exceptions beim Aufbau der view
     this.refreshProject();
     this.searchText = '';
   }
@@ -52,13 +52,12 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  onAddEmployeeModal(addEmployeeModal: TemplateRef<any>) {
+  onOpenAddEmployeeModal(addEmployeeModal: TemplateRef<any>) {
     this.filteredEmployees = this.employeeService.getCurrentEmployees();
     this.modalRef = this.modalService.show(addEmployeeModal);
   }
 
   onDelete(workingOn: WorkingOnEmployeeModel) {
-    console.log(workingOn.workingOnId);
     this.workingOnService.removeEmployeeFromProject(workingOn.workingOnId).subscribe(() => {
         this.refreshProject();
     });

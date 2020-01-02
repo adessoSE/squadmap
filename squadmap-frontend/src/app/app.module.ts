@@ -21,6 +21,14 @@ import { MapComponent } from './map/map.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: MapComponent
+  },
+  {
+    path: 'map',
+    component: MapComponent
+  },
+  {
     path: 'employee',
     component: EmployeeComponent
   },
@@ -35,10 +43,6 @@ const routes: Routes = [
   {
     path: 'project/:id',
     component: ProjectDetailComponent
-  },
-  {
-    path: 'map',
-    component: MapComponent
   },
   {
     path: '**',

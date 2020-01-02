@@ -1,6 +1,6 @@
 import {ProjectModel} from './project.model';
 
-export class WorkingOnProject {
+export class WorkingOnProjectModel {
   constructor(
     public workingOnId: number,
     public project: ProjectModel,
