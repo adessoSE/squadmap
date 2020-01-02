@@ -13,13 +13,17 @@ export class EmployeeComponent implements OnInit {
 
   public employees: EmployeeModel[];
   public searchText: string;
+  public hideExternal: boolean;
 
   constructor(private employeeService: EmployeeService, private router: Router) {
   }
 
   ngOnInit() {
+    this.hideExternal = false;
+    this.searchText = '';
     this.employeeService.getEmployees().subscribe(() => {
       this.employees = this.employeeService.employees;
+      console.log(this.employees);
     });
   }
 
@@ -29,7 +33,7 @@ export class EmployeeComponent implements OnInit {
 
   onAddEmployee() {
     const employee = new CreateEmployeeModel('Test', 'Employee',
-      new Date('December 17, 2017 15:00:00'), 'test@test.de', '0162123123', false);
+      new Date('December 17, 2017 15:00:00'), 'test@test.de', '0162123123', true);
     this.employeeService.addEmployee(employee).subscribe(res => {
       this.employeeService.getEmployee(+res).subscribe(emp => {
         this.employees.push(emp);
@@ -39,7 +43,6 @@ export class EmployeeComponent implements OnInit {
 
   onDelete(employee: EmployeeModel) {
     this.employeeService.deleteEmployee(employee.employeeId).subscribe(res => {
-      console.log(res);
       this.employeeService.getEmployees().subscribe(() => {
         this.employees = this.employeeService.employees;
       });

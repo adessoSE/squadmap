@@ -3,6 +3,13 @@
     <label class="checkbox-inline" for="searchText" >Search:</label>
     <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
   </div>
+  <div class="col-md-4">
+    <div class="checkbox">
+      <input name="hideExternal" type="checkbox" id="hideExternal" [(ngModel)]="hideExternal">
+      <label for="hideExternal">Hide external employees</label>
+    </div>
+  </div>
+
 </div>
 <br>
 <table class="table">
@@ -14,7 +21,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText}">
+  <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText, hideExternal: hideExternal}">
     <td (click)="onOpenEmployeeProfile(employee)">{{employee.firstName}}</td>
     <td (click)="onOpenEmployeeProfile(employee)">{{employee.lastName}}</td>
     <td>

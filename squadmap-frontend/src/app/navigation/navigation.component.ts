@@ -56,5 +56,6 @@ export class NavigationComponent implements OnInit {
       }
     );
     this.modalRef.hide();
+    location.reload();
   }
 }
