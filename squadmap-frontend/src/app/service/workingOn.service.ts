@@ -30,4 +30,13 @@ export class WorkingOnService {
   removeEmployeeFromProject(id: number) {
     return this.http.delete('http://localhost:8080/workingOn/delete/' + id);
   }
+
+  update(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date) {
+    return this.http.put('http://localhost:8080/workingOn/update/' + workingOnId, {
+      employeeId,
+      projectId,
+      since,
+      until
+    });
+  }
 }

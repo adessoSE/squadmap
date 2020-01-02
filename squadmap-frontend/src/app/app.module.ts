@@ -15,9 +15,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
-import { ProjectDetailComponent } from './project-detail/project-detail.component';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { MapComponent } from './map/map.component';
+import {ProjectDetailComponent} from './project-detail/project-detail.component';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
+import {MapComponent} from './map/map.component';
+import {ProjectModalComponent} from './project-modal/project-modal.component';
+import {EmployeeModalComponent} from './employee-modal/employee-modal.component';
 
 const routes: Routes = [
   {
@@ -62,6 +64,8 @@ const routes: Routes = [
     EmployeeDetailComponent,
     ProjectDetailComponent,
     MapComponent,
+    ProjectModalComponent,
+    EmployeeModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,7 +81,7 @@ const routes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [ProjectModalComponent, EmployeeModalComponent]
 })
 export class AppModule {
 }

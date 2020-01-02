@@ -23,7 +23,6 @@ export class EmployeeComponent implements OnInit {
     this.searchText = '';
     this.employeeService.getEmployees().subscribe(() => {
       this.employees = this.employeeService.employees;
-      console.log(this.employees);
     });
   }
 
@@ -42,7 +41,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   onDelete(employee: EmployeeModel) {
-    this.employeeService.deleteEmployee(employee.employeeId).subscribe(res => {
+    this.employeeService.deleteEmployee(employee.employeeId).subscribe(() => {
       this.employeeService.getEmployees().subscribe(() => {
         this.employees = this.employeeService.employees;
       });

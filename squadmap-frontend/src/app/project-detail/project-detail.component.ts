@@ -75,7 +75,7 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  onEdit(employee: WorkingOnEmployeeModel) {
+  onEdit(workingOn: WorkingOnEmployeeModel) {
     // TODO
   }
 }

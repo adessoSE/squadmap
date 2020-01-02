@@ -3,7 +3,7 @@ import {EmployeeModel} from '../models/employee.model';
 
 interface FilterSettings {
   searchText: string;
-  hideExternal: boolean;
+  hideExternal?: boolean;
 }
 @Pipe({
   name: 'filterEmployees'
