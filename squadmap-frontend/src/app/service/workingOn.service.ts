@@ -9,10 +9,10 @@ import {ProjectModel} from '../models/project.model';
 export class WorkingOnService {
   constructor(private http: HttpClient) {}
 
-  addEmployeeToProject(employee: EmployeeModel, project: ProjectModel) {
+  addEmployeeToProject(employeeId: number, projectId: number) {
     return this.http.post('http://localhost:8080/workingOn/create', {
-      employeeId: employee.employeeId,
-      projectId: project.projectId,
+      employeeId,
+      projectId,
       since: new Date(),
       until: new Date()
     });

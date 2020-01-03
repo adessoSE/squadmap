@@ -1,116 +1,82 @@
 import { Component, OnInit } from '@angular/core';
-import {EmployeeService} from '../service/employee.service';
 import {ProjectService} from '../service/project.service';
-import {Network, DataSet} from 'vis-network';
-import {EmployeeModel} from '../models/employee.model';
 import {ProjectModel} from '../models/project.model';
+import {DataSet, Network} from 'vis-network';
+import {ActivatedRoute} from '@angular/router';
 import {WorkingOnService} from '../service/workingOn.service';
+import {EmployeeService} from '../service/employee.service';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  selector: 'app-map-project-detail',
+  templateUrl: './map-project-detail.component.html',
+  styleUrls: ['./map-project-detail.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapProjectDetailComponent implements OnInit {
 
-  private employees: EmployeeModel[];
-  private projects: ProjectModel[];
+  private project: ProjectModel;
   private dateThreshold: Date;
 
-  constructor(private employeeService: EmployeeService,
+  constructor(private route: ActivatedRoute,
+              private employeeService: EmployeeService,
               private projectService: ProjectService,
               private workingOnService: WorkingOnService) { }
 
   ngOnInit() {
     this.dateThreshold = new Date();
     this.dateThreshold.setMonth(this.dateThreshold.getMonth() + 2);
-    this.employees = [];
-    this.projects = [];
-    this.employeeService.getEmployees().subscribe(() => {
-      this.employees = this.employeeService.employees;
-      this.projectService.getProjects().subscribe(() => {
-        this.projects =  this.projectService.projects;
-        this.createMap();
-      });
+    this.projectService.getProject(this.route.snapshot.params.id).subscribe(res => {
+      this.project = new ProjectModel(
+        res.projectId,
+        res.title,
+        res.description,
+        res.since,
+        res.until,
+        res.isExternal,
+        res.employees );
+      this.createMap();
     });
+
   }
+
   createMap() {
     // Nodes
     let nodeList: any[];
     let edgeList: any[];
-    let negativeId = -1;
-    nodeList = [
-      { id: negativeId,
-        label: 'OpenSource Team',
-        color: '#58fd5b',
-        group: 'homeNode'
-      }];
+    nodeList = [];
     edgeList = [];
 
-    this.employees.forEach( employee => {
+    nodeList.push(
+      { id: this.project.projectId,
+        label: this.project.title,
+        title: 'Since: ' + this.project.since.toDateString() +
+          '<br> Until: ' + this.project.until.toDateString() +
+          '<br> Description: ' + this.project.description,
+        color: this.project.isExternal ? '#7b7b7b' : '#ffdf58',
+        url: 'http://localhost:4200/project/' + this.project.projectId,
+        group: 'projectNode'
+      });
+
+    this.project.employees.forEach( employee => {
       nodeList.push(
-        { id: employee.employeeId,
-          label: employee.firstName + ' ' + employee.lastName,
-          title: 'Id: ' + employee.employeeId +
-            '<br>Email: ' + employee.email +
-            '<br> Phone: ' + employee.phone,
-          color: employee.isExternal ? '#7b7b7b' : '#4f99fc',
-          url: 'http://localhost:4200/employee/' + employee.employeeId,
+        { id: employee.employee.employeeId,
+          label: employee.employee.firstName + ' ' + employee.employee.lastName,
+          title: 'Email: ' + employee.employee.email + '<br> Phone: ' + employee.employee.phone,
+          color: employee.employee.isExternal ? '#7b7b7b' : '#4f99fc',
+          url: 'http://localhost:4200/employee/' + employee.employee.employeeId,
           group: 'employeeNode'
-      });
-    });
-
-    this.projects.forEach( project => {
-      nodeList.push(
-        { id: project.projectId,
-          label: project.title,
-          title: 'Id: ' + project.projectId +
-            '<br>Since: ' + project.since.toDateString() +
-            '<br> Until: ' + project.until.toDateString() +
-            '<br> Description: ' + project.description,
-          color: project.isExternal ? '#7b7b7b' : '#ffdf58',
-          url: 'http://localhost:4200/map/' + project.projectId,
-          group: 'projectNode'
         });
-    });
-
-
-    // Edges
-    this.projects.forEach( project => {
-      negativeId --;
       edgeList.push(
-        { id: negativeId,
-          from: -1,
-          to: project.projectId,
-          title: 'ID: ' + negativeId +
-            '<br>Since: ' + project.since.toDateString() +
-            '<br> Until: ' + project.until.toDateString(),
-          color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-          dashes: project.isExternal
+        { id: employee.workingOnId,
+          from: employee.employee.employeeId,
+          to: this.project.projectId,
+          title: 'Id: ' + employee.workingOnId +
+            '<br>Since: ' + employee.since.toDateString() +
+            '<br> Until: ' + employee.until.toDateString(),
+          color: employee.until < this.dateThreshold ? '#ff0002' : '#000000',
+          arrows: 'to',
+          dashes: employee.employee.isExternal
         });
     });
-
-
-    this.employees.forEach( employee => {
-      employee.projects.forEach( project => {
-        edgeList.push(
-          { id: project.workingOnId,
-            from: employee.employeeId,
-            to: project.project.projectId,
-            title: 'Id: ' + project.workingOnId +
-              '<br>Since: ' + project.since.toDateString() +
-              '<br> Until: ' + project.until.toDateString(),
-            color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-            arrows: 'to',
-            dashes: employee.isExternal
-          });
-      });
-    });
-
-
-
-    // TODO Trennung der Klasse, oberer Teil in einen Service Außlagern
-
 
     // create a network
     const nodes = new DataSet(nodeList);
@@ -134,27 +100,20 @@ export class MapComponent implements OnInit {
         editEdge: false,
         addNode: (nodeData, callback) => this.addNode(nodeData, callback),
         deleteNode: (nodeData, callback) => this.deleteNode(nodeData, callback),
-        addEdge: (edgeData, callback) => this.addEdge(edgeData, callback),
+        addEdge: false,
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
       },
       edges: {
         title: 'Hover',
-        length: 200,
-        color: {
-          highlight: '#000000'
-        }
+        length: 200
       },
       nodes: {
-        physics: false,
-        color: {
-          border: '#000000',
-          highlight: '#000000'
-        }
+        physics: false
       },
       physics: {},
       groups: {
         employeeNode: {
-          shape: 'ellipse',
+          shape: 'ellipse'
         },
         projectNode: {
           shape: 'box',
@@ -162,7 +121,8 @@ export class MapComponent implements OnInit {
         },
         homeNode: {
           shape: 'box',
-          margin: 20
+          margin: 20,
+          fixed: true
         }
       }
     };
@@ -210,8 +170,7 @@ export class MapComponent implements OnInit {
         if (node.url != null && node.url !== '') {
           window.location = node.url;
         }
-      }
-    });
+      }});
   }
 
   addNode(nodeData, callback) {
@@ -243,21 +202,6 @@ export class MapComponent implements OnInit {
       window.alert('Given nodes can\'t be deleted');
     }
     callback(nodeData);
-
-  }
-
-  addEdge(edgeData, callback) {
-    if (!this.isEmployee(edgeData.from) && !this.isProject(edgeData.to)) {
-      const temp = edgeData.from;
-      edgeData.from = edgeData.to;
-      edgeData.to = temp;
-    }
-    if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      this.workingOnService.addEmployeeToProject(edgeData.from, edgeData.to).subscribe();
-      callback(edgeData);
-    } else {
-      window.alert('Only edges between employees and projects are supported');
-    }
   }
 
   deleteEdge(edgeData, callback) {
@@ -277,8 +221,8 @@ export class MapComponent implements OnInit {
 
   isEmployee(id: number): boolean {
     let i;
-    for (i = 0; i < this.employees.length; i++) {
-      if (this.employees[i].employeeId === id) {
+    for (i = 0; i < this.project.employees.length; i++) {
+      if (this.project.employees[i].employee.employeeId === id) {
         return true;
       }
     }
@@ -286,23 +230,14 @@ export class MapComponent implements OnInit {
   }
 
   isProject(id: number): boolean {
-    let i;
-    for (i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].projectId === id) {
-        return true;
-      }
-    }
-    return false;
+    return this.project.projectId === id;
   }
 
   isWorkingOn(id: number): boolean {
     let i;
-    let j;
-    for (i = 0; i < this.projects.length; i++) {
-      for (j = 0; j < this.projects[i].employees.length; j++) {
-        if (this.projects[i].employees[j].workingOnId === id) {
-          return true;
-        }
+    for (i = 0; i < this.project.employees.length; i++) {
+      if (this.project.employees[i].workingOnId === id) {
+        return true;
       }
     }
     return false;

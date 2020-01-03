@@ -45,7 +45,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onAddEmployee(employee: EmployeeModel) {
-    this.workingOnService.addEmployeeToProject(employee, this.project).subscribe(workingOnId => {
+    this.workingOnService.addEmployeeToProject(employee.employeeId, this.project.projectId).subscribe(workingOnId => {
       this.project.employees.push(new WorkingOnEmployeeModel( +workingOnId, employee, new Date(), new Date() ));
       this.isSearching = false;
       this.modalRef.hide();

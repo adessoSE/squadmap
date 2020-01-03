@@ -20,6 +20,10 @@ import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {MapComponent} from './map/map.component';
 import {ProjectModalComponent} from './project-modal/project-modal.component';
 import {EmployeeModalComponent} from './employee-modal/employee-modal.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { MapComponent } from './map/map.component';
+import { MapProjectDetailComponent } from './map-project-detail/map-project-detail.component';
 
 const routes: Routes = [
   {
@@ -47,6 +51,14 @@ const routes: Routes = [
     component: ProjectDetailComponent
   },
   {
+    path: 'map',
+    component: MapComponent
+  },
+  {
+    path: 'map/:id',
+    component: MapProjectDetailComponent
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
@@ -64,6 +76,7 @@ const routes: Routes = [
     EmployeeDetailComponent,
     ProjectDetailComponent,
     MapComponent,
+    MapProjectDetailComponent,
     ProjectModalComponent,
     EmployeeModalComponent,
   ],
