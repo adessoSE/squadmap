@@ -234,7 +234,7 @@ export class MapComponent implements OnInit {
     nodeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe();
+        this.workingOnService.deleteWorkingOn(edge).subscribe();
       }
     });
     nodeData.nodes = validNodes;
@@ -253,7 +253,7 @@ export class MapComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      this.workingOnService.addEmployeeToProject(edgeData.from, edgeData.to).subscribe();
+      this.workingOnService.createWorkingOn(edgeData.from, edgeData.to).subscribe();
       callback(edgeData);
     } else {
       window.alert('Only edges between employees and projects are supported');
@@ -265,7 +265,7 @@ export class MapComponent implements OnInit {
     edgeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe();
+        this.workingOnService.deleteWorkingOn(edge).subscribe();
       }
     });
     edgeData.edges = validEdges;

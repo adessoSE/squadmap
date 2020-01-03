@@ -3,6 +3,8 @@ import {Router} from '@angular/router';
 import {EmployeeService} from '../service/employee.service';
 import {EmployeeModel} from '../models/employee.model';
 import {CreateEmployeeModel} from '../models/createEmployee.model';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {EmployeeModalComponent} from '../employee-modal/employee-modal.component';
 
 @Component({
   selector: 'app-employee',
@@ -14,8 +16,11 @@ export class EmployeeComponent implements OnInit {
   public employees: EmployeeModel[];
   public searchText: string;
   public hideExternal: boolean;
+  private modalRef: BsModalRef;
 
-  constructor(private employeeService: EmployeeService, private router: Router) {
+  constructor(private employeeService: EmployeeService,
+              private router: Router,
+              private modalService: BsModalService) {
   }
 
   ngOnInit() {
@@ -48,16 +53,11 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  onUpdate(employee: EmployeeModel) {
-    this.employeeService.updateEmployee(employee, employee.employeeId).subscribe(res => {
-      console.log(res);
-      this.employeeService.getEmployees().subscribe(() => {
-        this.employees = this.employeeService.employees;
-      });
-    });
-  }
-
   onEdit(employee: EmployeeModel) {
-    // TODO open here create Emoployee componenent
+    const initialState = {
+      employee,
+      actionName: 'Update'
+    };
+    this.modalRef = this.modalService.show(EmployeeModalComponent, {initialState});
   }
 }

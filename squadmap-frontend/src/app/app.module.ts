@@ -15,15 +15,13 @@ import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
-import {ProjectDetailComponent} from './project-detail/project-detail.component';
-import {ButtonsModule} from 'ngx-bootstrap/buttons';
-import {MapComponent} from './map/map.component';
 import {ProjectModalComponent} from './project-modal/project-modal.component';
 import {EmployeeModalComponent} from './employee-modal/employee-modal.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { MapComponent } from './map/map.component';
 import { MapProjectDetailComponent } from './map-project-detail/map-project-detail.component';
+import { WorkingOnModalComponent } from './working-on-modal/working-on-modal.component';
 
 const routes: Routes = [
   {
@@ -79,6 +77,7 @@ const routes: Routes = [
     MapProjectDetailComponent,
     ProjectModalComponent,
     EmployeeModalComponent,
+    WorkingOnModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +93,7 @@ const routes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ProjectModalComponent, EmployeeModalComponent]
+  entryComponents: [ProjectModalComponent, EmployeeModalComponent, WorkingOnModalComponent]
 })
 export class AppModule {
 }

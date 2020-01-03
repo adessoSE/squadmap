@@ -7,6 +7,7 @@ import {EmployeeModel} from '../models/employee.model';
 import {WorkingOnService} from '../service/workingOn.service';
 import {WorkingOnEmployeeModel} from '../models/workingOnEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {WorkingOnModalComponent} from '../working-on-modal/working-on-modal.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -45,7 +46,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onAddEmployee(employee: EmployeeModel) {
-    this.workingOnService.addEmployeeToProject(employee.employeeId, this.project.projectId).subscribe(workingOnId => {
+    this.workingOnService.createWorkingOn(employee.employeeId, this.project.projectId).subscribe(workingOnId => {
       this.project.employees.push(new WorkingOnEmployeeModel( +workingOnId, employee, new Date(), new Date() ));
       this.isSearching = false;
       this.modalRef.hide();
@@ -58,7 +59,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onDelete(workingOn: WorkingOnEmployeeModel) {
-    this.workingOnService.removeEmployeeFromProject(workingOn.workingOnId).subscribe(() => {
+    this.workingOnService.deleteWorkingOn(workingOn.workingOnId).subscribe(() => {
         this.refreshProject();
     });
   }
@@ -75,7 +76,11 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  onEdit(workingOn: WorkingOnEmployeeModel) {
-    // TODO
+  onEdit(workingOnEmployee: WorkingOnEmployeeModel) {
+    const initialState = {
+      workingOnEmployee,
+      projectId: this.project.projectId
+    };
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
   }
 }

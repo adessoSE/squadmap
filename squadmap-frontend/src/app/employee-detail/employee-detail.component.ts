@@ -7,6 +7,7 @@ import {ProjectModel} from '../models/project.model';
 import {ProjectService} from '../service/project.service';
 import {WorkingOnProjectModel} from '../models/workingOnProject.model';
 import {WorkingOnService} from '../service/workingOn.service';
+import {WorkingOnModalComponent} from '../working-on-modal/working-on-modal.component';
 
 @Component({
   selector: 'app-employee-detail',
@@ -48,19 +49,25 @@ export class EmployeeDetailComponent implements OnInit {
   }
 
   onAddProject(project: ProjectModel) {
-    this.workingOnService.addProjectToEmployee(project, this.employee).subscribe(workingOnId => {
+    this.workingOnService.createWorkingOn(this.employee.employeeId, project.projectId).subscribe(workingOnId => {
       this.employee.projects.push(new WorkingOnProjectModel(+workingOnId, project, new Date(), new Date()));
       this.modalRef.hide();
     });
   }
 
   onDeleteProject(workingOnId: number) {
-    this.workingOnService.removeEmployeeFromProject(workingOnId).subscribe(res => {
-      console.log(res);
+    this.workingOnService.deleteWorkingOn(workingOnId).subscribe(() => {
       this.employeeService.getEmployee(this.employee.employeeId).subscribe(employee => {
-        console.log(employee);
         this.employee = employee;
       });
     });
+  }
+
+  onEditProject(workingOnProject: WorkingOnProjectModel) {
+    const initialState = {
+      workingOnProject,
+      employeeId: this.employee.employeeId
+    };
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
   }
 }
