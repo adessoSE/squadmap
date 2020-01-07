@@ -1,5 +1,6 @@
 package de.adesso.squadmap.port.driver.employee.update;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,5 +28,6 @@ public class UpdateEmployeeCommand {
     @NotEmpty
     @Pattern(regexp = "(\\(?([\\d \\-)–+/(]+){6,}\\)?([ .\\-–/]?)([\\d]+))")
     private String phone;
+    @JsonProperty
     private boolean isExternal;
 }

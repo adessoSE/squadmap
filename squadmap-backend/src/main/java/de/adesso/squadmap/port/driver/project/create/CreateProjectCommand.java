@@ -1,5 +1,6 @@
 package de.adesso.squadmap.port.driver.project.create;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,6 @@ public class CreateProjectCommand {
     private LocalDate since;
     @NotNull
     private LocalDate until;
+    @JsonProperty
     private boolean isExternal;
 }
