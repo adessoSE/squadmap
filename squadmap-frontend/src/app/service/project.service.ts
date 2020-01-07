@@ -41,8 +41,8 @@ export class ProjectService {
     }));
   }
 
-  deleteProject(project: ProjectModel) {
-    return this.http.delete('http://localhost:8080/project/delete/' + project.projectId);
+  deleteProject(projectId: number) {
+    return this.http.delete('http://localhost:8080/project/delete/' + projectId);
   }
 
   updateProject(newProject: ProjectModel, projectId: number) {
