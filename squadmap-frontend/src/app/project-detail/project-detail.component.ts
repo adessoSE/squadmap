@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ProjectModel} from '../models/project.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectService} from '../service/project.service';
 import {EmployeeService} from '../service/employee.service';
 import {EmployeeModel} from '../models/employee.model';
@@ -26,7 +26,8 @@ export class ProjectDetailComponent implements OnInit {
               private projectService: ProjectService,
               private employeeService: EmployeeService,
               private workingOnService: WorkingOnService,
-              private modalService: BsModalService) { }
+              private modalService: BsModalService,
+              private router: Router) { }
 
   ngOnInit() {
     this.isSearching = false;
@@ -82,5 +83,9 @@ export class ProjectDetailComponent implements OnInit {
       projectId: this.project.projectId
     };
     this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+  }
+
+  onOpenEmployeeDetail(employeeId: number) {
+    this.router.navigate(['/employee/' + employeeId]);
   }
 }

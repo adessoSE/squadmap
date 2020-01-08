@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {EmployeeModel} from '../models/employee.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeService} from '../service/employee.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ProjectModel} from '../models/project.model';
@@ -22,6 +22,7 @@ export class EmployeeDetailComponent implements OnInit {
   modalRef: BsModalRef;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private employeeService: EmployeeService,
               private modalService: BsModalService,
               private projectService: ProjectService,
@@ -69,5 +70,9 @@ export class EmployeeDetailComponent implements OnInit {
       employeeId: this.employee.employeeId
     };
     this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+  }
+
+  onOpenProjectDetail(projectId: number) {
+    this.router.navigate(['/project/' + projectId]);
   }
 }
