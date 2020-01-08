@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {EmployeeModel} from '../models/employee.model';
-import {ProjectModel} from '../models/project.model';
+import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +8,12 @@ import {ProjectModel} from '../models/project.model';
 export class WorkingOnService {
   constructor(private http: HttpClient) {}
 
-  createWorkingOn(employeeId: number, projectId: number) {
+  createWorkingOn(createWorkingOn: CreateWorkingOnModel) {
     return this.http.post('http://localhost:8080/workingOn/create', {
-      employeeId,
-      projectId,
-      since: new Date(),
-      until: new Date()
+      employeeId: createWorkingOn.employeeId,
+      projectId: createWorkingOn.projectId,
+      since: createWorkingOn.since,
+      until: createWorkingOn.until
     });
   }
 

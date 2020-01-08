@@ -8,6 +8,7 @@ import {WorkingOnService} from '../service/workingOn.service';
 import {WorkingOnEmployeeModel} from '../models/workingOnEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {WorkingOnModalComponent} from '../working-on-modal/working-on-modal.component';
+import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
 
 @Component({
   selector: 'app-project-detail',
@@ -47,7 +48,8 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onAddEmployee(employee: EmployeeModel) {
-    this.workingOnService.createWorkingOn(employee.employeeId, this.project.projectId).subscribe(workingOnId => {
+    this.workingOnService.createWorkingOn(
+      new CreateWorkingOnModel(employee.employeeId, this.project.projectId, new Date(), new Date())).subscribe(workingOnId => {
       this.project.employees.push(new WorkingOnEmployeeModel( +workingOnId, employee, new Date(), new Date() ));
       this.isSearching = false;
       this.modalRef.hide();

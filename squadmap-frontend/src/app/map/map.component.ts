@@ -6,6 +6,7 @@ import {EmployeeModel} from '../models/employee.model';
 import {ProjectModel} from '../models/project.model';
 import {WorkingOnService} from '../service/workingOn.service';
 import {WorkingOnProjectModel} from '../models/workingOnProject.model';
+import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
 
 @Component({
   selector: 'app-map',
@@ -271,7 +272,7 @@ export class MapComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      this.workingOnService.createWorkingOn(edgeData.from, edgeData.to).subscribe( () => {
+      this.workingOnService.createWorkingOn(new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date())).subscribe( () => {
         let employee: EmployeeModel;
         this.employeeService.getEmployee(edgeData.from).subscribe(res => {
           employee = new EmployeeModel(

@@ -8,6 +8,7 @@ import {ProjectService} from '../service/project.service';
 import {WorkingOnProjectModel} from '../models/workingOnProject.model';
 import {WorkingOnService} from '../service/workingOn.service';
 import {WorkingOnModalComponent} from '../working-on-modal/working-on-modal.component';
+import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
 
 @Component({
   selector: 'app-employee-detail',
@@ -50,7 +51,8 @@ export class EmployeeDetailComponent implements OnInit {
   }
 
   onAddProject(project: ProjectModel) {
-    this.workingOnService.createWorkingOn(this.employee.employeeId, project.projectId).subscribe(workingOnId => {
+    this.workingOnService.createWorkingOn(
+      new CreateWorkingOnModel(this.employee.employeeId, project.projectId, new Date(), new Date())).subscribe(workingOnId => {
       this.employee.projects.push(new WorkingOnProjectModel(+workingOnId, project, new Date(), new Date()));
       this.modalRef.hide();
     });
