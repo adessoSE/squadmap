@@ -5,6 +5,9 @@ import {DataSet, Network} from 'vis-network';
 import {ActivatedRoute} from '@angular/router';
 import {WorkingOnService} from '../service/workingOn.service';
 import {EmployeeService} from '../service/employee.service';
+import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
+import {EmployeeModel} from '../models/employee.model';
+import {WorkingOnProjectModel} from '../models/workingOnProject.model';
 
 @Component({
   selector: 'app-map-project-detail',
@@ -99,9 +102,9 @@ export class MapProjectDetailComponent implements OnInit {
       manipulation: {
         enabled: true,
         editEdge: false,
-        addNode: (nodeData, callback) => this.addNode(nodeData, callback),
+        addNode: false,
         deleteNode: (nodeData, callback) => this.deleteNode(nodeData, callback),
-        addEdge: false,
+        addEdge: (edgeData, callback) => this.addEdge(edgeData, callback),
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
       },
       edges: {
@@ -182,28 +185,22 @@ export class MapProjectDetailComponent implements OnInit {
     });
   }
 
-  addNode(nodeData, callback) {
-    // show form and then send it to employee/project Service
-    this.refresh();
-    callback(nodeData);
-  }
-
   deleteNode(nodeData, callback) {
     const validNodes = [];
     const validEdges = [];
     nodeData.nodes.forEach( node => {
       if (this.isEmployee(node)) {
         validNodes.push(node);
-        this.employeeService.deleteEmployee(node).subscribe();
+        this.employeeService.deleteEmployee(node).subscribe(() => this.refresh());
       } else if (this.isProject(node)) {
         validNodes.push(node);
-        this.projectService.deleteProject(node).subscribe();
+        this.projectService.deleteProject(node).subscribe(() => this.refresh());
       }
     });
     nodeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.deleteWorkingOn(edge).subscribe();
+        this.workingOnService.deleteWorkingOn(edge).subscribe(() => this.refresh());
       }
     });
     nodeData.nodes = validNodes;
@@ -215,12 +212,61 @@ export class MapProjectDetailComponent implements OnInit {
     callback(nodeData);
   }
 
+  addEdge(edgeData, callback) {
+    if (!this.isEmployee(edgeData.from) && !this.isProject(edgeData.to)) {
+      const temp = edgeData.from;
+      edgeData.from = edgeData.to;
+      edgeData.to = temp;
+    }
+    if (this.isProject(edgeData.to)) {
+      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date());
+      // TODO get dates from modal
+      this.workingOnService.createWorkingOn(createWorkingOn).subscribe( () => {
+        let employee: EmployeeModel;
+        this.employeeService.getEmployee(edgeData.from).subscribe(res => {
+          employee = new EmployeeModel(
+            res.employeeId,
+            res.firstName,
+            res.lastName,
+            res.birthday,
+            res.email,
+            res.phone,
+            res.isExternal,
+            res.projects);
+          let workingOn: WorkingOnProjectModel;
+          let i: number;
+          for (i = 0; i < employee.projects.length; i++) {
+            if (employee.projects[i].project.projectId === edgeData.to) {
+              workingOn = employee.projects[i];
+              break;
+            }
+          }
+          edgeData = {
+            id: workingOn.workingOnId,
+            from: edgeData.from,
+            to: edgeData.to,
+            title: 'Id: ' + workingOn.workingOnId +
+              '<br>Since: ' + workingOn.since.toDateString() +
+              '<br> Until: ' + workingOn.until.toDateString(),
+            color: workingOn.until < this.dateThreshold ? '#ff0002' : '#000000',
+            arrows: 'to',
+            dashes: employee.isExternal
+          };
+          this.refresh();
+          callback(edgeData);
+        });
+      });
+    } else {
+      window.alert('Only edges between employees and projects are supported');
+    }
+  }
+
   deleteEdge(edgeData, callback) {
     const validEdges = [];
     edgeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.deleteWorkingOn(edge).subscribe();
+        this.workingOnService.deleteWorkingOn(edge).subscribe(() => this.refresh());
       }
     });
     edgeData.edges = validEdges;

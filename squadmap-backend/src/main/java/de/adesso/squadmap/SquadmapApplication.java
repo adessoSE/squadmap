@@ -36,12 +36,12 @@ public class SquadmapApplication {
             Employee employee2 = new Employee("Kevin", "Peach", LocalDate.now(), "k.p@adesso.de", "1", false);
             Employee employee3 = new Employee("Bert", "Melon", LocalDate.now(), "b.m@adesso.de", "2", true);
 
-            Project project1 = new Project("squadmap", "something", LocalDate.now(), LocalDate.now(), false);
+            Project project1 = new Project("squadmap", "something", LocalDate.now(), LocalDate.now().plusMonths(5), false);
             Project project2 = new Project("coderadar", "other", LocalDate.now(), LocalDate.now(), false);
             Project project3 = new Project("devblog", "another", LocalDate.now(), LocalDate.now(), true);
 
-            WorkingOn workingOn1 = new WorkingOn(employee1, project1, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn2 = new WorkingOn(employee1, project2, LocalDate.now(), LocalDate.now());
+            WorkingOn workingOn1 = new WorkingOn(employee1, project1, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn2 = new WorkingOn(employee1, project2, LocalDate.now(), LocalDate.now().plusMonths(5));
             WorkingOn workingOn3 = new WorkingOn(employee2, project2, LocalDate.now(), LocalDate.now());
 
             employeeRepository.saveAll(Arrays.asList(employee1, employee2, employee3));

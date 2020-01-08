@@ -135,7 +135,7 @@ export class MapComponent implements OnInit {
       manipulation: {
         enabled: true,
         editEdge: false,
-        addNode: (nodeData, callback) => this.addNode(nodeData, callback),
+        addNode: false,
         deleteNode: (nodeData, callback) => this.deleteNode(nodeData, callback),
         addEdge: (edgeData, callback) => this.addEdge(edgeData, callback),
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
@@ -143,11 +143,11 @@ export class MapComponent implements OnInit {
       edges: {
         shadow: true,
         title: 'Hover',
-        length: 200,
+        length: 200
       },
       nodes: {
         shadow: true,
-        physics: false,
+        physics: false
       },
       physics: {},
       groups: {
@@ -179,6 +179,27 @@ export class MapComponent implements OnInit {
     function changeCursor(newCursorStyle) {
       networkCanvas.style.cursor = newCursorStyle;
     }
+    function clusterLonelyEmployees(employees: EmployeeModel[]) {
+      const clusterOptions = {
+        joinCondition: (childOptions) => {
+          let isLonely: boolean;
+          let i: number;
+          for (i = 0; i < employees.length; i++) {
+            if (childOptions.id === employees[i].employeeId) {
+              isLonely = employees[i].projects.length === 0;
+              break;
+            }
+          }
+          return isLonely;
+        },
+        clusterNodeProperties: {
+          id: 'lonelyEmployees',
+          label: 'Employees without Project',
+          shape: 'database'
+        }
+      };
+      network.cluster(clusterOptions);
+    }
     network.on('hoverNode', () => {
       changeCursor('grab');
     });
@@ -200,13 +221,16 @@ export class MapComponent implements OnInit {
     network.on('dragEnd', () => {
       changeCursor('grab');
     });
-    network.on('click', () => {
-      this.employees.forEach(employee => {
-        console.log(employee.lastName, employee.projects.length, employee.projects);
-      });
-      this.projects.forEach(project => {
-        console.log(project.title, project.employees.length, project.employees);
-      });
+    network.on('click', params => {
+      if (params.nodes.length === 1 && params.nodes[0] === 'lonelyEmployees') {
+        network.openCluster(params.nodes[0]);
+        nodes.forEach(node => {
+          node.physics = false;
+          nodes.update(node);
+        });
+      } else {
+        clusterLonelyEmployees(this.employees);
+      }
     });
     network.on('doubleClick', params => {
       if (params.nodes.length === 1) {
@@ -233,22 +257,16 @@ export class MapComponent implements OnInit {
     });
   }
 
-  addNode(nodeData, callback) {
-    // show form and then send it to employee/project Service
-    callback(nodeData);
-    this.refresh();
-  }
-
   deleteNode(nodeData, callback) {
     const validNodes = [];
     const validEdges = [];
     nodeData.nodes.forEach( node => {
       if (this.isEmployee(node)) {
         validNodes.push(node);
-        this.employeeService.deleteEmployee(node).subscribe(() => this.refreshEmployee());
+        this.employeeService.deleteEmployee(node).subscribe(() => this.refresh());
       } else if (this.isProject(node)) {
         validNodes.push(node);
-        this.projectService.deleteProject(node).subscribe(() => this.refreshProjects());
+        this.projectService.deleteProject(node).subscribe(() => this.refresh());
       }
     });
     nodeData.edges.forEach( edge => {
@@ -272,7 +290,9 @@ export class MapComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      this.workingOnService.createWorkingOn(new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date())).subscribe( () => {
+      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date());
+      // TODO get dates from modal
+      this.workingOnService.createWorkingOn(createWorkingOn).subscribe( () => {
         let employee: EmployeeModel;
         this.employeeService.getEmployee(edgeData.from).subscribe(res => {
           employee = new EmployeeModel(
@@ -358,20 +378,6 @@ export class MapComponent implements OnInit {
       }
     }
     return false;
-  }
-
-  refreshEmployee() {
-    this.employees = [];
-    this.employeeService.getEmployees().subscribe(() => {
-      this.employees = this.employeeService.employees;
-    });
-  }
-
-  refreshProjects() {
-    this.projects = [];
-    this.projectService.getProjects().subscribe(() => {
-      this.projects = this.projectService.projects;
-    });
   }
 
   refresh() {
