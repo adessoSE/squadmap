@@ -19,48 +19,8 @@
         Hinzufügen
       </a>
       <div class="dropdown-menu" *dropdownMenu>
-        <button class="dropdown-item" (click)="addEmployeeModal(employee)">Mitarbeiter</button>
-        <ng-template #employee>
-          <div class="modal-header">
-            <h4 class="modal-title pull-left">Mitarbeiter hinzufügen</h4>
-            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-          <form #employeeForm="ngForm" (ngSubmit)="onCreateEmployee(employeeForm)">
-            <div class="form-group">
-              <label for="firstName">First name:</label>
-              <input type="text" id="firstName" name="firstName" class="form-control" ngModel>
-            </div>
-            <div class="form-group">
-              <label for="lastName">Last name:</label>
-              <input type="text" id="lastName" name="lastName" class="form-control" ngModel>
-            </div>
-            <div class="form-group">
-              <label for="birthday">Birthday:</label>
-              <input type="date" id="birthday" name="birthday" class="form-control" ngModel>
-            </div>
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <input type="text" id="email" name="email" class="form-control" ngModel>
-            </div>
-            <div class="form-group">
-              <label for="phone">Phone:</label>
-              <input type="text" id="phone" name="phone" class="form-control" ngModel>
-            </div>
-            <div class="form-group">
-              <label for="isExternal">External: </label>
-              <input type="checkbox" id="isExternal" name="isExternal" class="form-control" ngModel>
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-success">Create Employee</button>
-              <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Close</button>
-            </div>
-          </form>
-          </div>
-        </ng-template>
-        <button class="dropdown-item">Projekt</button>
+        <button class="dropdown-item" type="button" (click)="addEmployeeModal()">Mitarbeiter</button>
+        <button class="dropdown-item" type="button" (click)="addProjectModal()">Projekt</button>
       </div>
     </li>
   </ul>

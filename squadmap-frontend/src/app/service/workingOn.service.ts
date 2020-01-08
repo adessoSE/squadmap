@@ -9,7 +9,7 @@ import {ProjectModel} from '../models/project.model';
 export class WorkingOnService {
   constructor(private http: HttpClient) {}
 
-  addEmployeeToProject(employeeId: number, projectId: number) {
+  createWorkingOn(employeeId: number, projectId: number) {
     return this.http.post('http://localhost:8080/workingOn/create', {
       employeeId,
       projectId,
@@ -18,7 +18,16 @@ export class WorkingOnService {
     });
   }
 
-  removeEmployeeFromProject(id: number) {
+  deleteWorkingOn(id: number) {
     return this.http.delete('http://localhost:8080/workingOn/delete/' + id);
+  }
+
+  updateWorkingOn(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date) {
+    return this.http.put('http://localhost:8080/workingOn/update/' + workingOnId, {
+      employeeId,
+      projectId,
+      since,
+      until
+    });
   }
 }

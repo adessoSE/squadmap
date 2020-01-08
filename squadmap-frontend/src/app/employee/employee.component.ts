@@ -3,6 +3,8 @@ import {Router} from '@angular/router';
 import {EmployeeService} from '../service/employee.service';
 import {EmployeeModel} from '../models/employee.model';
 import {CreateEmployeeModel} from '../models/createEmployee.model';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {EmployeeModalComponent} from '../employee-modal/employee-modal.component';
 
 @Component({
   selector: 'app-employee',
@@ -13,11 +15,17 @@ export class EmployeeComponent implements OnInit {
 
   public employees: EmployeeModel[];
   public searchText: string;
+  public hideExternal: boolean;
+  private modalRef: BsModalRef;
 
-  constructor(private employeeService: EmployeeService, private router: Router) {
+  constructor(private employeeService: EmployeeService,
+              private router: Router,
+              private modalService: BsModalService) {
   }
 
   ngOnInit() {
+    this.hideExternal = false;
+    this.searchText = '';
     this.employeeService.getEmployees().subscribe(() => {
       this.employees = this.employeeService.employees;
     });
@@ -29,7 +37,7 @@ export class EmployeeComponent implements OnInit {
 
   onAddEmployee() {
     const employee = new CreateEmployeeModel('Test', 'Employee',
-      new Date('December 17, 2017 15:00:00'), 'test@test.de', '0162123123', false);
+      new Date('December 17, 2017 15:00:00'), 'test@test.de', '0162123123', true);
     this.employeeService.addEmployee(employee).subscribe(res => {
       this.employeeService.getEmployee(+res).subscribe(emp => {
         this.employees.push(emp);
@@ -38,17 +46,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   onDelete(employee: EmployeeModel) {
-    this.employeeService.deleteEmployee(employee.employeeId).subscribe(res => {
-      console.log(res);
-      this.employeeService.getEmployees().subscribe(() => {
-        this.employees = this.employeeService.employees;
-      });
-    });
-  }
-
-  onUpdate(employee: EmployeeModel) {
-    this.employeeService.updateEmployee(employee, employee.employeeId).subscribe(res => {
-      console.log(res);
+    this.employeeService.deleteEmployee(employee.employeeId).subscribe(() => {
       this.employeeService.getEmployees().subscribe(() => {
         this.employees = this.employeeService.employees;
       });
@@ -56,6 +54,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   onEdit(employee: EmployeeModel) {
-    // TODO open here create Emoployee componenent
+    const initialState = {
+      employee,
+      actionName: 'Update'
+    };
+    this.modalRef = this.modalService.show(EmployeeModalComponent, {initialState});
   }
 }

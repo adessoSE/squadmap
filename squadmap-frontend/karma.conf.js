@@ -33,7 +33,9 @@ module.exports = function (config) {
       }
     },
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
+    browserNoActivityTimeout : 60000,
+    browserDisconnectTimeout : 10000
   });
 
 };

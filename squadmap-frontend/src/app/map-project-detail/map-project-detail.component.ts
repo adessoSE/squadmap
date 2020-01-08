@@ -203,7 +203,7 @@ export class MapProjectDetailComponent implements OnInit {
     nodeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe();
+        this.workingOnService.deleteWorkingOn(edge).subscribe();
       }
     });
     nodeData.nodes = validNodes;
@@ -220,7 +220,7 @@ export class MapProjectDetailComponent implements OnInit {
     edgeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe();
+        this.workingOnService.deleteWorkingOn(edge).subscribe();
       }
     });
     edgeData.edges = validEdges;

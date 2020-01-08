@@ -1,34 +1,48 @@
-<h2>{{project.title}}</h2>
 <br>
-<table style="overflow: auto">
-  <tr>{{project.description}}</tr>
-</table>
-<br>
-<h4>Projectmembers:</h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Since</th>
-      <th>Until</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let employee of project.employees" >
-      <td>{{employee.employee.firstName}}</td>
-      <td>{{employee.employee.lastName}}</td>
-      <td>{{employee.since.toDateString()}}</td>
-      <td>{{employee.until.toDateString()}}</td>
-      <td>
-        <button class="btn btn-info" type="button" (click)="onEdit(employee)" disabled>Edit</button>
-        <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<button class="btn btn-primary" type="button" (click)="onAddEmployeeModal(addEmployeeModal)">Add Employee</button>
+<div class="row justify-content-center">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h2>{{project.title}}</h2>
+        </div>
+        <div class="card-body">
+          <p>{{project.description}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <h4>Projectmembers:</h4>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Since</th>
+          <th>Until</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let employee of project.employees" >
+          <td class="employee-link" (click)="onOpenEmployeeDetail(employee.employee.employeeId)">{{employee.employee.firstName}}</td>
+          <td>{{employee.employee.lastName}}</td>
+          <td>{{employee.since.toDateString()}}</td>
+          <td>{{employee.until.toDateString()}}</td>
+          <td>
+            <button class="btn btn-info" type="button" (click)="onEdit(employee)" >Edit</button>
+            <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<div class="row justify-content-center">
+  <button class="btn btn-outline-primary" type="button" (click)="onOpenAddEmployeeModal(addEmployeeModal)">Add Employee</button>
+</div>
+
+
+
 <ng-template #addEmployeeModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Select Employee</h4>
@@ -45,7 +59,7 @@
         <td>{{employee.firstName}}</td>
         <td>{{employee.lastName}}</td>
         <td>
-          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)" >Add</button>
+          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)" >+</button>
         </td>
       </tr>
       </tbody>

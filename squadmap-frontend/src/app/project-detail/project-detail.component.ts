@@ -1,12 +1,13 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ProjectModel} from '../models/project.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectService} from '../service/project.service';
 import {EmployeeService} from '../service/employee.service';
 import {EmployeeModel} from '../models/employee.model';
 import {WorkingOnService} from '../service/workingOn.service';
 import {WorkingOnEmployeeModel} from '../models/workingOnEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {WorkingOnModalComponent} from '../working-on-modal/working-on-modal.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -25,11 +26,12 @@ export class ProjectDetailComponent implements OnInit {
               private projectService: ProjectService,
               private employeeService: EmployeeService,
               private workingOnService: WorkingOnService,
-              private modalService: BsModalService) { }
+              private modalService: BsModalService,
+              private router: Router) { }
 
   ngOnInit() {
     this.isSearching = false;
-    this.project = new ProjectModel(0,  '', '', null, null, false, []); // vermeidet exceptions beim Aufbau der view
+    this.project = new ProjectModel(0,  '', '', new Date(), new Date(), false, []); // vermeidet exceptions beim Aufbau der view
     this.refreshProject();
     this.searchText = '';
   }
@@ -45,21 +47,20 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onAddEmployee(employee: EmployeeModel) {
-    this.workingOnService.addEmployeeToProject(employee.employeeId, this.project.projectId).subscribe(workingOnId => {
+    this.workingOnService.createWorkingOn(employee.employeeId, this.project.projectId).subscribe(workingOnId => {
       this.project.employees.push(new WorkingOnEmployeeModel( +workingOnId, employee, new Date(), new Date() ));
       this.isSearching = false;
       this.modalRef.hide();
     });
   }
 
-  onAddEmployeeModal(addEmployeeModal: TemplateRef<any>) {
+  onOpenAddEmployeeModal(addEmployeeModal: TemplateRef<any>) {
     this.filteredEmployees = this.employeeService.getCurrentEmployees();
     this.modalRef = this.modalService.show(addEmployeeModal);
   }
 
   onDelete(workingOn: WorkingOnEmployeeModel) {
-    console.log(workingOn.workingOnId);
-    this.workingOnService.removeEmployeeFromProject(workingOn.workingOnId).subscribe(() => {
+    this.workingOnService.deleteWorkingOn(workingOn.workingOnId).subscribe(() => {
         this.refreshProject();
     });
   }
@@ -76,7 +77,15 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  onEdit(employee: WorkingOnEmployeeModel) {
-    // TODO
+  onEdit(workingOnEmployee: WorkingOnEmployeeModel) {
+    const initialState = {
+      workingOnEmployee,
+      projectId: this.project.projectId
+    };
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+  }
+
+  onOpenEmployeeDetail(employeeId: number) {
+    this.router.navigate(['/employee/' + employeeId]);
   }
 }

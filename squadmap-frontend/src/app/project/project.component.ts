@@ -3,6 +3,8 @@ import {ProjectModel} from '../models/project.model';
 import {ProjectService} from '../service/project.service';
 import {Router} from '@angular/router';
 import {CreateProjectModel} from '../models/createProject.model';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {ProjectModalComponent} from '../project-modal/project-modal.component';
 
 @Component({
   selector: 'app-project',
@@ -15,9 +17,10 @@ export class ProjectComponent implements OnInit {
   public searchText: string;
   public checkedOldProjects: boolean;
   public checkedExternalProjects: boolean;
+  private modalRef: BsModalRef;
 
 
-  constructor(private projectService: ProjectService, private router: Router) { }
+  constructor(private projectService: ProjectService, private router: Router, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.projectService.getProjects().subscribe(() => {
@@ -30,8 +33,7 @@ export class ProjectComponent implements OnInit {
   }
 
   onDelete(project: ProjectModel) {
-    this.projectService.deleteProject(project.projectId).subscribe(res => {
-      console.log(res);
+    this.projectService.deleteProject(project).subscribe(() => {
       this.projectService.getProjects().subscribe(() => {
         this.projectList =  this.projectService.projects;
       });
@@ -39,14 +41,15 @@ export class ProjectComponent implements OnInit {
   }
 
   onUpdate(project: ProjectModel) {
-    // TODO open here edit dialogue of project and then call:
-    // let newProject: ProjectModel;
-    // let id: number;
-    // this.projectService.updateProject(newProject, id);
+    const initialState = {
+      project,
+      actionName: 'Update'
+    };
+    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
   }
 
   onAddProject() {
-    const dummyProject = new CreateProjectModel('Test-title', 'description', new Date(), new Date(), false);
+    const dummyProject = new CreateProjectModel('Test-title', 'description', new Date(), new Date(), true);
     this.projectService.addProject(dummyProject).subscribe(res => {
       this.projectService.getProject(+res).subscribe(project => {
         project.since = new Date(project.since);

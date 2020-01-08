@@ -1,10 +1,10 @@
 <br>
-<div class="row">
+<div class="row justify-content-center">
   <div class="col-md-8">
   <label class="checkbox-inline" for="searchText" >Search:</label>
   <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
   </div>
-  <div>
+  <div class="col-md-2">
     <div class="checkbox">
           <input name="oldProjects" type="checkbox" id="oldProjects" [(ngModel)]="checkedOldProjects">
           <label for="oldProjects">Show old Projects</label>
@@ -14,30 +14,38 @@
       <label for="externalProjects">Show external Projects</label>
     </div>
   </div>
-
 </div>
 <br>
-<table class="table">
-  <thead>
-  <tr>
-    <th>Project</th>
-    <th>Since</th>
-    <th>Until</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-    <tr id="link" *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
-      <td (click)="onOpenProject(project)">{{project.title}}</td>
-      <td (click)="onOpenProject(project)">{{project.since.toDateString()}}</td>
-      <td (click)="onOpenProject(project)">{{project.until.toDateString()}}</td>
-      <td>
-        <div class="btn-group">
-          <button class="btn btn-info" type="button" (click)="onUpdate(project)" disabled>Edit</button>
-          <button class="btn btn-danger" type="button" (click)="onDelete(project)">Delete</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<button class="btn btn-primary" type="button" (click)="onAddProject()">Add Dummy Project</button>
+<div class="row justify-content-center">
+  <div class="col-md-10">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Project</th>
+        <th>Since</th>
+        <th>Until</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr id="link" *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+        <td (click)="onOpenProject(project)">{{project.title}}</td>
+        <td (click)="onOpenProject(project)">{{project.since.toDateString()}}</td>
+        <td (click)="onOpenProject(project)">{{project.until.toDateString()}}</td>
+        <td>
+          <div class="btn-group">
+            <button class="btn btn-info" type="button" (click)="onUpdate(project)" >Edit</button>
+            <button class="btn btn-danger" type="button" (click)="onDelete(project)">Delete</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="row justify-content-center">
+      <button class="btn btn-outline-primary" type="button" (click)="onAddProject()">Add Dummy Project</button>
+    </div>
+  </div>
+</div>
+
+
+
