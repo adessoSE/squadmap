@@ -5,6 +5,7 @@ import {Network, DataSet} from 'vis-network';
 import {EmployeeModel} from '../models/employee.model';
 import {ProjectModel} from '../models/project.model';
 import {WorkingOnService} from '../service/workingOn.service';
+import {WorkingOnProject} from '../models/workingOnProject.model';
 
 @Component({
   selector: 'app-map',
@@ -127,6 +128,7 @@ export class MapComponent implements OnInit {
 
     const options = {
       interaction: {
+        keyboard: true,
         hover: true
       },
       manipulation: {
@@ -138,18 +140,13 @@ export class MapComponent implements OnInit {
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
       },
       edges: {
+        shadow: true,
         title: 'Hover',
         length: 200,
-        color: {
-          highlight: '#000000'
-        }
       },
       nodes: {
+        shadow: true,
         physics: false,
-        color: {
-          border: '#000000',
-          highlight: '#000000'
-        }
       },
       physics: {},
       groups: {
@@ -178,7 +175,6 @@ export class MapComponent implements OnInit {
       .getElementById('mynetwork')
       .getElementsByTagName('canvas')[0];
 
-
     function changeCursor(newCursorStyle) {
       networkCanvas.style.cursor = newCursorStyle;
     }
@@ -203,6 +199,14 @@ export class MapComponent implements OnInit {
     network.on('dragEnd', () => {
       changeCursor('grab');
     });
+    network.on('click', () => {
+      this.employees.forEach(employee => {
+        console.log(employee.lastName, employee.projects.length, employee.projects);
+      });
+      this.projects.forEach(project => {
+        console.log(project.title, project.employees.length, project.employees);
+      });
+    });
     network.on('doubleClick', params => {
       if (params.nodes.length === 1) {
         let node: any;
@@ -212,11 +216,26 @@ export class MapComponent implements OnInit {
         }
       }
     });
+    network.on('oncontext', () => {
+      this.projects.forEach( project => {
+        if (project.isExternal) {
+          const node = nodes.get(project.projectId);
+          nodes.update({id: node.id, hidden: !node.hidden});
+        }
+      });
+      this.employees.forEach(employee => {
+        if (employee.isExternal) {
+          const node = nodes.get(employee.employeeId);
+          nodes.update({id: node.id, hidden: !node.hidden});
+        }
+      });
+    });
   }
 
   addNode(nodeData, callback) {
     // show form and then send it to employee/project Service
     callback(nodeData);
+    this.refresh();
   }
 
   deleteNode(nodeData, callback) {
@@ -225,16 +244,16 @@ export class MapComponent implements OnInit {
     nodeData.nodes.forEach( node => {
       if (this.isEmployee(node)) {
         validNodes.push(node);
-        this.employeeService.deleteEmployee(node).subscribe();
+        this.employeeService.deleteEmployee(node).subscribe(() => this.refreshEmployee());
       } else if (this.isProject(node)) {
         validNodes.push(node);
-        this.projectService.deleteProject(node).subscribe();
+        this.projectService.deleteProject(node).subscribe(() => this.refreshProjects());
       }
     });
     nodeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe();
+        this.workingOnService.removeEmployeeFromProject(edge).subscribe(() => this.refresh());
       }
     });
     nodeData.nodes = validNodes;
@@ -243,7 +262,6 @@ export class MapComponent implements OnInit {
       window.alert('Given nodes can\'t be deleted');
     }
     callback(nodeData);
-
   }
 
   addEdge(edgeData, callback) {
@@ -253,8 +271,41 @@ export class MapComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      this.workingOnService.addEmployeeToProject(edgeData.from, edgeData.to).subscribe();
-      callback(edgeData);
+      this.workingOnService.addEmployeeToProject(edgeData.from, edgeData.to).subscribe( () => {
+        let employee: EmployeeModel;
+        this.employeeService.getEmployee(edgeData.from).subscribe(res => {
+          employee = new EmployeeModel(
+            res.employeeId,
+            res.firstName,
+            res.lastName,
+            res.birthday,
+            res.email,
+            res.phone,
+            res.isExternal,
+            res.projects);
+          let workingOn: WorkingOnProject;
+          let i: number;
+          for (i = 0; i < employee.projects.length; i++) {
+            if (employee.projects[i].project.projectId === edgeData.to) {
+              workingOn = employee.projects[i];
+              break;
+            }
+          }
+          edgeData = {
+            id: workingOn.workingOnId,
+            from: edgeData.from,
+            to: edgeData.to,
+            title: 'Id: ' + workingOn.workingOnId +
+              '<br>Since: ' + workingOn.since.toDateString() +
+              '<br> Until: ' + workingOn.until.toDateString(),
+            color: workingOn.until < this.dateThreshold ? '#ff0002' : '#000000',
+            arrows: 'to',
+            dashes: employee.isExternal
+          };
+          this.refresh();
+          callback(edgeData);
+        });
+      });
     } else {
       window.alert('Only edges between employees and projects are supported');
     }
@@ -265,7 +316,7 @@ export class MapComponent implements OnInit {
     edgeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe();
+        this.workingOnService.removeEmployeeFromProject(edge).subscribe(() => this.refresh());
       }
     });
     edgeData.edges = validEdges;
@@ -306,5 +357,30 @@ export class MapComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  refreshEmployee() {
+    this.employees = [];
+    this.employeeService.getEmployees().subscribe(() => {
+      this.employees = this.employeeService.employees;
+    });
+  }
+
+  refreshProjects() {
+    this.projects = [];
+    this.projectService.getProjects().subscribe(() => {
+      this.projects = this.projectService.projects;
+    });
+  }
+
+  refresh() {
+    this.employees = [];
+    this.projects = [];
+    this.employeeService.getEmployees().subscribe(() => {
+      this.employees = this.employeeService.employees;
+      this.projectService.getProjects().subscribe(() => {
+        this.projects =  this.projectService.projects;
+      });
+    });
   }
 }

@@ -93,6 +93,7 @@ export class MapProjectDetailComponent implements OnInit {
 
     const options = {
       interaction: {
+        keyboard: true,
         hover: true
       },
       manipulation: {
@@ -105,10 +106,12 @@ export class MapProjectDetailComponent implements OnInit {
       },
       edges: {
         title: 'Hover',
-        length: 200
+        length: 200,
+        shadow: true
       },
       nodes: {
-        physics: false
+        physics: false,
+        shadow: true
       },
       physics: {},
       groups: {
@@ -118,11 +121,6 @@ export class MapProjectDetailComponent implements OnInit {
         projectNode: {
           shape: 'box',
           margin: 10
-        },
-        homeNode: {
-          shape: 'box',
-          margin: 20,
-          fixed: true
         }
       }
     };
@@ -163,6 +161,9 @@ export class MapProjectDetailComponent implements OnInit {
     network.on('dragEnd', () => {
       changeCursor('grab');
     });
+    network.on('click', () => {
+      console.log(this.project.title, this.project.employees.length);
+    });
     network.on('doubleClick', params => {
       if (params.nodes.length === 1) {
         let node: any;
@@ -171,10 +172,19 @@ export class MapProjectDetailComponent implements OnInit {
           window.location = node.url;
         }
       }});
+    network.on('oncontext', () => {
+      this.project.employees.forEach(employee => {
+        if (employee.employee.isExternal) {
+          const node = nodes.get(employee.employee.employeeId);
+          nodes.update({id: node.id, hidden: !node.hidden});
+        }
+      });
+    });
   }
 
   addNode(nodeData, callback) {
     // show form and then send it to employee/project Service
+    this.refresh();
     callback(nodeData);
   }
 
@@ -201,6 +211,7 @@ export class MapProjectDetailComponent implements OnInit {
     if (nodeData.nodes.length === 0 && nodeData.edges.length === 0) {
       window.alert('Given nodes can\'t be deleted');
     }
+    this.refresh();
     callback(nodeData);
   }
 
@@ -216,6 +227,7 @@ export class MapProjectDetailComponent implements OnInit {
     if (edgeData.edges.length === 0) {
       window.alert('Given edges can\'t be deleted');
     }
+    this.refresh();
     callback(edgeData);
   }
 
@@ -241,5 +253,18 @@ export class MapProjectDetailComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  refresh() {
+    this.projectService.getProject(this.route.snapshot.params.id).subscribe(res => {
+      this.project = new ProjectModel(
+        res.projectId,
+        res.title,
+        res.description,
+        res.since,
+        res.until,
+        res.isExternal,
+        res.employees );
+    });
   }
 }
