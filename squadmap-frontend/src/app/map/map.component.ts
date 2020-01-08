@@ -5,7 +5,7 @@ import {Network, DataSet} from 'vis-network';
 import {EmployeeModel} from '../models/employee.model';
 import {ProjectModel} from '../models/project.model';
 import {WorkingOnService} from '../service/workingOn.service';
-import {WorkingOnProject} from '../models/workingOnProject.model';
+import {WorkingOnProjectModel} from '../models/workingOnProject.model';
 
 @Component({
   selector: 'app-map',
@@ -253,7 +253,7 @@ export class MapComponent implements OnInit {
     nodeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe(() => this.refresh());
+        this.workingOnService.deleteWorkingOn(edge).subscribe(() => this.refresh());
       }
     });
     nodeData.nodes = validNodes;
@@ -271,7 +271,7 @@ export class MapComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      this.workingOnService.addEmployeeToProject(edgeData.from, edgeData.to).subscribe( () => {
+      this.workingOnService.createWorkingOn(edgeData.from, edgeData.to).subscribe( () => {
         let employee: EmployeeModel;
         this.employeeService.getEmployee(edgeData.from).subscribe(res => {
           employee = new EmployeeModel(
@@ -283,7 +283,7 @@ export class MapComponent implements OnInit {
             res.phone,
             res.isExternal,
             res.projects);
-          let workingOn: WorkingOnProject;
+          let workingOn: WorkingOnProjectModel;
           let i: number;
           for (i = 0; i < employee.projects.length; i++) {
             if (employee.projects[i].project.projectId === edgeData.to) {
@@ -316,7 +316,7 @@ export class MapComponent implements OnInit {
     edgeData.edges.forEach( edge => {
       if (this.isWorkingOn(edge)) {
         validEdges.push(edge);
-        this.workingOnService.removeEmployeeFromProject(edge).subscribe(() => this.refresh());
+        this.workingOnService.deleteWorkingOn(edge).subscribe(() => this.refresh());
       }
     });
     edgeData.edges = validEdges;

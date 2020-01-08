@@ -33,7 +33,7 @@ export class ProjectComponent implements OnInit {
   }
 
   onDelete(project: ProjectModel) {
-    this.projectService.deleteProject(project).subscribe(() => {
+    this.projectService.deleteProject(project.projectId).subscribe(() => {
       this.projectService.getProjects().subscribe(() => {
         this.projectList =  this.projectService.projects;
       });
