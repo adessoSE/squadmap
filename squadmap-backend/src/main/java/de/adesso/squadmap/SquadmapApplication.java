@@ -48,14 +48,14 @@ public class SquadmapApplication {
             Project project3 = new Project("devblog", "Desscription of squadmap", LocalDate.now(), LocalDate.now(), false);
             Project project4 = new Project("project-board", "Desscription of project-board", LocalDate.now(), LocalDate.now(), true);
 
-            WorkingOn workingOn1 = new WorkingOn(employee1, project1, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn2 = new WorkingOn(employee1, project2, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn3 = new WorkingOn(employee2, project2, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn4 = new WorkingOn(employee3, project4, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn5 = new WorkingOn(employee4, project4, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn6 = new WorkingOn(employee5, project4, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn7 = new WorkingOn(employee6, project2, LocalDate.now(), LocalDate.now());
-            WorkingOn workingOn8 = new WorkingOn(employee7, project1, LocalDate.now(), LocalDate.now());
+            WorkingOn workingOn1 = new WorkingOn(employee1, project1, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn2 = new WorkingOn(employee1, project2, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn3 = new WorkingOn(employee2, project2, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn4 = new WorkingOn(employee3, project4, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn5 = new WorkingOn(employee4, project4, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn6 = new WorkingOn(employee5, project4, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn7 = new WorkingOn(employee6, project2, LocalDate.now(), LocalDate.now().plusMonths(5));
+            WorkingOn workingOn8 = new WorkingOn(employee7, project1, LocalDate.now(), LocalDate.now().plusMonths(5));
             WorkingOn workingOn9 = new WorkingOn(employee8, project2, LocalDate.now(), LocalDate.now());
             WorkingOn workingOn10 = new WorkingOn(employee9, project3, LocalDate.now(), LocalDate.now());
 

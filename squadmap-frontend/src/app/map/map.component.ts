@@ -50,7 +50,7 @@ export class MapComponent implements OnInit {
           title: 'Id: ' + employee.employeeId +
             '<br>Email: ' + employee.email +
             '<br> Phone: ' + employee.phone,
-          color: employee.isExternal ? '#7b7b7b' : '#4f99fc',
+          color: employee.isExternal ? '#c9c9c9' : '#65a4f7',
           url: 'http://localhost:4200/employee/' + employee.employeeId,
           group: 'employeeNode'
       });
@@ -64,7 +64,7 @@ export class MapComponent implements OnInit {
             '<br>Since: ' + project.since.toDateString() +
             '<br> Until: ' + project.until.toDateString() +
             '<br> Description: ' + project.description,
-          color: project.isExternal ? '#7b7b7b' : '#ffdf58',
+          color: project.isExternal ? '#c9c9c9' : '#ffebad',
           url: 'http://localhost:4200/map/' + project.projectId,
           group: 'projectNode'
         });
@@ -81,7 +81,7 @@ export class MapComponent implements OnInit {
               '<br>Since: ' + project.since.toDateString() +
               '<br> Until: ' + project.until.toDateString(),
             color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-            arrows: 'to',
+            // arrows: 'to',
             dashes: employee.isExternal
           });
       });
@@ -119,22 +119,45 @@ export class MapComponent implements OnInit {
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
       },
       edges: {
-        shadow: true,
+        // shadow: true,
         title: 'Hover',
         length: 200,
+        width: 0.75
       },
       nodes: {
-        shadow: true,
-        physics: false,
+        // shadow: true,
+        physics: true,
+        borderWidth: 0,
       },
-      physics: {},
+      physics: {
+        maxVelocity: 10,
+        repulsion: {
+          nodeDistance: 120,
+        }
+      },
       groups: {
         employeeNode: {
-          shape: 'ellipse',
+          shape: 'circle',
+          widthConstraint: {
+            maximum: 60,
+            minimum: 60
+          },
+          heightConstraint: {
+            minimum: 60,
+            maximum: 60
+          }
         },
         projectNode: {
-          shape: 'box',
-          margin: 10
+          shape: 'circle',
+          margin: 10,
+          widthConstraint: {
+            maximum: 90,
+            minimum: 90
+          },
+          heightConstraint: {
+            minimum: 90,
+            maximum: 90
+          }
         },
         homeNode: {
           shape: 'box',
@@ -278,7 +301,6 @@ export class MapComponent implements OnInit {
               '<br>Since: ' + workingOn.since.toDateString() +
               '<br> Until: ' + workingOn.until.toDateString(),
             color: workingOn.until < this.dateThreshold ? '#ff0002' : '#000000',
-            arrows: 'to',
             dashes: employee.isExternal
           };
           this.refresh();
