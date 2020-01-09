@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
+import {WorkingOnModel} from '../models/workingOn.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,9 @@ export class WorkingOnService {
       since,
       until
     });
+  }
+
+  getWorkingOn(workingOnId: number) {
+    return this.http.get<WorkingOnModel>('http://localhost:8080/workingOn/' + workingOnId);
   }
 }

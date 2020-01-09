@@ -20,24 +20,29 @@ export class FilterProjectsPipe implements PipeTransform {
         }
       }
     }
-    return projectList.filter(project => {
-      if (filter.searchText) {
+    if (filter.searchText && filter.searchText.length > 0) {
+      projectList = projectList.filter(project => {
         if (project.title.toLowerCase().includes(filter.searchText)) {
           return project;
         }
-      }
-      if (filter.checkedOldProjects) {
+      });
+    }
+    if (filter.checkedOldProjects) {
+      projectList = projectList.filter(project => {
         const currentDate: Date = new Date();
         currentDate.setHours(0);
-        if (project.until < currentDate) {
+        if (!(project.until < currentDate)) {
           return project;
         }
-      }
-      if (filter.checkedExternalProjects) {
-        if (project.isExternal) {
-          return project;
-        }
-      }
+      });
+    }
+    if (filter.checkedExternalProjects) {
+      projectList = projectList.filter(project => {
+            if (!project.isExternal) {
+              return project;
+            }
     });
+    }
+    return projectList;
   }
 }

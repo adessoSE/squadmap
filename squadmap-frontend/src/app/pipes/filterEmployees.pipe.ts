@@ -16,17 +16,20 @@ export class FilterEmployeesPipe implements PipeTransform {
         return employeeList;
       }
     }
-    return employeeList.filter(employee => {
-      if (filter.searchText.length > 0) {
-          if (employee.firstName.toLowerCase().includes(filter.searchText)) {
-            return employee;
-          }
-      }
-      if (filter.hideExternal) {
+    if (filter.searchText && filter.searchText.length > 0) {
+      employeeList = employeeList.filter(employee => {
+        if (employee.firstName.toLowerCase().includes(filter.searchText)) {
+          return employee;
+        }
+      });
+    }
+    if (filter.hideExternal) {
+      employeeList = employeeList.filter(employee => {
         if (!employee.isExternal) {
           return employee;
         }
-      }
-    });
+      });
+    }
+    return employeeList;
   }
 }

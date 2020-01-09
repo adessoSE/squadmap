@@ -7,20 +7,20 @@
       <a class="nav-link" routerLink="map">Map</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="project">Projekte</a>
+      <a class="nav-link" routerLink="project">Projects</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="employee">Mitarbeiter</a>
+      <a class="nav-link" routerLink="employee">Employees</a>
     </li>
 
     <!-- Dropdown -->
     <li class="nav-item dropdown" dropdown>
       <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" dropdownToggle>
-        Hinzufügen
+        Add
       </a>
       <div class="dropdown-menu" *dropdownMenu>
-        <button class="dropdown-item" type="button" (click)="addEmployeeModal()">Mitarbeiter</button>
-        <button class="dropdown-item" type="button" (click)="addProjectModal()">Projekt</button>
+        <button class="dropdown-item" type="button" (click)="addEmployeeModal()">Employee</button>
+        <button class="dropdown-item" type="button" (click)="addProjectModal()">Project</button>
       </div>
     </li>
   </ul>
