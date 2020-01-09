@@ -24,8 +24,9 @@ repositories {
 }
 
 dependencies {
-	testRuntime 'org.neo4j:neo4j:3.5.8'
-	testRuntime 'org.neo4j:neo4j-ogm-embedded-driver:3.1.12'
+	compile  'org.neo4j:neo4j'
+	implementation 'org.neo4j:neo4j-ogm-test:3.2.0-alpha02'
+	implementation 'org.neo4j:neo4j-ogm-embedded-driver'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
