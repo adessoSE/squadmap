@@ -40,13 +40,7 @@ export class MapComponent implements OnInit {
     // Nodes
     let nodeList: any[];
     let edgeList: any[];
-    let negativeId = -1;
-    nodeList = [
-      { id: negativeId,
-        label: 'OpenSource Team',
-        color: '#58fd5b',
-        group: 'homeNode'
-      }];
+    nodeList = [];
     edgeList = [];
 
     this.employees.forEach( employee => {
@@ -73,22 +67,6 @@ export class MapComponent implements OnInit {
           color: project.isExternal ? '#7b7b7b' : '#ffdf58',
           url: 'http://localhost:4200/map/' + project.projectId,
           group: 'projectNode'
-        });
-    });
-
-
-    // Edges
-    this.projects.forEach( project => {
-      negativeId --;
-      edgeList.push(
-        { id: negativeId,
-          from: -1,
-          to: project.projectId,
-          title: 'ID: ' + negativeId +
-            '<br>Since: ' + project.since.toDateString() +
-            '<br> Until: ' + project.until.toDateString(),
-          color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-          dashes: project.isExternal
         });
     });
 

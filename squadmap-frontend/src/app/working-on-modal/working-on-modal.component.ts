@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {NgForm} from '@angular/forms';
 import {WorkingOnEmployeeModel} from '../models/workingOnEmployee.model';
@@ -15,17 +15,18 @@ export class WorkingOnModalComponent implements OnInit {
 
   private workingOnEmployee: WorkingOnEmployeeModel;
   private workingOnProject: WorkingOnProjectModel;
-  private since: string;
-  private until: string;
-  private projectId: number;
-  private employeeId: number;
+  public since: string;
+  public until: string;
+  public projectId: number;
+  public employeeId: number;
+  public workingOnId: number;
 
   constructor(private modalRef: BsModalRef,
               private dateFormatter: DateFormatterService,
               private workingOnService: WorkingOnService) { }
 
   ngOnInit() {
-   if (this.projectId) {
+    if (this.projectId) {
       this.since = this.dateFormatter.formatDate(this.workingOnEmployee.since);
       this.until = this.dateFormatter.formatDate(this.workingOnEmployee.until);
     } else {
@@ -34,27 +35,29 @@ export class WorkingOnModalComponent implements OnInit {
     }
   }
 
+
   onSubmit(employeeForm: NgForm) {
-    let workingOnId: number;
-    let employeeId: number;
-    let projectId: number;
+
     if (this.projectId) {
-      employeeId = this.workingOnEmployee.employee.employeeId;
-      projectId = this.projectId;
-      workingOnId = this.workingOnEmployee.workingOnId;
+      this.employeeId = this.workingOnEmployee.employee.employeeId;
+      this.projectId = this.projectId;
+      this.workingOnId = this.workingOnEmployee.workingOnId;
     } else {
-      employeeId = this.employeeId;
-      projectId = this.workingOnProject.project.projectId;
-      workingOnId = this.workingOnProject.workingOnId;
+      this.employeeId = this.employeeId;
+      this.projectId = this.workingOnProject.project.projectId;
+      this.workingOnId = this.workingOnProject.workingOnId;
     }
-    this.workingOnService.updateWorkingOn(
-      workingOnId,
-      employeeId,
-      projectId,
-      employeeForm.value.since,
-      employeeForm.value.until).subscribe(res => {
-        this.modalRef.hide();
-        location.reload();
-    });
+    this.since = employeeForm.value.since;
+    this.until = employeeForm.value.until;
+    this.modalRef.hide();
+    // this.workingOnService.updateWorkingOn(
+    //   workingOnId,
+    //   employeeId,
+    //   projectId,
+    //   employeeForm.value.since,
+    //   employeeForm.value.until).subscribe(res => {
+    //     this.modalRef.hide();
+    //     location.reload();
+    // });
   }
 }
