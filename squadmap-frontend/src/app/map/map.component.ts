@@ -81,7 +81,6 @@ export class MapComponent implements OnInit {
               '<br>Since: ' + project.since.toDateString() +
               '<br> Until: ' + project.until.toDateString(),
             color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-            // arrows: 'to',
             dashes: employee.isExternal
           });
       });
@@ -196,7 +195,16 @@ export class MapComponent implements OnInit {
         clusterNodeProperties: {
           id: 'lonelyEmployees',
           label: 'Employees without Project',
-          shape: 'database'
+          shape: 'box',
+          widthConstraint: {
+            maximum: 120,
+            minimum: 120
+          },
+          heightConstraint: {
+            minimum: 60,
+            maximum: 60
+          },
+          color: '#c9c9c9'
         }
       };
       network.cluster(clusterOptions);
@@ -225,10 +233,6 @@ export class MapComponent implements OnInit {
     network.on('click', params => {
       if (params.nodes.length === 1 && params.nodes[0] === 'lonelyEmployees') {
         network.openCluster(params.nodes[0]);
-        nodes.forEach(node => {
-          node.physics = false;
-          nodes.update(node);
-        });
       } else {
         clusterLonelyEmployees(this.employees);
       }
