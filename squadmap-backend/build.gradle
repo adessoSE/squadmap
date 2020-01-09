@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 	id "org.sonarqube" version "2.7.1"
+	id "jacoco"
 }
 
 group = 'de.adesso'
@@ -48,6 +49,7 @@ sonarqube {
 		property "sonar.organization", "adesso-ag"
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.login", "${System.env.SONAR_TOKEN}"
+		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
 
 		if (System.env.CIRCLE_PULL_REQUEST != null && System.env.CIRCLE_PULL_REQUEST != "") {
 			println "Analyzing branch '${System.env.CIRCLE_BRANCH}' for PR #${System.env.CIRCLE_PULL_REQUEST}"

@@ -80,7 +80,7 @@ export class MapComponent implements OnInit {
             title: 'Id: ' + project.workingOnId +
               '<br>Since: ' + project.since.toDateString() +
               '<br> Until: ' + project.until.toDateString(),
-            color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
+            color: project.until < this.dateThreshold ? '#bb0300' : '#000000',
             dashes: employee.isExternal
           });
       });
@@ -324,7 +324,7 @@ export class MapComponent implements OnInit {
             title: 'Id: ' + workingOn.workingOnId +
               '<br>Since: ' + workingOn.since.toDateString() +
               '<br> Until: ' + workingOn.until.toDateString(),
-            color: workingOn.until < this.dateThreshold ? '#ff0002' : '#000000',
+            color: workingOn.until < this.dateThreshold ? '#bb0300' : '#000000',
             dashes: employee.isExternal
           };
           this.refresh();
