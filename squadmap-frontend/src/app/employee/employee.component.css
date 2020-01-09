@@ -1,9 +1,4 @@
-#link td{
-  text-decoration: underline;
-  text-decoration: darkblue;
-}
-
 #link:hover {
   cursor: pointer;
-  background-color: lightgray;
+  background-color: #f5f5f5;
 }

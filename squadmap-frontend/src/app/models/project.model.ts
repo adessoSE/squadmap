@@ -1,4 +1,4 @@
-import {WorkingOnModel} from './workingOn.model';
+import {WorkingOnEmployeeModel} from './workingOnEmployee.model';
 
 export class ProjectModel {
   constructor(
@@ -8,7 +8,7 @@ export class ProjectModel {
     public since: Date,
     public until: Date,
     public isExternal: boolean,
-    public employees: WorkingOnModel[]
+    public employees: WorkingOnEmployeeModel[]
   ) {
   }
 }

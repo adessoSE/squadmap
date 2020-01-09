@@ -6,15 +6,13 @@ import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.CreateEmployeeService;
 import de.adesso.squadmap.utility.CreateCommandToEmployeeMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -34,8 +32,8 @@ class CreateEmployeeServiceTest {
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
         CreateEmployeeCommand command = new CreateEmployeeCommand();
-        Mockito.when(employeeMapper.map(command)).thenReturn(employee);
-        Mockito.when(employeeRepository.save(employee)).thenReturn(employee);
+        when(employeeMapper.map(command)).thenReturn(employee);
+        when(employeeRepository.save(employee)).thenReturn(employee);
 
         //when
         long found = service.createEmployee(command);
@@ -44,5 +42,7 @@ class CreateEmployeeServiceTest {
         assertThat(found).isEqualTo(employeeId);
         verify(employeeRepository, times(1)).save(employee);
         verify(employeeMapper, times(1)).map(command);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(employeeMapper);
     }
 }

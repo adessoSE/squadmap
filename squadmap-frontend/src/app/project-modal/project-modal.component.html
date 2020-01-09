@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{actionName}}  Project:</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #projectForm="ngForm" (ngSubmit)="onCreateProject(projectForm)">
+    <div class="form-group">
+      <label for="title">Project title:</label>
+      <input type="text" id="title" name="title" class="form-control" [(ngModel)]="project.title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea  type="text" id="description" name="description" class="form-control"  [(ngModel)]="project.description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="since">Since:</label>
+      <input type="date" id="since" name="since" class="form-control"  [(ngModel)]="since">
+    </div>
+    <div class="form-group">
+      <label for="until">Until:</label>
+      <input type="date" id="until" name="until" class="form-control"  [(ngModel)]="until">
+    </div>
+    <div class="form-group">
+      <label for="isExternal">External: </label>
+      <input type="checkbox" id="isExternal" name="isExternal" class="form-control"  [(ngModel)]="project.isExternal">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success" >{{actionName}} Project</button>
+    </div>
+  </form>
+</div>
+

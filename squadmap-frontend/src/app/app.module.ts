@@ -15,8 +15,23 @@ import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
+import {ProjectModalComponent} from './project-modal/project-modal.component';
+import {EmployeeModalComponent} from './employee-modal/employee-modal.component';
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { MapComponent } from './map/map.component';
+import { MapProjectDetailComponent } from './map-project-detail/map-project-detail.component';
+import { WorkingOnModalComponent } from './working-on-modal/working-on-modal.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: MapComponent
+  },
+  {
+    path: 'map',
+    component: MapComponent
+  },
   {
     path: 'employee',
     component: EmployeeComponent
@@ -28,6 +43,18 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectComponent
+  },
+  {
+    path: 'project/:id',
+    component: ProjectDetailComponent
+  },
+  {
+    path: 'map',
+    component: MapComponent
+  },
+  {
+    path: 'map/:id',
+    component: MapProjectDetailComponent
   },
   {
     path: '**',
@@ -45,6 +72,12 @@ const routes: Routes = [
     FilterProjectsPipe,
     FilterEmployeesPipe,
     EmployeeDetailComponent,
+    ProjectDetailComponent,
+    MapComponent,
+    MapProjectDetailComponent,
+    ProjectModalComponent,
+    EmployeeModalComponent,
+    WorkingOnModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,10 +89,11 @@ const routes: Routes = [
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    ButtonsModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [ProjectModalComponent, EmployeeModalComponent, WorkingOnModalComponent]
 })
 export class AppModule {
 }
