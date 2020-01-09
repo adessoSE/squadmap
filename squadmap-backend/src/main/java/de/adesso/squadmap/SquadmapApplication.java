@@ -12,7 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -22,6 +24,16 @@ public class SquadmapApplication {
     
     public static void main(String[] args) {
         SpringApplication.run(SquadmapApplication.class, args);
+        try {
+            openHomePage();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void openHomePage() throws IOException {
+        Runtime rt = Runtime.getRuntime();
+        rt.exec("rundll32 url.dll,FileProtocolHandler " + "http://localhost:4200/");
     }
 
     @Bean
