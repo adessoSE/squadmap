@@ -28,7 +28,6 @@ class WorkingOnRepositoryTest {
     private ProjectRepository projectRepository;
 
     @Test
-    @Disabled
     void checkIfExistsByEmployeeAndProjectReturnsTrueWhenTrue() {
         //given
         Employee employee = new Employee();
@@ -46,7 +45,6 @@ class WorkingOnRepositoryTest {
     }
 
     @Test
-    @Disabled
     void checkIfExistsByEmployeeAndProjectReturnsFalseWhenFalse() {
         //when
         Employee employee = new Employee();
