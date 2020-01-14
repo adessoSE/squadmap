@@ -41,10 +41,6 @@ dependencies {
 
 test {
 	useJUnitPlatform()
-//	jacoco {
-//		destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-//		classDumpDir = file("$buildDir/jacoco/classpathdumps")
-//	}
 }
 
 sonarqube {
@@ -67,37 +63,10 @@ sonarqube {
 	}
 }
 
-jacoco {
-	toolVersion = "0.8.5"
-	reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
 jacocoTestReport {
 	reports {
-		xml.enabled false
-		csv.enabled false
-		html.destination file("${buildDir}/jacocoHtml")
+		xml.enabled true
+		html.enabled true
 	}
 }
 
-jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.5
-			}
-		}
-
-//		rule {
-//			enabled = false
-//			element = 'CLASS'
-//			includes = ['org.gradle.*']
-//
-//			limit {
-//				counter = 'LINE'
-//				value = 'TOTALCOUNT'
-//				maximum = 0.3
-//			}
-//		}
-	}
-}
