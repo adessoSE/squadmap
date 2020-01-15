@@ -7,6 +7,8 @@ import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
@@ -22,6 +24,9 @@ public class UpdateEmployeeService implements UpdateEmployeeUseCase {
             throw new EmployeeNotFoundException();
         }
         Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if (Objects.isNull(employee)) {
+            throw new EmployeeNotFoundException();
+        }
         employee.setFirstName(command.getFirstName());
         employee.setLastName(command.getLastName());
         employee.setBirthday(command.getBirthday());

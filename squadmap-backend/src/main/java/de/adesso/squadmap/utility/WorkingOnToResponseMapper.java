@@ -3,7 +3,7 @@ package de.adesso.squadmap.utility;
 import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
+import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
 import org.springframework.stereotype.Component;
 
 @Component

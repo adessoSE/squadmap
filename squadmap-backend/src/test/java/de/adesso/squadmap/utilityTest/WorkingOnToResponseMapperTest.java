@@ -5,7 +5,7 @@ import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
+import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.utility.EmployeeToResponseMapper;
 import de.adesso.squadmap.utility.ProjectToResponseMapper;
 import de.adesso.squadmap.utility.WorkingOnToResponseMapper;

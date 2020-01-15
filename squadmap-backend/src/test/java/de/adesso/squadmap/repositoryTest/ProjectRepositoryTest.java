@@ -18,7 +18,6 @@ class ProjectRepositoryTest {
     private ProjectRepository projectRepository;
 
     @Test
-    @Disabled
     void checkIfExistsByTitleReturnsTrueWhenExistent() {
         //given
         Project project = new Project("t", "", null, null, true);
@@ -32,7 +31,6 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @Disabled
     void checkIfExistsByTitleReturnsFalseWhenNotExistent() {
         //given
 
