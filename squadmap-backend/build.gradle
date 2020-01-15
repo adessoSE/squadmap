@@ -2,8 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.2.0.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'jacoco'
 	id "org.sonarqube" version "2.7.1"
-	id "jacoco"
 }
 
 group = 'de.adesso'
@@ -49,7 +49,10 @@ sonarqube {
 		property "sonar.organization", "adesso-ag"
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.login", "${System.env.SONAR_TOKEN}"
-		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+		property "sonar.sourceEncoding", "UTF-8"
+//		property "sonar.java.coveragePlugin", "jacoco"
+//		property "sonar.test", "junit"
+//		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
 
 		if (System.env.CIRCLE_PULL_REQUEST != null && System.env.CIRCLE_PULL_REQUEST != "") {
 			println "Analyzing branch '${System.env.CIRCLE_BRANCH}' for PR #${System.env.CIRCLE_PULL_REQUEST}"
@@ -62,4 +65,14 @@ sonarqube {
 			property "sonar.branch.name", "${System.env.CIRCLE_BRANCH}"
 		}
 	}
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
+plugins.withType(JacocoPlugin) {
+	tasks["test"].finalizedBy 'jacocoTestReport'
 }
