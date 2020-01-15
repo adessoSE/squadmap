@@ -50,6 +50,7 @@ sonarqube {
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.login", "${System.env.SONAR_TOKEN}"
 		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test"
+		property "sonar.junit.reportPaths", "${buildDir}/test-results/test"
 
 		if (System.env.CIRCLE_PULL_REQUEST != null && System.env.CIRCLE_PULL_REQUEST != "") {
 			println "Analyzing branch '${System.env.CIRCLE_BRANCH}' for PR #${System.env.CIRCLE_PULL_REQUEST}"
@@ -65,7 +66,6 @@ sonarqube {
 }
 
 jacocoTestReport {
-	dependsOn test
 	reports {
 		xml.enabled true
 		html.enabled true
