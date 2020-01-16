@@ -17,11 +17,12 @@ import {FilterProjectsPipe} from './pipes/filterProjects.pipe';
 import {EmployeeDetailComponent} from './employee-detail/employee-detail.component';
 import {ProjectModalComponent} from './project-modal/project-modal.component';
 import {EmployeeModalComponent} from './employee-modal/employee-modal.component';
-import { ProjectDetailComponent } from './project-detail/project-detail.component';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { MapComponent } from './map/map.component';
-import { MapProjectDetailComponent } from './map-project-detail/map-project-detail.component';
-import { WorkingOnModalComponent } from './working-on-modal/working-on-modal.component';
+import {ProjectDetailComponent} from './project-detail/project-detail.component';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
+import {MapComponent} from './map/map.component';
+import {MapProjectDetailComponent} from './map-project-detail/map-project-detail.component';
+import {WorkingOnModalComponent} from './working-on-modal/working-on-modal.component';
+import {AddEmployeeModalComponent} from './add-employee-modal/add-employee-modal.component';
 
 const routes: Routes = [
   {
@@ -78,6 +79,7 @@ const routes: Routes = [
     ProjectModalComponent,
     EmployeeModalComponent,
     WorkingOnModalComponent,
+    AddEmployeeModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +95,12 @@ const routes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ProjectModalComponent, EmployeeModalComponent, WorkingOnModalComponent]
+  entryComponents: [
+    ProjectModalComponent,
+    EmployeeModalComponent,
+    WorkingOnModalComponent,
+    AddEmployeeModalComponent,
+  ]
 })
 export class AppModule {
 }

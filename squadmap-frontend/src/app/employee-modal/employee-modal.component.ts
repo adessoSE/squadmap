@@ -14,12 +14,15 @@ export class EmployeeModalComponent implements OnInit {
   actionName: string;
   employee: EmployeeModel;
   isNew: boolean;
+  private errorMessage: string;
+  private errorOccurred: boolean;
 
 
   constructor(private modalRef: BsModalRef,
               private employeeService: EmployeeService) { }
 
   ngOnInit() {
+    this.errorMessage = '';
     if (!this.employee) {
       this.employee = new EmployeeModel(0, '', '', new Date(), '',  '', false, []);
       this.isNew = true;
@@ -38,11 +41,30 @@ export class EmployeeModalComponent implements OnInit {
       employeeForm.value.isExternal
     );
     if (this.isNew) {
-      this.employeeService.addEmployee(employee).subscribe(res => {console.log(res); });
+      this.employeeService.addEmployee(employee).subscribe(() => {
+        this.closeModal();
+      }, error => {
+        this.errorOccurred = true;
+        this.errorMessage = error.error.message;
+        setTimeout(() => {
+          this.errorOccurred = false;
+        }, 10000);
+      });
     } else {
-      this.employeeService.updateEmployee(employee, this.employee.employeeId).subscribe(res => {console.log(res); });
+      this.employeeService.updateEmployee(employee, this.employee.employeeId).subscribe(() => {
+        this.closeModal();
+      }, error => {
+        this.errorOccurred = true;
+        this.errorMessage = error.error.message;
+        setTimeout(() => {
+          this.errorOccurred = false;
+        }, 10000);
+      });
     }
-    this.modalRef.hide();
-    location.reload();
+  }
+
+  private closeModal() {
+      this.modalRef.hide();
+      location.reload();
   }
 }

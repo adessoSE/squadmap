@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Select Employee</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <label class="checkbox-inline" for="searchText" >Search:</label>
+  <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText"  autocomplete="off" ngDefaultControl>
+  <table class="table">
+    <tbody>
+    <tr *ngFor="let employee of allEmployees | filterEmployees : {searchText: searchText}">
+      <td>{{employee.firstName}}</td>
+      <td>{{employee.lastName}}</td>
+      <td class="justify-content-end">
+        <button class="btn btn-success" type="button" (click)="onAddEmployee(employee)" >Add</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

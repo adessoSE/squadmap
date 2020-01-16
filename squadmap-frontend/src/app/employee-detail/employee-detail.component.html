@@ -2,38 +2,37 @@
 <div class="row justify-content-center">
   <div class="col-md-3">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header text-center">
         <h2>{{employee.firstName}} {{employee.lastName}}</h2>
       </div>
       <div class="card-body">
-        <img src="" alt="No Picture!">
-        <div>
+        <div id="profile-img" >
+          <img src="" alt="">
+        </div>
           <table>
             <tr>
-              <td>Id: </td>
-              <td>{{employee.employeeId}}</td>
+              <th>Id: </th>
+              <td class="text-right">{{employee.employeeId}}</td>
             </tr>
             <tr>
-              <td>Email: </td>
-              <td>{{employee.email}}</td>
+              <th>Email: </th>
+              <td class="text-right">{{employee.email}}</td>
             </tr>
             <tr>
-              <td>Phone: </td>
-              <td>{{employee.phone}}</td>
+              <th>Phone: </th>
+              <td class="text-right">{{employee.phone}}</td>
             </tr>
             <tr>
-              <td>Birthday: </td>
-              <td>{{employee.birthday.toDateString()}}</td>
+              <th>Birthday: </th>
+              <td class="text-right">{{employee.birthday.toDateString()}}</td>
             </tr>
-            <tr>Something that the employee can do</tr>
           </table>
-        </div>
       </div>
     </div>
   </div>
   <div class="col-md-7">
     <table class="table">
-      <thead>
+      <thead class="table-head">
       <tr>
         <th>Project</th>
         <th>Since</th>
@@ -53,11 +52,12 @@
       </tr>
       </tbody>
     </table>
+    <div class="row justify-content-center">
+      <button class="btn btn-outline-primary" (click)="onOpenAddProjectModal(addProjectModal)">Add</button>
+    </div>
   </div>
 </div>
-<div class="row justify-content-center">
-  <button class="btn btn-outline-primary" (click)="onOpenAddProjectModal(addProjectModal)">Add Project</button>
-</div>
+
 
 
 

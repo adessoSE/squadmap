@@ -17,6 +17,8 @@ export class ProjectModalComponent implements OnInit {
   actionName: string;
   since: string;
   until: string;
+  errorOccurred: boolean;
+  errorMessage: string;
 
   constructor(public modalRef: BsModalRef,
               public projectService: ProjectService,
@@ -44,14 +46,31 @@ export class ProjectModalComponent implements OnInit {
     console.log(newProject);
     if (this.isNew) {
       this.projectService.addProject(newProject).subscribe(() => {
-        this.modalRef.hide();
-        location.reload();
+       this.closeModal();
+      }, error => {
+        console.log(error);
+        this.errorOccurred = true;
+        this.errorMessage = error.error.message;
+        setTimeout(() => {
+          this.errorOccurred = false;
+        }, 10000);
       });
     } else {
       this.projectService.updateProject(newProject, this.project.projectId).subscribe(() => {
-        this.modalRef.hide();
-        location.reload();
+        this.closeModal();
+      }, error => {
+        console.log(error);
+        this.errorOccurred = true;
+        this.errorMessage = error.error.message;
+        setTimeout(() => {
+          this.errorOccurred = false;
+        }, 10000);
       });
     }
+  }
+
+  private closeModal() {
+    this.modalRef.hide();
+    location.reload();
   }
 }

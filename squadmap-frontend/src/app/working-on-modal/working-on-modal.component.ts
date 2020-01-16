@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {NgForm} from '@angular/forms';
 import {WorkingOnEmployeeModel} from '../models/workingOnEmployee.model';
@@ -37,27 +37,24 @@ export class WorkingOnModalComponent implements OnInit {
 
 
   onSubmit(employeeForm: NgForm) {
-
     if (this.projectId) {
       this.employeeId = this.workingOnEmployee.employee.employeeId;
-      this.projectId = this.projectId;
       this.workingOnId = this.workingOnEmployee.workingOnId;
     } else {
-      this.employeeId = this.employeeId;
       this.projectId = this.workingOnProject.project.projectId;
       this.workingOnId = this.workingOnProject.workingOnId;
     }
     this.since = employeeForm.value.since;
     this.until = employeeForm.value.until;
     this.modalRef.hide();
-    // this.workingOnService.updateWorkingOn(
-    //   workingOnId,
-    //   employeeId,
-    //   projectId,
-    //   employeeForm.value.since,
-    //   employeeForm.value.until).subscribe(res => {
-    //     this.modalRef.hide();
-    //     location.reload();
-    // });
+    this.workingOnService.updateWorkingOn(
+      this.workingOnId,
+      this.employeeId,
+      this.projectId,
+      employeeForm.value.since,
+      employeeForm.value.until).subscribe(() => {
+        this.modalRef.hide();
+        location.reload();
+    });
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProjectModel} from '../models/project.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectService} from '../service/project.service';
@@ -8,7 +8,7 @@ import {WorkingOnService} from '../service/workingOn.service';
 import {WorkingOnEmployeeModel} from '../models/workingOnEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {WorkingOnModalComponent} from '../working-on-modal/working-on-modal.component';
-import {CreateWorkingOnModel} from '../models/createWorkingOn.model';
+import {AddEmployeeModalComponent} from '../add-employee-modal/add-employee-modal.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -37,28 +37,14 @@ export class ProjectDetailComponent implements OnInit {
     this.searchText = '';
   }
 
-  onSearchForEmployee() {
-    if (this.searchText.length === 0) {
-      this.isSearching = false;
-    } else {
-      this.isSearching = true;
-      this.filteredEmployees = [];
-      this.filteredEmployees = this.employeeService.getCurrentEmployees();
-    }
-  }
-
-  onAddEmployee(employee: EmployeeModel) {
-    this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(employee.employeeId, this.project.projectId, new Date(), new Date())).subscribe(workingOnId => {
-      this.project.employees.push(new WorkingOnEmployeeModel( +workingOnId, employee, new Date(), new Date() ));
-      this.isSearching = false;
-      this.modalRef.hide();
-    });
-  }
-
-  onOpenAddEmployeeModal(addEmployeeModal: TemplateRef<any>) {
+  onOpenAddEmployeeModal() {
     this.filteredEmployees = this.employeeService.getCurrentEmployees();
-    this.modalRef = this.modalService.show(addEmployeeModal);
+    const initialState = {
+      allEmployees: this.filteredEmployees,
+      existingEmployees: this.project.employees,
+      projectId: this.project.projectId
+    };
+    this.modalRef = this.modalService.show(AddEmployeeModalComponent, {initialState});
   }
 
   onDelete(workingOn: WorkingOnEmployeeModel) {

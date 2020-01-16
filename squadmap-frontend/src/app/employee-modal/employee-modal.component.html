@@ -8,30 +8,39 @@
     <form #employeeForm="ngForm" (ngSubmit)="onCreateEmployee(employeeForm)">
       <div class="form-group">
         <label for="firstName">First name:</label>
-        <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="employee.firstName">
+        <input type="text" id="firstName" name="firstName" class="form-control"
+               [(ngModel)]="employee.firstName">
       </div>
       <div class="form-group">
         <label for="lastName">Last name:</label>
-        <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="employee.lastName">
+        <input type="text" id="lastName" name="lastName" class="form-control"
+               [(ngModel)]="employee.lastName">
       </div>
       <div class="form-group">
         <label for="birthday">Birthday:</label>
-        <input type="date" id="birthday" name="birthday" class="form-control" [(ngModel)]="employee.birthday">
+        <input type="date" id="birthday" name="birthday" class="form-control"
+               [(ngModel)]="employee.birthday">
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="text" id="email" name="email" class="form-control" [(ngModel)]="employee.email">
+        <input type="text" id="email" name="email" class="form-control"
+               [(ngModel)]="employee.email">
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" class="form-control" [(ngModel)]="employee.phone">
+        <input type="text" id="phone" name="phone" class="form-control"
+               [(ngModel)]="employee.phone">
       </div>
       <div class="form-group">
         <label for="isExternal">External: </label>
-        <input type="checkbox" id="isExternal" name="isExternal" class="form-control" [(ngModel)]="employee.isExternal">
+          <input type="checkbox" id="isExternal" name="isExternal" class="form-control"
+                 [(ngModel)]="employee.isExternal">
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-success" >{{actionName}} Employee</button>
+        <button type="submit" class="btn btn-success">{{actionName}} Employee</button>
       </div>
     </form>
+    <div *ngIf="errorOccurred" class="alert alert-danger">
+      {{errorMessage}}
+    </div>
   </div>
