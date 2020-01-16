@@ -44,4 +44,5 @@ workflows:
     jobs:
       - backend:
           context: SonarCloud
-      - frontend
+      - frontend:
+          context: SonarCloud
