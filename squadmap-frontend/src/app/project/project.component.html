@@ -3,16 +3,16 @@
   <div class="col-md-5">
   <input placeholder="Search for..." class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
   </div>
-  <div class="col-md-4">
-    <div class="btn-group">
-      <label class="btn btn-outline-secondary" [(ngModel)]="checkedOldProjects" btnCheckbox tabindex="0" >Hide old</label>
-      <label class="btn btn-outline-secondary" [(ngModel)]="checkedExternalProjects" btnCheckbox tabindex="0" >Hide external</label>
+  <div class="col-md-5 d-flex justify-content-between">
+    <div>
+      <div class="btn-group">
+        <label class="btn btn-outline-secondary" [(ngModel)]="checkedOldProjects" btnCheckbox tabindex="0" >Hide old</label>
+        <label class="btn btn-outline-secondary" [(ngModel)]="checkedExternalProjects" btnCheckbox tabindex="0" >Hide external</label>
+      </div>
     </div>
-  </div>
-  <div class="col-md-1 justify-content-md-end">
-        <div class="btn-group">
-          <label class="btn btn-primary" (click)="onAddProject()">Add</label>
-        </div>
+    <div>
+      <button class="btn btn-secondary" type="button" (click)="onAddProject()">+ Add Project</button>
+    </div>
   </div>
 </div>
 <div class="row justify-content-center">
@@ -33,8 +33,8 @@
         <td class="align-middle" (click)="onOpenProject(project)">{{project.until.toDateString()}}</td>
         <td class="d-flex justify-content-end">
           <div class="btn-group">
-            <button class="btn btn-info" type="button" (click)="onUpdate(project)" >Edit</button>
-            <button class="btn btn-danger" type="button" (click)="onDelete(project)">Delete</button>
+            <button class="btn btn-outline-info" type="button" (click)="onUpdate(project)" >Edit</button>
+            <button class="btn btn-outline-danger" type="button" (click)="onDelete(project)">Delete</button>
           </div>
         </td>
       </tr>

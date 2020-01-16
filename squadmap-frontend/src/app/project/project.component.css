@@ -8,17 +8,10 @@
 }
 
 .search{
-  margin-top: 15px;
+  margin-top: 35px;
+  margin-bottom: 30px;
 }
 
-.search input{
-  margin-bottom: 15px;
-}
-
-.search .btn-group{
-  position: absolute;
-  bottom: 8px;
-}
 
 
 
