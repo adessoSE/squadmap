@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployeeRepository extends Neo4jRepository<Employee, Long> {
+
+    boolean existsByEmail(String email);
 }

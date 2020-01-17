@@ -16,6 +16,7 @@ public class WorkingOn {
     private Long workingOnId;
     private LocalDate since;
     private LocalDate until;
+    private int workload;
 
     @StartNode
     private Employee employee;
@@ -26,11 +27,13 @@ public class WorkingOn {
             Employee employee,
             Project project,
             LocalDate since,
-            LocalDate until
+            LocalDate until,
+            int workload
     ) {
         this.employee = employee;
         this.project = project;
         this.since = since;
         this.until = until;
+        this.workload = workload;
     }
 }

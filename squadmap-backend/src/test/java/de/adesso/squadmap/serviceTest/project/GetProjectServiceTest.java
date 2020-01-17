@@ -35,7 +35,6 @@ class GetProjectServiceTest {
         long projectId = 1;
         Project project = new Project();
         GetProjectResponse response = new GetProjectResponse();
-        when(projectRepository.existsById(projectId)).thenReturn(true);
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
         when(projectMapper.map(project)).thenReturn(response);
 
@@ -44,7 +43,6 @@ class GetProjectServiceTest {
 
         //then
         assertThat(found).isEqualTo(response);
-        verify(projectRepository, times(1)).existsById(projectId);
         verify(projectRepository, times(1)).findById(projectId);
         verify(projectMapper, times(1)).map(project);
         verifyNoMoreInteractions(projectRepository);

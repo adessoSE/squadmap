@@ -13,8 +13,6 @@ import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
 
@@ -30,21 +28,12 @@ public class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
 
     @Override
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
-        if (!workingOnRepository.existsById(workingOnId)) {
-            throw new WorkingOnNotFoundException();
-        }
-        if (!employeeRepository.existsById(command.getEmployeeId())) {
-            throw new EmployeeNotFoundException();
-        }
-        if (!projectRepository.existsById(command.getProjectId())) {
-            throw new ProjectNotFoundException();
-        }
-        Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
-        Project project = projectRepository.findById(command.getProjectId()).orElse(null);
-        WorkingOn workingOn = workingOnRepository.findById(workingOnId).orElse(null);
-        if (Objects.isNull(workingOn)) {
-            throw new WorkingOnNotFoundException();
-        }
+        Employee employee = employeeRepository.findById(command.getEmployeeId())
+                .orElseThrow(EmployeeNotFoundException::new);
+        Project project = projectRepository.findById(command.getProjectId())
+                .orElseThrow(ProjectNotFoundException::new);
+        WorkingOn workingOn = workingOnRepository.findById(workingOnId)
+                .orElseThrow(WorkingOnNotFoundException::new);
         workingOn.setUntil(command.getUntil());
         workingOn.setSince(command.getSince());
         workingOn.setEmployee(employee);

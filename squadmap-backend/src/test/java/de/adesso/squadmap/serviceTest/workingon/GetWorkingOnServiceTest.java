@@ -35,7 +35,6 @@ class GetWorkingOnServiceTest {
         long workingOnId = 1;
         WorkingOn workingOn = new WorkingOn();
         GetWorkingOnResponse response = new GetWorkingOnResponse();
-        when(workingOnRepository.existsById(workingOnId)).thenReturn(true);
         when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.of(workingOn));
         when(workingOnMapper.map(workingOn)).thenReturn(response);
 
@@ -44,7 +43,6 @@ class GetWorkingOnServiceTest {
 
         //then
         assertThat(found).isEqualTo(response);
-        verify(workingOnRepository, times(1)).existsById(workingOnId);
         verify(workingOnRepository, times(1)).findById(workingOnId);
         verify(workingOnMapper, times(1)).map(workingOn);
         verifyNoMoreInteractions(workingOnRepository);
@@ -55,7 +53,7 @@ class GetWorkingOnServiceTest {
     void checkIfGetWorkingOnThrowsExceptionWhenNotFound() {
         //given
         long workingOnId = 1;
-        when(workingOnRepository.existsById(workingOnId)).thenReturn(false);
+        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(WorkingOnNotFoundException.class, () ->

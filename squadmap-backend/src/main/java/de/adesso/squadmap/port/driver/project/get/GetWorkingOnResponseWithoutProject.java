@@ -15,4 +15,5 @@ public class GetWorkingOnResponseWithoutProject {
     private GetEmployeeResponseWithoutProject employee;
     private LocalDate since;
     private LocalDate until;
+    private int workload;
 }

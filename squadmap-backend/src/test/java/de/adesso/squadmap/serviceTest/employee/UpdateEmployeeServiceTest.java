@@ -1,6 +1,7 @@
 package de.adesso.squadmap.serviceTest.employee;
 
 import de.adesso.squadmap.domain.Employee;
+import de.adesso.squadmap.exceptions.employee.EmployeeAlreadyExistsException;
 import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.repository.EmployeeRepository;
@@ -32,9 +33,10 @@ class UpdateEmployeeServiceTest {
         //given
         long employeeId = 1;
         Employee employee = new Employee();
-        UpdateEmployeeCommand command = new UpdateEmployeeCommand("", "", LocalDate.now(), "", "", true);
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
+        UpdateEmployeeCommand command = new UpdateEmployeeCommand("", "", LocalDate.now(), "", "", true, "");
+        employee.setEmail(command.getEmail());
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(employeeRepository.existsByEmail(command.getEmail())).thenReturn(true);
         when(employeeRepository.save(employee)).thenReturn(employee);
 
         //when
@@ -47,8 +49,35 @@ class UpdateEmployeeServiceTest {
         assertThat(employee.getEmail()).isEqualTo(command.getEmail());
         assertThat(employee.getPhone()).isEqualTo(command.getPhone());
         assertThat(employee.getIsExternal()).isEqualTo(command.isExternal());
-        verify(employeeRepository, times(1)).existsById(employeeId);
         verify(employeeRepository, times(1)).findById(employeeId);
+        verify(employeeRepository, times(1)).existsByEmail(command.getEmail());
+        verify(employeeRepository, times(1)).save(employee);
+        verifyNoMoreInteractions(employeeRepository);
+    }
+
+    @Test
+    void checkIfUpdateEmployeeUpdatesWithEmailChanged() {
+        long employeeId = 1;
+        Employee employee = new Employee();
+        employee.setEmail("");
+        UpdateEmployeeCommand command = new UpdateEmployeeCommand();
+        command.setEmail("notEqual");
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(employeeRepository.existsByEmail(command.getEmail())).thenReturn(false);
+        when(employeeRepository.save(employee)).thenReturn(employee);
+
+        //when
+        service.updateEmployee(command, employeeId);
+
+        //then
+        assertThat(employee.getFirstName()).isEqualTo(command.getFirstName());
+        assertThat(employee.getLastName()).isEqualTo(command.getLastName());
+        assertThat(employee.getBirthday()).isEqualTo(command.getBirthday());
+        assertThat(employee.getEmail()).isEqualTo(command.getEmail());
+        assertThat(employee.getPhone()).isEqualTo(command.getPhone());
+        assertThat(employee.getIsExternal()).isEqualTo(command.isExternal());
+        verify(employeeRepository, times(1)).findById(employeeId);
+        verify(employeeRepository, times(1)).existsByEmail(command.getEmail());
         verify(employeeRepository, times(1)).save(employee);
         verifyNoMoreInteractions(employeeRepository);
     }
@@ -58,10 +87,26 @@ class UpdateEmployeeServiceTest {
         //given
         long employeeId = 1;
         UpdateEmployeeCommand command = new UpdateEmployeeCommand();
-        when(employeeRepository.existsById(employeeId)).thenReturn(false);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(EmployeeNotFoundException.class, () ->
+                service.updateEmployee(command, employeeId));
+    }
+
+    @Test
+    void checkIfUpdateEmployeeThrowsExceptionWhenEmailAlreadyExists() {
+        //given
+        long employeeId = 1;
+        UpdateEmployeeCommand command = new UpdateEmployeeCommand();
+        command.setEmail("e@m.de");
+        Employee employee = new Employee();
+        employee.setEmail("");
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(employeeRepository.existsByEmail(command.getEmail())).thenReturn(true);
+
+        //then
+        assertThrows(EmployeeAlreadyExistsException.class, () ->
                 service.updateEmployee(command, employeeId));
     }
 }

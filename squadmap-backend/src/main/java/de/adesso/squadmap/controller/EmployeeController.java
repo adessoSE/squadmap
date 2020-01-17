@@ -10,6 +10,7 @@ import de.adesso.squadmap.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeUseCase;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -53,7 +54,7 @@ public class EmployeeController {
     @PostMapping("/create")
     public Long createEmployee(@RequestBody @Valid CreateEmployeeCommand command, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            throwError(bindingResult);
+            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
         }
         return createEmployeeUseCase.createEmployee(command);
     }
@@ -61,7 +62,7 @@ public class EmployeeController {
     @PutMapping("/update/{employeeId}")
     public void updateEmployee(@PathVariable long employeeId, @RequestBody @Valid UpdateEmployeeCommand command, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            throwError(bindingResult);
+            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
         }
         updateEmployeeUseCase.updateEmployee(command, employeeId);
     }
@@ -71,8 +72,9 @@ public class EmployeeController {
         deleteEmployeeUseCase.deleteEmployee(employeeId);
     }
 
-    private void throwError(BindingResult result) {
-        switch (Objects.requireNonNull(result.getFieldError()).getField()) {
+    private void throwError(FieldError error) {
+        String field = error.getField();
+        switch (field) {
             case "firstName":
                 throw new InvalidEmployeeFirstNameException();
             case "lastName":
@@ -83,8 +85,9 @@ public class EmployeeController {
                 throw new InvalidEmployeeEmailException();
             case "phone":
                 throw new InvalidEmployeePhoneNumberException();
-            default:
-                throw new IllegalArgumentException("Invalid input");
+            case "image":
+                throw new InvalidEmployeeImageException();
         }
+        throw new IllegalArgumentException("Invalid input");
     }
 }

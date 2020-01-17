@@ -24,9 +24,11 @@ public class EmployeeToResponseMapper implements Mapper<Employee, GetEmployeeRes
                                 workingOn.getProject().getDescription(),
                                 workingOn.getProject().getSince(),
                                 workingOn.getProject().getUntil(),
-                                workingOn.getProject().getIsExternal()),
+                                workingOn.getProject().getIsExternal(),
+                                workingOn.getProject().getSites()),
                         workingOn.getSince(),
-                        workingOn.getUntil())));
+                        workingOn.getUntil(),
+                        workingOn.getWorkload())));
         return new GetEmployeeResponse(
                 employee.getEmployeeId(),
                 employee.getFirstName(),
@@ -35,6 +37,7 @@ public class EmployeeToResponseMapper implements Mapper<Employee, GetEmployeeRes
                 employee.getEmail(),
                 employee.getPhone(),
                 employee.getIsExternal(),
+                employee.getImage(),
                 workingOnResponses);
     }
 }

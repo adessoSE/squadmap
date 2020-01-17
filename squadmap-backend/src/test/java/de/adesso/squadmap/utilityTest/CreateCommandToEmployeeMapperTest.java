@@ -22,7 +22,7 @@ class CreateCommandToEmployeeMapperTest {
     @Test
     void checkIfMapMapsToValidEmployee() {
         //given
-        CreateEmployeeCommand command = new CreateEmployeeCommand("f", "l", LocalDate.now(), "e", "0", true);
+        CreateEmployeeCommand command = new CreateEmployeeCommand("f", "l", LocalDate.now(), "e", "0", true, "");
 
         //when
         Employee employee = mapper.map(command);

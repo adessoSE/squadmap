@@ -26,6 +26,7 @@ public class WorkingOnToResponseMapper implements Mapper<WorkingOn, GetWorkingOn
                 employee,
                 project,
                 workingOn.getSince(),
-                workingOn.getUntil());
+                workingOn.getUntil(),
+                workingOn.getWorkload());
     }
 }

@@ -21,10 +21,8 @@ public class GetProjectService implements GetProjectUseCase {
 
     @Override
     public GetProjectResponse getProject(Long projectId) {
-        if (!projectRepository.existsById(projectId)) {
-            throw new ProjectNotFoundException();
-        }
-        Project project = projectRepository.findById(projectId).orElse(null);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
         return projectMapper.map(project);
     }
 }

@@ -18,4 +18,5 @@ public class GetEmployeeResponseWithoutProject {
     private String email;
     private String phone;
     private Boolean isExternal;
+    private String image;
 }

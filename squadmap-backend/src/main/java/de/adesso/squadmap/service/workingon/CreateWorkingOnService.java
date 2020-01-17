@@ -28,22 +28,19 @@ public class CreateWorkingOnService implements CreateWorkingOnUseCase {
 
     @Override
     public Long createWorkingOn(CreateWorkingOnCommand command) {
-        if (!employeeRepository.existsById(command.getEmployeeId())) {
-            throw new EmployeeNotFoundException();
-        }
-        if (!projectRepository.existsById(command.getProjectId())) {
-            throw new ProjectNotFoundException();
-        }
         if (workingOnRepository.existsByEmployeeAndProject(command.getEmployeeId(), command.getProjectId())) {
             throw new WorkingOnAlreadyExistsException();
         }
-        Employee employee = employeeRepository.findById(command.getEmployeeId()).orElse(null);
-        Project project = projectRepository.findById(command.getProjectId()).orElse(null);
+        Employee employee = employeeRepository.findById(command.getEmployeeId())
+                .orElseThrow(EmployeeNotFoundException::new);
+        Project project = projectRepository.findById(command.getProjectId())
+                .orElseThrow(ProjectNotFoundException::new);
         WorkingOn workingOn = new WorkingOn(
                 employee,
                 project,
                 command.getSince(),
-                command.getUntil());
+                command.getUntil(),
+                command.getWorkload());
         return workingOnRepository.save(workingOn).getWorkingOnId();
     }
 }

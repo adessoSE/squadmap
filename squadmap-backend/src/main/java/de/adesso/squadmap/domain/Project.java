@@ -26,6 +26,7 @@ public class Project {
     private LocalDate since;
     private LocalDate until;
     private Boolean isExternal;
+    private List<String> sites;
 
     @Relationship(type = "WORKING_ON", direction = Relationship.INCOMING)
     @ToString.Exclude
@@ -37,11 +38,13 @@ public class Project {
             String description,
             LocalDate since,
             LocalDate until,
-            boolean isExternal) {
+            boolean isExternal,
+            List<String> sites) {
         this.title = title;
         this.description = description;
         this.since = since;
         this.until = until;
         this.isExternal = isExternal;
+        this.sites = sites;
     }
 }

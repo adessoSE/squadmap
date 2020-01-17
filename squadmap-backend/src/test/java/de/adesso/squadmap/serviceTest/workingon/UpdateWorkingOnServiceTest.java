@@ -49,10 +49,7 @@ class UpdateWorkingOnServiceTest {
         project.setProjectId(projectId);
         WorkingOn workingOn = new WorkingOn();
         workingOn.setWorkingOnId(workingOnId);
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
-        when(workingOnRepository.existsById(workingOnId)).thenReturn(true);
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        when(projectRepository.existsById(projectId)).thenReturn(true);
+        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
         when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.of(workingOn));
@@ -66,9 +63,6 @@ class UpdateWorkingOnServiceTest {
         assertThat(workingOn.getProject().getProjectId()).isEqualTo(command.getProjectId());
         assertThat(workingOn.getSince()).isEqualTo(command.getSince());
         assertThat(workingOn.getUntil()).isEqualTo(command.getUntil());
-        verify(workingOnRepository, times(1)).existsById(workingOnId);
-        verify(employeeRepository, times(1)).existsById(employeeId);
-        verify(projectRepository, times(1)).existsById(projectId);
         verify(employeeRepository, times(1)).findById(employeeId);
         verify(projectRepository, times(1)).findById(projectId);
         verify(workingOnRepository, times(1)).findById(workingOnId);
@@ -81,9 +75,13 @@ class UpdateWorkingOnServiceTest {
     @Test
     void checkIfUpdateWorkingOnThrowsExceptionWhenWorkingOnNotFound() {
         //given
+        long employeeId = 1;
+        long projectId = 1;
         long workingOnId = 1;
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand();
-        when(workingOnRepository.existsById(workingOnId)).thenReturn(false);
+        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, null, null, 0);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(new Project()));
+        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(WorkingOnNotFoundException.class, () ->
@@ -93,11 +91,10 @@ class UpdateWorkingOnServiceTest {
     @Test
     void checkIfUpdateWorkingOnThrowsExceptionWhenEmployeeNotFound() {
         //given
-        long workingOnId = 1;
         long employeeId = 1;
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, 0, null, null);
-        when(workingOnRepository.existsById(workingOnId)).thenReturn(true);
-        when(employeeRepository.existsById(employeeId)).thenReturn(false);
+        long workingOnId = 1;
+        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, 0, null, null, 0);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(EmployeeNotFoundException.class, () ->
@@ -110,10 +107,9 @@ class UpdateWorkingOnServiceTest {
         long workingOnId = 1;
         long employeeId = 1;
         long projectId = 1;
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, null, null);
-        when(workingOnRepository.existsById(workingOnId)).thenReturn(true);
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        when(projectRepository.existsById(projectId)).thenReturn(false);
+        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, null, null, 0);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(ProjectNotFoundException.class, () ->

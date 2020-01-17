@@ -35,7 +35,6 @@ class GetEmployeeServiceTest {
         long employeeId = 1;
         Employee employee = new Employee();
         GetEmployeeResponse response = new GetEmployeeResponse();
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         when(employeeMapper.map(employee)).thenReturn(response);
 
@@ -44,7 +43,6 @@ class GetEmployeeServiceTest {
 
         //then
         assertThat(found).isEqualTo(response);
-        verify(employeeRepository, times(1)).existsById(employeeId);
         verify(employeeRepository, times(1)).findById(employeeId);
         verify(employeeMapper, times(1)).map(employee);
         verifyNoMoreInteractions(employeeRepository);
