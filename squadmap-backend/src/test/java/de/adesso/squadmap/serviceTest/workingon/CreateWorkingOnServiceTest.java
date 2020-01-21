@@ -46,11 +46,9 @@ class CreateWorkingOnServiceTest {
         long workingOnId = 1;
         Employee employee = new Employee();
         Project project = new Project();
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
-        WorkingOn workingOn = new WorkingOn(employee, project, command.getSince(), command.getUntil());
+        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
+        WorkingOn workingOn = new WorkingOn(employee, project, command.getSince(), command.getUntil(), 0);
         workingOn.setWorkingOnId(workingOnId);
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        when(projectRepository.existsById(projectId)).thenReturn(true);
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
         when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
@@ -61,8 +59,6 @@ class CreateWorkingOnServiceTest {
 
         //then
         assertThat(found).isEqualTo(workingOnId);
-        verify(employeeRepository, times(1)).existsById(employeeId);
-        verify(projectRepository, times(1)).existsById(projectId);
         verify(employeeRepository, times(1)).findById(employeeId);
         verify(projectRepository, times(1)).findById(projectId);
         verify(workingOnRepository, times(1)).existsByEmployeeAndProject(employeeId, projectId);
@@ -76,8 +72,10 @@ class CreateWorkingOnServiceTest {
     void checkIfCreateWorkingOnThrowsExceptionWhenEmployeeNotFound() {
         //given
         long employeeId = 1;
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, 0, LocalDate.now(), LocalDate.now());
-        when(employeeRepository.existsById(employeeId)).thenReturn(false);
+        long projectId = 1;
+        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, 0, LocalDate.now(), LocalDate.now(), 0);
+        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(EmployeeNotFoundException.class, () ->
@@ -89,9 +87,11 @@ class CreateWorkingOnServiceTest {
         //given
         long employeeId = 1;
         long projectId = 1;
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        when(projectRepository.existsById(projectId)).thenReturn(false);
+        Employee employee = new Employee();
+        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
+        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
 
         //then
         assertThrows(ProjectNotFoundException.class, () ->
@@ -103,13 +103,7 @@ class CreateWorkingOnServiceTest {
         //given
         long employeeId = 1;
         long projectId = 1;
-        Employee employee = new Employee();
-        Project project = new Project();
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now());
-        when(employeeRepository.existsById(employeeId)).thenReturn(true);
-        when(projectRepository.existsById(projectId)).thenReturn(true);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
         when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(true);
 
         //then

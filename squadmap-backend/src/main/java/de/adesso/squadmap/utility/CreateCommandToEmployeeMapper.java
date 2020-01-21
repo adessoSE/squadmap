@@ -15,6 +15,7 @@ public class CreateCommandToEmployeeMapper implements Mapper<CreateEmployeeComma
                 command.getBirthday(),
                 command.getEmail(),
                 command.getPhone(),
-                command.isExternal());
+                command.isExternal(),
+                command.getImage());
     }
 }

@@ -21,10 +21,8 @@ public class GetEmployeeService implements GetEmployeeUseCase {
 
     @Override
     public GetEmployeeResponse getEmployee(Long employeeId) {
-        if(!employeeRepository.existsById(employeeId)){
-            throw new EmployeeNotFoundException();
-        }
-        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(EmployeeNotFoundException::new);
         return employeeMapper.map(employee);
     }
 }

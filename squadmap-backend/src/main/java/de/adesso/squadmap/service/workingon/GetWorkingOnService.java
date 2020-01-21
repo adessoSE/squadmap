@@ -21,10 +21,8 @@ public class GetWorkingOnService implements GetWorkingOnUseCase {
 
     @Override
     public GetWorkingOnResponse getWorkingOn(Long workingOnId) {
-        if (!workingOnRepository.existsById(workingOnId)) {
-            throw new WorkingOnNotFoundException();
-        }
-        WorkingOn workingOn = workingOnRepository.findById(workingOnId).orElse(null);
+        WorkingOn workingOn = workingOnRepository.findById(workingOnId)
+                .orElseThrow(WorkingOnNotFoundException::new);
         return workingOnMapper.map(workingOn);
     }
 }

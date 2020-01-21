@@ -1,6 +1,7 @@
 package de.adesso.squadmap.service.employee;
 
 import de.adesso.squadmap.domain.Employee;
+import de.adesso.squadmap.exceptions.employee.EmployeeAlreadyExistsException;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.repository.EmployeeRepository;
@@ -21,6 +22,9 @@ public class CreateEmployeeService implements CreateEmployeeUseCase {
 
     @Override
     public Long createEmployee(CreateEmployeeCommand command) {
+        if (employeeRepository.existsByEmail(command.getEmail())) {
+            throw new EmployeeAlreadyExistsException();
+        }
         Employee employee = employeeMapper.map(command);
         return employeeRepository.save(employee).getEmployeeId();
     }

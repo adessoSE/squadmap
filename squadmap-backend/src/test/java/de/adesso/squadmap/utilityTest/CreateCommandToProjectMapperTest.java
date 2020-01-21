@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +23,7 @@ class CreateCommandToProjectMapperTest {
     @Test
     void checkIfMapMapsToValidProject() {
         //given
-        CreateProjectCommand command = new CreateProjectCommand("t", "d", LocalDate.now(), LocalDate.now(), true);
+        CreateProjectCommand command = new CreateProjectCommand("t", "d", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
 
         //when
         Project project = mapper.map(command);
@@ -34,5 +35,6 @@ class CreateCommandToProjectMapperTest {
         assertThat(project.getUntil()).isEqualTo(command.getUntil());
         assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
         assertThat(project.getEmployees()).isEmpty();
+        assertThat(project.getSites()).isEmpty();
     }
 }

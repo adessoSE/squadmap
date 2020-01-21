@@ -17,4 +17,5 @@ public class GetWorkingOnResponse {
     private GetProjectResponse project;
     private LocalDate since;
     private LocalDate until;
+    private int workload;
 }

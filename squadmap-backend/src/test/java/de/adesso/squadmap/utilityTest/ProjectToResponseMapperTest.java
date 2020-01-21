@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,11 +27,11 @@ class ProjectToResponseMapperTest {
     @Test
     void checkIfMapMapsToValidProjectResponse() {
         //given
-        Project project = new Project("t", "d", LocalDate.now(), LocalDate.now(), true);
+        Project project = new Project("t", "d", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
         project.setProjectId(1L);
-        Employee employee = new Employee("f", "l", LocalDate.now(), "e", "0", true);
+        Employee employee = new Employee("f", "l", LocalDate.now(), "e", "0", true, "");
         employee.setEmployeeId(2L);
-        WorkingOn workingOn = new WorkingOn(employee, project, LocalDate.now(), LocalDate.now());
+        WorkingOn workingOn = new WorkingOn(employee, project, LocalDate.now(), LocalDate.now(), 0);
         workingOn.setWorkingOnId(3L);
         project.getEmployees().add(workingOn);
         employee.getProjects().add(workingOn);
@@ -48,10 +49,12 @@ class ProjectToResponseMapperTest {
         assertThat(projectResponse.getUntil()).isEqualTo(project.getUntil());
         assertThat(projectResponse.getIsExternal()).isEqualTo(project.getIsExternal());
         assertThat(projectResponse.getEmployees().size()).isEqualTo(1);
+        assertThat(projectResponse.getSites()).isEqualTo(project.getSites());
 
         assertThat(workingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());
         assertThat(workingOnResponse.getSince()).isEqualTo(workingOn.getSince());
         assertThat(workingOnResponse.getUntil()).isEqualTo(workingOn.getUntil());
+        assertThat(workingOnResponse.getWorkload()).isEqualTo(workingOn.getWorkload());
 
         assertThat(employeeResponse.getEmployeeId()).isEqualTo(employee.getEmployeeId());
         assertThat(employeeResponse.getFirstName()).isEqualTo(employee.getFirstName());
@@ -60,7 +63,5 @@ class ProjectToResponseMapperTest {
         assertThat(employeeResponse.getEmail()).isEqualTo(employee.getEmail());
         assertThat(employeeResponse.getPhone()).isEqualTo(employee.getPhone());
         assertThat(employeeResponse.getIsExternal()).isEqualTo(employee.getIsExternal());
-
-
     }
 }
