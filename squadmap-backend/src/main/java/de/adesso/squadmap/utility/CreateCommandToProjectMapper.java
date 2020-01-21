@@ -14,6 +14,7 @@ public class CreateCommandToProjectMapper implements Mapper<CreateProjectCommand
                 command.getDescription(),
                 command.getSince(),
                 command.getUntil(),
-                command.isExternal());
+                command.isExternal(),
+                command.getSites());
     }
 }

@@ -1,16 +1,18 @@
 package de.adesso.squadmap.controller;
 
-import de.adesso.squadmap.exceptions.workingOn.InvalidWorkingOnSinceException;
-import de.adesso.squadmap.exceptions.workingOn.InvalidWorkingOnUntilException;
-import de.adesso.squadmap.port.driver.workingOn.create.CreateWorkingOnCommand;
-import de.adesso.squadmap.port.driver.workingOn.create.CreateWorkingOnUseCase;
-import de.adesso.squadmap.port.driver.workingOn.delete.DeleteWorkingOnUseCase;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnUseCase;
-import de.adesso.squadmap.port.driver.workingOn.get.ListWorkingOnUseCase;
-import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnCommand;
-import de.adesso.squadmap.port.driver.workingOn.update.UpdateWorkingOnUseCase;
+import de.adesso.squadmap.exceptions.workingon.InvalidWorkingOnSinceException;
+import de.adesso.squadmap.exceptions.workingon.InvalidWorkingOnUntilException;
+import de.adesso.squadmap.exceptions.workingon.InvalidWorkingOnWorkloadException;
+import de.adesso.squadmap.port.driver.workingon.create.CreateWorkingOnCommand;
+import de.adesso.squadmap.port.driver.workingon.create.CreateWorkingOnUseCase;
+import de.adesso.squadmap.port.driver.workingon.delete.DeleteWorkingOnUseCase;
+import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
+import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnUseCase;
+import de.adesso.squadmap.port.driver.workingon.get.ListWorkingOnUseCase;
+import de.adesso.squadmap.port.driver.workingon.update.UpdateWorkingOnCommand;
+import de.adesso.squadmap.port.driver.workingon.update.UpdateWorkingOnUseCase;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -54,7 +56,7 @@ public class WorkingOnController {
     @PostMapping("/create")
     public Long createWorkingOn(@RequestBody @Valid CreateWorkingOnCommand command, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            throwError(bindingResult);
+            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
         }
         return createWorkingOnUseCase.createWorkingOn(command);
     }
@@ -62,7 +64,7 @@ public class WorkingOnController {
     @PutMapping("/update/{workingOnId}")
     public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody @Valid UpdateWorkingOnCommand command, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            throwError(bindingResult);
+            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
         }
         updateWorkingOnUseCase.updateWorkingOn(command, workingOnId);
     }
@@ -72,12 +74,14 @@ public class WorkingOnController {
         deleteWorkingOnUseCase.deleteWorkingOn(workingOnId);
     }
 
-    private void throwError(BindingResult result) {
-        switch (Objects.requireNonNull(result.getFieldError()).getField()) {
+    private void throwError(FieldError error) {
+        switch (error.getField()) {
             case "since":
                 throw new InvalidWorkingOnSinceException();
             case "until":
                 throw new InvalidWorkingOnUntilException();
+            case "workload":
+                throw new InvalidWorkingOnWorkloadException();
             default:
                 throw new IllegalArgumentException("Invalid input");
         }

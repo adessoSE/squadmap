@@ -5,7 +5,7 @@ import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.port.driver.workingOn.get.GetWorkingOnResponse;
+import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.utility.EmployeeToResponseMapper;
 import de.adesso.squadmap.utility.ProjectToResponseMapper;
 import de.adesso.squadmap.utility.WorkingOnToResponseMapper;
@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -35,9 +36,9 @@ class WorkingOnToResponseMapperTest {
     void checkIfMapMapsToValidWorkingOnResponse() {
         //given
 
-        Project project = new Project("t", "d", LocalDate.now(), LocalDate.now(), true);
-        Employee employee = new Employee("f", "l", LocalDate.now(), "e", "0", true);
-        WorkingOn workingOn = new WorkingOn(employee, project, LocalDate.now(), LocalDate.now());
+        Project project = new Project("t", "d", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
+        Employee employee = new Employee("f", "l", LocalDate.now(), "e", "0", true, "");
+        WorkingOn workingOn = new WorkingOn(employee, project, LocalDate.now(), LocalDate.now(), 0);
         workingOn.setWorkingOnId(1L);
 
         GetEmployeeResponse employeeResponse = new GetEmployeeResponse();
@@ -52,6 +53,7 @@ class WorkingOnToResponseMapperTest {
         assertThat(workingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());
         assertThat(workingOnResponse.getSince()).isEqualTo(workingOn.getSince());
         assertThat(workingOnResponse.getUntil()).isEqualTo(workingOn.getUntil());
+        assertThat(workingOnResponse.getWorkload()).isEqualTo(workingOn.getWorkload());
 
         assertThat(workingOnResponse.getEmployee()).isEqualTo(employeeResponse);
         assertThat(workingOnResponse.getProject()).isEqualTo(projectResponse);

@@ -1,9 +1,6 @@
 package de.adesso.squadmap.controller;
 
-import de.adesso.squadmap.exceptions.project.InvalidProjectDescriptionException;
-import de.adesso.squadmap.exceptions.project.InvalidProjectSinceException;
-import de.adesso.squadmap.exceptions.project.InvalidProjectTitleException;
-import de.adesso.squadmap.exceptions.project.InvalidProjectUntilException;
+import de.adesso.squadmap.exceptions.project.*;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.port.driver.project.delete.DeleteProjectUseCase;
@@ -13,6 +10,7 @@ import de.adesso.squadmap.port.driver.project.get.ListProjectUseCase;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectUseCase;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,7 +54,7 @@ public class ProjectController {
     @PostMapping("/create")
     public Long createProject(@RequestBody @Valid CreateProjectCommand command, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            throwError(bindingResult);
+            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
         }
         return createProjectUseCase.createProject(command);
     }
@@ -64,7 +62,7 @@ public class ProjectController {
     @PutMapping("/update/{projectId}")
     public void updateProject(@PathVariable long projectId, @RequestBody @Valid UpdateProjectCommand command, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            throwError(bindingResult);
+            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
         }
         updateProjectUseCase.updateProject(command, projectId);
     }
@@ -74,18 +72,19 @@ public class ProjectController {
         deleteProjectUseCase.deleteProject(projectId);
     }
 
-    private void throwError(BindingResult result) {
-        switch (Objects.requireNonNull(result.getFieldError()).getField()) {
-            case "title":
-                throw new InvalidProjectTitleException();
-            case "description":
-                throw new InvalidProjectDescriptionException();
-            case "since":
-                throw new InvalidProjectSinceException();
-            case "until":
-                throw new InvalidProjectUntilException();
-            default:
-                throw new IllegalArgumentException("Invalid input");
+    private void throwError(FieldError error) {
+        String field = error.getField();
+        if ("title".equals(field)) {
+            throw new InvalidProjectTitleException();
+        } else if ("description".equals(field)) {
+            throw new InvalidProjectDescriptionException();
+        } else if ("since".equals(field)) {
+            throw new InvalidProjectSinceException();
+        } else if ("until".equals(field)) {
+            throw new InvalidProjectUntilException();
+        } else if (field.startsWith("sites")) {
+            throw new InvalidProjectUrlListException();
         }
+        throw new IllegalArgumentException("Invalid input");
     }
 }

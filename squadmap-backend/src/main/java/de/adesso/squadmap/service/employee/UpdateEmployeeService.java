@@ -1,6 +1,7 @@
 package de.adesso.squadmap.service.employee;
 
 import de.adesso.squadmap.domain.Employee;
+import de.adesso.squadmap.exceptions.employee.EmployeeAlreadyExistsException;
 import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeUseCase;
@@ -18,10 +19,11 @@ public class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
     @Override
     public void updateEmployee(UpdateEmployeeCommand command, Long employeeId) {
-        if (!employeeRepository.existsById(employeeId)) {
-            throw new EmployeeNotFoundException();
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(EmployeeNotFoundException::new);
+        if (employeeRepository.existsByEmail(command.getEmail()) && !employee.getEmail().equals(command.getEmail())) {
+            throw new EmployeeAlreadyExistsException();
         }
-        Employee employee = employeeRepository.findById(employeeId).orElse(null);
         employee.setFirstName(command.getFirstName());
         employee.setLastName(command.getLastName());
         employee.setBirthday(command.getBirthday());

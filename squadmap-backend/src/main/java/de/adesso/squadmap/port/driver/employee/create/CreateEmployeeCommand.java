@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -30,4 +31,7 @@ public class CreateEmployeeCommand {
     private String phone;
     @JsonProperty
     private boolean isExternal;
+    @NotNull
+    @URL(protocol = "file")
+    private String image;
 }

@@ -27,6 +27,7 @@ public class Employee {
     private String email;
     private String phone;
     private Boolean isExternal;
+    private String image;
 
     @Relationship(type = "WORKING_ON")
     @ToString.Exclude
@@ -39,12 +40,14 @@ public class Employee {
             LocalDate birthday,
             String email,
             String phone,
-            boolean isExternal) {
+            boolean isExternal,
+            String image) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.email = email;
         this.phone = phone;
         this.isExternal = isExternal;
+        this.image = image;
     }
 }

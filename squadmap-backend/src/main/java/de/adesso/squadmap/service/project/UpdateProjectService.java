@@ -19,10 +19,8 @@ public class UpdateProjectService implements UpdateProjectUseCase {
 
     @Override
     public void updateProject(UpdateProjectCommand command, Long projectId) {
-        if (!projectRepository.existsById(projectId)) {
-            throw new ProjectNotFoundException();
-        }
-        Project project = projectRepository.findById(projectId).orElse(null);
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(ProjectNotFoundException::new);
         if (projectRepository.existsByTitle(command.getTitle()) && !project.getTitle().equals(command.getTitle())) {
             throw new ProjectAlreadyExistsException();
         }
