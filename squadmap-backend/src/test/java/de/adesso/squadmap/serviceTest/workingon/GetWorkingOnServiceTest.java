@@ -2,9 +2,7 @@ package de.adesso.squadmap.serviceTest.workingon;
 
 import de.adesso.squadmap.adapter.workingon.GetWorkingOnAdapter;
 import de.adesso.squadmap.domain.WorkingOn;
-import de.adesso.squadmap.exceptions.workingon.WorkingOnNotFoundException;
 import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
-import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.service.workingon.GetWorkingOnService;
 import de.adesso.squadmap.utility.WorkingOnToResponseMapper;
 import org.junit.jupiter.api.Test;
@@ -13,10 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest

@@ -31,11 +31,11 @@ public class ListWorkingOnAdapterTest {
         workingOn1.setWorkingOnId(1L);
         WorkingOn workingOn2 = new WorkingOn();
         workingOn2.setWorkingOnId(2L);
-        Iterable workingOns = Arrays.asList(workingOn1, workingOn2);
+        Iterable<WorkingOn> workingOns = Arrays.asList(workingOn1, workingOn2);
         when(workingOnRepository.findAll()).thenReturn(workingOns);
 
         //when
-        List found = listWorkingOnAdapter.listWorkingOn();
+        List<WorkingOn> found = listWorkingOnAdapter.listWorkingOn();
 
         //then
         assertThat(found).isEqualTo(workingOns);

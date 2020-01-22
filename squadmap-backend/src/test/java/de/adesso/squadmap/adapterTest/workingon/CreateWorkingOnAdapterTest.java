@@ -7,13 +7,12 @@ import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.exceptions.workingon.WorkingOnAlreadyExistsException;
 import de.adesso.squadmap.repository.WorkingOnRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -47,6 +46,7 @@ public class CreateWorkingOnAdapterTest {
         long found = createWorkingOnAdapter.createWorkingOn(workingOn);
 
         //then
+        assertThat(found).isEqualTo(workingOnId);
         verify(workingOnRepository, times(1)).existsByEmployeeAndProject(employeeId, projectId);
         verify(workingOnRepository, times(1)).save(workingOn);
         verifyNoMoreInteractions(workingOnRepository);

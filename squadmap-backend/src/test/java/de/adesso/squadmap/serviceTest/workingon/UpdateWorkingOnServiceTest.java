@@ -6,13 +6,7 @@ import de.adesso.squadmap.adapter.workingon.UpdateWorkingOnAdapter;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
-import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
-import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
-import de.adesso.squadmap.exceptions.workingon.WorkingOnNotFoundException;
 import de.adesso.squadmap.port.driver.workingon.update.UpdateWorkingOnCommand;
-import de.adesso.squadmap.repository.EmployeeRepository;
-import de.adesso.squadmap.repository.ProjectRepository;
-import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.service.workingon.UpdateWorkingOnService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest

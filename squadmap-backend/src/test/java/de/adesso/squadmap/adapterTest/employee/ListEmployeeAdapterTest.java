@@ -4,8 +4,6 @@ import de.adesso.squadmap.adapter.employee.ListEmployeeAdapter;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,11 +31,11 @@ public class ListEmployeeAdapterTest {
         employee1.setEmployeeId(1L);
         Employee employee2 = new Employee();
         employee2.setEmployeeId(2L);
-        Iterable projects = Arrays.asList(employee1, employee2);
+        Iterable<Employee> projects = Arrays.asList(employee1, employee2);
         when(employeeRepository.findAll()).thenReturn(projects);
 
         //when
-        List found = listEmployeeAdapter.listEmployees();
+        List<Employee> found = listEmployeeAdapter.listEmployees();
 
         //then
         assertThat(found).isEqualTo(projects);

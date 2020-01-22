@@ -2,9 +2,7 @@ package de.adesso.squadmap.serviceTest.project;
 
 import de.adesso.squadmap.adapter.project.CreateProjectAdapter;
 import de.adesso.squadmap.domain.Project;
-import de.adesso.squadmap.exceptions.project.ProjectAlreadyExistsException;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
-import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.CreateProjectService;
 import de.adesso.squadmap.utility.CreateCommandToProjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest

@@ -1,11 +1,6 @@
 package de.adesso.squadmap.service.workingon;
 
-import de.adesso.squadmap.domain.Employee;
-import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
-import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
-import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
-import de.adesso.squadmap.exceptions.workingon.WorkingOnNotFoundException;
 import de.adesso.squadmap.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.port.driven.project.GetProjectPort;
 import de.adesso.squadmap.port.driven.workingon.UpdateWorkingOnPort;

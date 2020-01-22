@@ -4,8 +4,6 @@ import de.adesso.squadmap.adapter.project.ListProjectAdapter;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.repository.ProjectRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,11 +31,11 @@ public class ListProjectAdapterTest {
         project1.setProjectId(1L);
         Project project2 = new Project();
         project2.setProjectId(2L);
-        Iterable projects = Arrays.asList(project1, project2);
+        Iterable<Project> projects = Arrays.asList(project1, project2);
         when(projectRepository.findAll()).thenReturn(projects);
 
         //when
-        List found = listProjectAdapter.listProjects();
+        List<Project> found = listProjectAdapter.listProjects();
 
         //then
         assertThat(found).isEqualTo(projects);

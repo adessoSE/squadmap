@@ -3,7 +3,6 @@ package de.adesso.squadmap.serviceTest.workingon;
 import de.adesso.squadmap.adapter.workingon.ListWorkingOnAdapter;
 import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
-import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.service.workingon.ListWorkingOnService;
 import de.adesso.squadmap.utility.WorkingOnToResponseMapper;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,12 +35,12 @@ class ListWorkingOnServiceTest {
         workingOn1.setWorkingOnId(1L);
         WorkingOn workingOn2 = new WorkingOn();
         workingOn2.setWorkingOnId(2L);
-        List workingOns = Arrays.asList(workingOn1, workingOn2);
+        List<WorkingOn> workingOns = Arrays.asList(workingOn1, workingOn2);
         GetWorkingOnResponse response1 = new GetWorkingOnResponse();
         response1.setWorkingOnId(1L);
         GetWorkingOnResponse response2 = new GetWorkingOnResponse();
         response2.setWorkingOnId(2L);
-        List getWorkingOnResponses = Arrays.asList(response1, response2);
+        List<GetWorkingOnResponse> getWorkingOnResponses = Arrays.asList(response1, response2);
         when(listWorkingOnAdapter.listWorkingOn()).thenReturn(workingOns);
         when(workingOnMapper.map(workingOn1)).thenReturn(response1);
         when(workingOnMapper.map(workingOn2)).thenReturn(response2);

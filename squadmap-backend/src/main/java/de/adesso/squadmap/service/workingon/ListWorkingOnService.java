@@ -4,7 +4,6 @@ import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.port.driver.workingon.get.ListWorkingOnUseCase;
-import de.adesso.squadmap.repository.WorkingOnRepository;
 import de.adesso.squadmap.utility.Mapper;
 import org.springframework.stereotype.Service;
 
