@@ -1,35 +1,27 @@
 package de.adesso.squadmap.service.employee;
 
 import de.adesso.squadmap.domain.Employee;
-import de.adesso.squadmap.exceptions.employee.EmployeeAlreadyExistsException;
-import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
+import de.adesso.squadmap.port.driven.employee.UpdateEmployeePort;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.update.UpdateEmployeeUseCase;
-import de.adesso.squadmap.repository.EmployeeRepository;
+import de.adesso.squadmap.utility.UpdateCommandToEmployeeMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
-    private final EmployeeRepository employeeRepository;
+    private final UpdateEmployeePort updateEmployeePort;
+    private final UpdateCommandToEmployeeMapper mapper;
 
-    public UpdateEmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public UpdateEmployeeService(UpdateEmployeePort updateEmployeePort, UpdateCommandToEmployeeMapper mapper) {
+        this.updateEmployeePort = updateEmployeePort;
+        this.mapper = mapper;
     }
 
     @Override
     public void updateEmployee(UpdateEmployeeCommand command, Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(EmployeeNotFoundException::new);
-        if (employeeRepository.existsByEmail(command.getEmail()) && !employee.getEmail().equals(command.getEmail())) {
-            throw new EmployeeAlreadyExistsException();
-        }
-        employee.setFirstName(command.getFirstName());
-        employee.setLastName(command.getLastName());
-        employee.setBirthday(command.getBirthday());
-        employee.setEmail(command.getEmail());
-        employee.setPhone(command.getPhone());
-        employee.setIsExternal(command.isExternal());
-        employeeRepository.save(employee);
+        Employee employee = mapper.map(command);
+        employee.setEmployeeId(employeeId);
+        updateEmployeePort.updateEmployee(employee);
     }
 }

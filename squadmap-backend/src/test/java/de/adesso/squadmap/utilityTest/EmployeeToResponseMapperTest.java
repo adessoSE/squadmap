@@ -49,6 +49,7 @@ class EmployeeToResponseMapperTest {
         assertThat(employeeResponse.getEmail()).isEqualTo(employee.getEmail());
         assertThat(employeeResponse.getPhone()).isEqualTo(employee.getPhone());
         assertThat(employeeResponse.getIsExternal()).isEqualTo(employee.getIsExternal());
+        assertThat(employeeResponse.getImage()).isEqualTo(employee.getImage());
         assertThat(employee.getProjects().size()).isEqualTo(1);
 
         assertThat(workingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());

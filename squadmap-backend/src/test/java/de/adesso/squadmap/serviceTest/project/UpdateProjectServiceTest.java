@@ -1,11 +1,13 @@
 package de.adesso.squadmap.serviceTest.project;
 
+import de.adesso.squadmap.adapter.project.UpdateProjectAdapter;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.exceptions.project.ProjectAlreadyExistsException;
 import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.UpdateProjectService;
+import de.adesso.squadmap.utility.UpdateCommandToProjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,85 +29,27 @@ class UpdateProjectServiceTest {
     @Autowired
     private UpdateProjectService service;
     @MockBean
-    private ProjectRepository projectRepository;
+    private UpdateProjectAdapter updateProjectAdapter;
+    @MockBean
+    private UpdateCommandToProjectMapper projectMapper;
 
     @Test
     void checkIfUpdateProjectUpdatesTheProject() {
         //given
         long projectId = 1;
         Project project = new Project();
-        UpdateProjectCommand command = new UpdateProjectCommand("", "", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
-        project.setTitle(command.getTitle());
-        when(projectRepository.existsByTitle(command.getTitle())).thenReturn(true);
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        when(projectRepository.save(project)).thenReturn(project);
+        UpdateProjectCommand updateProjectCommand = new UpdateProjectCommand();
+        when(projectMapper.map(updateProjectCommand)).thenReturn(project);
+        doNothing().when(updateProjectAdapter).updateProject(project);
 
         //when
-        service.updateProject(command, projectId);
+        service.updateProject(updateProjectCommand, projectId);
 
         //then
-        assertThat(project.getTitle()).isEqualTo(command.getTitle());
-        assertThat(project.getDescription()).isEqualTo(command.getDescription());
-        assertThat(project.getSince()).isEqualTo(command.getSince());
-        assertThat(project.getUntil()).isEqualTo(command.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
-        verify(projectRepository, times(1)).existsByTitle(command.getTitle());
-        verify(projectRepository, times(1)).findById(projectId);
-        verify(projectRepository, times(1)).save(project);
-        verifyNoMoreInteractions(projectRepository);
-    }
-
-    @Test
-    void checkIfUpdateProjectUpdatesTheProjectWithTitleChanged() {
-        //given
-        long projectId = 1;
-        Project project = new Project("t", "", null, null, true, new ArrayList<>());
-        UpdateProjectCommand command = new UpdateProjectCommand("other", "", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
-        when(projectRepository.existsByTitle(command.getTitle())).thenReturn(false);
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        when(projectRepository.save(project)).thenReturn(project);
-
-        //when
-        service.updateProject(command, projectId);
-
-        //then
-        assertThat(project.getTitle()).isEqualTo(command.getTitle());
-        assertThat(project.getDescription()).isEqualTo(command.getDescription());
-        assertThat(project.getSince()).isEqualTo(command.getSince());
-        assertThat(project.getUntil()).isEqualTo(command.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
-        verify(projectRepository, times(1)).existsByTitle(command.getTitle());
-        verify(projectRepository, times(1)).findById(projectId);
-        verify(projectRepository, times(1)).save(project);
-        verifyNoMoreInteractions(projectRepository);
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsExceptionWhenNotFound() {
-        //given
-        long id = 1;
-        UpdateProjectCommand command = new UpdateProjectCommand();
-        when(projectRepository.findById(id)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(ProjectNotFoundException.class, () ->
-                service.updateProject(command, id));
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsExceptionWhenTitleAlreadyExists() {
-        //given
-        long projectId = 1;
-        Project project = new Project();
-        UpdateProjectCommand command = new UpdateProjectCommand();
-        project.setTitle("a");
-        command.setTitle("b");
-        when(projectRepository.existsById(projectId)).thenReturn(true);
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        when(projectRepository.existsByTitle(command.getTitle())).thenReturn(true);
-
-        //then
-        assertThrows(ProjectAlreadyExistsException.class, () ->
-                service.updateProject(command, projectId));
+        assertThat(project.getProjectId()).isEqualTo(projectId);
+        verify(projectMapper, times(1)).map(updateProjectCommand);
+        verify(updateProjectAdapter, times(1)).updateProject(project);
+        verifyNoMoreInteractions(projectMapper);
+        verifyNoMoreInteractions(updateProjectAdapter);
     }
 }

@@ -34,7 +34,7 @@ class CreateCommandToProjectMapperTest {
         assertThat(project.getSince()).isEqualTo(command.getSince());
         assertThat(project.getUntil()).isEqualTo(command.getUntil());
         assertThat(project.getIsExternal()).isEqualTo(command.isExternal());
+        assertThat(project.getSites()).isEqualTo(command.getSites());
         assertThat(project.getEmployees()).isEmpty();
-        assertThat(project.getSites()).isEmpty();
     }
 }

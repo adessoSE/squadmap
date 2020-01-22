@@ -1,5 +1,6 @@
 package de.adesso.squadmap.serviceTest.project;
 
+import de.adesso.squadmap.adapter.project.CreateProjectAdapter;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.exceptions.project.ProjectAlreadyExistsException;
 import de.adesso.squadmap.port.driver.project.create.CreateProjectCommand;
@@ -23,44 +24,27 @@ class CreateProjectServiceTest {
     @Autowired
     private CreateProjectService service;
     @MockBean
-    private ProjectRepository projectRepository;
+    private CreateProjectAdapter createProjectAdapter;
     @MockBean
     private CreateCommandToProjectMapper projectMapper;
 
     @Test
     void checkIfCreateProjectCreatesAProject() {
         //given
-        String title = "";
+        long projectId = 1;
         Project project = new Project();
-        project.setProjectId(1L);
-        CreateProjectCommand command = new CreateProjectCommand();
-        command.setTitle(title);
-        when(projectRepository.existsByTitle(title)).thenReturn(false);
-        when(projectRepository.save(project)).thenReturn(project);
-        when(projectMapper.map(command)).thenReturn(project);
+        CreateProjectCommand createProjectCommand = new CreateProjectCommand();
+        when(projectMapper.map(createProjectCommand)).thenReturn(project);
+        when(createProjectAdapter.createProject(project)).thenReturn(projectId);
 
         //when
-        long found = service.createProject(command);
+        long found = service.createProject(createProjectCommand);
 
         //then
-        assertThat(found).isEqualTo(project.getProjectId());
-        verify(projectRepository, times(1)).existsByTitle(title);
-        verify(projectRepository, times(1)).save(project);
-        verify(projectMapper, times(1)).map(command);
-        verifyNoMoreInteractions(projectRepository);
+        assertThat(found).isEqualTo(projectId);
+        verify(projectMapper, times(1)).map(createProjectCommand);
+        verify(createProjectAdapter, times(1)).createProject(project);
         verifyNoMoreInteractions(projectMapper);
-    }
-
-    @Test
-    void checkIfCreateProjectThrowsExceptionWhenTitleAlreadyExists() {
-        //given
-        String title = "";
-        CreateProjectCommand command = new CreateProjectCommand();
-        command.setTitle(title);
-        when(projectRepository.existsByTitle(title)).thenReturn(true);
-
-        //then
-        assertThrows(ProjectAlreadyExistsException.class, () ->
-                service.createProject(command));
+        verifyNoMoreInteractions(createProjectAdapter);
     }
 }

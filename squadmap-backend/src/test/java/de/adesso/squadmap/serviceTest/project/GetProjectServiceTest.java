@@ -1,5 +1,6 @@
 package de.adesso.squadmap.serviceTest.project;
 
+import de.adesso.squadmap.adapter.project.GetProjectAdapter;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.port.driver.project.get.GetProjectResponse;
@@ -25,7 +26,7 @@ class GetProjectServiceTest {
     @Autowired
     private GetProjectService service;
     @MockBean
-    private ProjectRepository projectRepository;
+    private GetProjectAdapter getProjectAdapter;
     @MockBean
     private ProjectToResponseMapper projectMapper;
 
@@ -34,29 +35,18 @@ class GetProjectServiceTest {
         //given
         long projectId = 1;
         Project project = new Project();
-        GetProjectResponse response = new GetProjectResponse();
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        when(projectMapper.map(project)).thenReturn(response);
+        GetProjectResponse getProjectResponse = new GetProjectResponse();
+        when(getProjectAdapter.getProject(projectId)).thenReturn(project);
+        when(projectMapper.map(project)).thenReturn(getProjectResponse);
 
         //when
-        GetProjectResponse found = service.getProject(projectId);
+        GetProjectResponse response = service.getProject(projectId);
 
         //then
-        assertThat(found).isEqualTo(response);
-        verify(projectRepository, times(1)).findById(projectId);
+        assertThat(response).isEqualTo(getProjectResponse);
+        verify(getProjectAdapter, times(1)).getProject(projectId);
         verify(projectMapper, times(1)).map(project);
-        verifyNoMoreInteractions(projectRepository);
+        verifyNoMoreInteractions(getProjectAdapter);
         verifyNoMoreInteractions(projectMapper);
-    }
-
-    @Test
-    void checkIfGetProjectThrowsExceptionWhenNotFound() {
-        //given
-        long projectId = 1;
-        when(projectRepository.existsById(projectId)).thenReturn(false);
-
-        //then
-        assertThrows(ProjectNotFoundException.class, () ->
-                service.getProject(projectId));
     }
 }

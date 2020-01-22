@@ -1,5 +1,8 @@
 package de.adesso.squadmap.serviceTest.workingon;
 
+import de.adesso.squadmap.adapter.employee.GetEmployeeAdapter;
+import de.adesso.squadmap.adapter.project.GetProjectAdapter;
+import de.adesso.squadmap.adapter.workingon.UpdateWorkingOnAdapter;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
@@ -31,11 +34,11 @@ class UpdateWorkingOnServiceTest {
     @Autowired
     private UpdateWorkingOnService service;
     @MockBean
-    private WorkingOnRepository workingOnRepository;
+    private UpdateWorkingOnAdapter updateWorkingOnAdapter;
     @MockBean
-    private EmployeeRepository employeeRepository;
+    private GetEmployeeAdapter getEmployeeAdapter;
     @MockBean
-    private ProjectRepository projectRepository;
+    private GetProjectAdapter getProjectAdapter;
 
     @Test
     void checkIfUpdateWorkingOnUpdatesTheRelation() {
@@ -44,75 +47,23 @@ class UpdateWorkingOnServiceTest {
         long employeeId = 1;
         long projectId = 1;
         Employee employee = new Employee();
-        employee.setEmployeeId(employeeId);
         Project project = new Project();
-        project.setProjectId(projectId);
-        WorkingOn workingOn = new WorkingOn();
-        workingOn.setWorkingOnId(workingOnId);
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.of(workingOn));
-        when(workingOnRepository.save(workingOn)).thenReturn(workingOn);
+        UpdateWorkingOnCommand updateWorkingOnCommand = new UpdateWorkingOnCommand();
+        updateWorkingOnCommand.setEmployeeId(employeeId);
+        updateWorkingOnCommand.setProjectId(projectId);
+        when(getEmployeeAdapter.getEmployee(employeeId)).thenReturn(employee);
+        when(getProjectAdapter.getProject(projectId)).thenReturn(project);
+        doNothing().when(updateWorkingOnAdapter).updateWorkingOn(any(WorkingOn.class));
 
         //when
-        service.updateWorkingOn(command, workingOnId);
+        service.updateWorkingOn(updateWorkingOnCommand, workingOnId);
 
         //then
-        assertThat(workingOn.getEmployee().getEmployeeId()).isEqualTo(command.getEmployeeId());
-        assertThat(workingOn.getProject().getProjectId()).isEqualTo(command.getProjectId());
-        assertThat(workingOn.getSince()).isEqualTo(command.getSince());
-        assertThat(workingOn.getUntil()).isEqualTo(command.getUntil());
-        verify(employeeRepository, times(1)).findById(employeeId);
-        verify(projectRepository, times(1)).findById(projectId);
-        verify(workingOnRepository, times(1)).findById(workingOnId);
-        verify(workingOnRepository, times(1)).save(workingOn);
-        verifyNoMoreInteractions(employeeRepository);
-        verifyNoMoreInteractions(projectRepository);
-        verifyNoMoreInteractions(workingOnRepository);
-    }
-
-    @Test
-    void checkIfUpdateWorkingOnThrowsExceptionWhenWorkingOnNotFound() {
-        //given
-        long employeeId = 1;
-        long projectId = 1;
-        long workingOnId = 1;
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, null, null, 0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(new Project()));
-        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(WorkingOnNotFoundException.class, () ->
-                service.updateWorkingOn(command, workingOnId));
-    }
-
-    @Test
-    void checkIfUpdateWorkingOnThrowsExceptionWhenEmployeeNotFound() {
-        //given
-        long employeeId = 1;
-        long workingOnId = 1;
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, 0, null, null, 0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(EmployeeNotFoundException.class, () ->
-                service.updateWorkingOn(command, workingOnId));
-    }
-
-    @Test
-    void checkIfUpdateWorkingOnThrowsExceptionWhenProjectNotFound() {
-        //given
-        long workingOnId = 1;
-        long employeeId = 1;
-        long projectId = 1;
-        UpdateWorkingOnCommand command = new UpdateWorkingOnCommand(employeeId, projectId, null, null, 0);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(new Employee()));
-        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(ProjectNotFoundException.class, () ->
-                service.updateWorkingOn(command, workingOnId));
+        verify(getEmployeeAdapter, times(1)).getEmployee(employeeId);
+        verify(getProjectAdapter, times(1)).getProject(projectId);
+        verify(updateWorkingOnAdapter, times(1)).updateWorkingOn(any(WorkingOn.class));
+        verifyNoMoreInteractions(getEmployeeAdapter);
+        verifyNoMoreInteractions(getProjectAdapter);
+        verifyNoMoreInteractions(updateWorkingOnAdapter);
     }
 }

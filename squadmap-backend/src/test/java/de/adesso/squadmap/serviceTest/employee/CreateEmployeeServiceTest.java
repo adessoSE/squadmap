@@ -2,6 +2,7 @@ package de.adesso.squadmap.serviceTest.employee;
 
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.exceptions.employee.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.port.driven.employee.CreateEmployeePort;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.service.employee.CreateEmployeeService;
@@ -25,7 +26,7 @@ class CreateEmployeeServiceTest {
     @Autowired
     private CreateEmployeeService service;
     @MockBean
-    private EmployeeRepository employeeRepository;
+    private CreateEmployeePort createEmployeePort;
     @MockBean
     private CreateCommandToEmployeeMapper employeeMapper;
 
@@ -34,32 +35,18 @@ class CreateEmployeeServiceTest {
         //given
         long employeeId = 1;
         Employee employee = new Employee();
-        employee.setEmployeeId(employeeId);
-        CreateEmployeeCommand command = new CreateEmployeeCommand();
-        when(employeeMapper.map(command)).thenReturn(employee);
-        when(employeeRepository.existsByEmail(command.getEmail())).thenReturn(false);
-        when(employeeRepository.save(employee)).thenReturn(employee);
+        CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand();
+        when(employeeMapper.map(createEmployeeCommand)).thenReturn(employee);
+        when(createEmployeePort.createEmployee(employee)).thenReturn(employeeId);
 
         //when
-        long found = service.createEmployee(command);
+        long found = service.createEmployee(createEmployeeCommand);
 
         //then
         assertThat(found).isEqualTo(employeeId);
-        verify(employeeMapper, times(1)).map(command);
-        verify(employeeRepository, times(1)).existsByEmail(command.getEmail());
-        verify(employeeRepository, times(1)).save(employee);
-        verifyNoMoreInteractions(employeeRepository);
+        verify(employeeMapper, times(1)).map(createEmployeeCommand);
+        verify(createEmployeePort, times(1)).createEmployee(employee);
         verifyNoMoreInteractions(employeeMapper);
-    }
-
-    @Test
-    void checkIfCreateEmployeeThrowsEmployeeAlreadyExistsException() {
-        //given
-        CreateEmployeeCommand command = new CreateEmployeeCommand("", "", LocalDate.now().minusMonths(5), "e@m.de", "", false, "");
-        when(employeeRepository.existsByEmail(command.getEmail())).thenReturn(true);
-
-        //then
-        assertThrows(EmployeeAlreadyExistsException.class, () ->
-                service.createEmployee(command));
+        verifyNoMoreInteractions(createEmployeePort);
     }
 }

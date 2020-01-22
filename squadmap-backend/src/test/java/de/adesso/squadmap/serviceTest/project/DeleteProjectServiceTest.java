@@ -1,5 +1,6 @@
 package de.adesso.squadmap.serviceTest.project;
 
+import de.adesso.squadmap.adapter.project.DeleteProjectAdapter;
 import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
 import de.adesso.squadmap.repository.ProjectRepository;
 import de.adesso.squadmap.service.project.DeleteProjectService;
@@ -19,32 +20,19 @@ class DeleteProjectServiceTest {
     @Autowired
     private DeleteProjectService service;
     @MockBean
-    private ProjectRepository projectRepository;
+    private DeleteProjectAdapter deleteProjectAdapter;
 
     @Test
     void checkIfDeleteProjectDeletesTheProject() {
         //given
         long projectId = 1;
-        when(projectRepository.existsById(projectId)).thenReturn(true);
-        doNothing().when(projectRepository).deleteById(projectId);
+        doNothing().when(deleteProjectAdapter).deleteProject(projectId);
 
         //when
         service.deleteProject(projectId);
 
         //then
-        verify(projectRepository, times(1)).existsById(projectId);
-        verify(projectRepository, times(1)).deleteById(projectId);
-        verifyNoMoreInteractions(projectRepository);
-    }
-
-    @Test
-    void checkIfDeleteProjectThrowsExceptionWhenProjectNotFound() {
-        //given
-        long projectId = 1;
-        when(projectRepository.existsById(projectId)).thenReturn(false);
-
-        //then
-        assertThrows(ProjectNotFoundException.class, () ->
-                service.deleteProject(projectId));
+        verify(deleteProjectAdapter, times(1)).deleteProject(projectId);
+        verifyNoMoreInteractions(deleteProjectAdapter);
     }
 }

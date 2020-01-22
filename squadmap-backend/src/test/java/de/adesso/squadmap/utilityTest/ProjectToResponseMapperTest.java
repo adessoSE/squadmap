@@ -63,5 +63,6 @@ class ProjectToResponseMapperTest {
         assertThat(employeeResponse.getEmail()).isEqualTo(employee.getEmail());
         assertThat(employeeResponse.getPhone()).isEqualTo(employee.getPhone());
         assertThat(employeeResponse.getIsExternal()).isEqualTo(employee.getIsExternal());
+        assertThat(employeeResponse.getImage()).isEqualTo(employee.getImage());
     }
 }

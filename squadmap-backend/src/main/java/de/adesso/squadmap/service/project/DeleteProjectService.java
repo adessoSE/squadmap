@@ -1,24 +1,20 @@
 package de.adesso.squadmap.service.project;
 
-import de.adesso.squadmap.exceptions.project.ProjectNotFoundException;
+import de.adesso.squadmap.port.driven.project.DeleteProjectPort;
 import de.adesso.squadmap.port.driver.project.delete.DeleteProjectUseCase;
-import de.adesso.squadmap.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteProjectService implements DeleteProjectUseCase {
 
-    private final ProjectRepository projectRepository;
+    private final DeleteProjectPort deleteProjectPort;
 
-    public DeleteProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public DeleteProjectService(DeleteProjectPort deleteProjectPort) {
+        this.deleteProjectPort = deleteProjectPort;
     }
 
     @Override
     public void deleteProject(Long projectId) {
-        if (!projectRepository.existsById(projectId)) {
-            throw new ProjectNotFoundException();
-        }
-        projectRepository.deleteById(projectId);
+        deleteProjectPort.deleteProject(projectId);
     }
 }

@@ -1,5 +1,6 @@
 package de.adesso.squadmap.serviceTest.employee;
 
+import de.adesso.squadmap.adapter.employee.GetEmployeeAdapter;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.exceptions.employee.EmployeeNotFoundException;
 import de.adesso.squadmap.port.driver.employee.get.GetEmployeeResponse;
@@ -25,7 +26,7 @@ class GetEmployeeServiceTest {
     @Autowired
     private GetEmployeeService service;
     @MockBean
-    private EmployeeRepository employeeRepository;
+    private GetEmployeeAdapter getEmployeeAdapter;
     @MockBean
     private EmployeeToResponseMapper employeeMapper;
 
@@ -34,29 +35,18 @@ class GetEmployeeServiceTest {
         //given
         long employeeId = 1;
         Employee employee = new Employee();
-        GetEmployeeResponse response = new GetEmployeeResponse();
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        when(employeeMapper.map(employee)).thenReturn(response);
+        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse();
+        when(getEmployeeAdapter.getEmployee(employeeId)).thenReturn(employee);
+        when(employeeMapper.map(employee)).thenReturn(getEmployeeResponse);
 
         //when
-        GetEmployeeResponse found = service.getEmployee(employeeId);
+        GetEmployeeResponse response = service.getEmployee(employeeId);
 
         //then
-        assertThat(found).isEqualTo(response);
-        verify(employeeRepository, times(1)).findById(employeeId);
+        assertThat(response).isEqualTo(getEmployeeResponse);
+        verify(getEmployeeAdapter, times(1)).getEmployee(employeeId);
         verify(employeeMapper, times(1)).map(employee);
-        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(getEmployeeAdapter);
         verifyNoMoreInteractions(employeeMapper);
-    }
-
-    @Test
-    void checkIfGetEmployeeThrowsExceptionWhenNotFound() {
-        //given
-        long employeeId = 1;
-        when(employeeRepository.existsById(employeeId)).thenReturn(false);
-
-        //then
-        assertThrows(EmployeeNotFoundException.class, () ->
-                service.getEmployee(employeeId));
     }
 }

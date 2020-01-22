@@ -2,30 +2,26 @@ package de.adesso.squadmap.service.employee;
 
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.exceptions.employee.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.port.driven.employee.CreateEmployeePort;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.port.driver.employee.create.CreateEmployeeUseCase;
-import de.adesso.squadmap.repository.EmployeeRepository;
 import de.adesso.squadmap.utility.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CreateEmployeeService implements CreateEmployeeUseCase {
 
-    private final EmployeeRepository employeeRepository;
+    private final CreateEmployeePort createEmployeePort;
     private final Mapper<CreateEmployeeCommand, Employee> employeeMapper;
 
 
-    public CreateEmployeeService(EmployeeRepository employeeRepository, Mapper<CreateEmployeeCommand, Employee> employeeMapper) {
-        this.employeeRepository = employeeRepository;
+    public CreateEmployeeService(CreateEmployeePort createEmployeePort, Mapper<CreateEmployeeCommand, Employee> employeeMapper) {
+        this.createEmployeePort = createEmployeePort;
         this.employeeMapper = employeeMapper;
     }
 
     @Override
     public Long createEmployee(CreateEmployeeCommand command) {
-        if (employeeRepository.existsByEmail(command.getEmail())) {
-            throw new EmployeeAlreadyExistsException();
-        }
-        Employee employee = employeeMapper.map(command);
-        return employeeRepository.save(employee).getEmployeeId();
+        return createEmployeePort.createEmployee(employeeMapper.map(command));
     }
 }

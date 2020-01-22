@@ -1,5 +1,6 @@
 package de.adesso.squadmap.serviceTest.workingon;
 
+import de.adesso.squadmap.adapter.workingon.GetWorkingOnAdapter;
 import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.exceptions.workingon.WorkingOnNotFoundException;
 import de.adesso.squadmap.port.driver.workingon.get.GetWorkingOnResponse;
@@ -25,7 +26,7 @@ class GetWorkingOnServiceTest {
     @Autowired
     private GetWorkingOnService service;
     @MockBean
-    private WorkingOnRepository workingOnRepository;
+    private GetWorkingOnAdapter getWorkingOnAdapter;
     @MockBean
     private WorkingOnToResponseMapper workingOnMapper;
 
@@ -34,29 +35,18 @@ class GetWorkingOnServiceTest {
         //given
         long workingOnId = 1;
         WorkingOn workingOn = new WorkingOn();
-        GetWorkingOnResponse response = new GetWorkingOnResponse();
-        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.of(workingOn));
-        when(workingOnMapper.map(workingOn)).thenReturn(response);
+        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse();
+        when(getWorkingOnAdapter.getWorkingOn(workingOnId)).thenReturn(workingOn);
+        when(workingOnMapper.map(workingOn)).thenReturn(getWorkingOnResponse);
 
         //when
-        GetWorkingOnResponse found = service.getWorkingOn(workingOnId);
+        GetWorkingOnResponse response = service.getWorkingOn(workingOnId);
 
         //then
-        assertThat(found).isEqualTo(response);
-        verify(workingOnRepository, times(1)).findById(workingOnId);
+        assertThat(response).isEqualTo(getWorkingOnResponse);
+        verify(getWorkingOnAdapter, times(1)).getWorkingOn(workingOnId);
         verify(workingOnMapper, times(1)).map(workingOn);
-        verifyNoMoreInteractions(workingOnRepository);
+        verifyNoMoreInteractions(getWorkingOnAdapter);
         verifyNoMoreInteractions(workingOnMapper);
-    }
-
-    @Test
-    void checkIfGetWorkingOnThrowsExceptionWhenNotFound() {
-        //given
-        long workingOnId = 1;
-        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(WorkingOnNotFoundException.class, () ->
-                service.getWorkingOn(workingOnId));
     }
 }

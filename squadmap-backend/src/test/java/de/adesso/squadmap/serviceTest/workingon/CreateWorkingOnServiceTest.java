@@ -1,5 +1,8 @@
 package de.adesso.squadmap.serviceTest.workingon;
 
+import de.adesso.squadmap.adapter.employee.GetEmployeeAdapter;
+import de.adesso.squadmap.adapter.project.GetProjectAdapter;
+import de.adesso.squadmap.adapter.workingon.CreateWorkingOnAdapter;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.WorkingOn;
@@ -32,82 +35,37 @@ class CreateWorkingOnServiceTest {
     @Autowired
     private CreateWorkingOnService service;
     @MockBean
-    private WorkingOnRepository workingOnRepository;
+    private CreateWorkingOnAdapter createWorkingOnAdapter;
     @MockBean
-    private EmployeeRepository employeeRepository;
+    private GetEmployeeAdapter getEmployeeAdapter;
     @MockBean
-    private ProjectRepository projectRepository;
+    private GetProjectAdapter getProjectAdapter;
 
     @Test
     void checkIfCreateWorkingOnCreatesTheRelation() {
         //given
         long employeeId = 1;
-        long projectId = 1;
-        long workingOnId = 1;
+        long projectId = 2;
+        long workingOnId = 3;
+        CreateWorkingOnCommand createWorkingOnCommand = new CreateWorkingOnCommand();
+        createWorkingOnCommand.setEmployeeId(employeeId);
+        createWorkingOnCommand.setProjectId(projectId);
         Employee employee = new Employee();
         Project project = new Project();
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
-        WorkingOn workingOn = new WorkingOn(employee, project, command.getSince(), command.getUntil(), 0);
-        workingOn.setWorkingOnId(workingOnId);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
-        when(workingOnRepository.save(any(WorkingOn.class))).thenReturn(workingOn);
+        when(getEmployeeAdapter.getEmployee(employeeId)).thenReturn(employee);
+        when(getProjectAdapter.getProject(projectId)).thenReturn(project);
+        when(createWorkingOnAdapter.createWorkingOn(any(WorkingOn.class))).thenReturn(workingOnId);
 
         //when
-        long found = service.createWorkingOn(command);
+        long found = service.createWorkingOn(createWorkingOnCommand);
 
         //then
         assertThat(found).isEqualTo(workingOnId);
-        verify(employeeRepository, times(1)).findById(employeeId);
-        verify(projectRepository, times(1)).findById(projectId);
-        verify(workingOnRepository, times(1)).existsByEmployeeAndProject(employeeId, projectId);
-        verify(workingOnRepository, times(1)).save(any(WorkingOn.class));
-        verifyNoMoreInteractions(employeeRepository);
-        verifyNoMoreInteractions(projectRepository);
-        verifyNoMoreInteractions(workingOnRepository);
-    }
-
-    @Test
-    void checkIfCreateWorkingOnThrowsExceptionWhenEmployeeNotFound() {
-        //given
-        long employeeId = 1;
-        long projectId = 1;
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, 0, LocalDate.now(), LocalDate.now(), 0);
-        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(EmployeeNotFoundException.class, () ->
-                service.createWorkingOn(command));
-    }
-
-    @Test
-    void checkIfCreateWorkingOnThrowsExceptionWhenProjectNotFound() {
-        //given
-        long employeeId = 1;
-        long projectId = 1;
-        Employee employee = new Employee();
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
-        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(false);
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
-        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
-
-        //then
-        assertThrows(ProjectNotFoundException.class, () ->
-                service.createWorkingOn(command));
-    }
-
-    @Test
-    void checkIfCreateWorkingOnThrowsExceptionWhenTheRelationAlreadyExists() {
-        //given
-        long employeeId = 1;
-        long projectId = 1;
-        CreateWorkingOnCommand command = new CreateWorkingOnCommand(employeeId, projectId, LocalDate.now(), LocalDate.now(), 0);
-        when(workingOnRepository.existsByEmployeeAndProject(employeeId, projectId)).thenReturn(true);
-
-        //then
-        assertThrows(WorkingOnAlreadyExistsException.class, () ->
-                service.createWorkingOn(command));
+        verify(getEmployeeAdapter, times(1)).getEmployee(employeeId);
+        verify(getProjectAdapter, times(1)).getProject(projectId);
+        verify(createWorkingOnAdapter, times(1)).createWorkingOn(any(WorkingOn.class));
+        verifyNoMoreInteractions(getEmployeeAdapter);
+        verifyNoMoreInteractions(getProjectAdapter);
+        verifyNoMoreInteractions(createWorkingOnAdapter);
     }
 }

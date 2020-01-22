@@ -22,7 +22,7 @@ class CreateCommandToEmployeeMapperTest {
     @Test
     void checkIfMapMapsToValidEmployee() {
         //given
-        CreateEmployeeCommand command = new CreateEmployeeCommand("f", "l", LocalDate.now(), "e", "0", true, "");
+        CreateEmployeeCommand command = new CreateEmployeeCommand("f", "l", LocalDate.now(), "e", "0", true, "i");
 
         //when
         Employee employee = mapper.map(command);
@@ -34,6 +34,7 @@ class CreateCommandToEmployeeMapperTest {
         assertThat(employee.getEmail()).isEqualTo(command.getEmail());
         assertThat(employee.getPhone()).isEqualTo(command.getPhone());
         assertThat(employee.getIsExternal()).isEqualTo(command.isExternal());
+        assertThat(employee.getImage()).isEqualTo(command.getImage());
         assertThat(employee.getProjects()).isEmpty();
     }
 
