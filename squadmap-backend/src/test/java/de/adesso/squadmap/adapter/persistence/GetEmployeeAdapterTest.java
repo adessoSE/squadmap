@@ -1,0 +1,65 @@
+package de.adesso.squadmap.adapter.persistence;
+
+import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+
+@SpringBootTest
+@ActiveProfiles("test")
+public class GetEmployeeAdapterTest {
+
+    @MockBean
+    private EmployeeRepository employeeRepository;
+    @MockBean
+    private EmployeeMapper employeeMapper;
+    @Autowired
+    private GetEmployeePort getEmployeePort;
+
+    @Test
+    void checkIfGetEmployeeReturnsTheEmployee() {
+        //given
+        long employeeId = 1;
+        Employee employee = Employee.withId(
+                1L, "", "", null, "", "", true, "");
+        EmployeeNeo4JEntity employeeNeo4JEntity = new EmployeeNeo4JEntity(
+                1L, "", "", null, "", "", true, "");
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeNeo4JEntity));
+        when(employeeMapper.mapToDomainEntity(employeeNeo4JEntity)).thenReturn(employee);
+
+        //when
+        Employee found = getEmployeePort.getEmployee(employeeId);
+
+        //then
+        assertThat(found).isEqualTo(employee);
+        verify(employeeRepository, times(1)).findById(employeeId);
+        verify(employeeMapper, times(1)).mapToDomainEntity(employeeNeo4JEntity);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(employeeMapper);
+    }
+
+    @Test
+    void checkIfGetEmployeeThrowsEmployeeNotFoundException() {
+        //given
+        long employeeId = 1;
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+
+        //when
+        assertThrows(EmployeeNotFoundException.class, () -> getEmployeePort.getEmployee(employeeId));
+
+        //then
+        verify(employeeRepository, times(1)).findById(employeeId);
+        verifyNoMoreInteractions(employeeRepository);
+    }
+}
