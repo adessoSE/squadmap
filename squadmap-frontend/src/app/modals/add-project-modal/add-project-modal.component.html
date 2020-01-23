@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Select Employee</h4>
+  <h4 class="modal-title pull-left">Select Project</h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -10,21 +10,19 @@
   <table class="table">
     <thead>
     <tr>
-      <th>First name</th>
-      <th>Last name</th>
+      <th>Project</th>
       <th>Workload</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let employee of allEmployees | filterEmployees : {searchText: searchText}">
-      <td>{{employee.firstName}}</td>
-      <td>{{employee.lastName}}</td>
-        <td>
-          <input type="number" min="0" max="100" name="workload" #workload>
-        </td>
-        <td class="justify-content-end">
-          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee, workload)">Add</button>
-        </td>
+    <tr *ngFor="let project of allProjects | filterProjects : {searchText: searchText}">
+      <td>{{project.title}}</td>
+      <td>
+        <input type="number" min="0" max="100" #input>
+      </td>
+      <td>
+        <button class="btn btn-success" type="button" (click)="onAddProject(project, input)" >Add</button>
+      </td>
     </tr>
     </tbody>
   </table>

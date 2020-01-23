@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {EmployeeModel} from '../../../models/employee.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeService} from '../../../services/employee/employee.service';
@@ -8,7 +8,7 @@ import {ProjectService} from '../../../services/project/project.service';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
-import {CreateWorkingOnModel} from '../../../models/createWorkingOn.model';
+import {AddProjectModalComponent} from '../../../modals/add-project-modal/add-project-modal.component';
 
 @Component({
   selector: 'app-employee-detail',
@@ -30,7 +30,7 @@ export class EmployeeDetailComponent implements OnInit {
               private workingOnService: WorkingOnService) { }
 
   ngOnInit() {
-    this.employee = new EmployeeModel(0, '', '', new Date(), '', '', false, []);
+    this.employee = new EmployeeModel(0, '', '', new Date(), '', '', false, '', []);
     this.employeeService.getEmployee(this.route.snapshot.params.id).subscribe(res => {
       this.employee = new EmployeeModel(
         res.employeeId,
@@ -39,6 +39,7 @@ export class EmployeeDetailComponent implements OnInit {
         res.email,
         res.phone,
         res.isExternal,
+        res.image,
         res.projects );
     });
     this.projectService.getProjects().subscribe(() => {
@@ -46,16 +47,12 @@ export class EmployeeDetailComponent implements OnInit {
     });
   }
 
-  onOpenAddProjectModal(addProjectModal: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(addProjectModal);
-  }
-
-  onAddProject(project: ProjectModel) {
-    this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(this.employee.employeeId, project.projectId, new Date(), new Date())).subscribe(workingOnId => {
-      this.employee.projects.push(new WorkingOnProjectModel(+workingOnId, project, new Date(), new Date()));
-      this.modalRef.hide();
-    });
+  onOpenAddProjectModal() {
+    const initialState = {
+      allProjects: this.allProjects,
+      employeeId: this.employee.employeeId
+    };
+    this.modalRef = this.modalService.show(AddProjectModalComponent, {initialState});
   }
 
   onDeleteProject(workingOnId: number) {

@@ -39,6 +39,7 @@ export class EmployeeService {
             receivedData.email,
             receivedData.phone,
             receivedData.isExternal,
+            receivedData.image,
             receivedData.projects
           ));
         });
@@ -64,7 +65,8 @@ export class EmployeeService {
       birthday: employee.birthday,
       email: employee.email,
       phone: employee.phone,
-      isExternal: employee.isExternal
+      isExternal: employee.isExternal,
+      image: employee.image
     });
   }
 
@@ -79,7 +81,8 @@ export class EmployeeService {
       birthday: newEmployee.birthday,
       email: newEmployee.email,
       phone: newEmployee.phone,
-      isExternal: newEmployee.isExternal
+      isExternal: newEmployee.isExternal,
+      image: newEmployee.image
     });
   }
 

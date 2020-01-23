@@ -23,6 +23,10 @@
       <input type="date" id="until" name="until" class="form-control"  [(ngModel)]="until">
     </div>
     <div class="form-group">
+      <label for="sites">Sites</label>
+      <textarea type="text" id="sites" name="sites" class="form-control"  [(ngModel)]="sitesString" placeholder="Bitte hier nur gültige URLs mit http als kommaseparierte Liste hinzufügen"></textarea>
+    </div>
+    <div class="form-group">
       <label for="isExternal">External</label>
       <div>
         <input class="checkbox" type="checkbox" id="isExternal" name="isExternal" [(ngModel)]="project.isExternal">

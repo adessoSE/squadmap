@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {EmployeeModel} from '../../../models/employee.model';
-import {CreateEmployeeModel} from '../../../models/createEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {EmployeeModalComponent} from '../../../modals/employee-modal/employee-modal.component';
 
@@ -36,13 +35,10 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAddEmployee() {
-    const employee = new CreateEmployeeModel('Test', 'Employee',
-      new Date('December 17, 2017 15:00:00'), 'test@test.de', '0162123123', true);
-    this.employeeService.addEmployee(employee).subscribe(res => {
-      this.employeeService.getEmployee(+res).subscribe(emp => {
-        this.employees.push(emp);
-      });
-    });
+    const initialState = {
+      actionName: 'Add'
+    };
+    this.modalRef = this.modalService.show(EmployeeModalComponent, {initialState});
   }
 
   onDelete(employee: EmployeeModel) {

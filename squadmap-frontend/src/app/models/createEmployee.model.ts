@@ -5,6 +5,7 @@ export class CreateEmployeeModel {
     public birthday: Date,
     public email: string,
     public phone: string,
-    public isExternal: boolean
+    public isExternal: boolean,
+    public image: string,
   ) {}
 }

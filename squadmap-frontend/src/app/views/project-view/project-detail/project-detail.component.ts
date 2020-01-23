@@ -9,6 +9,7 @@ import {WorkingOnEmployeeModel} from '../../../models/workingOnEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {AddEmployeeModalComponent} from '../../../modals/add-employee-modal/add-employee-modal.component';
+import {ProjectModalComponent} from '../../../modals/project-modal/project-modal.component';
 
 @Component({
   selector: 'app-project-detail',
@@ -32,7 +33,7 @@ export class ProjectDetailComponent implements OnInit {
 
   ngOnInit() {
     this.isSearching = false;
-    this.project = new ProjectModel(0,  '', '', new Date(), new Date(), false, []); // vermeidet exceptions beim Aufbau der view
+    this.project = new ProjectModel(0,  '', '', new Date(), new Date(), false, [], []); // vermeidet exceptions beim Aufbau der view
     this.refreshProject();
     this.searchText = '';
   }
@@ -60,20 +61,30 @@ export class ProjectDetailComponent implements OnInit {
         employee.until = new Date(employee.until);
       }
       this.project = new ProjectModel(
-        res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.employees
+        res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.sites, res.employees
       );
+      console.log(this.project);
     });
   }
 
   onEdit(workingOnEmployee: WorkingOnEmployeeModel) {
     const initialState = {
       workingOnEmployee,
-      projectId: this.project.projectId
+      projectId: this.project.projectId,
+      workload: workingOnEmployee.workload
     };
     this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
   }
 
   onOpenEmployeeDetail(employeeId: number) {
     this.router.navigate(['/employee/' + employeeId]);
+  }
+
+  onUpdate() {
+    const initialState = {
+      project: this.project,
+      actionName: 'Update'
+    };
+    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
   }
 }

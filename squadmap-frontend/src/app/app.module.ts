@@ -23,6 +23,7 @@ import {MapComponent} from './views/map-view/map/map.component';
 import {MapProjectDetailComponent} from './views/map-view/map-project-detail/map-project-detail.component';
 import {WorkingOnModalComponent} from './modals/working-on-modal/working-on-modal.component';
 import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employee-modal.component';
+import { AddProjectModalComponent } from './modals/add-project-modal/add-project-modal.component';
 
 const routes: Routes = [
   {
@@ -80,6 +81,7 @@ const routes: Routes = [
     EmployeeModalComponent,
     WorkingOnModalComponent,
     AddEmployeeModalComponent,
+    AddProjectModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +102,7 @@ const routes: Routes = [
     EmployeeModalComponent,
     WorkingOnModalComponent,
     AddEmployeeModalComponent,
+    AddProjectModalComponent,
   ]
 })
 export class AppModule {

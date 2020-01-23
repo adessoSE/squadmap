@@ -24,7 +24,7 @@ export class EmployeeModalComponent implements OnInit {
   ngOnInit() {
     this.errorMessage = '';
     if (!this.employee) {
-      this.employee = new EmployeeModel(0, '', '', new Date(), '',  '', false, []);
+      this.employee = new EmployeeModel(0, '', '', new Date(), '',  '', false, '', []);
       this.isNew = true;
     } else {
       this.isNew = false;
@@ -38,27 +38,20 @@ export class EmployeeModalComponent implements OnInit {
       employeeForm.value.birthday,
       employeeForm.value.email,
       employeeForm.value.phone,
-      employeeForm.value.isExternal
+      employeeForm.value.isExternal,
+      employeeForm.value.image
     );
     if (this.isNew) {
       this.employeeService.addEmployee(employee).subscribe(() => {
         this.closeModal();
       }, error => {
-        this.errorOccurred = true;
-        this.errorMessage = error.error.message;
-        setTimeout(() => {
-          this.errorOccurred = false;
-        }, 10000);
+        this.handleError(error.error.message);
       });
     } else {
       this.employeeService.updateEmployee(employee, this.employee.employeeId).subscribe(() => {
         this.closeModal();
       }, error => {
-        this.errorOccurred = true;
-        this.errorMessage = error.error.message;
-        setTimeout(() => {
-          this.errorOccurred = false;
-        }, 10000);
+        this.handleError(error.error.message);
       });
     }
   }
@@ -66,5 +59,13 @@ export class EmployeeModalComponent implements OnInit {
   private closeModal() {
       this.modalRef.hide();
       location.reload();
+  }
+
+  private handleError(message: string) {
+    this.errorOccurred = true;
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorOccurred = false;
+    }, 10000);
   }
 }

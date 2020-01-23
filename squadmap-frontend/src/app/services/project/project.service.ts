@@ -23,6 +23,7 @@ export class ProjectService {
           new Date(receivedData.since),
           new Date(receivedData.until),
           receivedData.isExternal,
+          receivedData.sites,
           receivedData.employees
         ));
       });
@@ -51,7 +52,8 @@ export class ProjectService {
       description: newProject.description,
       since: newProject.since,
       until: newProject.until,
-      isExternal: newProject.isExternal
+      isExternal: newProject.isExternal,
+      sites: newProject.sites,
     });
   }
 
@@ -61,7 +63,8 @@ export class ProjectService {
       description: dummyProject.description,
       since: dummyProject.since,
       until: dummyProject.until,
-      isExternal: dummyProject.isExternal
+      isExternal: dummyProject.isExternal,
+      sites: dummyProject.sites,
     });
   }
 }

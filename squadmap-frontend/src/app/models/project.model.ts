@@ -8,6 +8,7 @@ export class ProjectModel {
     public since: Date,
     public until: Date,
     public isExternal: boolean,
+    public sites: string[],
     public employees: WorkingOnEmployeeModel[]
   ) {
   }

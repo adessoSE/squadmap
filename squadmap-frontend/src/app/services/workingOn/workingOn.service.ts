@@ -14,7 +14,8 @@ export class WorkingOnService {
       employeeId: createWorkingOn.employeeId,
       projectId: createWorkingOn.projectId,
       since: createWorkingOn.since,
-      until: createWorkingOn.until
+      until: createWorkingOn.until,
+      workload: createWorkingOn.workload
     });
   }
 
@@ -22,12 +23,13 @@ export class WorkingOnService {
     return this.http.delete('http://localhost:8080/workingOn/delete/' + id);
   }
 
-  updateWorkingOn(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date) {
+  updateWorkingOn(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date, workload: number) {
     return this.http.put('http://localhost:8080/workingOn/update/' + workingOnId, {
       employeeId,
       projectId,
       since,
-      until
+      until,
+      workload
     });
   }
 

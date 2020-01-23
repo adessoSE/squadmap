@@ -29,7 +29,19 @@
             <tr>
               <td>{{project.description}}</td>
             </tr>
+            <tr>
+              <th>Sites:</th>
+            </tr>
+            <tr *ngFor="let site of project.sites">
+              <td><a href="{{site}}" target="_blank">{{site}}</a></td>
+            </tr>
+            <tr *ngIf="project.sites.length === 0">
+              <td>-</td>
+            </tr>
           </table>
+          <div class="row justify-content-center">
+            <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onUpdate()">Edit</button>
+          </div>
         </div>
       </div>
     </div>
@@ -41,6 +53,7 @@
           <th>Last name</th>
           <th>Since</th>
           <th>Until</th>
+          <th>Workload</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -50,15 +63,16 @@
           <td>{{employee.employee.lastName}}</td>
           <td>{{employee.since.toDateString()}}</td>
           <td>{{employee.until.toDateString()}}</td>
+          <td>{{employee.workload}}%</td>
           <td>
-            <button class="btn btn-info" type="button" (click)="onEdit(employee)" >Edit</button>
-            <button class="btn btn-danger" type="button" (click)="onDelete(employee)">Delete</button>
+            <button class="btn btn-info btn-sm" type="button" (click)="onEdit(employee)" >Edit</button>
+            <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(employee)">Delete</button>
           </td>
         </tr>
         </tbody>
       </table>
       <div class="row justify-content-center">
-        <button class="btn btn-outline-primary" type="button" (click)="onOpenAddEmployeeModal()">Add</button>
+        <button class="btn btn-outline-primary btn-sm" type="button" (click)="onOpenAddEmployeeModal()">Add</button>
       </div>
     </div>
   </div>

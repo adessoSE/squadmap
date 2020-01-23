@@ -19,6 +19,7 @@ export class ProjectModalComponent implements OnInit {
   until: string;
   errorOccurred: boolean;
   errorMessage: string;
+  sitesString: string;
 
   constructor(public modalRef: BsModalRef,
               public projectService: ProjectService,
@@ -26,8 +27,14 @@ export class ProjectModalComponent implements OnInit {
 
   ngOnInit() {
     if (!this.project) {
-      this.project = new ProjectModel(0, '', '', new Date(), new Date(), false, []);
+      this.project = new ProjectModel(0, '', '', new Date(), new Date(), false, [], []);
+      this.sitesString = '';
       this.isNew = true;
+    } else {
+      if (!this.project.sites) {
+        this.project.sites = [];
+      }
+      this.sitesString = this.project.sites.join(', ');
     }
     // format necessary in order to prefill the form
     this.since = this.dateFormatter.formatDate(this.project.since);
@@ -36,17 +43,22 @@ export class ProjectModalComponent implements OnInit {
   }
 
   onCreateProject(projectForm: NgForm) {
+    let sites: string[] = [];
+    if (projectForm.value.sites) {
+      sites = projectForm.value.sites.split(',');
+      sites = sites.map( url => url.trim());
+    }
     const newProject = new CreateProjectModel(
       projectForm.value.title,
       projectForm.value.description,
       new Date(projectForm.value.since),
       new Date(projectForm.value.until),
-      projectForm.value.isExternal
+      projectForm.value.isExternal,
+      sites
     );
-    console.log(newProject);
     if (this.isNew) {
       this.projectService.addProject(newProject).subscribe(() => {
-       this.closeModal();
+        this.closeModal();
       }, error => {
         this.handleError(error.error.message);
       });

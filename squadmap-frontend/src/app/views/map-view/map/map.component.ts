@@ -80,7 +80,8 @@ export class MapComponent implements OnInit {
             to: project.project.projectId,
             title: 'Id: ' + project.workingOnId +
               '<br>Since: ' + project.since.toDateString() +
-              '<br> Until: ' + project.until.toDateString(),
+              '<br> Until: ' + project.until.toDateString() +
+              '<br> Workload: ' + project.workload + '%',
             color: project.until < this.dateThreshold ? '#bb0300' : '#000000',
             dashes: employee.isExternal
           });
@@ -295,7 +296,8 @@ export class MapComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date());
+      // TODO Customize workload
+      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date(), 1);
       // TODO get dates from modal
       this.workingOnService.createWorkingOn(createWorkingOn).subscribe( () => {
         let employee: EmployeeModel;
@@ -308,6 +310,7 @@ export class MapComponent implements OnInit {
             res.email,
             res.phone,
             res.isExternal,
+            res.image,
             res.projects);
           let workingOn: WorkingOnProjectModel;
           let i: number;

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ProjectModel} from '../../../models/project.model';
 import {ProjectService} from '../../../services/project/project.service';
 import {Router} from '@angular/router';
-import {CreateProjectModel} from '../../../models/createProject.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ProjectModalComponent} from '../../../modals/project-modal/project-modal.component';
 
@@ -49,13 +48,9 @@ export class ProjectComponent implements OnInit {
   }
 
   onAddProject() {
-    const dummyProject = new CreateProjectModel('Test-title', 'description', new Date(), new Date(), true);
-    this.projectService.addProject(dummyProject).subscribe(res => {
-      this.projectService.getProject(+res).subscribe(project => {
-        project.since = new Date(project.since);
-        project.until = new Date(project.until);
-        this.projectList.push(project);
-      });
-    });
+    const initialState = {
+      actionName: 'Add'
+    };
+    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
   }
 }

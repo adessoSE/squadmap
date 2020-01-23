@@ -20,12 +20,16 @@ export class WorkingOnModalComponent implements OnInit {
   public projectId: number;
   public employeeId: number;
   public workingOnId: number;
+  public workload: number;
+  private errorMessage: string;
+  private errorOccurred: boolean;
 
   constructor(private modalRef: BsModalRef,
               private dateFormatter: DateFormatterService,
               private workingOnService: WorkingOnService) { }
 
   ngOnInit() {
+    this.errorMessage = '';
     if (this.projectId) {
       this.since = this.dateFormatter.formatDate(this.workingOnEmployee.since);
       this.until = this.dateFormatter.formatDate(this.workingOnEmployee.until);
@@ -46,15 +50,25 @@ export class WorkingOnModalComponent implements OnInit {
     }
     this.since = employeeForm.value.since;
     this.until = employeeForm.value.until;
-    this.modalRef.hide();
     this.workingOnService.updateWorkingOn(
       this.workingOnId,
       this.employeeId,
       this.projectId,
       employeeForm.value.since,
-      employeeForm.value.until).subscribe(() => {
+      employeeForm.value.until,
+      employeeForm.value.workload).subscribe(() => {
         this.modalRef.hide();
         location.reload();
+    }, error => {
+      this.handleError(error.error.message);
     });
+  }
+
+  private handleError(message: string) {
+    this.errorOccurred = true;
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorOccurred = false;
+    }, 10000);
   }
 }

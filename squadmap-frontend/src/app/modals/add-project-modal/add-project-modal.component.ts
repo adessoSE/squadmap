@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
-import {EmployeeModel} from '../../models/employee.model';
 import {WorkingOnService} from '../../services/workingOn/workingOn.service';
+import {ProjectModel} from '../../models/project.model';
 import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
 
 @Component({
-  selector: 'app-add-employee-modal',
-  templateUrl: './add-employee-modal.component.html',
-  styleUrls: ['./add-employee-modal.component.css']
+  selector: 'app-add-project-modal',
+  templateUrl: './add-project-modal.component.html',
+  styleUrls: ['./add-project-modal.component.css']
 })
-export class AddEmployeeModalComponent implements OnInit {
-  private allEmployees: EmployeeModel[];
-  private projectId: number;
+export class AddProjectModalComponent implements OnInit {
+  private allProjects: ProjectModel[];
+  private employeeId: number;
   searchText: string;
   private errorMessage: string;
   private errorOccurred: boolean;
@@ -21,12 +21,12 @@ export class AddEmployeeModalComponent implements OnInit {
 
   ngOnInit() {
     this.errorMessage = '';
-    // TODO filter here and display only not already existingEmployees in List
+    // TODO filter here and display only not already existingProjects in List
   }
 
-  onAddEmployee(employee: EmployeeModel, input: HTMLInputElement) {
+  onAddProject(project: ProjectModel, input: HTMLInputElement) {
     this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(employee.employeeId, this.projectId, new Date(), new Date(), +input.value)).subscribe(() => {
+      new CreateWorkingOnModel(this.employeeId, project.projectId, new Date(), new Date(), +input.value)).subscribe(() => {
       this.modalRef.hide();
       location.reload();
     }, error => {

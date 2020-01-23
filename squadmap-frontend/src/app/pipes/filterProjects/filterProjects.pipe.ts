@@ -3,14 +3,15 @@ import {ProjectModel} from '../../models/project.model';
 
 export interface FilterSettings {
   searchText: string;
-  checkedOldProjects: boolean;
-  checkedExternalProjects: boolean;
+  checkedOldProjects?: boolean;
+  checkedExternalProjects?: boolean;
 }
 
 @Pipe({
   name: 'filterProjects'
 })
 export class FilterProjectsPipe implements PipeTransform {
+  // tslint:disable-next-line:cognitive-complexity
   transform(projectList: ProjectModel[], filter: FilterSettings): ProjectModel[] {
     if (!projectList) { return []; }
     if (!filter.searchText && !filter.checkedOldProjects && !filter.checkedExternalProjects) {

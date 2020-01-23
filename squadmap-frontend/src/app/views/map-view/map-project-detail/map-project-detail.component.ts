@@ -35,6 +35,7 @@ export class MapProjectDetailComponent implements OnInit {
         res.since,
         res.until,
         res.isExternal,
+        res.sites,
         res.employees );
       this.createMap();
     });
@@ -74,7 +75,8 @@ export class MapProjectDetailComponent implements OnInit {
           to: this.project.projectId,
           title: 'Id: ' + employee.workingOnId +
             '<br>Since: ' + employee.since.toDateString() +
-            '<br> Until: ' + employee.until.toDateString(),
+            '<br> Until: ' + employee.until.toDateString()+
+            '<br> Workload: ' + employee.workload + '%',
           color: employee.until < this.dateThreshold ? '#ff0002' : '#000000',
           arrows: 'to',
           dashes: employee.employee.isExternal
@@ -219,7 +221,8 @@ export class MapProjectDetailComponent implements OnInit {
       edgeData.to = temp;
     }
     if (this.isProject(edgeData.to)) {
-      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date());
+      // TODO customize workload
+      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date(), 1);
       // TODO get dates from modal
       this.workingOnService.createWorkingOn(createWorkingOn).subscribe( () => {
         let employee: EmployeeModel;
@@ -232,6 +235,7 @@ export class MapProjectDetailComponent implements OnInit {
             res.email,
             res.phone,
             res.isExternal,
+            res.image,
             res.projects);
           let workingOn: WorkingOnProjectModel;
           let i: number;
@@ -310,6 +314,7 @@ export class MapProjectDetailComponent implements OnInit {
         res.since,
         res.until,
         res.isExternal,
+        res.sites,
         res.employees );
     });
   }
