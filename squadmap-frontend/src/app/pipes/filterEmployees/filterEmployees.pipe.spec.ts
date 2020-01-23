@@ -20,6 +20,7 @@ describe('FilterEmployeePipe', () => {
         email: 'test1@name.de',
         phone: '0123456789',
         isExternal: false,
+        image: '',
         projects: []
       },
       {
@@ -30,6 +31,7 @@ describe('FilterEmployeePipe', () => {
         email: 'test2@name.de',
         phone: '0123456789',
         isExternal: true,
+        image: '',
         projects: []
       },
     ];
@@ -55,6 +57,7 @@ describe('FilterEmployeePipe', () => {
           email: 'test2@name.de',
           phone: '0123456789',
           isExternal: true,
+          image: '',
           projects: []
         },
       ];
@@ -79,6 +82,7 @@ describe('FilterEmployeePipe', () => {
           email: 'test1@name.de',
           phone: '0123456789',
           isExternal: false,
+          image: '',
           projects: []
         },
       ];

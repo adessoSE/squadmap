@@ -28,6 +28,7 @@ describe('WorkingOnService', () => {
           email: '',
           phone: '',
           isExternal: false,
+          image: '',
           projects: []
         },
         project: {
@@ -37,10 +38,12 @@ describe('WorkingOnService', () => {
           since: date,
           until: date,
           isExternal: false,
+          sites: [],
           employees: []
         },
         since: date,
-        until: date
+        until: date,
+        workload: 0
       }, {
         workingOnId: 2,
         employee: {
@@ -51,6 +54,7 @@ describe('WorkingOnService', () => {
           email: '',
           phone: '',
           isExternal: false,
+          image: '',
           projects: []
         },
         project: {
@@ -60,10 +64,12 @@ describe('WorkingOnService', () => {
           since: date,
           until: date,
           isExternal: false,
+          sites: [],
           employees: []
         },
         since: date,
-        until: date
+        until: date,
+        workload: 0
       }
     ];
   });
@@ -81,7 +87,8 @@ describe('WorkingOnService', () => {
       employeeId: 1,
       projectId: 2,
       since: date,
-      until: date
+      until: date,
+      workload: 0
     };
     service.createWorkingOn(newDummyWorkingOnModel).subscribe(() => {
       expect(dummyResponseWorkingOnModel[0].workingOnId).toBe(1);
@@ -103,7 +110,7 @@ describe('WorkingOnService', () => {
 
 
   it('should be able to update a workingOn', () => {
-    service.updateWorkingOn(1, 1, 3, date, date).subscribe(res => {
+    service.updateWorkingOn(1, 1, 3, date, date, 0).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyResponseWorkingOnModel));
     });
     const request = httpMock.expectOne('http://localhost:8080/workingOn/update/1');

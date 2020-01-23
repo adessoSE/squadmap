@@ -35,6 +35,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       },
       {
@@ -44,6 +45,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       },
     ];
@@ -64,6 +66,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       };
     service.getProject(1).subscribe(res => {
@@ -83,6 +86,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       },
       {
@@ -92,6 +96,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       },
     ];
@@ -113,6 +118,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       },
       {
@@ -122,6 +128,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       },
     ];
@@ -130,7 +137,8 @@ describe('ProjectService', () => {
       description: 'Description3',
       since: new Date(),
       until: new Date(),
-      isExternal: false
+      isExternal: false,
+      sites: [],
     };
     service.updateProject(newDummyProject, 1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProjects));
@@ -144,6 +152,7 @@ describe('ProjectService', () => {
       newDummyProject.since,
       newDummyProject.until,
       newDummyProject.isExternal,
+      [],
       []);
     request.flush(dummyProjects);
   });
@@ -154,7 +163,8 @@ describe('ProjectService', () => {
       description: 'Description3',
       since: new Date(),
       until: new Date(),
-      isExternal: false
+      isExternal: false,
+      sites: [],
     };
     const dummyProjectAPI: ProjectModel = {
         projectId: 1,
@@ -163,6 +173,7 @@ describe('ProjectService', () => {
         since: new Date(),
         until: new Date(),
         isExternal: false,
+        sites: [],
         employees: []
       };
     service.addProject(newDummyProject).subscribe(() => {

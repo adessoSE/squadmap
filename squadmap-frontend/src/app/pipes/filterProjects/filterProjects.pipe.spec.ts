@@ -17,6 +17,7 @@ describe('FilterProjectPipe', () => {
         since: date,
         until: date,
         isExternal: false,
+        sites: [],
         employees: []
       },
       {
@@ -26,6 +27,7 @@ describe('FilterProjectPipe', () => {
         since: date,
         until: date,
         isExternal: true,
+        sites: [],
         employees: []
       },
     ];
@@ -47,6 +49,7 @@ describe('FilterProjectPipe', () => {
           since: date,
           until: date,
           isExternal: false,
+          sites: [],
           employees: []
         },
       ];
@@ -63,6 +66,7 @@ describe('FilterProjectPipe', () => {
           since: date,
           until: date,
           isExternal: false,
+          sites: [],
           employees: []
         },
       ];
@@ -79,6 +83,7 @@ describe('FilterProjectPipe', () => {
           since: date,
           until: date,
           isExternal: false,
+          sites: [],
           employees: []
         },
         {
@@ -88,6 +93,7 @@ describe('FilterProjectPipe', () => {
           since: date,
           until: date,
           isExternal: true,
+          sites: [],
           employees: []
         },
       ];
@@ -97,6 +103,7 @@ describe('FilterProjectPipe', () => {
         new Date('December 17, 1995 00:00:00'),
         new Date('Januar 17, 1996 00:00:00'),
         false,
+        [],
         [])
       );
       expect(JSON.stringify(pipe.transform(dummyProjects, filterSettings))).toEqual(JSON.stringify(oldDummyProjectsState));

@@ -25,6 +25,7 @@ describe('EmployeeService', () => {
         email: 'test1@name.de',
         phone: '0123456789',
         isExternal: false,
+        image: '',
         projects: []
       },
       {
@@ -35,6 +36,7 @@ describe('EmployeeService', () => {
         email: 'test2@name.de',
         phone: '0123456789',
         isExternal: true,
+        image: '',
         projects: []
       },
     ];
@@ -75,7 +77,8 @@ describe('EmployeeService', () => {
       birthday: new Date(),
       email: 'test3@name.de',
       phone: '0123456789',
-      isExternal: false
+      isExternal: false,
+      image: ''
     };
     const dummyEmployeeAPI: EmployeeModel = {
         employeeId: 1,
@@ -85,6 +88,7 @@ describe('EmployeeService', () => {
         email: 'test3@name.de',
         phone: '0123456789',
         isExternal: false,
+        image: '',
         projects: []
       };
     service.addEmployee(dummyEmployee).subscribe(() => {
@@ -112,7 +116,8 @@ describe('EmployeeService', () => {
       birthday: new Date(),
       email: 'test1@name.de',
       phone: '0123456789',
-      isExternal: false
+      isExternal: false,
+      image: '',
     };
     service.updateEmployee(newDummyEmployee, 1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees));
@@ -127,6 +132,7 @@ describe('EmployeeService', () => {
       newDummyEmployee.email,
       newDummyEmployee.phone,
       newDummyEmployee.isExternal,
+       '',
       []);
     request.flush(dummyEmployees);
   });
