@@ -41,6 +41,7 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	maxHeapSize = "128m"
 }
 
 sonarqube {
