@@ -3,7 +3,6 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
-import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +24,7 @@ public class GetEmployeeAdapterTest {
     @MockBean
     private EmployeePersistenceMapper employeePersistenceMapper;
     @Autowired
-    private GetEmployeePort getEmployeePort;
+    private GetEmployeeAdapter getEmployeePort;
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() {

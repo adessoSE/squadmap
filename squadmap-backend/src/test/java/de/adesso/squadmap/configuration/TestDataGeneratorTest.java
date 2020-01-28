@@ -28,15 +28,15 @@ import static org.mockito.Mockito.*;
 public class TestDataGeneratorTest {
 
     @Mock
-    CreateEmployeeUseCase createEmployeePort;
+    CreateEmployeeUseCase createEmployeeUseCase;
     @Mock
-    CreateProjectUseCase createProjectPort;
+    CreateProjectUseCase createProjectUseCase;
     @Mock
-    CreateWorkingOnUseCase createWorkingOnPort;
+    CreateWorkingOnUseCase createWorkingOnUseCase;
     @Mock
-    ListEmployeeUseCase listEmployeePort;
+    ListEmployeeUseCase listEmployeeUseCase;
     @Mock
-    ListProjectUseCase listProjectPort;
+    ListProjectUseCase listProjectUseCase;
     @InjectMocks
     TestDataGenerator testDataGenerator;
 
@@ -44,59 +44,59 @@ public class TestDataGeneratorTest {
     @Test
     void checkIfRunGeneratesTestData() {
         //given
-        when(listEmployeePort.listEmployees()).thenReturn(new ArrayList<>());
-        when(listProjectPort.listProjects()).thenReturn(new ArrayList<>());
+        when(listEmployeeUseCase.listEmployees()).thenReturn(new ArrayList<>());
+        when(listProjectUseCase.listProjects()).thenReturn(new ArrayList<>());
 
         //when
         testDataGenerator.run();
 
         //then
-        verify(listEmployeePort, times(1)).listEmployees();
-        verify(listProjectPort, times(1)).listProjects();
-        verify(createEmployeePort, times(10)).createEmployee(any(CreateEmployeeCommand.class));
-        verify(createProjectPort, times(4)).createProject(any(CreateProjectCommand.class));
-        verify(createWorkingOnPort, times(10)).createWorkingOn(any(CreateWorkingOnCommand.class));
-        verifyNoMoreInteractions(listEmployeePort);
-        verifyNoMoreInteractions(listProjectPort);
-        verifyNoMoreInteractions(createEmployeePort);
-        verifyNoMoreInteractions(createProjectPort);
-        verifyNoMoreInteractions(createWorkingOnPort);
+        verify(listEmployeeUseCase, times(1)).listEmployees();
+        verify(listProjectUseCase, times(1)).listProjects();
+        verify(createEmployeeUseCase, times(10)).createEmployee(any(CreateEmployeeCommand.class));
+        verify(createProjectUseCase, times(4)).createProject(any(CreateProjectCommand.class));
+        verify(createWorkingOnUseCase, times(10)).createWorkingOn(any(CreateWorkingOnCommand.class));
+        verifyNoMoreInteractions(listEmployeeUseCase);
+        verifyNoMoreInteractions(listProjectUseCase);
+        verifyNoMoreInteractions(createEmployeeUseCase);
+        verifyNoMoreInteractions(createProjectUseCase);
+        verifyNoMoreInteractions(createWorkingOnUseCase);
     }
 
     @Test
     void checkIfRunGeneratesNothingWhenEmployeeOnRepositoryContainsData() {
         //given
         GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
-        when(listEmployeePort.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
+        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
 
         //when
         testDataGenerator.run();
 
         //then
-        verify(listEmployeePort, times(1)).listEmployees();
-        verifyNoMoreInteractions(listProjectPort);
-        verifyNoInteractions(createEmployeePort);
-        verifyNoInteractions(createProjectPort);
-        verifyNoInteractions(createWorkingOnPort);
+        verify(listEmployeeUseCase, times(1)).listEmployees();
+        verifyNoMoreInteractions(listProjectUseCase);
+        verifyNoInteractions(createEmployeeUseCase);
+        verifyNoInteractions(createProjectUseCase);
+        verifyNoInteractions(createWorkingOnUseCase);
     }
 
     @Test
     void checkIfRunGeneratesNothingWhenProjectOnRepositoryContainsData() {
         //given
         GetProjectResponse projectResponse = GetProjectResponseMother.complete().build();
-        when(listEmployeePort.listEmployees()).thenReturn(new ArrayList<>());
-        when(listProjectPort.listProjects()).thenReturn(Collections.singletonList(projectResponse));
+        when(listEmployeeUseCase.listEmployees()).thenReturn(new ArrayList<>());
+        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(projectResponse));
 
         //when
         testDataGenerator.run();
 
         //then
-        verify(listEmployeePort, times(1)).listEmployees();
-        verify(listProjectPort, times(1)).listProjects();
-        verifyNoMoreInteractions(listEmployeePort);
-        verifyNoMoreInteractions(listProjectPort);
-        verifyNoInteractions(createEmployeePort);
-        verifyNoInteractions(createProjectPort);
-        verifyNoInteractions(createWorkingOnPort);
+        verify(listEmployeeUseCase, times(1)).listEmployees();
+        verify(listProjectUseCase, times(1)).listProjects();
+        verifyNoMoreInteractions(listEmployeeUseCase);
+        verifyNoMoreInteractions(listProjectUseCase);
+        verifyNoInteractions(createEmployeeUseCase);
+        verifyNoInteractions(createProjectUseCase);
+        verifyNoInteractions(createWorkingOnUseCase);
     }
 }

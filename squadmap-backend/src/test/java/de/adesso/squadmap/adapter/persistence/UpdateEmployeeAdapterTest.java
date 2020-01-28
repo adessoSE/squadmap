@@ -4,7 +4,6 @@ import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeAlreadyExistsEx
 import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
-import de.adesso.squadmap.application.port.driven.employee.UpdateEmployeePort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +24,7 @@ public class UpdateEmployeeAdapterTest {
     @MockBean
     private EmployeePersistenceMapper employeePersistenceMapper;
     @Autowired
-    private UpdateEmployeePort updateEmployeePort;
+    private UpdateEmployeeAdapter updateEmployeePort;
 
     @Test
     void checkIfUpdateEmployeeUpdatesTheEmployee() {

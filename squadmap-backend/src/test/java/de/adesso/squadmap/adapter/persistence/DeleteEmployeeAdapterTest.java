@@ -1,7 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
-import de.adesso.squadmap.application.port.driven.employee.DeleteEmployeePort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +18,7 @@ public class DeleteEmployeeAdapterTest {
     @MockBean
     private EmployeeRepository employeeRepository;
     @Autowired
-    private DeleteEmployeePort deleteEmployeePort;
+    private DeleteEmployeeAdapter deleteEmployeePort;
 
     @Test
     void checkIfDeleteEmployeeDeletesTheEmployee() {
