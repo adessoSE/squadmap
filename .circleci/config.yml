@@ -1,15 +1,12 @@
 version: 2.1
 jobs:
-  build:
-
-    enviroment:
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-
   backend:
     docker:
       - image: circleci/openjdk:11-jdk
 
+    enviroment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     working_directory: ~/squadmap/squadmap-backend
 
     steps:
