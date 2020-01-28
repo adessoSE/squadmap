@@ -41,6 +41,7 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	jvmArgs "-Dspring.test.context.cache.maxSize=1"
 }
 
 sonarqube {
