@@ -11,6 +11,8 @@
     <thead>
     <tr>
       <th>Project</th>
+      <th>Since</th>
+      <th>Until</th>
       <th>Workload</th>
     </tr>
     </thead>
@@ -18,10 +20,16 @@
     <tr *ngFor="let project of allProjects | filterProjects : {searchText: searchText}">
       <td>{{project.title}}</td>
       <td>
-        <input type="number" min="0" max="100" #input>
+        <input type="date" name="since" #since>
       </td>
       <td>
-        <button class="btn btn-success" type="button" (click)="onAddProject(project, input)" >Add</button>
+        <input type="date" name="until" #until>
+      </td>
+      <td>
+        <input type="number" min="0" max="100" #worklaod>
+      </td>
+      <td>
+        <button class="btn btn-success" type="button" (click)="onAddProject(project, since, until, worklaod)" >Add</button>
       </td>
     </tr>
     </tbody>

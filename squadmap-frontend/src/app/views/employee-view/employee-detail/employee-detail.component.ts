@@ -9,6 +9,7 @@ import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {AddProjectModalComponent} from '../../../modals/add-project-modal/add-project-modal.component';
+import {EmployeeModalComponent} from '../../../modals/employee-modal/employee-modal.component';
 
 @Component({
   selector: 'app-employee-detail',
@@ -54,7 +55,8 @@ export class EmployeeDetailComponent implements OnInit {
       initialState: {
         allProjects: this.allProjects,
         employeeId: this.employee.employeeId
-      }
+      },
+      class: 'modal-lg'
     };
     this.modalRef = this.modalService.show(AddProjectModalComponent, config);
   }
@@ -73,7 +75,8 @@ export class EmployeeDetailComponent implements OnInit {
       ignoreBackdropClick: true,
       initialState: {
         workingOnProject,
-        employeeId: this.employee.employeeId
+        employeeId: this.employee.employeeId,
+        workload: workingOnProject.workload
       }
     };
     this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
@@ -81,5 +84,18 @@ export class EmployeeDetailComponent implements OnInit {
 
   onOpenProjectDetail(projectId: number) {
     this.router.navigate(['/project/' + projectId]);
+  }
+
+
+  onUpdate() {
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        employee: this.employee,
+        actionName: 'Update'
+      }
+    };
+    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
   }
 }

@@ -24,9 +24,9 @@ export class AddProjectModalComponent implements OnInit {
     // TODO filter here and display only not already existingProjects in List
   }
 
-  onAddProject(project: ProjectModel, input: HTMLInputElement) {
+  onAddProject(project: ProjectModel, since: HTMLInputElement, until: HTMLInputElement, workload: HTMLInputElement) {
     this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(this.employeeId, project.projectId, new Date(), new Date(), +input.value)).subscribe(() => {
+      new CreateWorkingOnModel(this.employeeId, project.projectId, since.valueAsDate, until.valueAsDate, +workload.value)).subscribe(() => {
       this.modalRef.hide();
       location.reload();
     }, error => {

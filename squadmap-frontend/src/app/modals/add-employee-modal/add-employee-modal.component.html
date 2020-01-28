@@ -12,6 +12,8 @@
     <tr>
       <th>First name</th>
       <th>Last name</th>
+      <th>Since</th>
+      <th>Until</th>
       <th>Workload</th>
     </tr>
     </thead>
@@ -19,11 +21,17 @@
     <tr *ngFor="let employee of allEmployees | filterEmployees : {searchText: searchText}">
       <td>{{employee.firstName}}</td>
       <td>{{employee.lastName}}</td>
-        <td>
-          <input type="number" min="0" max="100" name="workload" #workload>
-        </td>
+      <td>
+        <input type="date" name="since" #since>
+      </td>
+      <td>
+        <input type="date" name="until" #until>
+      </td>
+      <td>
+        <input type="number" min="0" max="100" name="workload" #workload>
+      </td>
         <td class="justify-content-end">
-          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee, workload)">Add</button>
+          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee, since, until, workload)">Add</button>
         </td>
     </tr>
     </tbody>

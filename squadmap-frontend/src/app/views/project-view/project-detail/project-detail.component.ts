@@ -47,7 +47,8 @@ export class ProjectDetailComponent implements OnInit {
         allEmployees: this.filteredEmployees,
         existingEmployees: this.project.employees,
         projectId: this.project.projectId
-      }
+      },
+      class: 'modal-lg'
     };
     this.modalRef = this.modalService.show(AddEmployeeModalComponent, config);
   }

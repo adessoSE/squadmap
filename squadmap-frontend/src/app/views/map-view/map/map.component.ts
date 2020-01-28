@@ -99,7 +99,6 @@ export class MapComponent implements OnInit {
     document.getElementById('mynetwork').style.height = Math.round(window.innerHeight * 0.95) + 'px';
     const container = document.getElementById('mynetwork');
 
-
     // provide the data in the vis format
     const data = {
       nodes,
