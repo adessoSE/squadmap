@@ -7,6 +7,7 @@ export class CreateProjectModel {
     public since: Date,
     public until: Date,
     public isExternal: boolean,
+    public sites: string[],
   ) {
   }
 }

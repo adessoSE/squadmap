@@ -1,0 +1,47 @@
+
+<div class="search row justify-content-center">
+  <div class="col-md-5">
+  <input placeholder="Search for..." class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
+  </div>
+  <div class="col-md-5 d-flex justify-content-between">
+    <div>
+      <div class="btn-group">
+        <label class="btn btn-outline-secondary" [(ngModel)]="checkedOldProjects" btnCheckbox tabindex="0" >Hide old</label>
+        <label class="btn btn-outline-secondary" [(ngModel)]="checkedExternalProjects" btnCheckbox tabindex="0" >Hide external</label>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-secondary" type="button" (click)="onAddProject()">+ Add Project</button>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-10">
+    <table class="table">
+      <thead>
+      <tr class="table-head">
+        <th>Project</th>
+        <th>Since</th>
+        <th>Until</th>
+        <th class="d-flex justify-content-end">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr id="link" *ngFor="let project of projectList | filterProjects : {searchText: searchText, checkedOldProjects: checkedOldProjects, checkedExternalProjects: checkedExternalProjects}">
+        <td class="align-middle" (click)="onOpenProject(project)">{{project.title}}</td>
+        <td class="align-middle" (click)="onOpenProject(project)">{{project.since.toDateString()}}</td>
+        <td class="align-middle" (click)="onOpenProject(project)">{{project.until.toDateString()}}</td>
+        <td class="d-flex justify-content-end">
+          <div class="btn-group">
+            <button class="btn btn-outline-info" type="button" (click)="onUpdate(project)" >Edit</button>
+            <button class="btn btn-outline-danger" type="button" (click)="onDelete(project)">Delete</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+

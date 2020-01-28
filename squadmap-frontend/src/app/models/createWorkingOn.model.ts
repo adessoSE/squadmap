@@ -3,6 +3,7 @@ export class CreateWorkingOnModel {
     public employeeId: number,
     public projectId: number,
     public since: Date,
-    public until: Date
+    public until: Date,
+    public workload: number,
   ) {}
 }
