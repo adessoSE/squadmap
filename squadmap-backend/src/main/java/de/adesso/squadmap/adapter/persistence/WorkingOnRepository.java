@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface WorkingOnRepository extends Neo4jRepository<WorkingOnNeo4JEntity, Long> {
 
-    @Query("MATCH (e:Employee)-[w:WORKING_ON]->(p:Project) " +
+    @Query("MATCH (e:Employee)-[w:WORKING_ON]->(p:Project)" +
             "WHERE ID(e)={employeeId} AND ID(p)={projectId}" +
             "RETURN Count(w)>0")
-    boolean existsByEmployeeAndProject(long employeeId, long projectId);
+    boolean existsByEmployeeAndProject(Long employeeId, Long projectId);
 }

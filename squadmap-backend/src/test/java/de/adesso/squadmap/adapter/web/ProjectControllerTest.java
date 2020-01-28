@@ -2,12 +2,15 @@ package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.adapter.web.exceptions.*;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
+import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommandMother;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.delete.DeleteProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommand;
+import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommandMother;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,8 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,10 +58,8 @@ class ProjectControllerTest {
     @Test
     void checkIfGetAllProjectsReturnsAll() throws Exception {
         //given
-        GetProjectResponse getProjectResponse = new GetProjectResponse(
-                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList(), new ArrayList<>());
-        List<GetProjectResponse> allProjects = Collections.singletonList(getProjectResponse);
-        when(listProjectUseCase.listProjects()).thenReturn(allProjects);
+        GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
+        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(getProjectResponse));
 
         //when
         MvcResult result = mockMvc.perform(get("/project/all"))
@@ -69,7 +68,8 @@ class ProjectControllerTest {
         List<GetProjectResponse> responses = JsonMapper.asResponseList(result, GetProjectResponse.class);
 
         //then
-        assertThat(responses).isEqualTo(allProjects);
+        assertThat(responses.size()).isOne();
+        assertThat(responses.get(0)).isEqualTo(getProjectResponse);
         verify(listProjectUseCase, times(1)).listProjects();
     }
 
@@ -77,8 +77,7 @@ class ProjectControllerTest {
     void checkIfGetProjectReturnsTheProject() throws Exception {
         //given
         long projectId = 1;
-        GetProjectResponse getProjectResponse = new GetProjectResponse(
-                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList(), new ArrayList<>());
+        GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
         when(getProjectUseCase.getProject(projectId)).thenReturn(getProjectResponse);
 
         //when
@@ -96,8 +95,7 @@ class ProjectControllerTest {
     void checkIfCreateProjectCreatesTheProject() throws Exception {
         //given
         long projectId = 1;
-        CreateProjectCommand createProjectCommand = new CreateProjectCommand(
-                "t", "d", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
+        CreateProjectCommand createProjectCommand = CreateProjectCommandMother.complete().build();
         when(createProjectUseCase.createProject(createProjectCommand)).thenReturn(projectId);
 
         //when
@@ -118,8 +116,7 @@ class ProjectControllerTest {
     void checkIfUpdateProjectUpdatesTheProject() throws Exception {
         //given
         long projectId = 1;
-        UpdateProjectCommand updateProjectCommand = new UpdateProjectCommand(
-                "t", "d", LocalDate.now(), LocalDate.now(), true, new ArrayList<>());
+        UpdateProjectCommand updateProjectCommand = UpdateProjectCommandMother.complete().build();
         doNothing().when(updateProjectUseCase).updateProject(updateProjectCommand, projectId);
 
         //when
@@ -150,12 +147,11 @@ class ProjectControllerTest {
     @Test
     void checkIfCreateProjectThrowsInvalidProjectTitleException() {
         //given
-        CreateProjectCommand projectTitleNull = new CreateProjectCommand(
-                null, "", LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
-        CreateProjectCommand projectTitleEmpty = new CreateProjectCommand(
-                "", "", LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
-        CreateProjectCommand projectTitleTooLong = new CreateProjectCommand(
-                "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "", LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
+        CreateProjectCommand projectTitleNull = CreateProjectCommandMother.complete().title(null).build();
+        CreateProjectCommand projectTitleEmpty = CreateProjectCommandMother.complete().title("").build();
+        CreateProjectCommand projectTitleTooLong = CreateProjectCommandMother.complete()
+                .title("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+                .build();
 
         //then
         assertThatThrownBy(() ->
@@ -181,11 +177,10 @@ class ProjectControllerTest {
     @Test
     void checkIfCreateProjectThrowsInvalidProjectDescriptionException() {
         //given
-        CreateProjectCommand projectDescriptionNull = new CreateProjectCommand(
-                "t", null, LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
-        CreateProjectCommand projectDescriptionTooLong = new CreateProjectCommand(
-                "t", "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-                LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
+        CreateProjectCommand projectDescriptionNull = CreateProjectCommandMother.complete().description(null).build();
+        CreateProjectCommand projectDescriptionTooLong = CreateProjectCommandMother.complete()
+                .description("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+                .build();
 
         //then
         assertThatThrownBy(() ->
@@ -205,8 +200,7 @@ class ProjectControllerTest {
     @Test
     void checkIfCreateProjectThrowsInvalidProjectSinceException() {
         //given
-        CreateProjectCommand projectSinceNull = new CreateProjectCommand(
-                "t", "", null, LocalDate.now(), false, new ArrayList<>());
+        CreateProjectCommand projectSinceNull = CreateProjectCommandMother.complete().since(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -220,8 +214,7 @@ class ProjectControllerTest {
     @Test
     void checkIfCreateProjectThrowsInvalidProjectUntilException() {
         //given
-        CreateProjectCommand projectUntilNull = new CreateProjectCommand(
-                "t", "", LocalDate.now(), null, false, new ArrayList<>());
+        CreateProjectCommand projectUntilNull = CreateProjectCommandMother.complete().until(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -235,8 +228,10 @@ class ProjectControllerTest {
     @Test
     void checkIfCreateProjectThrowsInvalidProjectURLException() {
         //given
-        CreateProjectCommand projectInvalidURL = new CreateProjectCommand("t", "d", LocalDate.now(), LocalDate.now(), false, Collections.singletonList("noURL"));
-        CreateProjectCommand projectURLListNull = new CreateProjectCommand("t", "d", LocalDate.now(), LocalDate.now(), false, null);
+        CreateProjectCommand projectInvalidURL = CreateProjectCommandMother.complete()
+                .sites(Collections.singletonList("null"))
+                .build();
+        CreateProjectCommand projectURLListNull = CreateProjectCommandMother.complete().sites(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -256,12 +251,11 @@ class ProjectControllerTest {
     @Test
     void checkIfUpdateProjectThrowsInvalidProjectTitleException() {
         //given
-        UpdateProjectCommand projectTitleNull = new UpdateProjectCommand(
-                null, "", LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
-        UpdateProjectCommand projectTitleEmpty = new UpdateProjectCommand(
-                "", "", LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
-        UpdateProjectCommand projectTitleTooLong = new UpdateProjectCommand(
-                "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "", LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
+        UpdateProjectCommand projectTitleNull = UpdateProjectCommandMother.complete().title(null).build();
+        UpdateProjectCommand projectTitleEmpty = UpdateProjectCommandMother.complete().title("").build();
+        UpdateProjectCommand projectTitleTooLong = UpdateProjectCommandMother.complete()
+                .title("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+                .build();
 
         //then
         assertThatThrownBy(() ->
@@ -287,11 +281,10 @@ class ProjectControllerTest {
     @Test
     void checkIfUpdateProjectThrowsInvalidProjectDescriptionException() {
         //given
-        UpdateProjectCommand projectDescriptionNull = new UpdateProjectCommand(
-                "t", null, LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
-        UpdateProjectCommand projectDescriptionTooLong = new UpdateProjectCommand(
-                "t", "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-                LocalDate.now(), LocalDate.now(), false, new ArrayList<>());
+        UpdateProjectCommand projectDescriptionNull = UpdateProjectCommandMother.complete().description(null).build();
+        UpdateProjectCommand projectDescriptionTooLong = UpdateProjectCommandMother.complete()
+                .description("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+                .build();
 
         //then
         assertThatThrownBy(() ->
@@ -311,8 +304,7 @@ class ProjectControllerTest {
     @Test
     void checkIfUpdateProjectThrowsInvalidProjectSinceException() {
         //given
-        UpdateProjectCommand projectSinceNull = new UpdateProjectCommand(
-                "t", "", null, LocalDate.now(), false, new ArrayList<>());
+        UpdateProjectCommand projectSinceNull = UpdateProjectCommandMother.complete().since(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -326,8 +318,7 @@ class ProjectControllerTest {
     @Test
     void checkIfUpdateProjectThrowsInvalidProjectUntilException() {
         //given
-        UpdateProjectCommand projectUntilNull = new UpdateProjectCommand(
-                "t", "", LocalDate.now(), null, false, new ArrayList<>());
+        UpdateProjectCommand projectUntilNull = UpdateProjectCommandMother.complete().until(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -341,8 +332,10 @@ class ProjectControllerTest {
     @Test
     void checkIfUpdateProjectThrowsInvalidProjectURLException() {
         //given
-        UpdateProjectCommand projectInvalidURL = new UpdateProjectCommand("t", "d", LocalDate.now(), LocalDate.now(), false, Collections.singletonList("noURL"));
-        UpdateProjectCommand projectURLListNull = new UpdateProjectCommand("t", "d", LocalDate.now(), LocalDate.now(), false, null);
+        UpdateProjectCommand projectInvalidURL = UpdateProjectCommandMother.complete()
+                .sites(Collections.singletonList("null"))
+                .build();
+        UpdateProjectCommand projectURLListNull = UpdateProjectCommandMother.complete().sites(null).build();
 
         //then
         assertThatThrownBy(() ->

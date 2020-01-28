@@ -14,12 +14,13 @@ import java.util.List;
 class ListProjectAdapter implements ListProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper mapper;
+    private final ProjectPersistenceMapper mapper;
 
     @Override
     public List<Project> listProjects() {
         List<Project> projects = new ArrayList<>(Collections.emptyList());
-        projectRepository.findAll().forEach(projectDto -> projects.add(mapper.mapToDomainEntity(projectDto)));
+        projectRepository.findAll().forEach(projectNeo4JEntity ->
+                projects.add(mapper.mapToDomainEntity(projectNeo4JEntity)));
         return projects;
     }
 }

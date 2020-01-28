@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -19,8 +17,10 @@ class ProjectRepositoryTest {
     @Test
     void checkIfExistsByTitleReturnsTrueWhenExistent() {
         //given
-        ProjectNeo4JEntity project = new ProjectNeo4JEntity("t", "", null, null, true, new ArrayList<>());
-        projectRepository.save(project);
+        ProjectNeo4JEntity project = ProjectNeo4JEntityMother.complete().projectId(null).build();
+        long id = projectRepository.save(project).getProjectId();
+        ProjectNeo4JEntity pr = projectRepository.findById(id).orElse(null);
+        assertThat(pr).isNotNull();
 
         //when
         boolean answer = projectRepository.existsByTitle(project.getTitle());
@@ -34,7 +34,7 @@ class ProjectRepositoryTest {
         //given
 
         //when
-        boolean answer = projectRepository.existsByTitle("");
+        boolean answer = projectRepository.existsByTitle("t");
 
         //then
         assertThat(answer).isFalse();

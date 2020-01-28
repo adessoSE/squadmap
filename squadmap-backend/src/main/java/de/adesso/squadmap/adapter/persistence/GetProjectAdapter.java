@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 class GetProjectAdapter implements GetProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper mapper;
+    private final ProjectPersistenceMapper mapper;
 
     @Override
     public Project getProject(Long projectId) {

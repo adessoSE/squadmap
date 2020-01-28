@@ -14,12 +14,13 @@ import java.util.List;
 class ListEmployeeAdapter implements ListEmployeePort {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeeMapper mapper;
+    private final EmployeePersistenceMapper mapper;
 
     @Override
     public List<Employee> listEmployees() {
         List<Employee> employees = new ArrayList<>(Collections.emptyList());
-        employeeRepository.findAll().forEach(employeeDto -> employees.add(mapper.mapToDomainEntity(employeeDto)));
+        employeeRepository.findAll().forEach(employeeNeo4JEntity ->
+                employees.add(mapper.mapToDomainEntity(employeeNeo4JEntity)));
         return employees;
     }
 }

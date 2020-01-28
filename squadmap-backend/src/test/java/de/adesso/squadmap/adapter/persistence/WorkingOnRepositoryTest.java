@@ -5,12 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest()
+@SpringBootTest
 @ActiveProfiles("test")
 class WorkingOnRepositoryTest {
 
@@ -24,18 +21,21 @@ class WorkingOnRepositoryTest {
     @Test
     void checkIfExistsByEmployeeAndProjectReturnsTrueWhenTrue() {
         //given
-        EmployeeNeo4JEntity employeeNeo4JEntity = new EmployeeNeo4JEntity(
-                "", "", null, "", "", true, "");
-        ProjectNeo4JEntity projectNeo4JEntity = new ProjectNeo4JEntity(
-                "", "", null, null, true, new ArrayList<>());
-        WorkingOnNeo4JEntity workingOnNeo4JEntity = new WorkingOnNeo4JEntity(
-                null, null, 0, employeeNeo4JEntity, projectNeo4JEntity);
-        projectRepository.save(projectNeo4JEntity);
-        employeeRepository.save(employeeNeo4JEntity);
+        EmployeeNeo4JEntity employeeNeo4JEntity = EmployeeNeo4JEntityMother.complete().employeeId(null).build();
+        ProjectNeo4JEntity projectNeo4JEntity = ProjectNeo4JEntityMother.complete().projectId(null).build();
+        employeeNeo4JEntity = employeeRepository.save(employeeNeo4JEntity);
+        projectNeo4JEntity = projectRepository.save(projectNeo4JEntity);
+        WorkingOnNeo4JEntity workingOnNeo4JEntity = WorkingOnNeo4JEntityMother.complete()
+                .workingOnId(null)
+                .employee(employeeNeo4JEntity)
+                .project(projectNeo4JEntity)
+                .build();
         workingOnRepository.save(workingOnNeo4JEntity);
 
         //when
-        boolean answer = workingOnRepository.existsByEmployeeAndProject(employeeNeo4JEntity.getEmployeeId(), projectNeo4JEntity.getProjectId());
+        boolean answer = workingOnRepository.existsByEmployeeAndProject(
+                workingOnNeo4JEntity.getEmployee().getEmployeeId(),
+                workingOnNeo4JEntity.getProject().getProjectId());
 
         //then
         assertThat(answer).isTrue();
@@ -44,10 +44,8 @@ class WorkingOnRepositoryTest {
     @Test
     void checkIfExistsByEmployeeAndProjectReturnsFalseWhenFalse() {
         //given
-        EmployeeNeo4JEntity employeeNeo4JEntity = new EmployeeNeo4JEntity(
-                1L, "", "", null, "", "", true, "");
-        ProjectNeo4JEntity projectNeo4JEntity = new ProjectNeo4JEntity(
-                1L, "", "", null, null, true, new ArrayList<>());
+        EmployeeNeo4JEntity employeeNeo4JEntity = EmployeeNeo4JEntityMother.complete().build();
+        ProjectNeo4JEntity projectNeo4JEntity = ProjectNeo4JEntityMother.complete().build();
 
         //when
         boolean answer = workingOnRepository.existsByEmployeeAndProject(

@@ -6,19 +6,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class WorkingOnMapper {
+class WorkingOnPersistenceMapper {
 
-    private final EmployeeMapper employeeMapper;
-    private final ProjectMapper projectMapper;
+    private final EmployeePersistenceMapper employeePersistenceMapper;
+    private final ProjectPersistenceMapper projectPersistenceMapper;
 
-    WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn) {
+    WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn, EmployeeNeo4JEntity employeeNeo4JEntity, ProjectNeo4JEntity projectNeo4JEntity) {
         return new WorkingOnNeo4JEntity(
                 workingOn.getWorkingOnId(),
                 workingOn.getSince(),
                 workingOn.getUntil(),
                 workingOn.getWorkload(),
-                employeeMapper.mapToNeo4JEntity(workingOn.getEmployee()),
-                projectMapper.mapToNeo4JEntity(workingOn.getProject()));
+                employeeNeo4JEntity,
+                projectNeo4JEntity);
     }
 
     WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {
@@ -27,7 +27,7 @@ class WorkingOnMapper {
                 workingOnNeo4JEntity.getSince(),
                 workingOnNeo4JEntity.getUntil(),
                 workingOnNeo4JEntity.getWorkload(),
-                employeeMapper.mapToDomainEntity(workingOnNeo4JEntity.getEmployee()),
-                projectMapper.mapToDomainEntity(workingOnNeo4JEntity.getProject()));
+                employeePersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity.getEmployee()),
+                projectPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity.getProject()));
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 class GetWorkingOnAdapter implements GetWorkingOnPort {
 
     private final WorkingOnRepository workingOnRepository;
-    private final WorkingOnMapper mapper;
+    private final WorkingOnPersistenceMapper mapper;
 
     @Override
     public WorkingOn getWorkingOn(Long workingOnId) {

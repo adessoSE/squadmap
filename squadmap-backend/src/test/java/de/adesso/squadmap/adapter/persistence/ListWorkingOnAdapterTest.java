@@ -1,6 +1,7 @@
 package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.domain.WorkingOnMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,26 +21,30 @@ public class ListWorkingOnAdapterTest {
     @MockBean
     private WorkingOnRepository workingOnRepository;
     @MockBean
-    private WorkingOnMapper workingOnMapper;
+    private WorkingOnPersistenceMapper workingOnPersistenceMapper;
     @Autowired
     private ListWorkingOnAdapter listWorkingOnAdapter;
 
     @Test
     void checkIfListWorkingOnReturnsAllRelations() {
         //given
-        WorkingOn workingOn1 = WorkingOn.withId(
-                1L, null, null, 0, null, null);
-        WorkingOn workingOn2 = WorkingOn.withId(
-                2L, null, null, 0, null, null);
+        WorkingOn workingOn1 = WorkingOnMother.complete()
+                .workingOnId(1L)
+                .build();
+        WorkingOn workingOn2 = WorkingOnMother.complete()
+                .workingOnId(2L)
+                .build();
         List<WorkingOn> workingOns = Arrays.asList(workingOn1, workingOn2);
-        WorkingOnNeo4JEntity workingOnNeo4JEntity1 = new WorkingOnNeo4JEntity(
-                1L, null, null, 0, null, null);
-        WorkingOnNeo4JEntity workingOnNeo4JEntity2 = new WorkingOnNeo4JEntity(
-                2L, null, null, 0, null, null);
+        WorkingOnNeo4JEntity workingOnNeo4JEntity1 = WorkingOnNeo4JEntityMother.complete()
+                .workingOnId(1L)
+                .build();
+        WorkingOnNeo4JEntity workingOnNeo4JEntity2 = WorkingOnNeo4JEntityMother.complete()
+                .workingOnId(2L)
+                .build();
         Iterable<WorkingOnNeo4JEntity> workingOnNeo4JEntities = Arrays.asList(workingOnNeo4JEntity1, workingOnNeo4JEntity2);
         when(workingOnRepository.findAll()).thenReturn(workingOnNeo4JEntities);
-        when(workingOnMapper.mapToDomainEntity(workingOnNeo4JEntity1)).thenReturn(workingOn1);
-        when(workingOnMapper.mapToDomainEntity(workingOnNeo4JEntity2)).thenReturn(workingOn2);
+        when(workingOnPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity1)).thenReturn(workingOn1);
+        when(workingOnPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity2)).thenReturn(workingOn2);
 
         //when
         List<WorkingOn> found = listWorkingOnAdapter.listWorkingOn();
@@ -47,9 +52,9 @@ public class ListWorkingOnAdapterTest {
         //then
         assertThat(found).isEqualTo(workingOns);
         verify(workingOnRepository, times(1)).findAll();
-        verify(workingOnMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity1);
-        verify(workingOnMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity2);
+        verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity1);
+        verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity2);
         verifyNoMoreInteractions(workingOnRepository);
-        verifyNoMoreInteractions(workingOnMapper);
+        verifyNoMoreInteractions(workingOnPersistenceMapper);
     }
 }

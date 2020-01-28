@@ -3,7 +3,6 @@ package de.adesso.squadmap.application.port.driver.employee.create;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import de.adesso.squadmap.application.domain.Employee;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -39,18 +38,7 @@ public class CreateEmployeeCommand {
     @URL(protocol = "file")
     private final String image;
 
-    public Employee toEmployee() {
-        return Employee.withoutId(
-                this.firstName,
-                this.lastName,
-                this.birthday,
-                this.email,
-                this.phone,
-                this.isExternal,
-                this.image);
-    }
-
     @JsonPOJOBuilder(withPrefix = "")
-    static class CreateEmployeeCommandBuilder {
+    public static class CreateEmployeeCommandBuilder {
     }
 }

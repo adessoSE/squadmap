@@ -1,8 +1,11 @@
 package de.adesso.squadmap.application.service.employee;
 
 import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.EmployeeDomainMapper;
+import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.port.driven.employee.CreateEmployeePort;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
+import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommandMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +21,8 @@ class CreateEmployeeServiceTest {
 
     @MockBean
     private CreateEmployeePort createEmployeePort;
+    @MockBean
+    private EmployeeDomainMapper employeeMapper;
     @Autowired
     private CreateEmployeeService service;
 
@@ -25,9 +30,9 @@ class CreateEmployeeServiceTest {
     void checkIfCreateEmployeeCreatesAnEmployee() {
         //given
         long employeeId = 1;
-        CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand(
-                "", "", null, "", "", true, "");
-        Employee employee = createEmployeeCommand.toEmployee();
+        CreateEmployeeCommand createEmployeeCommand = CreateEmployeeCommandMother.complete().build();
+        Employee employee = EmployeeMother.complete().build();
+        when(employeeMapper.mapToDomainEntity(createEmployeeCommand)).thenReturn(employee);
         when(createEmployeePort.createEmployee(employee)).thenReturn(employeeId);
 
         //when
@@ -35,7 +40,9 @@ class CreateEmployeeServiceTest {
 
         //then
         assertThat(found).isEqualTo(employeeId);
+        verify(employeeMapper, times(1)).mapToDomainEntity(createEmployeeCommand);
         verify(createEmployeePort, times(1)).createEmployee(employee);
+        verifyNoMoreInteractions(employeeMapper);
         verifyNoMoreInteractions(createEmployeePort);
     }
 }

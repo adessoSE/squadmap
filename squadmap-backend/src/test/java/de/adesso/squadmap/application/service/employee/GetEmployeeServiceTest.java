@@ -1,10 +1,13 @@
 package de.adesso.squadmap.application.service.employee;
 
 import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.EmployeeMother;
+import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,16 +30,20 @@ class GetEmployeeServiceTest {
     private GetEmployeePort getEmployeePort;
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
+    @MockBean
+    private ResponseMapper<Employee, GetEmployeeResponse> responseMapper;
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() {
         //given
         long employeeId = 1;
-        Employee employee = Employee.withId(
-                employeeId, "", "", null, "", "", true, "");
+        Employee employee = EmployeeMother.complete()
+                .employeeId(employeeId)
+                .build();
         List<WorkingOn> allRelations = new ArrayList<>();
-        GetEmployeeResponse getEmployeeResponse = GetEmployeeResponse.getInstance(employee, allRelations);
+        GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
         when(getEmployeePort.getEmployee(employeeId)).thenReturn(employee);
+        when(responseMapper.toResponse(employee, allRelations)).thenReturn(getEmployeeResponse);
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
 
         //when
@@ -45,6 +52,10 @@ class GetEmployeeServiceTest {
         //then
         assertThat(response).isEqualTo(getEmployeeResponse);
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
+        verify(responseMapper, times(1)).toResponse(employee, allRelations);
+        verify(listWorkingOnPort, times(1)).listWorkingOn();
         verifyNoMoreInteractions(getEmployeePort);
+        verifyNoMoreInteractions(responseMapper);
+        verifyNoMoreInteractions(listWorkingOnPort);
     }
 }

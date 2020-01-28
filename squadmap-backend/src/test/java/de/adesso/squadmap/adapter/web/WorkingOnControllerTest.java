@@ -3,15 +3,16 @@ package de.adesso.squadmap.adapter.web;
 import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnSinceException;
 import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnUntilException;
 import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnWorkloadException;
-import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
+import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommandMother;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
+import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
+import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommandMother;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,14 +60,8 @@ class WorkingOnControllerTest {
     @Test
     void checkIfGetAllWorkingOnReturnsAll() throws Exception {
         //given
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(
-                1L, "f", "l", LocalDate.now(), "e.f@g.de", "0", true, "", Collections.emptyList());
-        GetProjectResponse getProjectResponse = new GetProjectResponse(
-                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList(), new ArrayList<>());
-        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse(
-                1L, getEmployeeResponse, getProjectResponse, LocalDate.now(), LocalDate.now(), 0);
-        List<GetWorkingOnResponse> allWorkingOn = Collections.singletonList(getWorkingOnResponse);
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(allWorkingOn);
+        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
+        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(Collections.singletonList(getWorkingOnResponse));
 
         //when
         MvcResult result = mockMvc.perform(get("/workingOn/all"))
@@ -77,7 +70,8 @@ class WorkingOnControllerTest {
         List<GetWorkingOnResponse> responses = JsonMapper.asResponseList(result, GetWorkingOnResponse.class);
 
         //then
-        assertThat(responses).isEqualTo(allWorkingOn);
+        assertThat(responses.size()).isOne();
+        assertThat(responses.get(0)).isEqualTo(getWorkingOnResponse);
         verify(listWorkingOnUseCase, times(1)).listWorkingOn();
     }
 
@@ -85,12 +79,7 @@ class WorkingOnControllerTest {
     void checkIfGetWorkingOnReturnsTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(
-                1L, "f", "l", LocalDate.now(), "e.f@g.de", "0", true, "", Collections.emptyList());
-        GetProjectResponse getProjectResponse = new GetProjectResponse(
-                1L, "t", "d", LocalDate.now(), LocalDate.now(), true, Collections.emptyList(), new ArrayList<>());
-        GetWorkingOnResponse getWorkingOnResponse = new GetWorkingOnResponse(
-                workingOnId, getEmployeeResponse, getProjectResponse, LocalDate.now(), LocalDate.now(), 0);
+        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
         when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
 
         //when
@@ -108,8 +97,7 @@ class WorkingOnControllerTest {
     void checkIfCreateWorkingOnCreatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        CreateWorkingOnCommand createWorkingOnCommand = new CreateWorkingOnCommand(
-                0, 0, LocalDate.now(), LocalDate.now(), 0);
+        CreateWorkingOnCommand createWorkingOnCommand = CreateWorkingOnCommandMother.complete().build();
         when(createWorkingOnUseCase.createWorkingOn(createWorkingOnCommand)).thenReturn(workingOnId);
 
         //when
@@ -130,8 +118,7 @@ class WorkingOnControllerTest {
     void checkIfUpdateWorkingOnUpdatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        UpdateWorkingOnCommand updateWorkingOnCommand = new UpdateWorkingOnCommand(
-                0, 0, LocalDate.now(), LocalDate.now(), 0);
+        UpdateWorkingOnCommand updateWorkingOnCommand = UpdateWorkingOnCommandMother.complete().build();
         doNothing().when(updateWorkingOnUseCase).updateWorkingOn(updateWorkingOnCommand, workingOnId);
 
         //when
@@ -162,7 +149,7 @@ class WorkingOnControllerTest {
     @Test
     void checkIfCreateWorkingOnThrowsInvalidWorkingONSinceException() {
         //given
-        CreateWorkingOnCommand workingOnSinceNull = new CreateWorkingOnCommand(0, 0, null, LocalDate.now(), 0);
+        CreateWorkingOnCommand workingOnSinceNull = CreateWorkingOnCommandMother.complete().since(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -176,7 +163,7 @@ class WorkingOnControllerTest {
     @Test
     void checkIfCreateWorkingOnThrowsInvalidWorkingOnUntilException() {
         //given
-        CreateWorkingOnCommand workingOnUntilNull = new CreateWorkingOnCommand(0, 0, LocalDate.now(), null, 0);
+        CreateWorkingOnCommand workingOnUntilNull = CreateWorkingOnCommandMother.complete().until(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -190,7 +177,7 @@ class WorkingOnControllerTest {
     @Test
     void checkIfCreateWorkingOnThrowsInvalidWorkingOnWorkloadException() {
         //given
-        CreateWorkingOnCommand workingOnWorkloadOutOfBound = new CreateWorkingOnCommand(0, 0, LocalDate.now(), LocalDate.now(), -1);
+        CreateWorkingOnCommand workingOnWorkloadOutOfBound = CreateWorkingOnCommandMother.complete().workload(-1).build();
 
         //then
         assertThatThrownBy(() ->
@@ -204,7 +191,7 @@ class WorkingOnControllerTest {
     @Test
     void checkIfUpdateWorkingOnThrowsInvalidWorkingONSinceException() {
         //given
-        UpdateWorkingOnCommand workingOnSinceNull = new UpdateWorkingOnCommand(0, 0, null, LocalDate.now(), 0);
+        UpdateWorkingOnCommand workingOnSinceNull = UpdateWorkingOnCommandMother.complete().since(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -218,7 +205,7 @@ class WorkingOnControllerTest {
     @Test
     void checkIfUpdateWorkingOnThrowsInvalidWorkingOnUntilException() {
         //given
-        UpdateWorkingOnCommand workingOnUntilNull = new UpdateWorkingOnCommand(0, 0, LocalDate.now(), null, 0);
+        UpdateWorkingOnCommand workingOnUntilNull = UpdateWorkingOnCommandMother.complete().until(null).build();
 
         //then
         assertThatThrownBy(() ->
@@ -232,7 +219,7 @@ class WorkingOnControllerTest {
     @Test
     void checkIfUpdateWorkingOnThrowsInvalidWorkingOnWorkloadException() {
         //given
-        UpdateWorkingOnCommand workingOnWorkloadOutOfBound = new UpdateWorkingOnCommand(0, 0, LocalDate.now(), LocalDate.now(), -1);
+        UpdateWorkingOnCommand workingOnWorkloadOutOfBound = UpdateWorkingOnCommandMother.complete().workload(-1).build();
 
         //then
         assertThatThrownBy(() ->

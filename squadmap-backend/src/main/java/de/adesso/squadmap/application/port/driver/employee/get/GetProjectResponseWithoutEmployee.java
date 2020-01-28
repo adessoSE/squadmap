@@ -2,7 +2,6 @@ package de.adesso.squadmap.application.port.driver.employee.get;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import de.adesso.squadmap.application.domain.Project;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,17 +20,6 @@ class GetProjectResponseWithoutEmployee {
     private final LocalDate until;
     private final Boolean isExternal;
     private final List<String> sites;
-
-    static GetProjectResponseWithoutEmployee getInstance(Project project) {
-        return new GetProjectResponseWithoutEmployee(
-                project.getProjectId(),
-                project.getTitle(),
-                project.getDescription(),
-                project.getSince(),
-                project.getUntil(),
-                project.getIsExternal(),
-                project.getSites());
-    }
 
     @JsonPOJOBuilder(withPrefix = "")
     static class GetProjectResponseWithoutEmployeeBuilder { }

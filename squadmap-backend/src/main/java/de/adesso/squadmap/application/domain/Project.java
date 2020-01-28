@@ -1,6 +1,7 @@
 package de.adesso.squadmap.application.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Builder
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Project {
 

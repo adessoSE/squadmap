@@ -1,10 +1,11 @@
 package de.adesso.squadmap.application.service.workingon;
 
-import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.Project;
+import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.domain.WorkingOnMother;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
+import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,30 +26,33 @@ class ListWorkingOnServiceTest {
     private ListWorkingOnService service;
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
+    @MockBean
+    private ResponseMapper<WorkingOn, GetWorkingOnResponse> responseMapper;
 
     @Test
     void checkIfListWorkingOnReturnsAllRelations() {
         //given
-        Employee employee = Employee.withId(
-                1L, "", "",  null, "", "",  true, "");
-        Project project = Project.withId(
-                1L,"", "", null, null, true, null);
-        WorkingOn workingOn1 = WorkingOn.withId(
-                1L, null, null, 0, employee, project);
-        WorkingOn workingOn2 = WorkingOn.withId(
-                2L, null, null, 0, employee, project);
-        List<WorkingOn> workingOns = Arrays.asList(workingOn1, workingOn2);
-        GetWorkingOnResponse response1 = GetWorkingOnResponse.getInstance(workingOn1, workingOns);
-        GetWorkingOnResponse response2 = GetWorkingOnResponse.getInstance(workingOn2, workingOns);
-        List<GetWorkingOnResponse> getWorkingOnResponses = Arrays.asList(response1, response2);
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
+        WorkingOn workingOn1 = WorkingOnMother.complete()
+                .workingOnId(1L)
+                .build();
+        WorkingOn workingOn2 = WorkingOnMother.complete()
+                .workingOnId(2L)
+                .build();
+        List<WorkingOn> allRelations = Arrays.asList(workingOn1, workingOn2);
+        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
+        when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
+        when(responseMapper.toResponse(workingOn1, allRelations)).thenReturn(getWorkingOnResponse);
+        when(responseMapper.toResponse(workingOn2, allRelations)).thenReturn(getWorkingOnResponse);
 
         //when
         List<GetWorkingOnResponse> responses = service.listWorkingOn();
 
         //then
-        assertThat(responses).isEqualTo(getWorkingOnResponses);
+        responses.forEach(response -> assertThat(response).isEqualTo(getWorkingOnResponse));
         verify(listWorkingOnPort, times(2)).listWorkingOn();
+        verify(responseMapper, times(1)).toResponse(workingOn1, allRelations);
+        verify(responseMapper, times(1)).toResponse(workingOn2, allRelations);
         verifyNoMoreInteractions(listWorkingOnPort);
+        verifyNoMoreInteractions(responseMapper);
     }
 }

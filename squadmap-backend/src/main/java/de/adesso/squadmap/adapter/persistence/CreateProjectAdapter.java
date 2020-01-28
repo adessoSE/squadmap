@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 class CreateProjectAdapter implements CreateProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper mapper;
+    private final ProjectPersistenceMapper mapper;
 
     @Override
     public long createProject(Project project) {

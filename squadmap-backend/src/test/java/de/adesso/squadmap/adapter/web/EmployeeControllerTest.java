@@ -2,14 +2,16 @@ package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.adapter.web.exceptions.*;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
+import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommandMother;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.delete.DeleteEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
+import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommandMother;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;
-import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +50,6 @@ class EmployeeControllerTest {
     @Autowired
     private EmployeeController employeeController;
     private MockMvc mockMvc;
-    private static final String validPhone = "0123456789";
-    private static final LocalDate validBirthday = LocalDate.now().minusDays(1);
-    private static final String validEmail = "a@b.de";
-    private static final String validImage = "file://somewhere/file.sth";
 
     @BeforeEach
     void setUp() {
@@ -61,10 +59,8 @@ class EmployeeControllerTest {
     @Test
     void checkIfGetAllEmployeesReturnsAll() throws Exception {
         //given
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(1L, "f", "l",
-                validBirthday, validEmail, validPhone, true, validImage, Collections.emptyList());
-        List<GetEmployeeResponse> allEmployees = Collections.singletonList(getEmployeeResponse);
-        when(listEmployeeUseCase.listEmployees()).thenReturn(allEmployees);
+        GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
+        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
 
         //when
         MvcResult result = mockMvc.perform(get("/employee/all"))
@@ -73,7 +69,8 @@ class EmployeeControllerTest {
         List<GetEmployeeResponse> responses = JsonMapper.asResponseList(result, GetEmployeeResponse.class);
 
         //then
-        assertThat(responses).isEqualTo(allEmployees);
+        assertThat(responses.size()).isOne();
+        assertThat(responses.get(0)).isEqualTo(employeeResponse);
         verify(listEmployeeUseCase, times(1)).listEmployees();
     }
 
@@ -81,8 +78,7 @@ class EmployeeControllerTest {
     void checkIfGetEmployeeReturnsTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        GetEmployeeResponse getEmployeeResponse = new GetEmployeeResponse(1L, "f", "l",
-                validBirthday, validEmail, validPhone, true, validImage, Collections.emptyList());
+        GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
         when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(getEmployeeResponse);
 
         //when
@@ -100,8 +96,7 @@ class EmployeeControllerTest {
     void checkIfCreateEmployeeCreatesTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, validPhone, true, validImage);
+        CreateEmployeeCommand createEmployeeCommand = CreateEmployeeCommandMother.complete().build();
         when(createEmployeeUseCase.createEmployee(createEmployeeCommand)).thenReturn(employeeId);
 
         //when
@@ -122,8 +117,7 @@ class EmployeeControllerTest {
     void checkIfUpdateEmployeeUpdatesTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        UpdateEmployeeCommand updateEmployeeCommand = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, validPhone, true, validImage);
+        UpdateEmployeeCommand updateEmployeeCommand = UpdateEmployeeCommandMother.complete().build();
         doNothing().when(updateEmployeeUseCase).updateEmployee(updateEmployeeCommand, employeeId);
 
         //when
@@ -154,13 +148,10 @@ class EmployeeControllerTest {
     @Test
     void checkIfCreateEmployeeThrowsInvalidEmployeeFirstNameException() {
         //given
-        CreateEmployeeCommand employeeNullFirstName = new CreateEmployeeCommand(
-                null, "l", validBirthday, validEmail, validPhone, false, validImage);
-        CreateEmployeeCommand employeeEmptyFirstName = new CreateEmployeeCommand(
-                "", "l", validBirthday, validEmail, validPhone, false, validImage);
-        CreateEmployeeCommand employeeTooLongFirstName = new CreateEmployeeCommand(
-                "fffffffffffffffffffffffffffffffffffffffffffffffffff", "l",
-                validBirthday, validEmail, validPhone, false, validImage);
+        CreateEmployeeCommand employeeNullFirstName = CreateEmployeeCommandMother.complete().firstName(null).build();
+        CreateEmployeeCommand employeeEmptyFirstName = CreateEmployeeCommandMother.complete().firstName("").build();
+        CreateEmployeeCommand employeeTooLongFirstName = CreateEmployeeCommandMother.complete()
+                .firstName("fffffffffffffffffffffffffffffffffffffffffffffffffff").build();
 
         //then
         assertThatThrownBy(() ->
@@ -186,13 +177,10 @@ class EmployeeControllerTest {
     @Test
     void checkIfCreateEmployeeThrowsInvalidEmployeeLastNameException() {
         //given
-        CreateEmployeeCommand employeeNullFirstName = new CreateEmployeeCommand(
-                "f", null, validBirthday, validEmail, validPhone, false, validImage);
-        CreateEmployeeCommand employeeEmptyFirstName = new CreateEmployeeCommand(
-                "f", "", validBirthday, validEmail, validPhone, false, validImage);
-        CreateEmployeeCommand employeeTooLongFirstName = new CreateEmployeeCommand(
-                "f", "lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
-                validBirthday, validEmail, validPhone, false, validImage);
+        CreateEmployeeCommand employeeNullFirstName = CreateEmployeeCommandMother.complete().lastName(null).build();
+        CreateEmployeeCommand employeeEmptyFirstName = CreateEmployeeCommandMother.complete().lastName("").build();
+        CreateEmployeeCommand employeeTooLongFirstName = CreateEmployeeCommandMother.complete()
+                .lastName("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll").build();
 
         //then
         assertThatThrownBy(() ->
@@ -218,10 +206,9 @@ class EmployeeControllerTest {
     @Test
     void checkIfCreateEmployeeThrowsInvalidEmployeeBirthdayException() {
         //given
-        CreateEmployeeCommand employeeBirthdayNull = new CreateEmployeeCommand(
-                "f", "l", null, validEmail, validPhone, true, validImage);
-        CreateEmployeeCommand employeeBirthdayInFuture = new CreateEmployeeCommand(
-                "f", "l", LocalDate.now().plusDays(1), validEmail, validPhone, true, validImage);
+        CreateEmployeeCommand employeeBirthdayNull = CreateEmployeeCommandMother.complete().birthday(null).build();
+        CreateEmployeeCommand employeeBirthdayInFuture = CreateEmployeeCommandMother.complete()
+                .birthday(LocalDate.now().plusDays(1)).build();
 
         //then
         assertThatThrownBy(() ->
@@ -241,12 +228,9 @@ class EmployeeControllerTest {
     @Test
     void checkIfCreateEmployeeThrowsInvalidEmployeeEmailException() {
         //given
-        CreateEmployeeCommand employeeEmailNull = new CreateEmployeeCommand(
-                "f", "l", validBirthday, null, validPhone, true, validImage);
-        CreateEmployeeCommand employeeEmailEmpty = new CreateEmployeeCommand(
-                "f", "l", validBirthday, "", validPhone, true, validImage);
-        CreateEmployeeCommand employeeEmailNotValid = new CreateEmployeeCommand(
-                "f", "l", validBirthday, "something", validPhone, true, validImage);
+        CreateEmployeeCommand employeeEmailNull = CreateEmployeeCommandMother.complete().email(null).build();
+        CreateEmployeeCommand employeeEmailEmpty = CreateEmployeeCommandMother.complete().email("").build();
+        CreateEmployeeCommand employeeEmailNotValid = CreateEmployeeCommandMother.complete().email("null").build();
 
 
         //then
@@ -273,12 +257,9 @@ class EmployeeControllerTest {
     @Test
     void checkIfCreateEmployeeThrowsInvalidEmployeePhoneException() {
         //given
-        CreateEmployeeCommand employeePhoneNull = new CreateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, null, false, validImage);
-        CreateEmployeeCommand employeePhoneEmpty = new CreateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, "", false, validImage);
-        CreateEmployeeCommand employeePhoneNotValid = new CreateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, "1", false, validImage);
+        CreateEmployeeCommand employeePhoneNull = CreateEmployeeCommandMother.complete().phone(null).build();
+        CreateEmployeeCommand employeePhoneEmpty = CreateEmployeeCommandMother.complete().phone("").build();
+        CreateEmployeeCommand employeePhoneNotValid = CreateEmployeeCommandMother.complete().phone("1").build();
 
         //then
         assertThatThrownBy(() ->
@@ -304,10 +285,8 @@ class EmployeeControllerTest {
     @Test
     void checkIfCreateEmployeeThrowsInvalidEmployeeImageException() {
         //given
-        CreateEmployeeCommand employeeImageNull = new CreateEmployeeCommand("f", "l",
-                validBirthday, validEmail, validPhone, false, null);
-        CreateEmployeeCommand employeeWrongImage = new CreateEmployeeCommand("f", "l",
-                validBirthday, validEmail, validPhone, false, "noUrl");
+        CreateEmployeeCommand employeeImageNull = CreateEmployeeCommandMother.complete().image(null).build();
+        CreateEmployeeCommand employeeWrongImage = CreateEmployeeCommandMother.complete().image("null").build();
 
         //then
         assertThatThrownBy(() ->
@@ -327,13 +306,10 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeFirstNameException() {
         //given
-        UpdateEmployeeCommand employeeNullFirstName = new UpdateEmployeeCommand(
-                null, "l", validBirthday, validEmail, validPhone, false, validImage);
-        UpdateEmployeeCommand employeeEmptyFirstName = new UpdateEmployeeCommand(
-                "", "l", validBirthday, validEmail, validPhone, false, validImage);
-        UpdateEmployeeCommand employeeTooLongFirstName = new UpdateEmployeeCommand(
-                "fffffffffffffffffffffffffffffffffffffffffffffffffff", "l",
-                validBirthday, validEmail, validPhone, false, validImage);
+        UpdateEmployeeCommand employeeNullFirstName = UpdateEmployeeCommandMother.complete().firstName(null).build();
+        UpdateEmployeeCommand employeeEmptyFirstName = UpdateEmployeeCommandMother.complete().firstName("").build();
+        UpdateEmployeeCommand employeeTooLongFirstName = UpdateEmployeeCommandMother.complete()
+                .firstName("fffffffffffffffffffffffffffffffffffffffffffffffffff").build();
 
         //then
         assertThatThrownBy(() ->
@@ -359,13 +335,10 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeLastNameException() {
         //given
-        UpdateEmployeeCommand employeeNullFirstName = new UpdateEmployeeCommand(
-                "f", null, validBirthday, validEmail, validPhone, false, validImage);
-        UpdateEmployeeCommand employeeEmptyFirstName = new UpdateEmployeeCommand(
-                "f", "", validBirthday, validEmail, validPhone, false, validImage);
-        UpdateEmployeeCommand employeeTooLongFirstName = new UpdateEmployeeCommand(
-                "f", "lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
-                validBirthday, validEmail, validPhone, false, validImage);
+        UpdateEmployeeCommand employeeNullFirstName = UpdateEmployeeCommandMother.complete().lastName(null).build();
+        UpdateEmployeeCommand employeeEmptyFirstName = UpdateEmployeeCommandMother.complete().lastName("").build();
+        UpdateEmployeeCommand employeeTooLongFirstName = UpdateEmployeeCommandMother.complete()
+                .lastName("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll").build();
 
         //then
         assertThatThrownBy(() ->
@@ -391,10 +364,9 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeBirthdayException() {
         //given
-        UpdateEmployeeCommand employeeBirthdayNull = new UpdateEmployeeCommand(
-                "f", "l", null, validEmail, validPhone, true, validImage);
-        UpdateEmployeeCommand employeeBirthdayInFuture = new UpdateEmployeeCommand(
-                "f", "l", LocalDate.now().plusDays(1), validEmail, validPhone, true, validImage);
+        UpdateEmployeeCommand employeeBirthdayNull = UpdateEmployeeCommandMother.complete().birthday(null).build();
+        UpdateEmployeeCommand employeeBirthdayInFuture = UpdateEmployeeCommandMother.complete()
+                .birthday(LocalDate.now().plusDays(1)).build();
 
         //then
         assertThatThrownBy(() ->
@@ -414,12 +386,9 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeEmailException() {
         //given
-        UpdateEmployeeCommand employeeEmailNull = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, null, validPhone, true, validImage);
-        UpdateEmployeeCommand employeeEmailEmpty = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, "", validPhone, true, validImage);
-        UpdateEmployeeCommand employeeEmailNotValid = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, "something", validPhone, true, validImage);
+        UpdateEmployeeCommand employeeEmailNull =  UpdateEmployeeCommandMother.complete().email(null).build();
+        UpdateEmployeeCommand employeeEmailEmpty = UpdateEmployeeCommandMother.complete().email("").build();
+        UpdateEmployeeCommand employeeEmailNotValid = UpdateEmployeeCommandMother.complete().email("null").build();
 
         //then
         assertThatThrownBy(() ->
@@ -445,12 +414,9 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeePhoneException() {
         //given
-        UpdateEmployeeCommand employeePhoneNull = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, null, false, validImage);
-        UpdateEmployeeCommand employeePhoneEmpty = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, "", false, validImage);
-        UpdateEmployeeCommand employeePhoneNotValid = new UpdateEmployeeCommand(
-                "f", "l", validBirthday, validEmail, "1", false, validImage);
+        UpdateEmployeeCommand employeePhoneNull = UpdateEmployeeCommandMother.complete().phone(null).build();
+        UpdateEmployeeCommand employeePhoneEmpty = UpdateEmployeeCommandMother.complete().phone("").build();
+        UpdateEmployeeCommand employeePhoneNotValid = UpdateEmployeeCommandMother.complete().phone("null").build();
 
         //then
         assertThatThrownBy(() ->
@@ -475,10 +441,8 @@ class EmployeeControllerTest {
 
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeImageException() {
-        UpdateEmployeeCommand employeeImageNull = new UpdateEmployeeCommand("f", "l",
-                validBirthday, validEmail, validPhone, false, null);
-        UpdateEmployeeCommand employeeWrongImage = new UpdateEmployeeCommand("f", "l",
-                validBirthday, validEmail, validPhone, false, "noUrl");
+        UpdateEmployeeCommand employeeImageNull = UpdateEmployeeCommandMother.complete().image(null).build();
+        UpdateEmployeeCommand employeeWrongImage = UpdateEmployeeCommandMother.complete().image("null").build();
 
         //then
         assertThatThrownBy(() ->

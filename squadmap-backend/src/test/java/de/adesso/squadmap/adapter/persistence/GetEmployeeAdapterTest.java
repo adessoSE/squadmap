@@ -2,6 +2,7 @@ package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ public class GetEmployeeAdapterTest {
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
-    private EmployeeMapper employeeMapper;
+    private EmployeePersistenceMapper employeePersistenceMapper;
     @Autowired
     private GetEmployeePort getEmployeePort;
 
@@ -31,12 +31,12 @@ public class GetEmployeeAdapterTest {
     void checkIfGetEmployeeReturnsTheEmployee() {
         //given
         long employeeId = 1;
-        Employee employee = Employee.withId(
-                1L, "", "", null, "", "", true, "");
-        EmployeeNeo4JEntity employeeNeo4JEntity = new EmployeeNeo4JEntity(
-                1L, "", "", null, "", "", true, "");
+        Employee employee = EmployeeMother.complete().
+                employeeId(employeeId).
+                build();
+        EmployeeNeo4JEntity employeeNeo4JEntity = EmployeeNeo4JEntityMother.complete().build();
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeNeo4JEntity));
-        when(employeeMapper.mapToDomainEntity(employeeNeo4JEntity)).thenReturn(employee);
+        when(employeePersistenceMapper.mapToDomainEntity(employeeNeo4JEntity)).thenReturn(employee);
 
         //when
         Employee found = getEmployeePort.getEmployee(employeeId);
@@ -44,9 +44,9 @@ public class GetEmployeeAdapterTest {
         //then
         assertThat(found).isEqualTo(employee);
         verify(employeeRepository, times(1)).findById(employeeId);
-        verify(employeeMapper, times(1)).mapToDomainEntity(employeeNeo4JEntity);
+        verify(employeePersistenceMapper, times(1)).mapToDomainEntity(employeeNeo4JEntity);
         verifyNoMoreInteractions(employeeRepository);
-        verifyNoMoreInteractions(employeeMapper);
+        verifyNoMoreInteractions(employeePersistenceMapper);
     }
 
     @Test

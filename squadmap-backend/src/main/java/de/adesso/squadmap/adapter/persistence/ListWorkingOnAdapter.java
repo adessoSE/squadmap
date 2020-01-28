@@ -14,12 +14,13 @@ import java.util.List;
 class ListWorkingOnAdapter implements ListWorkingOnPort {
 
     private final WorkingOnRepository workingOnRepository;
-    private final WorkingOnMapper mapper;
+    private final WorkingOnPersistenceMapper mapper;
 
     @Override
     public List<WorkingOn> listWorkingOn() {
         List<WorkingOn> workingOns = new ArrayList<>(Collections.emptyList());
-        workingOnRepository.findAll().forEach(workingOnDto -> workingOns.add(mapper.mapToDomainEntity(workingOnDto)));
+        workingOnRepository.findAll().forEach(workingOnNeo4JEntity ->
+                workingOns.add(mapper.mapToDomainEntity(workingOnNeo4JEntity)));
         return workingOns;
     }
 }

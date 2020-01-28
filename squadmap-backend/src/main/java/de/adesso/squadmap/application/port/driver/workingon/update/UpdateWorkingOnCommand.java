@@ -2,9 +2,6 @@ package de.adesso.squadmap.application.port.driver.workingon.update;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.Project;
-import de.adesso.squadmap.application.domain.WorkingOn;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +25,6 @@ public class UpdateWorkingOnCommand {
     @Range(min = 0, max = 100)
     private final int workload;
 
-    public WorkingOn toWorkingOn(long workingOnId, Employee employee, Project project) {
-        return WorkingOn.withId(
-                workingOnId,
-                this.since,
-                this.until,
-                this.workload,
-                employee,
-                project);
-    }
-
     @JsonPOJOBuilder(withPrefix = "")
-    static class UpdateWorkingOnCommandBuilder { }
+    public static class UpdateWorkingOnCommandBuilder { }
 }

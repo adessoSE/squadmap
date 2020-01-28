@@ -1,13 +1,17 @@
 package de.adesso.squadmap.configuration;
 
-import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.Project;
-import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.port.driven.employee.CreateEmployeePort;
-import de.adesso.squadmap.application.port.driven.employee.ListEmployeePort;
-import de.adesso.squadmap.application.port.driven.project.CreateProjectPort;
-import de.adesso.squadmap.application.port.driven.project.ListProjectPort;
-import de.adesso.squadmap.application.port.driven.workingon.CreateWorkingOnPort;
+import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
+import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
+import de.adesso.squadmap.application.port.driver.employee.get.ListEmployeeUseCase;
+import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
+import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
+import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase;
+import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
+import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,15 +28,15 @@ import static org.mockito.Mockito.*;
 public class TestDataGeneratorTest {
 
     @Mock
-    CreateEmployeePort createEmployeePort;
+    CreateEmployeeUseCase createEmployeePort;
     @Mock
-    CreateProjectPort createProjectPort;
+    CreateProjectUseCase createProjectPort;
     @Mock
-    CreateWorkingOnPort createWorkingOnPort;
+    CreateWorkingOnUseCase createWorkingOnPort;
     @Mock
-    ListEmployeePort listEmployeePort;
+    ListEmployeeUseCase listEmployeePort;
     @Mock
-    ListProjectPort listProjectPort;
+    ListProjectUseCase listProjectPort;
     @InjectMocks
     TestDataGenerator testDataGenerator;
 
@@ -49,9 +53,9 @@ public class TestDataGeneratorTest {
         //then
         verify(listEmployeePort, times(1)).listEmployees();
         verify(listProjectPort, times(1)).listProjects();
-        verify(createEmployeePort, times(10)).createEmployee(any(Employee.class));
-        verify(createProjectPort, times(4)).createProject(any(Project.class));
-        verify(createWorkingOnPort, times(10)).createWorkingOn(any(WorkingOn.class));
+        verify(createEmployeePort, times(10)).createEmployee(any(CreateEmployeeCommand.class));
+        verify(createProjectPort, times(4)).createProject(any(CreateProjectCommand.class));
+        verify(createWorkingOnPort, times(10)).createWorkingOn(any(CreateWorkingOnCommand.class));
         verifyNoMoreInteractions(listEmployeePort);
         verifyNoMoreInteractions(listProjectPort);
         verifyNoMoreInteractions(createEmployeePort);
@@ -62,9 +66,8 @@ public class TestDataGeneratorTest {
     @Test
     void checkIfRunGeneratesNothingWhenEmployeeOnRepositoryContainsData() {
         //given
-        Employee employee = Employee.withoutId(
-                "", "", null, "", "", true, "");
-        when(listEmployeePort.listEmployees()).thenReturn(Collections.singletonList(employee));
+        GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
+        when(listEmployeePort.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
 
         //when
         testDataGenerator.run();
@@ -80,9 +83,9 @@ public class TestDataGeneratorTest {
     @Test
     void checkIfRunGeneratesNothingWhenProjectOnRepositoryContainsData() {
         //given
-        Project project = Project.withoutId("", "", null, null, true, null);
+        GetProjectResponse projectResponse = GetProjectResponseMother.complete().build();
         when(listEmployeePort.listEmployees()).thenReturn(new ArrayList<>());
-        when(listProjectPort.listProjects()).thenReturn(Collections.singletonList(project));
+        when(listProjectPort.listProjects()).thenReturn(Collections.singletonList(projectResponse));
 
         //when
         testDataGenerator.run();

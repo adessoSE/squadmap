@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 class UpdateProjectAdapter implements UpdateProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMapper mapper;
+    private final ProjectPersistenceMapper mapper;
 
     @Override
     public void updateProject(Project project) {
@@ -20,6 +20,6 @@ class UpdateProjectAdapter implements UpdateProjectPort {
         if (projectRepository.existsByTitle(project.getTitle()) && !existingProject.getTitle().equals(project.getTitle())) {
             throw new ProjectAlreadyExistsException();
         }
-        projectRepository.save(mapper.mapToNeo4JEntity(project));
+        projectRepository.save(mapper.mapToNeo4JEntity(project, existingProject.getEmployees()));
     }
 }

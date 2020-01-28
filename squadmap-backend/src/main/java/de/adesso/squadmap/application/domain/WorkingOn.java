@@ -1,12 +1,14 @@
 package de.adesso.squadmap.application.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class WorkingOn {
 

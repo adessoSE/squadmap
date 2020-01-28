@@ -2,13 +2,13 @@ package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.application.domain.Project;
+import de.adesso.squadmap.application.domain.ProjectMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +22,7 @@ public class GetProjectAdapterTest {
     @MockBean
     private ProjectRepository projectRepository;
     @MockBean
-    private ProjectMapper projectMapper;
+    private ProjectPersistenceMapper projectPersistenceMapper;
     @Autowired
     private GetProjectAdapter getProjectAdapter;
 
@@ -30,12 +30,12 @@ public class GetProjectAdapterTest {
     void checkIfGetProjectReturnsTheProject() {
         //given
         long projectId = 1;
-        Project project = Project.withId(
-                1L, "", "", null, null, true, null);
-        ProjectNeo4JEntity projectNeo4JEntity = new ProjectNeo4JEntity(
-                1L, "", "", null, null, true, new ArrayList<>());
+        Project project = ProjectMother.complete()
+                .projectId(projectId)
+                .build();
+        ProjectNeo4JEntity projectNeo4JEntity = ProjectNeo4JEntityMother.complete().build();
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(projectNeo4JEntity));
-        when(projectMapper.mapToDomainEntity(projectNeo4JEntity)).thenReturn(project);
+        when(projectPersistenceMapper.mapToDomainEntity(projectNeo4JEntity)).thenReturn(project);
 
         //when
         Project found = getProjectAdapter.getProject(projectId);

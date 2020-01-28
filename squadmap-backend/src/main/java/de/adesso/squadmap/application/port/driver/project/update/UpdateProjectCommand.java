@@ -3,7 +3,6 @@ package de.adesso.squadmap.application.port.driver.project.update;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import de.adesso.squadmap.application.domain.Project;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -36,17 +35,7 @@ public class UpdateProjectCommand {
     @NotNull
     private final List<@URL String> sites;
 
-    public Project toProject(long projectId) {
-        return Project.withId(
-                projectId,
-                this.title,
-                this.description,
-                this.since,
-                this.until,
-                this.isExternal,
-                this.sites);
-    }
 
     @JsonPOJOBuilder(withPrefix = "")
-    static class UpdateProjectCommandBuilder { }
+    public static class UpdateProjectCommandBuilder { }
 }
