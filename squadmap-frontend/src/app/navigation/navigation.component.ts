@@ -3,6 +3,7 @@ import {BsDropdownConfig, BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ProjectModalComponent} from '../modals/project-modal/project-modal.component';
 import {EmployeeModalComponent} from '../modals/employee-modal/employee-modal.component';
 
+
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -19,16 +20,24 @@ export class NavigationComponent implements OnInit {
   }
 
   addEmployeeModal() {
-    const initialState = {
-      actionName: 'Create'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        actionName: 'Create'
+      }
     };
-    this.modalRef = this.modalService.show(EmployeeModalComponent, {initialState});
+    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
   }
 
   addProjectModal() {
-    const initialState = {
-      actionName: 'Create'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        actionName: 'Create'
+      }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(ProjectModalComponent, config);
   }
 }

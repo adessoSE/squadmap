@@ -40,12 +40,16 @@ export class ProjectDetailComponent implements OnInit {
 
   onOpenAddEmployeeModal() {
     this.filteredEmployees = this.employeeService.getCurrentEmployees();
-    const initialState = {
-      allEmployees: this.filteredEmployees,
-      existingEmployees: this.project.employees,
-      projectId: this.project.projectId
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        allEmployees: this.filteredEmployees,
+        existingEmployees: this.project.employees,
+        projectId: this.project.projectId
+      }
     };
-    this.modalRef = this.modalService.show(AddEmployeeModalComponent, {initialState});
+    this.modalRef = this.modalService.show(AddEmployeeModalComponent, config);
   }
 
   onDelete(workingOn: WorkingOnEmployeeModel) {
@@ -68,12 +72,16 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onEdit(workingOnEmployee: WorkingOnEmployeeModel) {
-    const initialState = {
-      workingOnEmployee,
-      projectId: this.project.projectId,
-      workload: workingOnEmployee.workload
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        workingOnEmployee,
+        projectId: this.project.projectId,
+        workload: workingOnEmployee.workload
+      }
     };
-    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
   }
 
   onOpenEmployeeDetail(employeeId: number) {
@@ -81,10 +89,14 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onUpdate() {
-    const initialState = {
-      project: this.project,
-      actionName: 'Update'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        project: this.project,
+        actionName: 'Update'
+      }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(ProjectModalComponent, config);
   }
 }

@@ -48,11 +48,15 @@ export class EmployeeDetailComponent implements OnInit {
   }
 
   onOpenAddProjectModal() {
-    const initialState = {
-      allProjects: this.allProjects,
-      employeeId: this.employee.employeeId
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        allProjects: this.allProjects,
+        employeeId: this.employee.employeeId
+      }
     };
-    this.modalRef = this.modalService.show(AddProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(AddProjectModalComponent, config);
   }
 
   onDeleteProject(workingOnId: number) {
@@ -64,11 +68,15 @@ export class EmployeeDetailComponent implements OnInit {
   }
 
   onEditProject(workingOnProject: WorkingOnProjectModel) {
-    const initialState = {
-      workingOnProject,
-      employeeId: this.employee.employeeId
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        workingOnProject,
+        employeeId: this.employee.employeeId
+      }
     };
-    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
   }
 
   onOpenProjectDetail(projectId: number) {
