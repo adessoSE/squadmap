@@ -31,7 +31,7 @@ class TestDataGenerator implements CommandLineRunner {
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void run(String... args) {
-        if (listEmployeeUseCase.listEmployees().size() != 0 || listProjectUseCase.listProjects().size() != 0) {
+        if (!listEmployeeUseCase.listEmployees().isEmpty() || !listProjectUseCase.listProjects().isEmpty()) {
             return;
         }
         String phone = "0162123123";

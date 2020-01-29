@@ -76,7 +76,9 @@ class EmployeeController {
                 throw new InvalidEmployeePhoneNumberException();
             case "image":
                 throw new InvalidEmployeeImageException();
+            default:
+                throw new IllegalArgumentException("Invalid input");
         }
-        throw new IllegalArgumentException("Invalid input");
+
     }
 }

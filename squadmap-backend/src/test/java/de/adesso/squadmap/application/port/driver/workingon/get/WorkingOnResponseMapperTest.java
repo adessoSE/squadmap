@@ -49,7 +49,7 @@ public class WorkingOnResponseMapperTest {
         //then
         assertThat(getWorkingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());
         assertThat(getWorkingOnResponse.getSince()).isEqualTo(workingOn.getSince());
-        assertThat(getWorkingOnResponse.getUntil().isEqual(workingOn.getUntil()));
+        assertThat(getWorkingOnResponse.getUntil()).isEqualTo(workingOn.getUntil());
         assertThat(getWorkingOnResponse.getWorkload()).isEqualTo(workingOn.getWorkload());
         assertThat(getWorkingOnResponse.getEmployee()).isEqualTo(employeeResponse);
         assertThat(getWorkingOnResponse.getProject()).isEqualTo(projectResponse);

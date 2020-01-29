@@ -37,7 +37,7 @@ public class EmployeeResponseMapperTest {
         assertThat(getEmployeeResponse.getEmployeeId()).isEqualTo(employee.getEmployeeId());
         assertThat(getEmployeeResponse.getFirstName()).isEqualTo(employee.getFirstName());
         assertThat(getEmployeeResponse.getLastName()).isEqualTo(employee.getLastName());
-        assertThat(getEmployeeResponse.getBirthday().isEqual(employee.getBirthday()));
+        assertThat(getEmployeeResponse.getBirthday()).isEqualTo(employee.getBirthday());
         assertThat(getEmployeeResponse.getEmail()).isEqualTo(employee.getEmail());
         assertThat(getEmployeeResponse.getPhone()).isEqualTo(employee.getPhone());
         assertThat(getEmployeeResponse.getIsExternal()).isEqualTo(employee.getIsExternal());
@@ -48,7 +48,7 @@ public class EmployeeResponseMapperTest {
 
         assertThat(workingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());
         assertThat(workingOnResponse.getSince()).isEqualTo(workingOn.getSince());
-        assertThat(workingOnResponse.getUntil().isEqual(workingOn.getUntil()));
+        assertThat(workingOnResponse.getUntil()).isEqualTo(workingOn.getUntil());
         assertThat(workingOnResponse.getWorkload()).isEqualTo(workingOn.getWorkload());
 
         assertThat(workingOnResponse.getProject()).isNotNull();
