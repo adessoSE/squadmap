@@ -20,6 +20,6 @@ class UpdateEmployeeAdapter implements UpdateEmployeePort {
         if (employeeRepository.existsByEmail(employee.getEmail()) && !employee.getEmail().equals(existingEmployee.getEmail())) {
             throw new EmployeeAlreadyExistsException();
         }
-        employeeRepository.save(mapper.mapToNeo4JEntity(employee, existingEmployee.getProjects()));
+        employeeRepository.save(mapper.mapToNeo4JEntity(employee), 0);
     }
 }

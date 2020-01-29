@@ -40,8 +40,8 @@ public class UpdateProjectAdapterTest {
                 .build();
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(projectNeo4JEntity));
         when(projectRepository.existsByTitle(project.getTitle())).thenReturn(true);
-        when(projectPersistenceMapper.mapToNeo4JEntity(project, projectNeo4JEntity.getEmployees())).thenReturn(projectNeo4JEntity);
-        when(projectRepository.save(projectNeo4JEntity)).thenReturn(projectNeo4JEntity);
+        when(projectPersistenceMapper.mapToNeo4JEntity(project)).thenReturn(projectNeo4JEntity);
+        when(projectRepository.save(projectNeo4JEntity, 0)).thenReturn(projectNeo4JEntity);
 
         //when
         updateProjectAdapter.updateProject(project);
@@ -49,8 +49,8 @@ public class UpdateProjectAdapterTest {
         //then
         verify(projectRepository, times(1)).findById(projectId);
         verify(projectRepository, times(1)).existsByTitle(project.getTitle());
-        verify(projectPersistenceMapper, times(1)).mapToNeo4JEntity(project, projectNeo4JEntity.getEmployees());
-        verify(projectRepository, times(1)).save(projectNeo4JEntity);
+        verify(projectPersistenceMapper, times(1)).mapToNeo4JEntity(project);
+        verify(projectRepository, times(1)).save(projectNeo4JEntity, 0);
         verifyNoMoreInteractions(projectPersistenceMapper);
         verifyNoMoreInteractions(projectRepository);
     }
@@ -69,8 +69,8 @@ public class UpdateProjectAdapterTest {
                 .build();
         when(projectRepository.findById(projectId)).thenReturn(Optional.of(projectNeo4JEntity));
         when(projectRepository.existsByTitle(project.getTitle())).thenReturn(false);
-        when(projectPersistenceMapper.mapToNeo4JEntity(project, projectNeo4JEntity.getEmployees())).thenReturn(projectNeo4JEntity);
-        when(projectRepository.save(projectNeo4JEntity)).thenReturn(projectNeo4JEntity);
+        when(projectPersistenceMapper.mapToNeo4JEntity(project)).thenReturn(projectNeo4JEntity);
+        when(projectRepository.save(projectNeo4JEntity, 0)).thenReturn(projectNeo4JEntity);
 
         //when
         updateProjectAdapter.updateProject(project);
@@ -78,8 +78,8 @@ public class UpdateProjectAdapterTest {
         //then
         verify(projectRepository, times(1)).findById(projectId);
         verify(projectRepository, times(1)).existsByTitle(project.getTitle());
-        verify(projectPersistenceMapper, times(1)).mapToNeo4JEntity(project, projectNeo4JEntity.getEmployees());
-        verify(projectRepository, times(1)).save(projectNeo4JEntity);
+        verify(projectPersistenceMapper, times(1)).mapToNeo4JEntity(project);
+        verify(projectRepository, times(1)).save(projectNeo4JEntity, 0);
         verifyNoMoreInteractions(projectPersistenceMapper);
         verifyNoMoreInteractions(projectRepository);
     }

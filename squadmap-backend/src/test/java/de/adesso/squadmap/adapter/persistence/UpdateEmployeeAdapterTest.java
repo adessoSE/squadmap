@@ -40,8 +40,8 @@ public class UpdateEmployeeAdapterTest {
                 .build();
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeNeo4JEntity));
         when(employeeRepository.existsByEmail(employee.getEmail())).thenReturn(true);
-        when(employeePersistenceMapper.mapToNeo4JEntity(employee, employeeNeo4JEntity.getProjects())).thenReturn(employeeNeo4JEntity);
-        when(employeeRepository.save(employeeNeo4JEntity)).thenReturn(employeeNeo4JEntity);
+        when(employeePersistenceMapper.mapToNeo4JEntity(employee)).thenReturn(employeeNeo4JEntity);
+        when(employeeRepository.save(employeeNeo4JEntity, 0)).thenReturn(employeeNeo4JEntity);
 
         //when
         updateEmployeePort.updateEmployee(employee);
@@ -49,8 +49,8 @@ public class UpdateEmployeeAdapterTest {
         //then
         verify(employeeRepository, times(1)).findById(employee.getEmployeeId());
         verify(employeeRepository, times(1)).existsByEmail(employee.getEmail());
-        verify(employeePersistenceMapper, times(1)).mapToNeo4JEntity(employee, employeeNeo4JEntity.getProjects());
-        verify(employeeRepository, times(1)).save(employeeNeo4JEntity);
+        verify(employeePersistenceMapper, times(1)).mapToNeo4JEntity(employee);
+        verify(employeeRepository, times(1)).save(employeeNeo4JEntity, 0);
         verifyNoMoreInteractions(employeePersistenceMapper);
         verifyNoMoreInteractions(employeeRepository);
     }
@@ -69,9 +69,9 @@ public class UpdateEmployeeAdapterTest {
                 .build();
         when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeNeo4JEntity));
         when(employeeRepository.existsByEmail(employee.getEmail())).thenReturn(false);
-        when(employeePersistenceMapper.mapToNeo4JEntity(employee, employeeNeo4JEntity.getProjects()))
+        when(employeePersistenceMapper.mapToNeo4JEntity(employee))
                 .thenReturn(employeeNeo4JEntity);
-        when(employeeRepository.save(employeeNeo4JEntity)).thenReturn(employeeNeo4JEntity);
+        when(employeeRepository.save(employeeNeo4JEntity, 0)).thenReturn(employeeNeo4JEntity);
 
         //when
         updateEmployeePort.updateEmployee(employee);
@@ -79,8 +79,8 @@ public class UpdateEmployeeAdapterTest {
         //then
         verify(employeeRepository, times(1)).findById(employee.getEmployeeId());
         verify(employeeRepository, times(1)).existsByEmail(employee.getEmail());
-        verify(employeePersistenceMapper, times(1)).mapToNeo4JEntity(employee, employeeNeo4JEntity.getProjects());
-        verify(employeeRepository, times(1)).save(employeeNeo4JEntity);
+        verify(employeePersistenceMapper, times(1)).mapToNeo4JEntity(employee);
+        verify(employeeRepository, times(1)).save(employeeNeo4JEntity, 0);
         verifyNoMoreInteractions(employeePersistenceMapper);
         verifyNoMoreInteractions(employeeRepository);
     }

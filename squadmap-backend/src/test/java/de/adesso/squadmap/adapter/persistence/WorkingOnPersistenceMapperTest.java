@@ -30,15 +30,12 @@ public class WorkingOnPersistenceMapperTest {
         WorkingOn workingOn = WorkingOnMother.complete().build();
         EmployeeNeo4JEntity employeeNeo4JEntity = EmployeeNeo4JEntityMother.complete().build();
         ProjectNeo4JEntity projectNeo4JEntity = ProjectNeo4JEntityMother.complete().build();
-        List<WorkingOnNeo4JEntity> relations = new ArrayList<>();
-        when(employeePersistenceMapper.mapToNeo4JEntity(workingOn.getEmployee(), relations)).thenReturn(employeeNeo4JEntity);
-        when(projectPersistenceMapper.mapToNeo4JEntity(workingOn.getProject(), relations)).thenReturn(projectNeo4JEntity);
+
+        when(employeePersistenceMapper.mapToNeo4JEntity(workingOn.getEmployee())).thenReturn(employeeNeo4JEntity);
+        when(projectPersistenceMapper.mapToNeo4JEntity(workingOn.getProject())).thenReturn(projectNeo4JEntity);
 
         //when
-        WorkingOnNeo4JEntity workingOnNeo4JEntity = workingOnPersistenceMapper.mapToNeo4JEntity(
-                workingOn,
-                employeeNeo4JEntity,
-                projectNeo4JEntity);
+        WorkingOnNeo4JEntity workingOnNeo4JEntity = workingOnPersistenceMapper.mapToNeo4JEntity(workingOn);
 
         //then
         assertThat(workingOnNeo4JEntity.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());

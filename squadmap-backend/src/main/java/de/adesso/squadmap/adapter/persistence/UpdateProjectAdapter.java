@@ -20,6 +20,6 @@ class UpdateProjectAdapter implements UpdateProjectPort {
         if (projectRepository.existsByTitle(project.getTitle()) && !existingProject.getTitle().equals(project.getTitle())) {
             throw new ProjectAlreadyExistsException();
         }
-        projectRepository.save(mapper.mapToNeo4JEntity(project, existingProject.getEmployees()));
+        projectRepository.save(mapper.mapToNeo4JEntity(project), 0);
     }
 }

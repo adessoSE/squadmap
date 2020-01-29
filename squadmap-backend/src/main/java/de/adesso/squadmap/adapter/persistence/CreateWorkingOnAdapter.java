@@ -19,18 +19,15 @@ class CreateWorkingOnAdapter implements CreateWorkingOnPort {
 
     @Override
     public long createWorkingOn(WorkingOn workingOn) {
+        if (!employeeRepository.existsById(workingOn.getEmployee().getEmployeeId())) {
+            throw new EmployeeNotFoundException();
+        }
+        if (!projectRepository.existsById(workingOn.getProject().getProjectId())) {
+            throw new ProjectNotFoundException();
+        }
         if (workingOnRepository.existsByEmployeeAndProject(workingOn.getEmployee().getEmployeeId(), workingOn.getProject().getProjectId())) {
             throw new WorkingOnAlreadyExistsException();
         }
-        EmployeeNeo4JEntity employeeNeo4JEntity = employeeRepository.findById(workingOn.getEmployee().getEmployeeId())
-                .orElseThrow(EmployeeNotFoundException::new);
-        ProjectNeo4JEntity projectNeo4JEntity = projectRepository.findById(workingOn.getProject().getProjectId())
-                .orElseThrow(ProjectNotFoundException::new);
-        return workingOnRepository.save(
-                mapper.mapToNeo4JEntity(
-                        workingOn,
-                        employeeNeo4JEntity,
-                        projectNeo4JEntity))
-                .getWorkingOnId();
+        return workingOnRepository.save(mapper.mapToNeo4JEntity(workingOn), 0).getWorkingOnId();
     }
 }

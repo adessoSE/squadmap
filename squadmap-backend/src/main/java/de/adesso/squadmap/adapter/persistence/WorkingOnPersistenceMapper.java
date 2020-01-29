@@ -11,14 +11,14 @@ class WorkingOnPersistenceMapper {
     private final EmployeePersistenceMapper employeePersistenceMapper;
     private final ProjectPersistenceMapper projectPersistenceMapper;
 
-    WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn, EmployeeNeo4JEntity employeeNeo4JEntity, ProjectNeo4JEntity projectNeo4JEntity) {
+    WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn) {
         return new WorkingOnNeo4JEntity(
                 workingOn.getWorkingOnId(),
                 workingOn.getSince(),
                 workingOn.getUntil(),
                 workingOn.getWorkload(),
-                employeeNeo4JEntity,
-                projectNeo4JEntity);
+                employeePersistenceMapper.mapToNeo4JEntity(workingOn.getEmployee()),
+                projectPersistenceMapper.mapToNeo4JEntity(workingOn.getProject()));
     }
 
     WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {

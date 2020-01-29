@@ -11,21 +11,6 @@ import java.util.stream.StreamSupport;
 @Component
 class ProjectPersistenceMapper {
 
-    ProjectNeo4JEntity mapToNeo4JEntity(Project project, Iterable<WorkingOnNeo4JEntity> relations) {
-        List<WorkingOnNeo4JEntity> employees = StreamSupport.stream(relations.spliterator(), false)
-                .filter(relation -> relation.getProject().getProjectId().equals(project.getProjectId()))
-                .collect(Collectors.toList());
-        return new ProjectNeo4JEntity(
-                project.getProjectId(),
-                project.getTitle(),
-                project.getDescription(),
-                project.getSince(),
-                project.getUntil(),
-                project.getIsExternal(),
-                project.getSites(),
-                employees);
-    }
-
     ProjectNeo4JEntity mapToNeo4JEntity(Project project) {
         return new ProjectNeo4JEntity(
                 project.getProjectId(),

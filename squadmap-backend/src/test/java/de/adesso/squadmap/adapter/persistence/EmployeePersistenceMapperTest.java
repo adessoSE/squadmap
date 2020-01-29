@@ -40,32 +40,6 @@ public class EmployeePersistenceMapperTest {
     }
 
     @Test
-    void checkIfMapToNeo4JEntityMapsToValidEntityWithList() {
-        //given
-        Employee employee = EmployeeMother.complete().build();
-        WorkingOnNeo4JEntity workingOnNeo4JEntity = WorkingOnNeo4JEntityMother.complete()
-                .employee(EmployeeNeo4JEntityMother.complete()
-                        .employeeId(employee.getEmployeeId())
-                        .build())
-                .build();
-        List<WorkingOnNeo4JEntity> relations = Collections.singletonList(workingOnNeo4JEntity);
-
-        //when
-        EmployeeNeo4JEntity employeeNeo4JEntity = employeePersistenceMapper.mapToNeo4JEntity(employee, relations);
-
-        //then
-        assertThat(employeeNeo4JEntity.getEmployeeId()).isEqualTo(employee.getEmployeeId());
-        assertThat(employeeNeo4JEntity.getFirstName()).isEqualTo(employee.getFirstName());
-        assertThat(employeeNeo4JEntity.getLastName()).isEqualTo(employee.getLastName());
-        assertThat(employeeNeo4JEntity.getBirthday()).isEqualTo(employee.getBirthday());
-        assertThat(employeeNeo4JEntity.getEmail()).isEqualTo(employee.getEmail());
-        assertThat(employeeNeo4JEntity.getPhone()).isEqualTo(employee.getPhone());
-        assertThat(employeeNeo4JEntity.getIsExternal()).isEqualTo(employee.getIsExternal());
-        assertThat(employeeNeo4JEntity.getImage()).isEqualTo(employee.getImage());
-        assertThat(employeeNeo4JEntity.getProjects()).isEqualTo(relations);
-    }
-
-    @Test
     void checkIfMapToDomainEntityMapsToValidEntityFromNeo4JEntity() {
         //given
         EmployeeNeo4JEntity employeeNeo4JEntity = EmployeeNeo4JEntityMother.complete().build();
