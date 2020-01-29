@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 public class EmployeeDomainMapper {
 
     public Employee mapToDomainEntity(CreateEmployeeCommand command) {
-        return Employee.withoutId(
+        return new Employee(
+                null,
                 command.getFirstName(),
                 command.getLastName(),
                 command.getBirthday(),
@@ -19,7 +20,7 @@ public class EmployeeDomainMapper {
     }
 
     public Employee mapToDomainEntity(UpdateEmployeeCommand command, long employeeId) {
-        return Employee.withId(
+        return new Employee(
                 employeeId,
                 command.getFirstName(),
                 command.getLastName(),

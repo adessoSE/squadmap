@@ -1,40 +1,22 @@
 package de.adesso.squadmap.application.port.driver.project.create;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import de.adesso.squadmap.application.port.driver.project.ProjectCommand;
 import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.URL;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@RequiredArgsConstructor
-@Builder(builderClassName = "CreateProjectCommandBuilder")
-@JsonDeserialize(builder = CreateProjectCommand.CreateProjectCommandBuilder.class)
-public class CreateProjectCommand {
+@Value
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class CreateProjectCommand extends ProjectCommand {
 
-    @NotEmpty
-    @Size(min = 1, max = 100)
-    private final String title;
-    @NotNull
-    @Size(max = 1000)
-    private final String description;
-    @NotNull
-    private final LocalDate since;
-    @NotNull
-    private final LocalDate until;
-    @JsonProperty
-    private final boolean isExternal;
-    @NotNull
-    private final List<@URL String> sites;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static class CreateProjectCommandBuilder { }
+    @Builder
+    public CreateProjectCommand(String title, String description, LocalDate since, LocalDate until, boolean isExternal, List<String> sites) {
+        super(title, description, since, until, isExternal, sites);
+    }
 }
+

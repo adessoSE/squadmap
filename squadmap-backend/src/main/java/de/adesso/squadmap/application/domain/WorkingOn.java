@@ -1,52 +1,20 @@
 package de.adesso.squadmap.application.domain;
 
-import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 import java.time.LocalDate;
 
-@Data
+@Value
 @Builder
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class WorkingOn {
 
-    private final Long workingOnId;
-    private final LocalDate since;
-    private final LocalDate until;
-    private final int workload;
-    private final Employee employee;
-    private final Project project;
-
-    public static WorkingOn withId(
-            long workingOnId,
-            LocalDate since,
-            LocalDate until,
-            int workload,
-            Employee employee,
-            Project project) {
-        return new WorkingOn(
-                workingOnId,
-                since,
-                until,
-                workload,
-                employee,
-                project);
-    }
-
-    public static WorkingOn withoutId(
-            LocalDate since,
-            LocalDate until,
-            int workload,
-            Employee employee,
-            Project project) {
-        return new WorkingOn(
-                null,
-                since,
-                until,
-                workload,
-                employee,
-                project);
-    }
+    Long workingOnId;
+    LocalDate since;
+    LocalDate until;
+    Integer workload;
+    Employee employee;
+    Project project;
 }

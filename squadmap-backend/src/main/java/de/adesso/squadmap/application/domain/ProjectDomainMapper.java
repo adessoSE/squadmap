@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 public class ProjectDomainMapper {
 
     public Project mapToDomainEntity(CreateProjectCommand command) {
-        return Project.withoutId(
+        return new Project(
+                null,
                 command.getTitle(),
                 command.getDescription(),
                 command.getSince(),
@@ -18,7 +19,7 @@ public class ProjectDomainMapper {
     }
 
     public Project mapToDomainEntity(UpdateProjectCommand command, long projectId) {
-        return Project.withId(
+        return new Project(
                 projectId,
                 command.getTitle(),
                 command.getDescription(),

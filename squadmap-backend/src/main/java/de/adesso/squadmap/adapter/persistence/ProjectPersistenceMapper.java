@@ -22,7 +22,7 @@ class ProjectPersistenceMapper {
 
     Project
     mapToDomainEntity(ProjectNeo4JEntity projectNeo4JEntity) {
-        return Project.withId(
+        return new Project(
                 projectNeo4JEntity.getProjectId(),
                 projectNeo4JEntity.getTitle(),
                 projectNeo4JEntity.getDescription(),

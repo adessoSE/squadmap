@@ -1,30 +1,20 @@
 package de.adesso.squadmap.application.port.driver.workingon.create;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import de.adesso.squadmap.application.port.driver.workingon.WorkingOnCommand;
 import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.Range;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Data
-@RequiredArgsConstructor
-@Builder(builderClassName = "CreateWorkingOnCommandBuilder")
-@JsonDeserialize(builder = CreateWorkingOnCommand.CreateWorkingOnCommandBuilder.class)
-public class CreateWorkingOnCommand {
+@Value
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class CreateWorkingOnCommand extends WorkingOnCommand {
 
-    private final long employeeId;
-    private final long projectId;
-    @NotNull
-    private final LocalDate since;
-    @NotNull
-    private final LocalDate until;
-    @Range(min = 0, max = 100)
-    private final int workload;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static class CreateWorkingOnCommandBuilder { }
+    @Builder
+    public CreateWorkingOnCommand(long employeeId, long projectId, LocalDate since, LocalDate until, int workload) {
+        super(employeeId, projectId, since, until, workload);
+    }
 }

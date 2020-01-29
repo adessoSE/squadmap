@@ -22,7 +22,7 @@ class WorkingOnPersistenceMapper {
     }
 
     WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {
-        return WorkingOn.withId(
+        return new WorkingOn(
                 workingOnNeo4JEntity.getWorkingOnId(),
                 workingOnNeo4JEntity.getSince(),
                 workingOnNeo4JEntity.getUntil(),

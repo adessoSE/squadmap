@@ -22,7 +22,7 @@ class EmployeePersistenceMapper {
     }
 
     Employee mapToDomainEntity(EmployeeNeo4JEntity employeeNeo4JEntity) {
-        return Employee.withId(
+        return new Employee(
                 employeeNeo4JEntity.getEmployeeId(),
                 employeeNeo4JEntity.getFirstName(),
                 employeeNeo4JEntity.getLastName(),

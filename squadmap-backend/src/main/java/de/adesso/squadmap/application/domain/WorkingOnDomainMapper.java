@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 public class WorkingOnDomainMapper {
 
     public WorkingOn mapToDomainEntity(CreateWorkingOnCommand command, Employee employee, Project project) {
-        return WorkingOn.withoutId(
+        return new WorkingOn(
+                null,
                 command.getSince(),
                 command.getUntil(),
                 command.getWorkload(),
@@ -17,7 +18,7 @@ public class WorkingOnDomainMapper {
     }
 
     public WorkingOn mapToDomainEntity(UpdateWorkingOnCommand command, long workingOnId, Employee employee, Project project) {
-        return WorkingOn.withId(
+        return new WorkingOn(
                 workingOnId,
                 command.getSince(),
                 command.getUntil(),
