@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +26,9 @@ class ListEmployeeService implements ListEmployeeUseCase {
     @Override
     @Transactional
     public List<GetEmployeeResponse> listEmployees() {
-        List<GetEmployeeResponse> responses = new ArrayList<>();
         List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
-        listEmployeePort.listEmployees().forEach(employee ->
-                responses.add(employeeResponseMapper.toResponse(employee, allRelations)));
-        return responses;
+        return listEmployeePort.listEmployees().stream()
+                .map(employee -> employeeResponseMapper.toResponse(employee, allRelations))
+                .collect(Collectors.toList());
     }
 }

@@ -40,11 +40,11 @@ class GetEmployeeServiceTest {
         Employee employee = EmployeeMother.complete()
                 .employeeId(employeeId)
                 .build();
-        List<WorkingOn> allRelations = new ArrayList<>();
+        List<WorkingOn> employeesRelations = new ArrayList<>();
         GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
         when(getEmployeePort.getEmployee(employeeId)).thenReturn(employee);
-        when(responseMapper.toResponse(employee, allRelations)).thenReturn(getEmployeeResponse);
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
+        when(responseMapper.toResponse(employee, employeesRelations)).thenReturn(getEmployeeResponse);
+        when(listWorkingOnPort.listWorkingOnByEmployeeId(employeeId)).thenReturn(employeesRelations);
 
         //when
         GetEmployeeResponse response = service.getEmployee(employeeId);
@@ -52,8 +52,8 @@ class GetEmployeeServiceTest {
         //then
         assertThat(response).isEqualTo(getEmployeeResponse);
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
-        verify(responseMapper, times(1)).toResponse(employee, allRelations);
-        verify(listWorkingOnPort, times(1)).listWorkingOn();
+        verify(responseMapper, times(1)).toResponse(employee, employeesRelations);
+        verify(listWorkingOnPort, times(1)).listWorkingOnByEmployeeId(employeeId);
         verifyNoMoreInteractions(getEmployeePort);
         verifyNoMoreInteractions(responseMapper);
         verifyNoMoreInteractions(listWorkingOnPort);

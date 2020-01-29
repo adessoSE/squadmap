@@ -5,9 +5,9 @@ import de.adesso.squadmap.application.port.driven.employee.ListEmployeePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Component
 @RequiredArgsConstructor
@@ -18,9 +18,8 @@ class ListEmployeeAdapter implements ListEmployeePort {
 
     @Override
     public List<Employee> listEmployees() {
-        List<Employee> employees = new ArrayList<>(Collections.emptyList());
-        employeeRepository.findAll().forEach(employeeNeo4JEntity ->
-                employees.add(mapper.mapToDomainEntity(employeeNeo4JEntity)));
-        return employees;
+        return StreamSupport.stream(employeeRepository.findAll().spliterator(), false)
+                .map(mapper::mapToDomainEntity)
+                .collect(Collectors.toList());
     }
 }

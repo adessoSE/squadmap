@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,6 +55,50 @@ public class ListWorkingOnAdapterTest {
         verify(workingOnRepository, times(1)).findAll();
         verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity1);
         verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity2);
+        verifyNoMoreInteractions(workingOnRepository);
+        verifyNoMoreInteractions(workingOnPersistenceMapper);
+    }
+
+    @Test
+    void checkIfListWorkingOnByEmployeeListsEmployeesWorkingOn() {
+        //given
+        WorkingOn workingOn = WorkingOnMother.complete().build();
+        List<WorkingOn> workingOns = Collections.singletonList(workingOn);
+        WorkingOnNeo4JEntity workingOnNeo4JEntity = WorkingOnNeo4JEntityMother.complete().build();
+        List<WorkingOnNeo4JEntity> workingOnNeo4JEntities = Collections.singletonList(workingOnNeo4JEntity);
+        long employeeId = workingOn.getEmployee().getEmployeeId();
+        when(workingOnRepository.findAllByEmployeeId(employeeId)).thenReturn(workingOnNeo4JEntities);
+        when(workingOnPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity)).thenReturn(workingOn);
+
+        //when
+        List<WorkingOn> found = listWorkingOnAdapter.listWorkingOnByEmployeeId(employeeId);
+
+        //then
+        assertThat(found).isEqualTo(workingOns);
+        verify(workingOnRepository, times(1)).findAllByEmployeeId(employeeId);
+        verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity);
+        verifyNoMoreInteractions(workingOnRepository);
+        verifyNoMoreInteractions(workingOnPersistenceMapper);
+    }
+
+    @Test
+    void checkIfListWorkingOnByProjectListsProjectsWorkingOn() {
+        //given
+        WorkingOn workingOn = WorkingOnMother.complete().build();
+        List<WorkingOn> workingOns = Collections.singletonList(workingOn);
+        WorkingOnNeo4JEntity workingOnNeo4JEntity = WorkingOnNeo4JEntityMother.complete().build();
+        List<WorkingOnNeo4JEntity> workingOnNeo4JEntities = Collections.singletonList(workingOnNeo4JEntity);
+        long projectId = workingOn.getProject().getProjectId();
+        when(workingOnRepository.findAllByProjectId(projectId)).thenReturn(workingOnNeo4JEntities);
+        when(workingOnPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity)).thenReturn(workingOn);
+
+        //when
+        List<WorkingOn> found = listWorkingOnAdapter.listWorkingOnByProjectId(projectId);
+
+        //then
+        assertThat(found).isEqualTo(workingOns);
+        verify(workingOnRepository, times(1)).findAllByProjectId(projectId);
+        verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity);
         verifyNoMoreInteractions(workingOnRepository);
         verifyNoMoreInteractions(workingOnPersistenceMapper);
     }

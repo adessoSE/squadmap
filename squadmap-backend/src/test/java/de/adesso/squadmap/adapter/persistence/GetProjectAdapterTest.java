@@ -34,7 +34,7 @@ public class GetProjectAdapterTest {
                 .projectId(projectId)
                 .build();
         ProjectNeo4JEntity projectNeo4JEntity = ProjectNeo4JEntityMother.complete().build();
-        when(projectRepository.findById(projectId)).thenReturn(Optional.of(projectNeo4JEntity));
+        when(projectRepository.findById(projectId, 0)).thenReturn(Optional.of(projectNeo4JEntity));
         when(projectPersistenceMapper.mapToDomainEntity(projectNeo4JEntity)).thenReturn(project);
 
         //when
@@ -42,7 +42,7 @@ public class GetProjectAdapterTest {
 
         //then
         assertThat(found).isEqualTo(project);
-        verify(projectRepository, times(1)).findById(projectId);
+        verify(projectRepository, times(1)).findById(projectId, 0);
         verifyNoMoreInteractions(projectRepository);
     }
 
@@ -50,13 +50,13 @@ public class GetProjectAdapterTest {
     void checkIfGetProjectThrowsProjectNotFoundException() {
         //given
         long projectId = 1;
-        when(projectRepository.findById(projectId)).thenReturn(Optional.empty());
+        when(projectRepository.findById(projectId, 0)).thenReturn(Optional.empty());
 
         //when
         assertThrows(ProjectNotFoundException.class, () -> getProjectAdapter.getProject(projectId));
 
         //then
-        verify(projectRepository, times(1)).findById(projectId);
+        verify(projectRepository, times(1)).findById(projectId, 0);
         verifyNoMoreInteractions(projectRepository);
     }
 }

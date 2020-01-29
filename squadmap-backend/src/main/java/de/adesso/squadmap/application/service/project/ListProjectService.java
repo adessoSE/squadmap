@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +27,9 @@ class ListProjectService implements ListProjectUseCase {
     @Override
     @Transactional
     public List<GetProjectResponse> listProjects() {
-        List<GetProjectResponse> responses = new ArrayList<>();
         List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
-        listProjectPort.listProjects().forEach(project ->
-                responses.add(projectResponseMapper.toResponse(project, allRelations)));
-        return responses;
+        return listProjectPort.listProjects().stream()
+                .map(project -> projectResponseMapper.toResponse(project, allRelations))
+                .collect(Collectors.toList());
     }
 }

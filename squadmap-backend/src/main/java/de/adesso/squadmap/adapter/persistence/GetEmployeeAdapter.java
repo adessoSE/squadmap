@@ -15,6 +15,7 @@ class GetEmployeeAdapter implements GetEmployeePort {
 
     @Override
     public Employee getEmployee(Long employeeId) {
-        return mapper.mapToDomainEntity(employeeRepository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new));
+        return mapper.mapToDomainEntity(employeeRepository.findById(employeeId, 0)
+                .orElseThrow(EmployeeNotFoundException::new));
     }
 }

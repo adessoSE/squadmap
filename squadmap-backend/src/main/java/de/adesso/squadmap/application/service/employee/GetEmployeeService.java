@@ -23,6 +23,6 @@ class GetEmployeeService implements GetEmployeeUseCase {
     public GetEmployeeResponse getEmployee(Long employeeId) {
         return employeeResponseMapper.toResponse(
                 getEmployeePort.getEmployee(employeeId),
-                listWorkingOnPort.listWorkingOn());
+                listWorkingOnPort.listWorkingOnByEmployeeId(employeeId));
     }
 }

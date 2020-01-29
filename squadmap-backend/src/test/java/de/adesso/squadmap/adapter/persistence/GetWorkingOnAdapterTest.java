@@ -34,7 +34,7 @@ public class GetWorkingOnAdapterTest {
                 .workingOnId(workingOnId)
                 .build();
         WorkingOnNeo4JEntity workingOnNeo4JEntity = WorkingOnNeo4JEntityMother.complete().build();
-        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.of(workingOnNeo4JEntity));
+        when(workingOnRepository.findById(workingOnId, 0)).thenReturn(Optional.of(workingOnNeo4JEntity));
         when(workingOnPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity)).thenReturn(workingOn);
 
         //when
@@ -42,7 +42,7 @@ public class GetWorkingOnAdapterTest {
 
         //then
         assertThat(found).isEqualTo(workingOn);
-        verify(workingOnRepository, times(1)).findById(workingOnId);
+        verify(workingOnRepository, times(1)).findById(workingOnId, 0);
         verify(workingOnPersistenceMapper, times(1)).mapToDomainEntity(workingOnNeo4JEntity);
         verifyNoMoreInteractions(workingOnRepository);
         verifyNoMoreInteractions(workingOnPersistenceMapper);
@@ -52,13 +52,13 @@ public class GetWorkingOnAdapterTest {
     void checkIfGetWorkingOnThrowsNotFoundException() {
         //given
         long workingOnId = 1;
-        when(workingOnRepository.findById(workingOnId)).thenReturn(Optional.empty());
+        when(workingOnRepository.findById(workingOnId, 0)).thenReturn(Optional.empty());
 
         //when
         assertThrows(WorkingOnNotFoundException.class, () -> getWorkingOnAdapter.getWorkingOn(workingOnId));
 
         //then
-        verify(workingOnRepository, times(1)).findById(workingOnId);
+        verify(workingOnRepository, times(1)).findById(workingOnId, 0);
         verifyNoMoreInteractions(workingOnRepository);
     }
 

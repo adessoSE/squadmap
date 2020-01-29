@@ -23,6 +23,6 @@ class GetProjectService implements GetProjectUseCase {
     public GetProjectResponse getProject(Long projectId) {
         return projectResponseMapper.toResponse(
                 getProjectPort.getProject(projectId),
-                listWorkingOnPort.listWorkingOn());
+                listWorkingOnPort.listWorkingOnByProjectId(projectId));
     }
 }

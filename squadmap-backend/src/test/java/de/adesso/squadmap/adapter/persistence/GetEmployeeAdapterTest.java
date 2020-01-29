@@ -34,7 +34,7 @@ public class GetEmployeeAdapterTest {
                 employeeId(employeeId).
                 build();
         EmployeeNeo4JEntity employeeNeo4JEntity = EmployeeNeo4JEntityMother.complete().build();
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employeeNeo4JEntity));
+        when(employeeRepository.findById(employeeId, 0)).thenReturn(Optional.of(employeeNeo4JEntity));
         when(employeePersistenceMapper.mapToDomainEntity(employeeNeo4JEntity)).thenReturn(employee);
 
         //when
@@ -42,7 +42,7 @@ public class GetEmployeeAdapterTest {
 
         //then
         assertThat(found).isEqualTo(employee);
-        verify(employeeRepository, times(1)).findById(employeeId);
+        verify(employeeRepository, times(1)).findById(employeeId, 0);
         verify(employeePersistenceMapper, times(1)).mapToDomainEntity(employeeNeo4JEntity);
         verifyNoMoreInteractions(employeeRepository);
         verifyNoMoreInteractions(employeePersistenceMapper);
@@ -52,13 +52,13 @@ public class GetEmployeeAdapterTest {
     void checkIfGetEmployeeThrowsEmployeeNotFoundException() {
         //given
         long employeeId = 1;
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+        when(employeeRepository.findById(employeeId, 0)).thenReturn(Optional.empty());
 
         //when
         assertThrows(EmployeeNotFoundException.class, () -> getEmployeePort.getEmployee(employeeId));
 
         //then
-        verify(employeeRepository, times(1)).findById(employeeId);
+        verify(employeeRepository, times(1)).findById(employeeId, 0);
         verifyNoMoreInteractions(employeeRepository);
     }
 }
