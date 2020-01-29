@@ -4,9 +4,6 @@ import de.adesso.squadmap.application.domain.Employee;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 class EmployeePersistenceMapper {
