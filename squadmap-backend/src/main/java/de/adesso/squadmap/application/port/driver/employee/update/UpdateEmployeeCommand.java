@@ -1,5 +1,7 @@
 package de.adesso.squadmap.application.port.driver.employee.update;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.adesso.squadmap.application.port.driver.employee.EmployeeCommand;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -14,7 +16,15 @@ import java.time.LocalDate;
 public class UpdateEmployeeCommand extends EmployeeCommand {
 
     @Builder
-    public UpdateEmployeeCommand(String firstName, String lastName, LocalDate birthday, String email, String phone, boolean isExternal, String image) {
+    @JsonCreator
+    public UpdateEmployeeCommand(
+            @JsonProperty String firstName,
+            @JsonProperty String lastName,
+            @JsonProperty LocalDate birthday,
+            @JsonProperty String email,
+            @JsonProperty String phone,
+            @JsonProperty boolean isExternal,
+            @JsonProperty String image) {
         super(firstName, lastName, birthday, email, phone, isExternal, image);
     }
 }

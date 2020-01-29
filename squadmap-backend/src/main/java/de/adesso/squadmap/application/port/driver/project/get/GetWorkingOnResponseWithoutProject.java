@@ -9,6 +9,8 @@ import lombok.Value;
 import java.time.LocalDate;
 
 @Value
+@Builder(builderClassName = "GetWorkingOnResponseWithoutProjectBuilder")
+@JsonDeserialize(builder = GetWorkingOnResponseWithoutProject.GetWorkingOnResponseWithoutProjectBuilder.class)
 class GetWorkingOnResponseWithoutProject {
 
     Long workingOnId;
@@ -16,4 +18,8 @@ class GetWorkingOnResponseWithoutProject {
     LocalDate since;
     LocalDate until;
     Integer workload;
+
+    @JsonPOJOBuilder(withPrefix = "")
+    static class GetWorkingOnResponseWithoutProjectBuilder {
+    }
 }
