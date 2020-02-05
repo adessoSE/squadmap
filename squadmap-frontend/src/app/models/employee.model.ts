@@ -9,6 +9,7 @@ export class EmployeeModel {
     public email: string,
     public phone: string,
     public isExternal: boolean,
+    public image: string,
     public projects: WorkingOnProjectModel[]
   ) {
   }

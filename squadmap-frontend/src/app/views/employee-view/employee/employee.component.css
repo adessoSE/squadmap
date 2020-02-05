@@ -1,0 +1,14 @@
+#link:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+.table-head{
+  background-color: #f5f5f5;
+}
+
+.search{
+  margin-top: 35px;
+  margin-bottom: 30px;
+}
+

@@ -3,9 +3,7 @@ jobs:
   backend:
     docker:
       - image: circleci/openjdk:11-jdk
-
     working_directory: ~/squadmap/squadmap-backend
-
     steps:
       - checkout:
           path: ~/squadmap
@@ -44,4 +42,5 @@ workflows:
     jobs:
       - backend:
           context: SonarCloud
-      - frontend
+      - frontend:
+          context: SonarCloud

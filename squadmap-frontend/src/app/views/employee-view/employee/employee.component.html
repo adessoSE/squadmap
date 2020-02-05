@@ -1,0 +1,47 @@
+
+<div class="search row justify-content-center">
+  <div class="col-md-5">
+    <input placeholder="Search for..." class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
+  </div>
+  <div class="col-md-5 d-flex justify-content-between">
+    <div>
+      <div class="btn-group">
+        <label class="btn btn-outline-secondary" [(ngModel)]="hideExternal" btnCheckbox tabindex="0" >Hide external</label>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-secondary" type="button" (click)="onAddEmployee()">+ Add Employee</button>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-10">
+    <table class="table">
+      <thead>
+      <tr class="table-head">
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th class="d-flex justify-content-end">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText, hideExternal: hideExternal}">
+        <td class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.employeeId}}</td>
+        <td class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.firstName}}</td>
+        <td class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.lastName}}</td>
+        <td class="d-flex justify-content-end">
+          <div class="btn-group">
+            <button class="btn btn-outline-info" type="button" (click)="onEdit(employee)" >Edit</button>
+            <button class="btn btn-outline-danger" type="button" (click)="onDelete(employee)">Delete</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+

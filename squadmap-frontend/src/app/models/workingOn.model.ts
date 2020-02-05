@@ -7,6 +7,7 @@ export class WorkingOnModel {
     public employee: EmployeeModel,
     public project: ProjectModel,
     public since: Date,
-    public until: Date
+    public until: Date,
+    public workload: number,
   ) {}
 }

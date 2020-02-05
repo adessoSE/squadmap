@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BsDropdownConfig, BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ProjectModalComponent} from '../project-modal/project-modal.component';
-import {EmployeeModalComponent} from '../employee-modal/employee-modal.component';
+import {ProjectModalComponent} from '../modals/project-modal/project-modal.component';
+import {EmployeeModalComponent} from '../modals/employee-modal/employee-modal.component';
 
 @Component({
   selector: 'app-navigation',

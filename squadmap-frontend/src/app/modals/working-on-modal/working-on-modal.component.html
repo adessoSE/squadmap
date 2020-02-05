@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Edit</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)">
+    <div class="form-group">
+      <label for="since">Since:</label>
+      <input type="date" id="since" name="since" class="form-control" [(ngModel)]="since">
+    </div>
+    <div class="form-group">
+      <label for="until">Until:</label>
+      <input type="date" id="until" name="until" class="form-control" [(ngModel)]="until">
+    </div>
+    <div class="form-group">
+      <label for="since">Workload:</label>
+      <input type="number" min="0" max="100" id="workload" name="workload" class="form-control" [(ngModel)]="workload">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success" >Save</button>
+    </div>
+  </form>
+  <div *ngIf="errorOccurred" class="alert alert-danger">
+    {{errorMessage}}
+  </div>
+</div>
+
