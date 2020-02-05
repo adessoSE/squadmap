@@ -249,6 +249,20 @@ class ProjectControllerTest {
     }
 
     @Test
+    void checkIfCreateProjectThrowsInvalidProjectIsExternalException() {
+        //given
+        CreateProjectCommand projectIsExternalNull = CreateProjectCommandMother.complete().isExternal(null).build();
+
+        //then
+        assertThatThrownBy(() ->
+                mockMvc.perform(post("/project/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonMapper.asJsonString(projectIsExternalNull)))
+                        .andExpect(status().isOk()))
+                .hasCause(new InvalidProjectIsExternalException());
+    }
+
+    @Test
     void checkIfUpdateProjectThrowsInvalidProjectTitleException() {
         //given
         UpdateProjectCommand projectTitleNull = UpdateProjectCommandMother.complete().title(null).build();
@@ -350,5 +364,19 @@ class ProjectControllerTest {
                         .content(JsonMapper.asJsonString(projectURLListNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectUrlListException());
+    }
+
+    @Test
+    void checkIfUpdateProjectThrowsInvalidProjectIsExternalException() {
+        //given
+        UpdateProjectCommand projectIsExternalNull = UpdateProjectCommandMother.complete().isExternal(null).build();
+
+        //then
+        assertThatThrownBy(() ->
+                mockMvc.perform(put("/project/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonMapper.asJsonString(projectIsExternalNull)))
+                        .andExpect(status().isOk()))
+                .hasCause(new InvalidProjectIsExternalException());
     }
 }

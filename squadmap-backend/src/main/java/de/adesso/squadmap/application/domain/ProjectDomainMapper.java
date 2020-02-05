@@ -14,7 +14,7 @@ public class ProjectDomainMapper {
                 command.getDescription(),
                 command.getSince(),
                 command.getUntil(),
-                command.isExternal(),
+                command.getIsExternal(),
                 command.getSites());
     }
 
@@ -25,7 +25,7 @@ public class ProjectDomainMapper {
                 command.getDescription(),
                 command.getSince(),
                 command.getUntil(),
-                command.isExternal(),
+                command.getIsExternal(),
                 command.getSites());
     }
 }

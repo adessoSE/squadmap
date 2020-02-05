@@ -1,28 +1,28 @@
 package de.adesso.squadmap.application.port.driver.workingon.create;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.*;
-import org.hibernate.validator.constraints.Range;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.adesso.squadmap.application.port.driver.workingon.WorkingOnCommand;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Data
-@RequiredArgsConstructor
-@Builder(builderClassName = "CreateWorkingOnCommandBuilder")
-@JsonDeserialize(builder = CreateWorkingOnCommand.CreateWorkingOnCommandBuilder.class)
-public class CreateWorkingOnCommand {
+@Value
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class CreateWorkingOnCommand extends WorkingOnCommand {
 
-    private final long employeeId;
-    private final long projectId;
-    @NotNull
-    private final LocalDate since;
-    @NotNull
-    private final LocalDate until;
-    @Range(min = 0, max = 100)
-    private final int workload;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static class CreateWorkingOnCommandBuilder { }
+    @Builder
+    @JsonCreator
+    public CreateWorkingOnCommand(
+            @JsonProperty("employeeId") long employeeId,
+            @JsonProperty("projectId") long projectId,
+            @JsonProperty("since") LocalDate since,
+            @JsonProperty("until") LocalDate until,
+            @JsonProperty("workload") Integer workload) {
+        super(employeeId, projectId, since, until, workload);
+    }
 }

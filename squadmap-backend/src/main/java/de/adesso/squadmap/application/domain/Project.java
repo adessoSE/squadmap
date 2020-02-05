@@ -1,7 +1,6 @@
 package de.adesso.squadmap.application.domain;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 

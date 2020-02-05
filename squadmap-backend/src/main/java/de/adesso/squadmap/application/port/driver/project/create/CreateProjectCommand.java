@@ -1,37 +1,31 @@
 package de.adesso.squadmap.application.port.driver.project.create;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.*;
-import org.hibernate.validator.constraints.URL;
+import de.adesso.squadmap.application.port.driver.project.ProjectCommand;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
 
-import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@RequiredArgsConstructor
-@Builder(builderClassName = "CreateProjectCommandBuilder")
-@JsonDeserialize(builder = CreateProjectCommand.CreateProjectCommandBuilder.class)
-public class CreateProjectCommand {
+@Value
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class CreateProjectCommand extends ProjectCommand {
 
-    @NotEmpty
-    @Size(min = 1, max = 100)
-    private final String title;
-    @NotNull
-    @Size(max = 1000)
-    private final String description;
-    @NotNull
-    private final LocalDate since;
-    @NotNull
-    private final LocalDate until;
-    @JsonProperty
-    private final boolean isExternal;
-    @NotNull
-    private final List<@URL String> sites;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static class CreateProjectCommandBuilder { }
+    @Builder
+    @JsonCreator
+    public CreateProjectCommand(
+            @JsonProperty("title") String title,
+            @JsonProperty("description") String description,
+            @JsonProperty("since") LocalDate since,
+            @JsonProperty("until") LocalDate until,
+            @JsonProperty("isExternal") Boolean isExternal,
+            @JsonProperty("sites") List<String> sites) {
+        super(title, description, since, until, isExternal, sites);
+    }
 }
 

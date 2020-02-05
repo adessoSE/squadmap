@@ -73,6 +73,8 @@ class ProjectController {
             throw new InvalidProjectUntilException();
         } else if (field.startsWith("sites")) {
             throw new InvalidProjectUrlListException();
+        } else if ("isExternal".equals(field)) {
+            throw new InvalidProjectIsExternalException();
         } else {
             throw new IllegalArgumentException("Invalid input");
         }

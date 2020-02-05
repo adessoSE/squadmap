@@ -33,7 +33,7 @@ public class EmployeeDomainMapperTest {
         assertThat(employee.getBirthday()).isEqualTo(createEmployeeCommand.getBirthday());
         assertThat(employee.getEmail()).isEqualTo(createEmployeeCommand.getEmail());
         assertThat(employee.getPhone()).isEqualTo(createEmployeeCommand.getPhone());
-        assertThat(employee.getIsExternal()).isEqualTo(createEmployeeCommand.isExternal());
+        assertThat(employee.getIsExternal()).isEqualTo(createEmployeeCommand.getIsExternal());
         assertThat(employee.getImage()).isEqualTo(createEmployeeCommand.getImage());
     }
 
@@ -53,7 +53,7 @@ public class EmployeeDomainMapperTest {
         assertThat(employee.getBirthday()).isEqualTo(updateEmployeeCommand.getBirthday());
         assertThat(employee.getEmail()).isEqualTo(updateEmployeeCommand.getEmail());
         assertThat(employee.getPhone()).isEqualTo(updateEmployeeCommand.getPhone());
-        assertThat(employee.getIsExternal()).isEqualTo(updateEmployeeCommand.isExternal());
+        assertThat(employee.getIsExternal()).isEqualTo(updateEmployeeCommand.getIsExternal());
         assertThat(employee.getImage()).isEqualTo(updateEmployeeCommand.getImage());
     }
 }

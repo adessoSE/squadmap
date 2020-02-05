@@ -304,6 +304,20 @@ class EmployeeControllerTest {
     }
 
     @Test
+    void checkIfCreateEmployeeThrowsInvalidEmployeeIsExternalException() {
+        //given
+        CreateEmployeeCommand employeeIsExternalNull = CreateEmployeeCommandMother.complete().isExternal(null).build();
+
+        //then
+        assertThatThrownBy(() ->
+                mockMvc.perform(post("/employee/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonMapper.asJsonString(employeeIsExternalNull)))
+                        .andExpect(status().isOk()))
+                .hasCause(new InvalidEmployeeIsExternalException());
+    }
+
+    @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeFirstNameException() {
         //given
         UpdateEmployeeCommand employeeNullFirstName = UpdateEmployeeCommandMother.complete().firstName(null).build();
@@ -457,5 +471,18 @@ class EmployeeControllerTest {
                         .content(JsonMapper.asJsonString(employeeWrongImage)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeImageException());
+    }
+
+    @Test
+    void checkIfUpdateEmployeeThrowsInvalidEmployeeIsExternalException() {
+        UpdateEmployeeCommand employeeIsExternalNull = UpdateEmployeeCommandMother.complete().isExternal(null).build();
+
+        //then
+        assertThatThrownBy(() ->
+                mockMvc.perform(put("/employee/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonMapper.asJsonString(employeeIsExternalNull)))
+                        .andExpect(status().isOk()))
+                .hasCause(new InvalidEmployeeIsExternalException());
     }
 }

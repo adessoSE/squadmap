@@ -15,7 +15,7 @@ public class EmployeeDomainMapper {
                 command.getBirthday(),
                 command.getEmail(),
                 command.getPhone(),
-                command.isExternal(),
+                command.getIsExternal(),
                 command.getImage());
     }
 
@@ -27,7 +27,7 @@ public class EmployeeDomainMapper {
                 command.getBirthday(),
                 command.getEmail(),
                 command.getPhone(),
-                command.isExternal(),
+                command.getIsExternal(),
                 command.getImage());
     }
 }

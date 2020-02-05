@@ -32,7 +32,7 @@ public class ProjectDomainMapperTest {
         assertThat(project.getDescription()).isEqualTo(createProjectCommand.getDescription());
         assertThat(project.getSince()).isEqualTo(createProjectCommand.getSince());
         assertThat(project.getUntil()).isEqualTo(createProjectCommand.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(createProjectCommand.isExternal());
+        assertThat(project.getIsExternal()).isEqualTo(createProjectCommand.getIsExternal());
         assertThat(project.getSites()).isEqualTo(createProjectCommand.getSites());
     }
 
@@ -51,7 +51,7 @@ public class ProjectDomainMapperTest {
         assertThat(project.getDescription()).isEqualTo(updateProjectCommand.getDescription());
         assertThat(project.getSince()).isEqualTo(updateProjectCommand.getSince());
         assertThat(project.getUntil()).isEqualTo(updateProjectCommand.getUntil());
-        assertThat(project.getIsExternal()).isEqualTo(updateProjectCommand.isExternal());
+        assertThat(project.getIsExternal()).isEqualTo(updateProjectCommand.getIsExternal());
         assertThat(project.getSites()).isEqualTo(updateProjectCommand.getSites());
     }
 }

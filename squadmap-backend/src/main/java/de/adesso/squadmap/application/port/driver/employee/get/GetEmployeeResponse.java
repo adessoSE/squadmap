@@ -3,8 +3,6 @@ package de.adesso.squadmap.application.port.driver.employee.get;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDate;
@@ -26,5 +24,6 @@ public class GetEmployeeResponse {
     List<GetWorkingOnResponseWithoutEmployee> projects;
 
     @JsonPOJOBuilder(withPrefix = "")
-    public static class GetEmployeeResponseBuilder { }
+    public static class GetEmployeeResponseBuilder {
+    }
 }
