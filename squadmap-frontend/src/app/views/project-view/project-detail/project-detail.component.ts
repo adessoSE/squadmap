@@ -68,7 +68,6 @@ export class ProjectDetailComponent implements OnInit {
       this.project = new ProjectModel(
         res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.sites, res.employees
       );
-      console.log(this.project);
     });
   }
 

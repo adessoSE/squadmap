@@ -30,6 +30,12 @@ export class WorkingOnModalComponent implements OnInit {
 
   ngOnInit() {
     this.errorMessage = '';
+    if (!this.since) {
+      this.since = this.dateFormatter.formatDate(new Date());
+    }
+    if (!this.until) {
+      this.until = this.dateFormatter.formatDate(new Date());
+    }
     if (this.projectId) {
       this.since = this.dateFormatter.formatDate(this.workingOnEmployee.since);
       this.until = this.dateFormatter.formatDate(this.workingOnEmployee.until);

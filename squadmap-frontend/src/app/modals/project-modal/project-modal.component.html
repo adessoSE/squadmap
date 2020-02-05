@@ -8,11 +8,11 @@
   <form #projectForm="ngForm" (ngSubmit)="onCreateProject(projectForm)">
     <div class="form-group">
       <label for="title">Project title</label>
-      <input type="text" id="title" name="title" class="form-control" [(ngModel)]="project.title">
+      <input type="text" id="title" name="title" class="form-control" ngModel="{{project.title}}">
     </div>
     <div class="form-group">
       <label for="description">Description</label>
-      <textarea  type="text" id="description" name="description" class="form-control"  [(ngModel)]="project.description"></textarea>
+      <textarea  type="text" id="description" name="description" class="form-control"  ngModel="{{project.description}}" rows="7"></textarea>
     </div>
     <div class="form-group">
       <label for="since">Since</label>

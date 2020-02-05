@@ -1,17 +1,17 @@
 #controls{
-  height: 50%;
-  width:  5%;
+  height: 40%;
+  width: 70px;
   background-color: grey;
   position: absolute;
-  top: 25%;
+  top: 30%;
   left: 2%;
   display: flex;
   flex-direction: column;
+  margin: 10px;
 }
 
 #controls div{
   margin: 10px;
-  width: 80%;
   height: 30%;
   background-color: lightgray;
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BsModalRef} from 'ngx-bootstrap';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {EmployeeModel} from '../../models/employee.model';
 import {WorkingOnService} from '../../services/workingOn/workingOn.service';
 import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';

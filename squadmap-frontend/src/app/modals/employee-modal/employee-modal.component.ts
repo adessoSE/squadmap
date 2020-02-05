@@ -4,6 +4,7 @@ import {NgForm} from '@angular/forms';
 import {CreateEmployeeModel} from '../../models/createEmployee.model';
 import {EmployeeService} from '../../services/employee/employee.service';
 import {EmployeeModel} from '../../models/employee.model';
+import {DateFormatterService} from '../../services/dateFormatter/dateFormatter.service';
 
 @Component({
   selector: 'app-employee-modal',
@@ -14,12 +15,14 @@ export class EmployeeModalComponent implements OnInit {
   actionName: string;
   employee: EmployeeModel;
   isNew: boolean;
+  private birthday: string;
   private errorMessage: string;
   private errorOccurred: boolean;
 
 
   constructor(private modalRef: BsModalRef,
-              private employeeService: EmployeeService) { }
+              private employeeService: EmployeeService,
+              private dateFormatterService: DateFormatterService) { }
 
   ngOnInit() {
     this.errorMessage = '';
@@ -29,6 +32,7 @@ export class EmployeeModalComponent implements OnInit {
     } else {
       this.isNew = false;
     }
+    this.birthday = this.dateFormatterService.formatDate(this.employee.birthday);
   }
 
   onCreateEmployee(employeeForm: NgForm) {

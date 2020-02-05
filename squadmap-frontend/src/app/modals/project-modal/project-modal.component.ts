@@ -39,7 +39,6 @@ export class ProjectModalComponent implements OnInit {
     // format necessary in order to prefill the form
     this.since = this.dateFormatter.formatDate(this.project.since);
     this.until = this.dateFormatter.formatDate(this.project.until);
-
   }
 
   onCreateProject(projectForm: NgForm) {

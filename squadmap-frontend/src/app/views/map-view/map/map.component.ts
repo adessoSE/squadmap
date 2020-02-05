@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {ProjectService} from '../../../services/project/project.service';
-import {Network, DataSet} from 'vis-network';
+import {DataSet, Network} from 'vis-network';
 import {EmployeeModel} from '../../../models/employee.model';
 import {ProjectModel} from '../../../models/project.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {CreateWorkingOnModel} from '../../../models/createWorkingOn.model';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 
 @Component({
   selector: 'app-map',
@@ -18,13 +20,21 @@ export class MapComponent implements OnInit {
   private employees: EmployeeModel[];
   private projects: ProjectModel[];
   private dateThreshold: Date;
-  private network: any;
+  modalRef: BsModalRef;
+  @ViewChild('createWorkingOnModal', {static: false}) createWorkingOnModal: TemplateRef<any>;
+  private editMode: boolean;
+  private network: Network;
+  private container: HTMLElement;
 
   constructor(private employeeService: EmployeeService,
               private projectService: ProjectService,
-              private workingOnService: WorkingOnService) { }
+              private workingOnService: WorkingOnService,
+              private modalService: BsModalService) { }
 
   ngOnInit() {
+    this.container = document.getElementById('mynetwork');
+    this.network = new Network(this.container, {}, {});
+    this.editMode = false;
     this.dateThreshold = new Date();
     this.dateThreshold.setMonth(this.dateThreshold.getMonth() + 2);
     this.employees = [];
@@ -96,9 +106,7 @@ export class MapComponent implements OnInit {
     // create a network
     const nodes = new DataSet(nodeList);
     const edges = new DataSet(edgeList);
-    document.getElementById('mynetwork').style.height = Math.round(window.innerHeight * 0.95) + 'px';
-    const container = document.getElementById('mynetwork');
-
+    document.getElementById('mynetwork').style.height = Math.round(window.innerHeight * 0.94) + 'px';
     // provide the data in the vis format
     const data = {
       nodes,
@@ -110,7 +118,7 @@ export class MapComponent implements OnInit {
         randomSeed: 22222
       },
       interaction: {
-        keyboard: true,
+        keyboard: false,
         hover: true
       },
       manipulation: {
@@ -170,7 +178,7 @@ export class MapComponent implements OnInit {
     };
 
     // initialize your network!
-    this.network = new Network(container, data, options);
+    this.network = new Network(this.container, data, options);
     // Courser Options
     const networkCanvas = document
       .getElementById('mynetwork')
@@ -179,36 +187,38 @@ export class MapComponent implements OnInit {
     function changeCursor(newCursorStyle) {
       networkCanvas.style.cursor = newCursorStyle;
     }
-    function clusterLonelyEmployees(employees: EmployeeModel[]) {
-      const clusterOptions = {
-        joinCondition: (childOptions) => {
-          let isLonely: boolean;
-          let i: number;
-          for (i = 0; i < employees.length; i++) {
-            if (childOptions.id === employees[i].employeeId) {
-              isLonely = employees[i].projects.length === 0;
-              break;
-            }
-          }
-          return isLonely;
-        },
-        clusterNodeProperties: {
-          id: 'lonelyEmployees',
-          label: 'Employees without Project',
-          shape: 'box',
-          widthConstraint: {
-            maximum: 120,
-            minimum: 120
-          },
-          heightConstraint: {
-            minimum: 60,
-            maximum: 60
-          },
-          color: '#c9c9c9'
-        }
-      };
-      this.network.cluster(clusterOptions);
-    }
+    // function clusterLonelyEmployees(employees: EmployeeModel[]) {
+    //   const clusterOptions = {
+    //     joinCondition: (childOptions) => {
+    //       let isLonely: boolean;
+    //       let i: number;
+    //       for (i = 0; i < employees.length; i++) {
+    //         if (childOptions.id === employees[i].employeeId) {
+    //           isLonely = employees[i].projects.length === 0;
+    //           break;
+    //         }
+    //       }
+    //       return isLonely;
+    //     },
+    //     clusterNodeProperties: {
+    //       id: 'lonelyEmployees',
+    //       label: 'Employees without Project',
+    //       shape: 'box',
+    //       widthConstraint: {
+    //         maximum: 120,
+    //         minimum: 120
+    //       },
+    //       heightConstraint: {
+    //         minimum: 60,
+    //         maximum: 60
+    //       },
+    //       color: '#c9c9c9'
+    //     }
+    //   };
+    //   if (this.network !== undefined) {
+    //     this.network.cluster(clusterOptions);
+    //   }
+    // }
     this.network.on('hoverNode', () => {
       changeCursor('grab');
     });
@@ -230,13 +240,15 @@ export class MapComponent implements OnInit {
     this.network.on('dragEnd', () => {
       changeCursor('grab');
     });
-    this.network.on('click', params => {
-      if (params.nodes.length === 1 && params.nodes[0] === 'lonelyEmployees') {
-        this.network.openCluster(params.nodes[0]);
-      } else {
-        clusterLonelyEmployees(this.employees);
-      }
-    });
+    // this.network.on('click', params => {
+    //   if (params.nodes.length === 1 && params.nodes[0] === 'lonelyEmployees') {
+    //     this.network.openCluster(params.nodes[0]);
+    //   } else {
+    //     if (this.network !== undefined) {
+    //       clusterLonelyEmployees(this.employees);
+    //     }
+    //   }
+    // });
     this.network.on('doubleClick', params => {
       if (params.nodes.length === 1) {
         let node: any;
@@ -263,6 +275,7 @@ export class MapComponent implements OnInit {
   }
 
   deleteNode(nodeData, callback) {
+    console.log(nodeData);
     const validNodes = [];
     const validEdges = [];
     nodeData.nodes.forEach( node => {
@@ -285,7 +298,11 @@ export class MapComponent implements OnInit {
     if (nodeData.nodes.length === 0 && nodeData.edges.length === 0) {
       window.alert('Given nodes can\'t be deleted');
     }
-    callback(nodeData);
+    if (nodeData) {
+      callback(nodeData);
+    } else {
+      callback();
+    }
   }
 
   addEdge(edgeData, callback) {
@@ -296,6 +313,14 @@ export class MapComponent implements OnInit {
     }
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
       // TODO Customize workload
+      const config = {
+        backdrop: true,
+        ignoreBackdropClick: true,
+        initialState: {
+          edgeData
+        }
+      };
+      this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
       const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date(), 1);
       // TODO get dates from modal
       this.workingOnService.createWorkingOn(createWorkingOn).subscribe( () => {
@@ -329,11 +354,14 @@ export class MapComponent implements OnInit {
             color: workingOn.until < this.dateThreshold ? '#bb0300' : '#000000',
             dashes: employee.isExternal
           };
-          this.refresh();
-          callback(edgeData);
+          if (edgeData) {
+            callback(edgeData);
+          } else {
+            callback();
+          }
         });
       });
-    } else {
+      } else {
       window.alert('Only edges between employees and projects are supported');
     }
   }

@@ -9,38 +9,38 @@
       <div class="form-group">
         <label for="firstName">First name</label>
         <input type="text" id="firstName" name="firstName" class="form-control"
-               [(ngModel)]="employee.firstName">
+               ngModel="{{employee.firstName}}">
       </div>
       <div class="form-group">
         <label for="lastName">Last name</label>
         <input type="text" id="lastName" name="lastName" class="form-control"
-               [(ngModel)]="employee.lastName">
+              ngModel="{{employee.lastName}}">
       </div>
       <div class="form-group">
         <label for="birthday">Birthday</label>
         <input type="date" id="birthday" name="birthday" class="form-control"
-               [(ngModel)]="employee.birthday">
+               ngModel="{{birthday}}">
       </div>
       <div class="form-group">
         <label for="email">Email</label>
         <input type="text" id="email" name="email" class="form-control"
-               [(ngModel)]="employee.email">
+             ngModel="{{employee.email}}">
       </div>
       <div class="form-group">
         <label for="phone">Phone</label>
         <input type="text" id="phone" name="phone" class="form-control"
-               [(ngModel)]="employee.phone">
+              ngModel="{{employee.phone}}">
       </div>
       <div class="form-group">
         <label for="image">Image URL</label>
         <input type="text" id="image" name="image" class="form-control"
-               [(ngModel)]="employee.image">
+               ngModel="{{employee.image}}">
       </div>
       <div class="form-group">
         <label for="isExternal">External </label>
         <div>
           <input type="checkbox" id="isExternal" name="isExternal" class="checkbox"
-                 [(ngModel)]="employee.isExternal">
+                 ngModel="{{employee.isExternal}}">
         </div>
       </div>
       <div class="form-group">

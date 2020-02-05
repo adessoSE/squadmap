@@ -19,7 +19,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let employee of allEmployees | filterEmployees : {searchText: searchText}">
-      <td>{{employee.firstName}}</td>
+      <td >{{employee.firstName}}</td>
       <td>{{employee.lastName}}</td>
       <td>
         <input type="date" name="since" #since>
