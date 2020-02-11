@@ -11,16 +11,15 @@ import java.util.logging.Logger;
 @EnableNeo4jRepositories("de.adesso.squadmap.adapter.persistence")
 public class SquadmapApplication {
 
-    //different
     private static Logger logger = Logger.getAnonymousLogger();
 
     public static void main(String[] args) {
         SpringApplication.run(SquadmapApplication.class, args);
         try {
             Runtime rt = Runtime.getRuntime();
-            rt.exec("rundll32 url.dll,FileProtocolHandler " + "http://localhost:4200/");
+            rt.exec("rundll32 url.dll,FileProtocolHandler " + "http://localhost:8080/");
         } catch (Exception exception) {
-            logger.log(Level.SEVERE, "could not open browser", exception);
+            logger.log(Level.SEVERE, "Could not open browser", exception);
         }
     }
 }
