@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 @EnableNeo4jRepositories("de.adesso.squadmap.adapter.persistence")
 public class SquadmapApplication {
 
+    //different
     private static Logger logger = Logger.getAnonymousLogger();
 
     public static void main(String[] args) {
