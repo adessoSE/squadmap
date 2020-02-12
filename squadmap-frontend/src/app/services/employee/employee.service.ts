@@ -14,15 +14,6 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
-  getCurrentEmployees(): EmployeeModel[] {
-    if (this.employees.length === 0 ) {
-      this.getEmployees().subscribe();
-      return this.employees;
-    } else {
-      return this.employees;
-    }
-  }
-
   getEmployees() {
     this.employees = [];
     return this.http.get<EmployeeModel[]>('http://localhost:8080/employee/all').pipe(map( res => {

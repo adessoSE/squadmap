@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {BsModalRef} from 'ngx-bootstrap';
 import {EmployeeModel} from '../../models/employee.model';
 import {WorkingOnService} from '../../services/workingOn/workingOn.service';
 import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
@@ -10,7 +10,7 @@ import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
   styleUrls: ['./add-employee-modal.component.css']
 })
 export class AddEmployeeModalComponent implements OnInit {
-  private allEmployees: EmployeeModel[];
+  private employees: EmployeeModel[];
   private projectId: number;
   searchText: string;
   private errorMessage: string;

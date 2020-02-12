@@ -25,7 +25,7 @@ import {WorkingOnModalComponent} from './modals/working-on-modal/working-on-moda
 import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employee-modal.component';
 import { AddProjectModalComponent } from './modals/add-project-modal/add-project-modal.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: MapComponent

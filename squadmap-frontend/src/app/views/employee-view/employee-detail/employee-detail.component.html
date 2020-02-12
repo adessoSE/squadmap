@@ -20,6 +20,8 @@
             <tr><td >{{employee.phone}}</td></tr>
             <tr><th>Birthday: </th></tr>
             <tr><td >{{employee.birthday.toDateString()}}</td></tr>
+            <tr><th>External: </th></tr>
+            <tr> <td>{{employee.isExternal}}</td></tr>
           </table>
         <div class="row justify-content-center">
           <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onUpdate()">Edit</button>
