@@ -39,13 +39,11 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onOpenAddEmployeeModal() {
-    this.filteredEmployees = this.employeeService.getCurrentEmployees();
     const config = {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        allEmployees: this.filteredEmployees,
-        existingEmployees: this.project.employees,
+        employees: this.filteredEmployees,
         projectId: this.project.projectId
       },
       class: 'modal-lg'
@@ -68,6 +66,10 @@ export class ProjectDetailComponent implements OnInit {
       this.project = new ProjectModel(
         res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.sites, res.employees
       );
+      this.employeeService.getEmployees().subscribe(() => {
+        this.filteredEmployees = this.employeeService.employees;
+        this.filteredEmployees = this.filterEmployees(this.filteredEmployees, this.project.employees);
+      });
     });
   }
 
@@ -98,5 +100,19 @@ export class ProjectDetailComponent implements OnInit {
       }
     };
     this.modalRef = this.modalService.show(ProjectModalComponent, config);
+  }
+
+  filterEmployees(allEmployees: EmployeeModel[], existingEmployees: WorkingOnEmployeeModel[]): EmployeeModel[] {
+    const filteredEmployees = allEmployees.filter(employee => {
+      let found = false;
+      existingEmployees.forEach(elem => {
+        if (employee.employeeId === elem.employee.employeeId) {
+          found = true;
+          return;
+        }
+      });
+      if (!found) { return employee; }
+    });
+    return filteredEmployees;
   }
 }

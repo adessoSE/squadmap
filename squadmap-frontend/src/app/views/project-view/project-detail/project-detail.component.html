@@ -13,8 +13,6 @@
             <tr><td >{{project.since.toDateString()}}</td></tr>
             <tr><th>Until:</th></tr>
             <tr><td >{{project.until.toDateString()}}</td></tr>
-            <tr><th>External:</th></tr>
-            <tr><td >{{project.isExternal}}</td></tr>
             <tr>
               <th>Description:</th>
             </tr>
@@ -30,6 +28,8 @@
             <tr *ngIf="project.sites.length === 0">
               <td>-</td>
             </tr>
+            <tr><th>External:</th></tr>
+            <tr><td >{{project.isExternal}}</td></tr>
           </table>
           <div class="row justify-content-center">
             <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onUpdate()">Edit</button>
