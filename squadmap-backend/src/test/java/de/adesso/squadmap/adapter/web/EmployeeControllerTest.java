@@ -50,6 +50,7 @@ class EmployeeControllerTest {
     @Autowired
     private EmployeeController employeeController;
     private MockMvc mockMvc;
+    private static final String apiUrl = "/api/employee";
 
     @BeforeEach
     void setUp() {
@@ -63,7 +64,7 @@ class EmployeeControllerTest {
         when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
 
         //when
-        MvcResult result = mockMvc.perform(get("/employee/all"))
+        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
         List<GetEmployeeResponse> responses = JsonMapper.asResponseList(result, GetEmployeeResponse.class);
@@ -82,7 +83,7 @@ class EmployeeControllerTest {
         when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(getEmployeeResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get("/employee/{id}", employeeId))
+        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", employeeId))
                 .andExpect(status().isOk())
                 .andReturn();
         GetEmployeeResponse response = JsonMapper.asResponse(result, GetEmployeeResponse.class);
@@ -100,7 +101,7 @@ class EmployeeControllerTest {
         when(createEmployeeUseCase.createEmployee(createEmployeeCommand)).thenReturn(employeeId);
 
         //when
-        MvcResult result = mockMvc.perform(post("/employee/create")
+        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(createEmployeeCommand))
                 .accept(MediaType.APPLICATION_JSON))
@@ -121,7 +122,7 @@ class EmployeeControllerTest {
         doNothing().when(updateEmployeeUseCase).updateEmployee(updateEmployeeCommand, employeeId);
 
         //when
-        mockMvc.perform(put("/employee/update/{id}", employeeId)
+        mockMvc.perform(put(apiUrl + "/update/{id}", employeeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(updateEmployeeCommand))
                 .accept(MediaType.APPLICATION_JSON))
@@ -138,7 +139,7 @@ class EmployeeControllerTest {
         doNothing().when(deleteEmployeeUseCase).deleteEmployee(employeeId);
 
         //when
-        mockMvc.perform(delete("/employee/delete/{id}", employeeId))
+        mockMvc.perform(delete(apiUrl + "/delete/{id}", employeeId))
                 .andExpect(status().isOk());
 
         //then
@@ -155,19 +156,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeNullFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeFirstNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeFirstNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
                         .andExpect(status().isOk()))
@@ -184,19 +185,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeNullFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeLastNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeLastNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
                         .andExpect(status().isOk()))
@@ -212,13 +213,13 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeBirthdayNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeBirthdayException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeBirthdayInFuture)))
                         .andExpect(status().isOk()))
@@ -235,19 +236,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmailNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeEmailException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmailEmpty)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeEmailException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmailNotValid)))
                         .andExpect(status().isOk()))
@@ -263,19 +264,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeePhoneNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeePhoneNumberException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeePhoneEmpty)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeePhoneNumberException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeePhoneNotValid)))
                         .andExpect(status().isOk()))
@@ -290,13 +291,13 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeImageNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeImageException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeWrongImage)))
                         .andExpect(status().isOk()))
@@ -310,7 +311,7 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/employee/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeIsExternalNull)))
                         .andExpect(status().isOk()))
@@ -327,19 +328,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeNullFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeFirstNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeFirstNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
                         .andExpect(status().isOk()))
@@ -356,19 +357,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeNullFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeLastNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeLastNameException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
                         .andExpect(status().isOk()))
@@ -384,13 +385,13 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeBirthdayNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeBirthdayException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeBirthdayInFuture)))
                         .andExpect(status().isOk()))
@@ -406,19 +407,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmailNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeEmailException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmailEmpty)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeEmailException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeEmailNotValid)))
                         .andExpect(status().isOk()))
@@ -434,19 +435,19 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeePhoneNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeePhoneNumberException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeePhoneEmpty)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeePhoneNumberException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeePhoneNotValid)))
                         .andExpect(status().isOk()))
@@ -460,13 +461,13 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeImageNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeImageException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeWrongImage)))
                         .andExpect(status().isOk()))
@@ -479,7 +480,7 @@ class EmployeeControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/employee/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeIsExternalNull)))
                         .andExpect(status().isOk()))

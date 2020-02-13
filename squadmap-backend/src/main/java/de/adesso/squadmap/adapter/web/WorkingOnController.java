@@ -22,7 +22,7 @@ import java.util.Objects;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/workingOn")
+@RequestMapping("/api/workingOn")
 @RequiredArgsConstructor
 class WorkingOnController {
 

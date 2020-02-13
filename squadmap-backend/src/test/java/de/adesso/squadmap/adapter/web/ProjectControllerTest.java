@@ -49,6 +49,7 @@ class ProjectControllerTest {
     @Autowired
     private ProjectController projectController;
     private MockMvc mockMvc;
+    private static final String apiUrl = "/api/project";
 
     @BeforeEach
     void setUp() {
@@ -62,7 +63,7 @@ class ProjectControllerTest {
         when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(getProjectResponse));
 
         //when
-        MvcResult result = mockMvc.perform(get("/project/all"))
+        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
         List<GetProjectResponse> responses = JsonMapper.asResponseList(result, GetProjectResponse.class);
@@ -81,7 +82,7 @@ class ProjectControllerTest {
         when(getProjectUseCase.getProject(projectId)).thenReturn(getProjectResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get("/project/{id}", projectId))
+        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", projectId))
                 .andExpect(status().isOk())
                 .andReturn();
         GetProjectResponse response = JsonMapper.asResponse(result, GetProjectResponse.class);
@@ -99,7 +100,7 @@ class ProjectControllerTest {
         when(createProjectUseCase.createProject(createProjectCommand)).thenReturn(projectId);
 
         //when
-        MvcResult result = mockMvc.perform(post("/project/create")
+        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(createProjectCommand))
                 .accept(MediaType.APPLICATION_JSON))
@@ -120,7 +121,7 @@ class ProjectControllerTest {
         doNothing().when(updateProjectUseCase).updateProject(updateProjectCommand, projectId);
 
         //when
-        mockMvc.perform(put("/project/update/{id}", projectId)
+        mockMvc.perform(put(apiUrl + "/update/{id}", projectId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(updateProjectCommand))
                 .accept(MediaType.APPLICATION_JSON))
@@ -137,7 +138,7 @@ class ProjectControllerTest {
         doNothing().when(deleteProjectUseCase).deleteProject(projectId);
 
         //when
-        mockMvc.perform(delete("/project/delete/{id}", projectId))
+        mockMvc.perform(delete(apiUrl + "/delete/{id}", projectId))
                 .andExpect(status().isOk());
 
         //then
@@ -155,19 +156,19 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectTitleNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectTitleException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectTitleEmpty)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectTitleException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectTitleTooLong)))
                         .andExpect(status().isOk()))
@@ -184,13 +185,13 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectDescriptionNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectDescriptionException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectDescriptionTooLong)))
                         .andExpect(status().isOk()))
@@ -204,7 +205,7 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectSinceNull)))
                         .andExpect(status().isOk()))
@@ -218,7 +219,7 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectUntilNull)))
                         .andExpect(status().isOk()))
@@ -235,13 +236,13 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectInvalidURL)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectUrlListException());
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectURLListNull)))
                         .andExpect(status().isOk()))
@@ -255,7 +256,7 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/project/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectIsExternalNull)))
                         .andExpect(status().isOk()))
@@ -273,19 +274,19 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectTitleNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectTitleException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectTitleEmpty)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectTitleException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectTitleTooLong)))
                         .andExpect(status().isOk()))
@@ -302,13 +303,13 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectDescriptionNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectDescriptionException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectDescriptionTooLong)))
                         .andExpect(status().isOk()))
@@ -322,7 +323,7 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectSinceNull)))
                         .andExpect(status().isOk()))
@@ -336,7 +337,7 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectUntilNull)))
                         .andExpect(status().isOk()))
@@ -353,13 +354,13 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectInvalidURL)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectUrlListException());
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectURLListNull)))
                         .andExpect(status().isOk()))
@@ -373,7 +374,7 @@ class ProjectControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/project/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectIsExternalNull)))
                         .andExpect(status().isOk()))
