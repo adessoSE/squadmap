@@ -66,10 +66,9 @@ export class ProjectDetailComponent implements OnInit {
       this.project = new ProjectModel(
         res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.sites, res.employees
       );
-      this.employeeService.getEmployees().subscribe(() => {
-        this.filteredEmployees = this.employeeService.employees;
-        this.filteredEmployees = this.filterEmployees(this.filteredEmployees, this.project.employees);
-      });
+      this.updateFilteredEmployees();
+    }, error => {
+      this.router.navigate(['project']);
     });
   }
 
@@ -114,5 +113,12 @@ export class ProjectDetailComponent implements OnInit {
       if (!found) { return employee; }
     });
     return filteredEmployees;
+  }
+
+  private updateFilteredEmployees() {
+    this.employeeService.getEmployees().subscribe(() => {
+      this.filteredEmployees = this.employeeService.employees;
+      this.filteredEmployees = this.filterEmployees(this.filteredEmployees, this.project.employees);
+    });
   }
 }

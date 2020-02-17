@@ -19,7 +19,7 @@ import {EmployeeModalComponent} from '../../../modals/employee-modal/employee-mo
 export class EmployeeDetailComponent implements OnInit {
 
   private employee: EmployeeModel;
-  private allProjects: ProjectModel[];
+  private filteredProjects: ProjectModel[];
   searchText: string;
   modalRef: BsModalRef;
 
@@ -42,18 +42,19 @@ export class EmployeeDetailComponent implements OnInit {
         res.isExternal,
         res.image,
         res.projects );
-    });
-    this.projectService.getProjects().subscribe(() => {
-      this.allProjects = this.projectService.projects;
+      this.updateFilteredProjects();
+    }, error => {
+      this.router.navigate(['employee']);
     });
   }
 
   onOpenAddProjectModal() {
+    this.updateFilteredProjects();
     const config = {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        allProjects: this.allProjects,
+        allProjects: this.filteredProjects,
         employeeId: this.employee.employeeId
       },
       class: 'modal-lg'
@@ -65,6 +66,7 @@ export class EmployeeDetailComponent implements OnInit {
     this.workingOnService.deleteWorkingOn(workingOnId).subscribe(() => {
       this.employeeService.getEmployee(this.employee.employeeId).subscribe(employee => {
         this.employee = employee;
+        this.updateFilteredProjects();
       });
     });
   }
@@ -92,10 +94,31 @@ export class EmployeeDetailComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
+        isNew: false,
         employee: this.employee,
         actionName: 'Update'
       }
     };
     this.modalRef = this.modalService.show(EmployeeModalComponent, config);
+  }
+
+  private filterProjects(allProjects: ProjectModel[], existingProjects: WorkingOnProjectModel[]) {
+    const filteredProjects = allProjects.filter(project => {
+      let found = false;
+      existingProjects.forEach(pro => {
+        if (project.projectId === pro.project.projectId) {
+          found = true;
+          return;
+        }
+      });
+      if (!found) { return project; }
+    });
+    return filteredProjects;
+  }
+  private updateFilteredProjects() {
+    this.projectService.getProjects().subscribe(() => {
+      this.filteredProjects = this.projectService.projects;
+      this.filteredProjects = this.filterProjects(this.filteredProjects, this.employee.projects);
+    });
   }
 }
