@@ -5,7 +5,7 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
-import {ModalModule} from 'ngx-bootstrap';
+import {ModalModule, TabsModule} from 'ngx-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees/filterEmployees.pipe';
@@ -18,6 +18,7 @@ import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employe
 import {AddProjectModalComponent} from './modals/add-project-modal/add-project-modal.component';
 import {MessageModalComponent} from './modals/message-modal/message-modal.component';
 import {AppRoutingModule, routingComponents} from './app.routing';
+import { MapEmployeeDetailComponent } from './views/map-view/map-employee-detail/map-employee-detail.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {AppRoutingModule, routingComponents} from './app.routing';
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
-    routingComponents
+    routingComponents,
+    MapEmployeeDetailComponent
   ],
   imports: [
     AppRoutingModule,
@@ -44,6 +46,7 @@ import {AppRoutingModule, routingComponents} from './app.routing';
     HttpClientModule,
     ReactiveFormsModule,
     ButtonsModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -7,25 +7,7 @@
 <div class="modal-body">
   <label class="checkbox-inline" for="searchText" >Search:</label>
   <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText"  autocomplete="off" ngDefaultControl>
-  <table class="table">
-    <thead>
-    <tr>
-      <th>First name</th>
-      <th>Last name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let employee of employees | filterEmployees : {searchText: searchText}">
-      <td >{{employee.firstName}}</td>
-      <td>{{employee.lastName}}</td>
-
-        <td class="justify-content-end">
-          <button class="btn btn-success" type="button" (click)="onAddEmployee(employee, since, until, workload)">Add</button>
-        </td>
-    </tr>
-    </tbody>
-  </table>
-
+  <br>
   <div>
     <div class="form-group">
       <label for="since">Since</label>
@@ -40,6 +22,25 @@
       <input class="form-control" type="number" min="0" max="100" name="workload" id="workload" #workload>
     </div>
   </div>
+  <br>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let employee of employees | filterEmployees : {searchText: searchText}">
+        <td >{{employee.firstName}}</td>
+        <td>{{employee.lastName}}</td>
+          <td class="justify-content-end">
+            <button class="btn btn-success" type="button" (click)="onAddEmployee(employee, since, until, workload)">Add</button>
+          </td>
+      </tr>
+      </tbody>
+    </table>
   <div *ngIf="errorOccurred" class="alert alert-danger">
     {{errorMessage}}
   </div>

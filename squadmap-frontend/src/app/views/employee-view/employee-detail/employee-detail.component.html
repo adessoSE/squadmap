@@ -30,31 +30,38 @@
     </div>
   </div>
   <div class="col-md-7">
-    <table class="table">
-      <thead class="table-head">
-      <tr>
-        <th>Project</th>
-        <th>Since</th>
-        <th>Until</th>
-        <th>Workload</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let project of employee.projects">
-        <td class="project-link" (click)="onOpenProjectDetail(project.project.projectId)">{{project.project.title}}</td>
-        <td>{{project.since.toDateString()}}</td>
-        <td>{{project.until.toDateString()}}</td>
-        <td>{{project.workload}}%</td>
-        <td>
-          <button class="btn btn-info" type="button" (click)="onEditProject(project)" >Edit</button>
-          <button class="btn btn-danger" type="button" (click)="onDeleteProject(project.workingOnId)" >Delete</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <tabset>
+      <tab heading="Mapview">
+        <app-map-employee-detail></app-map-employee-detail>
+      </tab>
+      <tab heading="Tableview">
+        <table class="table">
+          <thead class="table-head">
+          <tr>
+            <th>Project</th>
+            <th>Since</th>
+            <th>Until</th>
+            <th>Workload</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let project of employee.projects">
+            <td class="project-link" (click)="onOpenProjectDetail(project.project.projectId)">{{project.project.title}}</td>
+            <td>{{project.since.toDateString()}}</td>
+            <td>{{project.until.toDateString()}}</td>
+            <td>{{project.workload}}%</td>
+            <td>
+              <button class="btn btn-info" type="button" (click)="onEditProject(project)" >Edit</button>
+              <button class="btn btn-danger" type="button" (click)="onDeleteProject(project.workingOnId)" >Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </tab>
+    </tabset>
     <div class="row justify-content-center">
-      <button class="btn btn-outline-primary btn-sm" (click)="onOpenAddProjectModal()">Add</button>
+      <button class="btn btn-outline-secondary btn-sm" (click)="onOpenAddProjectModal()">Add project</button>
     </div>
   </div>
 </div>

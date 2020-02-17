@@ -130,13 +130,11 @@ export class MapComponent implements OnInit {
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
       },
       edges: {
-        // shadow: true,
         title: 'Hover',
         length: 200,
         width: 0.75
       },
       nodes: {
-        // shadow: true,
         physics: true,
         borderWidth: 0,
       },
