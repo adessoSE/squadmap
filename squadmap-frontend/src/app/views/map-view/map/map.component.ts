@@ -8,6 +8,7 @@ import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
+import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
 
 @Component({
   selector: 'app-map',
@@ -112,6 +113,7 @@ export class MapComponent implements OnInit {
     };
 
     const options = {
+      autoResize: true,
       layout: {
         randomSeed: 22222
       },
@@ -206,7 +208,6 @@ export class MapComponent implements OnInit {
     this.network.on('dragEnd', () => {
       changeCursor('grab');
     });
-
     this.network.on('doubleClick', params => {
       if (params.nodes.length === 1) {
         let node: any;
@@ -263,67 +264,101 @@ export class MapComponent implements OnInit {
   }
 
   addEdge(edgeData, callback) {
+
     if (!this.isEmployee(edgeData.from) && !this.isProject(edgeData.to)) {
       const temp = edgeData.from;
       edgeData.from = edgeData.to;
       edgeData.to = temp;
     }
+
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      // TODO Customize workload
-      const config = {
-        backdrop: true,
-        ignoreBackdropClick: true,
-        initialState: {
-          edgeData,
-          isNew: true,
-        }
-      };
-      this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
-      this.modalRef.content.onClose.subscribe(wasSucessfully => {
-        if (wasSucessfully) {
-          let employee: EmployeeModel;
-          this.employeeService.getEmployee(edgeData.from).subscribe(res => {
-                employee = new EmployeeModel(
-                  res.employeeId,
-                  res.firstName,
-                  res.lastName,
-                  res.birthday,
-                  res.email,
-                  res.phone,
-                  res.isExternal,
-                  res.image,
-                  res.projects);
-                let workingOn: WorkingOnProjectModel;
-                let i: number;
-                for (i = 0; i < employee.projects.length; i++) {
-                  if (employee.projects[i].project.projectId === edgeData.to) {
-                    workingOn = employee.projects[i];
-                    break;
-                  }
-                }
-                edgeData = {
-                  id: workingOn.workingOnId,
-                  from: edgeData.from,
-                  to: edgeData.to,
-                  title: 'Id: ' + workingOn.workingOnId +
-                    '<br>Since: ' + workingOn.since.toDateString() +
-                    '<br> Until: ' + workingOn.until.toDateString() +
-                    '<br> Workload: ' + workingOn.workload + '%',
-                  color: workingOn.until < this.dateThreshold ? '#bb0300' : '#000000',
-                  dashes: employee.isExternal
-                };
-                if (edgeData) {
-                  callback(edgeData);
-                } else {
-                  callback();
-                }
-              });
-        } else {
-          console.log('error');
+      let edgeAlreadyExists = false;
+      this.network.getConnectedNodes(edgeData.from).forEach(elem => {
+        if (edgeData.to === elem) {
+         edgeAlreadyExists = true;
         }
       });
+
+      if (!edgeAlreadyExists) {
+        const config = {
+          backdrop: true,
+          ignoreBackdropClick: true,
+          initialState: {
+            edgeData,
+            isNew: true,
+          }
+        };
+        this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
+        this.modalRef.content.onClose.subscribe(wasSuccessfully => {
+          if (wasSuccessfully) {
+            let employee: EmployeeModel;
+            this.employeeService.getEmployee(edgeData.from).subscribe(res => {
+              employee = new EmployeeModel(
+                res.employeeId,
+                res.firstName,
+                res.lastName,
+                res.birthday,
+                res.email,
+                res.phone,
+                res.isExternal,
+                res.image,
+                res.projects);
+              let workingOn: WorkingOnProjectModel;
+              let i: number;
+              for (i = 0; i < employee.projects.length; i++) {
+                if (employee.projects[i].project.projectId === edgeData.to) {
+                  workingOn = employee.projects[i];
+                  break;
+                }
+              }
+              edgeData = {
+                id: workingOn.workingOnId,
+                from: edgeData.from,
+                to: edgeData.to,
+                title: 'Id: ' + workingOn.workingOnId +
+                  '<br>Since: ' + workingOn.since.toDateString() +
+                  '<br> Until: ' + workingOn.until.toDateString() +
+                  '<br> Workload: ' + workingOn.workload + '%',
+                color: workingOn.until < this.dateThreshold ? '#bb0300' : '#000000',
+                dashes: employee.isExternal
+              };
+              if (edgeData) {
+                callback(edgeData);
+              } else {
+                callback();
+              }
+            });
+          } else {
+            const config2 = {
+              backdrop: true,
+              ignoreBackdropClick: false,
+              initialState: {
+                message: 'An error occured! Could not create the edge.'
+              }
+            };
+            this.modalService.show(MessageModalComponent, config2);
+          }
+        });
+        } else {
+          const config2 = {
+            backdrop: true,
+            ignoreBackdropClick: false,
+            initialState: {
+              message: 'The relationship already exists!'
+            }
+          };
+          this.modalService.show(MessageModalComponent, config2);
+          return;
+        }
       } else {
-      window.alert('Only edges between employees and projects are supported');
+      const config2 = {
+        backdrop: true,
+        ignoreBackdropClick: false,
+        initialState: {
+          message: 'Only edges between employees and projects are supported!'
+        }
+      };
+      this.modalService.show(MessageModalComponent, config2);
     }
   }
 

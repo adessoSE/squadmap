@@ -12,9 +12,9 @@ import {DateFormatterService} from '../../services/dateFormatter/dateFormatter.s
   styleUrls: ['./employee-modal.component.css']
 })
 export class EmployeeModalComponent implements OnInit {
-  actionName: string;
-  employee: EmployeeModel;
-  isNew: boolean;
+  private header: string;
+  private employee: EmployeeModel;
+  private isNew: boolean;                       // variable that helps to call the correct corresponding method add/update Employee
   private birthday: string;
   private errorMessage: string;
   private errorOccurred: boolean;

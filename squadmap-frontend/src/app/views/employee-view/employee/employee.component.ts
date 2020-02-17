@@ -39,7 +39,7 @@ export class EmployeeComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        actionName: 'Add'
+        header: 'Add'
       }
     };
     this.modalRef = this.modalService.show(EmployeeModalComponent, config);
@@ -59,7 +59,7 @@ export class EmployeeComponent implements OnInit {
       ignoreBackdropClick: true,
       initialState: {
         employee,
-        actionName: 'Update'
+        header: 'Update'
       }
     };
     this.modalRef = this.modalService.show(EmployeeModalComponent, config);

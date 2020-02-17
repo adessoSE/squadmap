@@ -24,7 +24,7 @@ export class NavigationComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        actionName: 'Create'
+        header: 'Create'
       }
     };
     this.modalRef = this.modalService.show(EmployeeModalComponent, config);
@@ -35,7 +35,7 @@ export class NavigationComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        actionName: 'Create'
+        header: 'Create'
       }
     };
     this.modalRef = this.modalService.show(ProjectModalComponent, config);

@@ -24,6 +24,7 @@ import {MapProjectDetailComponent} from './views/map-view/map-project-detail/map
 import {WorkingOnModalComponent} from './modals/working-on-modal/working-on-modal.component';
 import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employee-modal.component';
 import { AddProjectModalComponent } from './modals/add-project-modal/add-project-modal.component';
+import { MessageModalComponent } from './modals/message-modal/message-modal.component';
 
 export const routes: Routes = [
   {
@@ -82,6 +83,7 @@ export const routes: Routes = [
     WorkingOnModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
+    MessageModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,6 +105,7 @@ export const routes: Routes = [
     WorkingOnModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
+    MessageModalComponent,
   ]
 })
 export class AppModule {

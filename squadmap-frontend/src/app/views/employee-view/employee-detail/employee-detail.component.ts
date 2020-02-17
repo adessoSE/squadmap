@@ -43,7 +43,7 @@ export class EmployeeDetailComponent implements OnInit {
         res.image,
         res.projects );
       this.updateFilteredProjects();
-    }, error => {
+    }, () => {
       this.router.navigate(['employee']);
     });
   }
@@ -96,7 +96,7 @@ export class EmployeeDetailComponent implements OnInit {
       initialState: {
         isNew: false,
         employee: this.employee,
-        actionName: 'Update'
+        header: 'Update'
       }
     };
     this.modalRef = this.modalService.show(EmployeeModalComponent, config);

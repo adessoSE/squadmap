@@ -15,15 +15,14 @@ import {Subject} from 'rxjs';
 })
 export class WorkingOnModalComponent implements OnInit {
   public onClose: Subject<boolean>;
-
   private workingOnEmployee: WorkingOnEmployeeModel;
   private workingOnProject: WorkingOnProjectModel;
-  public since: string;
-  public until: string;
-  public projectId: number;
-  public employeeId: number;
-  public workingOnId: number;
-  public workload: number;
+  private since: string;
+  private until: string;
+  private projectId: number;
+  private employeeId: number;
+  private workingOnId: number;
+  private workload: number;
   private errorMessage: string;
   private errorOccurred: boolean;
   private isNew: boolean;
@@ -48,6 +47,9 @@ export class WorkingOnModalComponent implements OnInit {
     } else if (this.workingOnId) {
       this.since = this.dateFormatter.formatDate(this.workingOnProject.since);
       this.until = this.dateFormatter.formatDate(this.workingOnProject.until);
+    }
+    if (!this.isNew) {
+      this.isNew = false;
     }
   }
 
@@ -102,5 +104,6 @@ export class WorkingOnModalComponent implements OnInit {
   public onConfirm(): void {
     this.onClose.next(true);
     this.modalRef.hide();
+    location.reload();
   }
 }

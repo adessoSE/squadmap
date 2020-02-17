@@ -12,7 +12,7 @@ import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
 export class AddProjectModalComponent implements OnInit {
   private allProjects: ProjectModel[];
   private employeeId: number;
-  searchText: string;
+  private searchText: string;
   private errorMessage: string;
   private errorOccurred: boolean;
 
@@ -21,7 +21,6 @@ export class AddProjectModalComponent implements OnInit {
 
   ngOnInit() {
     this.errorMessage = '';
-    // TODO filter here and display only not already existingProjects in List
   }
 
   onAddProject(project: ProjectModel, since: HTMLInputElement, until: HTMLInputElement, workload: HTMLInputElement) {
