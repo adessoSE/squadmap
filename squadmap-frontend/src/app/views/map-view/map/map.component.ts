@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {ProjectService} from '../../../services/project/project.service';
-import {Network, DataSet} from 'vis-network';
+import {DataSet, Network} from 'vis-network';
 import {EmployeeModel} from '../../../models/employee.model';
 import {ProjectModel} from '../../../models/project.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
-import {CreateWorkingOnModel} from '../../../models/createWorkingOn.model';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
+import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -18,13 +21,27 @@ export class MapComponent implements OnInit {
   private employees: EmployeeModel[];
   private projects: ProjectModel[];
   private dateThreshold: Date;
-  private network: any;
+  modalRef: BsModalRef;
+  @ViewChild('createWorkingOnModal', {static: false}) createWorkingOnModal: TemplateRef<any>;
+  private editMode: boolean;
+  private network: Network;
+  private container: HTMLElement;
+  private layoutSeed: number;
+  private isPhysicsEnabled: boolean;
 
   constructor(private employeeService: EmployeeService,
               private projectService: ProjectService,
-              private workingOnService: WorkingOnService) { }
+              private workingOnService: WorkingOnService,
+              private modalService: BsModalService,
+              private router: Router) { }
 
   ngOnInit() {
+    this.isPhysicsEnabled = false;
+    this.editMode = false;
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    this.container = document.getElementById('mynetwork');
+    this.network = new Network(this.container, {}, {});
+    this.editMode = false;
     this.dateThreshold = new Date();
     this.dateThreshold.setMonth(this.dateThreshold.getMonth() + 2);
     this.employees = [];
@@ -63,8 +80,7 @@ export class MapComponent implements OnInit {
           label: project.title,
           title: 'Id: ' + project.projectId +
             '<br>Since: ' + project.since.toDateString() +
-            '<br> Until: ' + project.until.toDateString() +
-            '<br> Description: ' + project.description,
+            '<br> Until: ' + project.until.toDateString(),
           color: project.isExternal ? '#c9c9c9' : '#ffebad',
           url: 'http://localhost:4200/map/' + project.projectId,
           group: 'projectNode'
@@ -96,10 +112,7 @@ export class MapComponent implements OnInit {
     // create a network
     const nodes = new DataSet(nodeList);
     const edges = new DataSet(edgeList);
-    document.getElementById('mynetwork').style.height = Math.round(window.innerHeight * 0.95) + 'px';
-    const container = document.getElementById('mynetwork');
-
-
+    document.getElementById('mynetwork').style.height = Math.round(window.innerHeight * 0.94) + 'px';
     // provide the data in the vis format
     const data = {
       nodes,
@@ -107,15 +120,13 @@ export class MapComponent implements OnInit {
     };
 
     const options = {
-      layout: {
-        randomSeed: 22222
-      },
+      autoResize: true,
       interaction: {
-        keyboard: true,
+        keyboard: false,
         hover: true
       },
       manipulation: {
-        enabled: true,
+        enabled: false,
         editEdge: false,
         addNode: false,
         deleteNode: (nodeData, callback) => this.deleteNode(nodeData, callback),
@@ -123,14 +134,12 @@ export class MapComponent implements OnInit {
         deleteEdge: (edgeData, callback) => this.deleteEdge(edgeData, callback)
       },
       edges: {
-        // shadow: true,
         title: 'Hover',
         length: 200,
         width: 0.75
       },
       nodes: {
-        // shadow: true,
-        physics: true,
+        physics: this.isPhysicsEnabled,
         borderWidth: 0,
       },
       physics: {
@@ -171,7 +180,7 @@ export class MapComponent implements OnInit {
     };
 
     // initialize your network!
-    this.network = new Network(container, data, options);
+    this.network = new Network(this.container, data, options);
     // Courser Options
     const networkCanvas = document
       .getElementById('mynetwork')
@@ -179,36 +188,6 @@ export class MapComponent implements OnInit {
 
     function changeCursor(newCursorStyle) {
       networkCanvas.style.cursor = newCursorStyle;
-    }
-    function clusterLonelyEmployees(employees: EmployeeModel[]) {
-      const clusterOptions = {
-        joinCondition: (childOptions) => {
-          let isLonely: boolean;
-          let i: number;
-          for (i = 0; i < employees.length; i++) {
-            if (childOptions.id === employees[i].employeeId) {
-              isLonely = employees[i].projects.length === 0;
-              break;
-            }
-          }
-          return isLonely;
-        },
-        clusterNodeProperties: {
-          id: 'lonelyEmployees',
-          label: 'Employees without Project',
-          shape: 'box',
-          widthConstraint: {
-            maximum: 120,
-            minimum: 120
-          },
-          heightConstraint: {
-            minimum: 60,
-            maximum: 60
-          },
-          color: '#c9c9c9'
-        }
-      };
-      this.network.cluster(clusterOptions);
     }
     this.network.on('hoverNode', () => {
       changeCursor('grab');
@@ -231,23 +210,18 @@ export class MapComponent implements OnInit {
     this.network.on('dragEnd', () => {
       changeCursor('grab');
     });
-    this.network.on('click', params => {
-      if (params.nodes.length === 1 && params.nodes[0] === 'lonelyEmployees') {
-        this.network.openCluster(params.nodes[0]);
-      } else {
-        clusterLonelyEmployees(this.employees);
-      }
-    });
     this.network.on('doubleClick', params => {
       if (params.nodes.length === 1) {
         let node: any;
         node = nodes.get(params.nodes[0]);
-        if (node.url != null && node.url !== '') {
-          window.location = node.url;
+        if (node.url != null && node.url !== '' && node.group === 'projectNode') {
+            this.router.navigate(['project/' + node.id]);
+        } else if (node.group === 'employeeNode') {
+          this.router.navigate(['employee/' + node.id]);
         }
       }
     });
-    this.network.on('oncontext', () => {
+    this.network.on('doubleClick', () => {
       this.projects.forEach( project => {
         if (project.isExternal) {
           const node = nodes.get(project.projectId);
@@ -261,6 +235,13 @@ export class MapComponent implements OnInit {
         }
       });
     });
+
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    if (this.layoutSeed) {
+      for (const [key, value] of Object.entries(this.layoutSeed)) {
+        this.network.moveNode(key, value.x, value.y);
+      }
+    }
   }
 
   deleteNode(nodeData, callback) {
@@ -286,56 +267,109 @@ export class MapComponent implements OnInit {
     if (nodeData.nodes.length === 0 && nodeData.edges.length === 0) {
       window.alert('Given nodes can\'t be deleted');
     }
-    callback(nodeData);
+    if (nodeData) {
+      callback(nodeData);
+    } else {
+      callback();
+    }
   }
 
   addEdge(edgeData, callback) {
+
     if (!this.isEmployee(edgeData.from) && !this.isProject(edgeData.to)) {
       const temp = edgeData.from;
       edgeData.from = edgeData.to;
       edgeData.to = temp;
     }
+
     if (this.isEmployee(edgeData.from ) && this.isProject(edgeData.to)) {
-      // TODO Customize workload
-      const createWorkingOn = new CreateWorkingOnModel(edgeData.from, edgeData.to, new Date(), new Date(), 1);
-      // TODO get dates from modal
-      this.workingOnService.createWorkingOn(createWorkingOn).subscribe( () => {
-        let employee: EmployeeModel;
-        this.employeeService.getEmployee(edgeData.from).subscribe(res => {
-          employee = new EmployeeModel(
-            res.employeeId,
-            res.firstName,
-            res.lastName,
-            res.birthday,
-            res.email,
-            res.phone,
-            res.isExternal,
-            res.image,
-            res.projects);
-          let workingOn: WorkingOnProjectModel;
-          let i: number;
-          for (i = 0; i < employee.projects.length; i++) {
-            if (employee.projects[i].project.projectId === edgeData.to) {
-              workingOn = employee.projects[i];
-              break;
-            }
-          }
-          edgeData = {
-            id: workingOn.workingOnId,
-            from: edgeData.from,
-            to: edgeData.to,
-            title: 'Id: ' + workingOn.workingOnId +
-              '<br>Since: ' + workingOn.since.toDateString() +
-              '<br> Until: ' + workingOn.until.toDateString(),
-            color: workingOn.until < this.dateThreshold ? '#bb0300' : '#000000',
-            dashes: employee.isExternal
-          };
-          this.refresh();
-          callback(edgeData);
-        });
+      let edgeAlreadyExists = false;
+      this.network.getConnectedNodes(edgeData.from).forEach(elem => {
+        if (edgeData.to === elem) {
+         edgeAlreadyExists = true;
+        }
       });
-    } else {
-      window.alert('Only edges between employees and projects are supported');
+
+      if (!edgeAlreadyExists) {
+        const config = {
+          backdrop: true,
+          ignoreBackdropClick: true,
+          initialState: {
+            edgeData,
+            isNew: true,
+          }
+        };
+        this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
+        this.modalRef.content.onClose.subscribe(wasSuccessfully => {
+          if (wasSuccessfully) {
+            let employee: EmployeeModel;
+            this.employeeService.getEmployee(edgeData.from).subscribe(res => {
+              employee = new EmployeeModel(
+                res.employeeId,
+                res.firstName,
+                res.lastName,
+                res.birthday,
+                res.email,
+                res.phone,
+                res.isExternal,
+                res.image,
+                res.projects);
+              let workingOn: WorkingOnProjectModel;
+              let i: number;
+              for (i = 0; i < employee.projects.length; i++) {
+                if (employee.projects[i].project.projectId === edgeData.to) {
+                  workingOn = employee.projects[i];
+                  break;
+                }
+              }
+              edgeData = {
+                id: workingOn.workingOnId,
+                from: edgeData.from,
+                to: edgeData.to,
+                title: 'Id: ' + workingOn.workingOnId +
+                  '<br>Since: ' + workingOn.since.toDateString() +
+                  '<br> Until: ' + workingOn.until.toDateString() +
+                  '<br> Workload: ' + workingOn.workload + '%',
+                color: workingOn.until < this.dateThreshold ? '#bb0300' : '#000000',
+                dashes: employee.isExternal
+              };
+              if (edgeData) {
+                callback(edgeData);
+              } else {
+                callback();
+              }
+            });
+          } else {
+            const config2 = {
+              backdrop: true,
+              ignoreBackdropClick: false,
+              initialState: {
+                message: 'An error occured! Could not create the edge.'
+              }
+            };
+            this.modalService.show(MessageModalComponent, config2);
+          }
+        });
+        } else {
+          const config2 = {
+            backdrop: true,
+            ignoreBackdropClick: false,
+            initialState: {
+              message: 'The relationship already exists!'
+            }
+          };
+          this.modalService.show(MessageModalComponent, config2);
+          return;
+        }
+      } else {
+      const config2 = {
+        backdrop: true,
+        ignoreBackdropClick: false,
+        initialState: {
+          message: 'Only edges between employees and projects are supported!'
+        }
+      };
+      this.modalService.show(MessageModalComponent, config2);
     }
   }
 
@@ -396,5 +430,57 @@ export class MapComponent implements OnInit {
         this.projects =  this.projectService.projects;
       });
     });
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    if (this.layoutSeed) {
+      for (const [key, value] of Object.entries(this.layoutSeed)) {
+        this.network.moveNode(key, value.x, value.y);
+      }
+    }
+  }
+
+  saveLayout() {
+    localStorage.setItem('layoutSeed', JSON.stringify(this.network.getPositions()));
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: false,
+      initialState: {
+        message: 'Layout has been saved!'
+      }
+    };
+    this.modalService.show(MessageModalComponent, config);
+  }
+
+  getLayout() {
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    if (this.layoutSeed) {
+      for (const [key, value] of Object.entries(this.layoutSeed)) {
+        this.network.moveNode(key, value.x, value.y);
+      }
+    }
+  }
+
+  togglePhysics() {
+    this.isPhysicsEnabled = !this.isPhysicsEnabled;
+    this.network.setOptions({
+      nodes: {physics: this.isPhysicsEnabled}
+    });
+  }
+
+  enableEditMode() {
+    this.editMode = true;
+    this.network.enableEditMode();
+  }
+
+  disableEditMode() {
+    this.editMode = false;
+    this.network.disableEditMode();
+  }
+
+  enableAddEgdeMode() {
+  this.network.addEdgeMode();
+  }
+
+  onDeleteSelected() {
+    this.network.deleteSelected();
   }
 }

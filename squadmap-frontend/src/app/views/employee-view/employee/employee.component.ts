@@ -35,10 +35,14 @@ export class EmployeeComponent implements OnInit {
   }
 
   onAddEmployee() {
-    const initialState = {
-      actionName: 'Add'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        header: 'Add'
+      }
     };
-    this.modalRef = this.modalService.show(EmployeeModalComponent, {initialState});
+    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
   }
 
   onDelete(employee: EmployeeModel) {
@@ -50,11 +54,15 @@ export class EmployeeComponent implements OnInit {
   }
 
   onEdit(employee: EmployeeModel) {
-    const initialState = {
-      employee,
-      actionName: 'Update'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        employee,
+        header: 'Update'
+      }
     };
-    this.modalRef = this.modalService.show(EmployeeModalComponent, {initialState});
+    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
   }
 
 

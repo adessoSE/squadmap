@@ -39,13 +39,16 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onOpenAddEmployeeModal() {
-    this.filteredEmployees = this.employeeService.getCurrentEmployees();
-    const initialState = {
-      allEmployees: this.filteredEmployees,
-      existingEmployees: this.project.employees,
-      projectId: this.project.projectId
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        employees: this.filteredEmployees,
+        projectId: this.project.projectId
+      },
+      class: 'modal-lg'
     };
-    this.modalRef = this.modalService.show(AddEmployeeModalComponent, {initialState});
+    this.modalRef = this.modalService.show(AddEmployeeModalComponent, config);
   }
 
   onDelete(workingOn: WorkingOnEmployeeModel) {
@@ -63,17 +66,23 @@ export class ProjectDetailComponent implements OnInit {
       this.project = new ProjectModel(
         res.projectId, res.title, res.description, res.since, res.until, res.isExternal, res.sites, res.employees
       );
-      console.log(this.project);
+      this.updateFilteredEmployees();
+    }, error => {
+      this.router.navigate(['project']);
     });
   }
 
   onEdit(workingOnEmployee: WorkingOnEmployeeModel) {
-    const initialState = {
-      workingOnEmployee,
-      projectId: this.project.projectId,
-      workload: workingOnEmployee.workload
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        workingOnEmployee,
+        projectId: this.project.projectId,
+        workload: workingOnEmployee.workload
+      }
     };
-    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
   }
 
   onOpenEmployeeDetail(employeeId: number) {
@@ -81,10 +90,35 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   onUpdate() {
-    const initialState = {
-      project: this.project,
-      actionName: 'Update'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        project: this.project,
+        actionName: 'Update'
+      }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(ProjectModalComponent, config);
+  }
+
+  filterEmployees(allEmployees: EmployeeModel[], existingEmployees: WorkingOnEmployeeModel[]): EmployeeModel[] {
+    const filteredEmployees = allEmployees.filter(employee => {
+      let found = false;
+      existingEmployees.forEach(elem => {
+        if (employee.employeeId === elem.employee.employeeId) {
+          found = true;
+          return;
+        }
+      });
+      if (!found) { return employee; }
+    });
+    return filteredEmployees;
+  }
+
+  private updateFilteredEmployees() {
+    this.employeeService.getEmployees().subscribe(() => {
+      this.filteredEmployees = this.employeeService.employees;
+      this.filteredEmployees = this.filterEmployees(this.filteredEmployees, this.project.employees);
+    });
   }
 }

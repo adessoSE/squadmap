@@ -1,24 +1,23 @@
 import {Component, OnInit} from '@angular/core';
-import {ProjectService} from '../../../services/project/project.service';
-import {ProjectModel} from '../../../models/project.model';
 import {DataSet, Network} from 'vis-network';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ActivatedRoute} from '@angular/router';
-import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {EmployeeService} from '../../../services/employee/employee.service';
+import {ProjectService} from '../../../services/project/project.service';
+import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
+import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
+import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {EmployeeModel} from '../../../models/employee.model';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
-import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
-import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
-  selector: 'app-map-project-detail',
-  templateUrl: './map-project-detail.component.html',
-  styleUrls: ['./map-project-detail.component.css']
+  selector: 'app-map-employee-detail',
+  templateUrl: './map-employee-detail.component.html',
+  styleUrls: ['./map-employee-detail.component.css']
 })
-export class MapProjectDetailComponent implements OnInit {
+export class MapEmployeeDetailComponent implements OnInit {
 
-  private project: ProjectModel;
+  private employee: EmployeeModel;
   private dateThreshold: Date;
   private network: Network;
   private container: HTMLElement;
@@ -35,21 +34,21 @@ export class MapProjectDetailComponent implements OnInit {
     this.network = new Network(this.container, {}, {});
     this.dateThreshold = new Date();
     this.dateThreshold.setMonth(this.dateThreshold.getMonth() + 2);
-    this.projectService.getProject(this.route.snapshot.params.id).subscribe(res => {
-      this.project = new ProjectModel(
-        res.projectId,
-        res.title,
-        res.description,
-        res.since,
-        res.until,
+    this.employeeService.getEmployee(this.route.snapshot.params.id).subscribe(res => {
+      this.employee = new EmployeeModel(
+        res.employeeId,
+        res.firstName,
+        res.lastName,
+        res.birthday,
+        res.email,
+        res.phone,
         res.isExternal,
-        res.sites,
-        res.employees );
+        res.image,
+        res.projects
+      );
       this.createMap();
     });
-
   }
-
   createMap() {
     // Nodes
     let nodeList: any[];
@@ -58,32 +57,34 @@ export class MapProjectDetailComponent implements OnInit {
     edgeList = [];
 
     nodeList.push(
-      { id: this.project.projectId,
-        label: this.project.title,
-        color: this.project.isExternal ? '#c9c9c9' : '#ffebad',
-        url: 'http://localhost:4200/project/' + this.project.projectId,
+      { id: this.employee.employeeId,
+        label: this.employee.firstName,
+        color: this.employee.isExternal ? '#c9c9c9' : '#ffebad',
+        // url: 'http://localhost:4200/project/' + this.employee.employeeId,
         group: 'projectNode'
       });
 
-    this.project.employees.forEach( employee => {
+    this.employee.projects.forEach( project => {
       nodeList.push(
-        { id: employee.employee.employeeId,
-          label: employee.employee.firstName + ' ' + employee.employee.lastName,
-          title: 'Email: ' + employee.employee.email + '<br> Phone: ' + employee.employee.phone,
-          color: employee.employee.isExternal ? '#c9c9c9' : '#65a4f7',
-          url: 'http://localhost:4200/employee/' + employee.employee.employeeId,
+        { id: project.project.projectId,
+          label: project.project.title,
+          title: 'Id: ' + project.project.projectId +
+            '<br>Since: ' + project.since.toDateString() +
+            '<br> Until: ' + project.until.toDateString(),
+          color: project.project.isExternal ? '#c9c9c9' : '#65a4f7',
+          url: 'http://localhost:4200/employee/' + project.project.projectId,
           group: 'employeeNode'
         });
       edgeList.push(
-        { id: employee.workingOnId,
-          from: employee.employee.employeeId,
-          to: this.project.projectId,
-          title: 'Id: ' + employee.workingOnId +
-            '<br>Since: ' + employee.since.toDateString() +
-            '<br> Until: ' + employee.until.toDateString() +
-            '<br> Workload: ' + employee.workload + '%',
-          color: employee.until < this.dateThreshold ? '#ff0002' : '#000000',
-          dashes: employee.employee.isExternal
+        { id: project.workingOnId,
+          from: this.employee.employeeId,
+          to: project.project.projectId,
+          title: 'Id: ' + project.workingOnId +
+            '<br>Since: ' + project.since.toDateString() +
+            '<br> Until: ' + project.until.toDateString() +
+            '<br> Workload: ' + project.workload + '%',
+          color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
+          dashes: project.project.isExternal
         });
     });
 
@@ -366,23 +367,23 @@ export class MapProjectDetailComponent implements OnInit {
   }
 
   isEmployee(id: number): boolean {
+    return this.employee.employeeId === id;
+  }
+
+  isProject(id: number): boolean {
     let i;
-    for (i = 0; i < this.project.employees.length; i++) {
-      if (this.project.employees[i].employee.employeeId === id) {
+    for (i = 0; i < this.employee.projects.length; i++) {
+      if (this.employee.projects[i].project.projectId === id) {
         return true;
       }
     }
     return false;
   }
 
-  isProject(id: number): boolean {
-    return this.project.projectId === id;
-  }
-
   isWorkingOn(id: number): boolean {
     let i;
-    for (i = 0; i < this.project.employees.length; i++) {
-      if (this.project.employees[i].workingOnId === id) {
+    for (i = 0; i < this.employee.projects.length; i++) {
+      if (this.employee.projects[i].workingOnId === id) {
         return true;
       }
     }
@@ -390,16 +391,18 @@ export class MapProjectDetailComponent implements OnInit {
   }
 
   refresh() {
-    this.projectService.getProject(this.route.snapshot.params.id).subscribe(res => {
-      this.project = new ProjectModel(
-        res.projectId,
-        res.title,
-        res.description,
-        res.since,
-        res.until,
+    this.employeeService.getEmployee(this.route.snapshot.params.id).subscribe(res => {
+      this.employee = new EmployeeModel(
+        res.employeeId,
+        res.firstName,
+        res.lastName,
+        res.birthday,
+        res.email,
+        res.phone,
         res.isExternal,
-        res.sites,
-        res.employees );
+        res.image,
+        res.projects
+      );
     });
   }
 }

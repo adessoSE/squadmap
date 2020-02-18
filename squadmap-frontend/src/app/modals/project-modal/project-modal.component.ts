@@ -12,14 +12,14 @@ import {DateFormatterService} from '../../services/dateFormatter/dateFormatter.s
   styleUrls: ['./project-modal.component.css']
 })
 export class ProjectModalComponent implements OnInit {
-  project: ProjectModel;
-  isNew: boolean;
-  actionName: string;
-  since: string;
-  until: string;
-  errorOccurred: boolean;
-  errorMessage: string;
-  sitesString: string;
+  private project: ProjectModel;
+  private isNew: boolean;
+  private header: string;
+  private since: string;
+  private until: string;
+  private errorOccurred: boolean;
+  private errorMessage: string;
+  private sitesString: string;
 
   constructor(public modalRef: BsModalRef,
               public projectService: ProjectService,
@@ -39,7 +39,6 @@ export class ProjectModalComponent implements OnInit {
     // format necessary in order to prefill the form
     this.since = this.dateFormatter.formatDate(this.project.since);
     this.until = this.dateFormatter.formatDate(this.project.until);
-
   }
 
   onCreateProject(projectForm: NgForm) {

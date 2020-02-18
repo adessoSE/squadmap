@@ -40,17 +40,25 @@ export class ProjectComponent implements OnInit {
   }
 
   onUpdate(project: ProjectModel) {
-    const initialState = {
-      project,
-      actionName: 'Update'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        project,
+        actionName: 'Update'
+      }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(ProjectModalComponent, config);
   }
 
   onAddProject() {
-    const initialState = {
-      actionName: 'Add'
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        actionName: 'Add'
+      }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(ProjectModalComponent, config);
   }
 }

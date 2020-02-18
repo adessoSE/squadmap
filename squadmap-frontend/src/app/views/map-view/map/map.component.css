@@ -1,17 +1,18 @@
 #controls{
-  height: 50%;
-  width:  5%;
   background-color: grey;
   position: absolute;
-  top: 25%;
-  left: 2%;
+  top: 28%;
+  left: 1%;
   display: flex;
   flex-direction: column;
+  margin: 10px;
+  border-radius: 10%;
 }
 
 #controls div{
   margin: 10px;
-  width: 80%;
   height: 30%;
   background-color: lightgray;
 }
+
+

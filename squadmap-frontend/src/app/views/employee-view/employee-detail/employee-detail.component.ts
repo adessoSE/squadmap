@@ -9,6 +9,7 @@ import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {AddProjectModalComponent} from '../../../modals/add-project-modal/add-project-modal.component';
+import {EmployeeModalComponent} from '../../../modals/employee-modal/employee-modal.component';
 
 @Component({
   selector: 'app-employee-detail',
@@ -18,7 +19,7 @@ import {AddProjectModalComponent} from '../../../modals/add-project-modal/add-pr
 export class EmployeeDetailComponent implements OnInit {
 
   private employee: EmployeeModel;
-  private allProjects: ProjectModel[];
+  private filteredProjects: ProjectModel[];
   searchText: string;
   modalRef: BsModalRef;
 
@@ -41,37 +42,83 @@ export class EmployeeDetailComponent implements OnInit {
         res.isExternal,
         res.image,
         res.projects );
-    });
-    this.projectService.getProjects().subscribe(() => {
-      this.allProjects = this.projectService.projects;
+      this.updateFilteredProjects();
+    }, () => {
+      this.router.navigate(['employee']);
     });
   }
 
   onOpenAddProjectModal() {
-    const initialState = {
-      allProjects: this.allProjects,
-      employeeId: this.employee.employeeId
+    this.updateFilteredProjects();
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        allProjects: this.filteredProjects,
+        employeeId: this.employee.employeeId
+      },
+      class: 'modal-lg'
     };
-    this.modalRef = this.modalService.show(AddProjectModalComponent, {initialState});
+    this.modalRef = this.modalService.show(AddProjectModalComponent, config);
   }
 
   onDeleteProject(workingOnId: number) {
     this.workingOnService.deleteWorkingOn(workingOnId).subscribe(() => {
       this.employeeService.getEmployee(this.employee.employeeId).subscribe(employee => {
         this.employee = employee;
+        this.updateFilteredProjects();
       });
     });
   }
 
   onEditProject(workingOnProject: WorkingOnProjectModel) {
-    const initialState = {
-      workingOnProject,
-      employeeId: this.employee.employeeId
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        workingOnProject,
+        employeeId: this.employee.employeeId,
+        workload: workingOnProject.workload
+      }
     };
-    this.modalRef = this.modalService.show(WorkingOnModalComponent, {initialState});
+    this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
   }
 
   onOpenProjectDetail(projectId: number) {
     this.router.navigate(['/project/' + projectId]);
+  }
+
+
+  onUpdate() {
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        isNew: false,
+        employee: this.employee,
+        header: 'Update'
+      }
+    };
+    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
+  }
+
+  private filterProjects(allProjects: ProjectModel[], existingProjects: WorkingOnProjectModel[]) {
+    const filteredProjects = allProjects.filter(project => {
+      let found = false;
+      existingProjects.forEach(pro => {
+        if (project.projectId === pro.project.projectId) {
+          found = true;
+          return;
+        }
+      });
+      if (!found) { return project; }
+    });
+    return filteredProjects;
+  }
+  private updateFilteredProjects() {
+    this.projectService.getProjects().subscribe(() => {
+      this.filteredProjects = this.projectService.projects;
+      this.filteredProjects = this.filterProjects(this.filteredProjects, this.employee.projects);
+    });
   }
 }

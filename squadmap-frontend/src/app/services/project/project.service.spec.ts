@@ -53,7 +53,7 @@ describe('ProjectService', () => {
       expect(service.projects.length).toBe(2);
       expect(JSON.stringify(service.projects)).toEqual(JSON.stringify(dummyProjects));
     });
-    const request = httpMock.expectOne('http://localhost:8080/project/all');
+    const request = httpMock.expectOne('http://localhost:8080/api/project/all');
     expect(request.request.method).toBe('GET');
     request.flush(dummyProjects);
   });
@@ -72,7 +72,7 @@ describe('ProjectService', () => {
     service.getProject(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProject));
     });
-    const request = httpMock.expectOne('http://localhost:8080/project/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/project/1');
     expect(request.request.method).toBe('GET');
     request.flush(dummyProject);
   });
@@ -103,7 +103,7 @@ describe('ProjectService', () => {
     service.deleteProject(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProjects));
     });
-    const request = httpMock.expectOne('http://localhost:8080/project/delete/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/project/delete/1');
     expect(request.request.method).toBe('DELETE');
     dummyProjects.splice(0, 1);
     request.flush(dummyProjects);
@@ -143,7 +143,7 @@ describe('ProjectService', () => {
     service.updateProject(newDummyProject, 1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProjects));
     });
-    const request = httpMock.expectOne('http://localhost:8080/project/update/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/project/update/1');
     expect(request.request.method).toBe('PUT');
     dummyProjects[0] = new ProjectModel(
       1,
@@ -179,7 +179,7 @@ describe('ProjectService', () => {
     service.addProject(newDummyProject).subscribe(() => {
       expect(dummyProjectAPI.projectId).toBe(1);
     });
-    const request = httpMock.expectOne('http://localhost:8080/project/create');
+    const request = httpMock.expectOne('http://localhost:8080/api/project/create');
     expect(request.request.method).toBe('POST');
     request.flush(dummyProjectAPI);
   });

@@ -10,9 +10,9 @@ import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
   styleUrls: ['./add-employee-modal.component.css']
 })
 export class AddEmployeeModalComponent implements OnInit {
-  private allEmployees: EmployeeModel[];
+  private employees: EmployeeModel[];
   private projectId: number;
-  searchText: string;
+  private searchText: string;
   private errorMessage: string;
   private errorOccurred: boolean;
 
@@ -21,12 +21,12 @@ export class AddEmployeeModalComponent implements OnInit {
 
   ngOnInit() {
     this.errorMessage = '';
-    // TODO filter here and display only not already existingEmployees in List
   }
 
-  onAddEmployee(employee: EmployeeModel, input: HTMLInputElement) {
+  onAddEmployee(employee: EmployeeModel, since: HTMLInputElement, until: HTMLInputElement, workload: HTMLInputElement) {
     this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(employee.employeeId, this.projectId, new Date(), new Date(), +input.value)).subscribe(() => {
+      new CreateWorkingOnModel(employee.employeeId, this.projectId, since.valueAsDate, until.valueAsDate, +workload.value))
+      .subscribe(() => {
       this.modalRef.hide();
       location.reload();
     }, error => {
