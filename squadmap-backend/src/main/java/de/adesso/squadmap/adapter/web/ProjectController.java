@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/project")
+@RequestMapping("/api/project")
 @RequiredArgsConstructor
 class ProjectController {
 

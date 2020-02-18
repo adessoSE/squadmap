@@ -51,7 +51,8 @@ class WorkingOnControllerTest {
     @Autowired
     private WorkingOnController workingOnController;
     private MockMvc mockMvc;
-
+    private static final String apiUrl = "/api/workingOn";
+    
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(this.workingOnController).build();
@@ -64,7 +65,7 @@ class WorkingOnControllerTest {
         when(listWorkingOnUseCase.listWorkingOn()).thenReturn(Collections.singletonList(getWorkingOnResponse));
 
         //when
-        MvcResult result = mockMvc.perform(get("/workingOn/all"))
+        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
         List<GetWorkingOnResponse> responses = JsonMapper.asResponseList(result, GetWorkingOnResponse.class);
@@ -83,7 +84,7 @@ class WorkingOnControllerTest {
         when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get("/workingOn/{id}", workingOnId))
+        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", workingOnId))
                 .andExpect(status().isOk())
                 .andReturn();
         GetWorkingOnResponse response = JsonMapper.asResponse(result, GetWorkingOnResponse.class);
@@ -101,7 +102,7 @@ class WorkingOnControllerTest {
         when(createWorkingOnUseCase.createWorkingOn(createWorkingOnCommand)).thenReturn(workingOnId);
 
         //when
-        MvcResult result = mockMvc.perform(post("/workingOn/create")
+        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(createWorkingOnCommand))
                 .accept(MediaType.APPLICATION_JSON))
@@ -122,7 +123,7 @@ class WorkingOnControllerTest {
         doNothing().when(updateWorkingOnUseCase).updateWorkingOn(updateWorkingOnCommand, workingOnId);
 
         //when
-        mockMvc.perform(put("/workingOn/update/{id}", workingOnId)
+        mockMvc.perform(put(apiUrl + "/update/{id}", workingOnId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(updateWorkingOnCommand))
                 .accept(MediaType.APPLICATION_JSON))
@@ -139,7 +140,7 @@ class WorkingOnControllerTest {
         doNothing().when(deleteWorkingOnUseCase).deleteWorkingOn(workingOnId);
 
         //when
-        mockMvc.perform(delete("/workingOn/delete/{id}", workingOnId))
+        mockMvc.perform(delete(apiUrl + "/delete/{id}", workingOnId))
                 .andExpect(status().isOk());
 
         //then
@@ -153,7 +154,7 @@ class WorkingOnControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/workingOn/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(workingOnSinceNull)))
                         .andExpect(status().isOk()))
@@ -167,7 +168,7 @@ class WorkingOnControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/workingOn/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(workingOnUntilNull)))
                         .andExpect(status().isOk()))
@@ -181,7 +182,7 @@ class WorkingOnControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(post("/workingOn/create")
+                mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(workingOnWorkloadOutOfBound)))
                         .andExpect(status().isOk()))
@@ -195,7 +196,7 @@ class WorkingOnControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/workingOn/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(workingOnSinceNull)))
                         .andExpect(status().isOk()))
@@ -209,7 +210,7 @@ class WorkingOnControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/workingOn/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(workingOnUntilNull)))
                         .andExpect(status().isOk()))
@@ -223,7 +224,7 @@ class WorkingOnControllerTest {
 
         //then
         assertThatThrownBy(() ->
-                mockMvc.perform(put("/workingOn/update/1")
+                mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(workingOnWorkloadOutOfBound)))
                         .andExpect(status().isOk()))

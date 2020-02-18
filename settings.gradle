@@ -1,0 +1,3 @@
+rootProject.name = 'squadmap'
+include 'squadmap-backend'
+include 'squadmap-frontend'
