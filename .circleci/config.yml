@@ -16,7 +16,7 @@ jobs:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle build
+      - run: gradle build "-Dspring.test.context.cache.maxSize=1 -XX:+UseSerialGC -Xss512k -XX:MaxRAM=72m --no-daemon"
       - run:
           name: Analyze on SonarCloud
           command: gradle sonarqube
