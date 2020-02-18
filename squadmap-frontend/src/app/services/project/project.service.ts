@@ -14,7 +14,7 @@ export class ProjectService {
 
   getProjects() {
     this.projects = [];
-    return this.http.get<ProjectModel[]>('http://localhost:8080/project/all').pipe(map(res => {
+    return this.http.get<ProjectModel[]>('http://localhost:8080/api/project/all').pipe(map(res => {
       Object.values(res).map(receivedData => {
         this.projects.push(new ProjectModel(
           receivedData.projectId,
@@ -31,7 +31,7 @@ export class ProjectService {
   }
 
   getProject(id: number) {
-    return this.http.get<ProjectModel>('http://localhost:8080/project/' + id).pipe(map(res => {
+    return this.http.get<ProjectModel>('http://localhost:8080/api/project/' + id).pipe(map(res => {
       res.since = new Date(res.since);
       res.until = new Date(res.until);
       for (const workingOn of res.employees) {
@@ -43,11 +43,11 @@ export class ProjectService {
   }
 
   deleteProject(projectId: number) {
-    return this.http.delete('http://localhost:8080/project/delete/' + projectId);
+    return this.http.delete('http://localhost:8080/api/project/delete/' + projectId);
   }
 
   updateProject(newProject: CreateProjectModel, projectId: number) {
-    return this.http.put('http://localhost:8080/project/update/' + projectId, {
+    return this.http.put('http://localhost:8080/api/project/update/' + projectId, {
       title: newProject.title,
       description: newProject.description,
       since: newProject.since,
@@ -58,7 +58,7 @@ export class ProjectService {
   }
 
   addProject(dummyProject: CreateProjectModel) {
-    return this.http.post('http://localhost:8080/project/create', {
+    return this.http.post('http://localhost:8080/api/project/create', {
       title: dummyProject.title,
       description: dummyProject.description,
       since: dummyProject.since,

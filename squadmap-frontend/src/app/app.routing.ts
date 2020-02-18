@@ -6,7 +6,7 @@ import {ProjectComponent} from './views/project-view/project/project.component';
 import {ProjectDetailComponent} from './views/project-view/project-detail/project-detail.component';
 import {MapProjectDetailComponent} from './views/map-view/map-project-detail/map-project-detail.component';
 import {PageNotFoundComponent} from './views/page-not-found-view/page-not-found.component';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
 export const routes: Routes = [
   {
@@ -45,7 +45,8 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppRoutingModule { }
 

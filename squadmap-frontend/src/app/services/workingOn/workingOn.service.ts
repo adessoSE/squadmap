@@ -10,7 +10,7 @@ export class WorkingOnService {
   constructor(private http: HttpClient) {}
 
   createWorkingOn(createWorkingOn: CreateWorkingOnModel) {
-    return this.http.post('http://localhost:8080/workingOn/create', {
+    return this.http.post('http://localhost:8080/api/workingOn/create', {
       employeeId: createWorkingOn.employeeId,
       projectId: createWorkingOn.projectId,
       since: createWorkingOn.since,
@@ -20,11 +20,11 @@ export class WorkingOnService {
   }
 
   deleteWorkingOn(id: number) {
-    return this.http.delete('http://localhost:8080/workingOn/delete/' + id);
+    return this.http.delete('http://localhost:8080/api/workingOn/delete/' + id);
   }
 
   updateWorkingOn(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date, workload: number) {
-    return this.http.put('http://localhost:8080/workingOn/update/' + workingOnId, {
+    return this.http.put('http://localhost:8080/api/workingOn/update/' + workingOnId, {
       employeeId,
       projectId,
       since,
@@ -34,6 +34,6 @@ export class WorkingOnService {
   }
 
   getWorkingOn(workingOnId: number) {
-    return this.http.get<WorkingOnModel>('http://localhost:8080/workingOn/' + workingOnId);
+    return this.http.get<WorkingOnModel>('http://localhost:8080/api/workingOn/' + workingOnId);
   }
 }

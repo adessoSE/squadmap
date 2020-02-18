@@ -93,7 +93,7 @@ describe('WorkingOnService', () => {
     service.createWorkingOn(newDummyWorkingOnModel).subscribe(() => {
       expect(dummyResponseWorkingOnModel[0].workingOnId).toBe(1);
     });
-    const request = httpMock.expectOne('http://localhost:8080/workingOn/create');
+    const request = httpMock.expectOne('http://localhost:8080/api/workingOn/create');
     expect(request.request.method).toBe('POST');
     request.flush(dummyResponseWorkingOnModel);
   });
@@ -102,7 +102,7 @@ describe('WorkingOnService', () => {
     service.deleteWorkingOn(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyResponseWorkingOnModel));
     });
-    const request = httpMock.expectOne('http://localhost:8080/workingOn/delete/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/workingOn/delete/1');
     expect(request.request.method).toBe('DELETE');
     dummyResponseWorkingOnModel.splice(0, 1);
     request.flush(dummyResponseWorkingOnModel);
@@ -113,7 +113,7 @@ describe('WorkingOnService', () => {
     service.updateWorkingOn(1, 1, 3, date, date, 0).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyResponseWorkingOnModel));
     });
-    const request = httpMock.expectOne('http://localhost:8080/workingOn/update/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/workingOn/update/1');
     expect(request.request.method).toBe('PUT');
     dummyResponseWorkingOnModel[0].project.projectId = 3;
     request.flush(dummyResponseWorkingOnModel);
@@ -123,7 +123,7 @@ describe('WorkingOnService', () => {
     service.getWorkingOn(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyResponseWorkingOnModel[0]));
     });
-    const request = httpMock.expectOne('http://localhost:8080/workingOn/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/workingOn/1');
     expect(request.request.method).toBe('GET');
     request.flush(dummyResponseWorkingOnModel[0]);
   });

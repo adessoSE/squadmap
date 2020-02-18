@@ -18,6 +18,7 @@ import {AppComponent} from '../app.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {routes} from '../app.routing';
 import {MapEmployeeDetailComponent} from '../views/map-view/map-employee-detail/map-employee-detail.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 
 describe('NavigationComponent - Routing', () => {
@@ -50,7 +51,8 @@ describe('NavigationComponent - Routing', () => {
       ],
       providers: [
         BsModalService,
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     router = TestBed.get(Router);
     fixture = TestBed.createComponent(AppComponent);
@@ -76,9 +78,10 @@ describe('NavigationComponent', () => {
         NavigationComponent
       ],
       imports: [
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
       ],
-      providers: [BsModalService]
+      providers: [BsModalService],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(NavigationComponent);
     navigation = fixture.componentInstance;     // to access properties and methods

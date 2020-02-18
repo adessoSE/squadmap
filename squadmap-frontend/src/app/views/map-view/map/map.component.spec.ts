@@ -5,6 +5,9 @@ import {ProjectService} from '../../../services/project/project.service';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {FormsModule} from '@angular/forms';
 import {BsModalService, ComponentLoaderFactory, PositioningService} from 'ngx-bootstrap';
+import {IconsModule} from '../../../icons/icons.module';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
@@ -18,7 +21,9 @@ describe('MapComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        FormsModule
+        FormsModule,
+        IconsModule,
+        RouterTestingModule
       ],
       declarations: [
         MapComponent
@@ -30,7 +35,8 @@ describe('MapComponent', () => {
         BsModalService,
         ComponentLoaderFactory,
         PositioningService
-      ]
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     });
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;

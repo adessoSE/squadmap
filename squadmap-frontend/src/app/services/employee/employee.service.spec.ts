@@ -56,7 +56,7 @@ describe('EmployeeService', () => {
       expect(service.employees.length).toBe(2);
       expect(JSON.stringify(service.employees)).toEqual(JSON.stringify(dummyEmployees));
     });
-    const request = httpMock.expectOne('http://localhost:8080/employee/all');
+    const request = httpMock.expectOne('http://localhost:8080/api/employee/all');
     expect(request.request.method).toBe('GET');
     request.flush(dummyEmployees);
   });
@@ -65,7 +65,7 @@ describe('EmployeeService', () => {
     service.getEmployee(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees[0]));
     });
-    const request = httpMock.expectOne('http://localhost:8080/employee/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/employee/1');
     expect(request.request.method).toBe('GET');
     request.flush(dummyEmployees[0]);
   });
@@ -94,7 +94,7 @@ describe('EmployeeService', () => {
     service.addEmployee(dummyEmployee).subscribe(() => {
       expect(dummyEmployeeAPI.employeeId).toBe(1);
     });
-    const request = httpMock.expectOne('http://localhost:8080/employee/create');
+    const request = httpMock.expectOne('http://localhost:8080/api/employee/create');
     expect(request.request.method).toBe('POST');
     request.flush(dummyEmployeeAPI);
   });
@@ -103,7 +103,7 @@ describe('EmployeeService', () => {
     service.deleteEmployee(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees));
     });
-    const request = httpMock.expectOne('http://localhost:8080/employee/delete/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/employee/delete/1');
     expect(request.request.method).toBe('DELETE');
     dummyEmployees.splice(0, 1);
     request.flush(dummyEmployees);
@@ -122,7 +122,7 @@ describe('EmployeeService', () => {
     service.updateEmployee(newDummyEmployee, 1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees));
     });
-    const request = httpMock.expectOne('http://localhost:8080/employee/update/1');
+    const request = httpMock.expectOne('http://localhost:8080/api/employee/update/1');
     expect(request.request.method).toBe('PUT');
     dummyEmployees[0] = new EmployeeModel(
       1,
