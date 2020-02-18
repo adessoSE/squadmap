@@ -110,7 +110,7 @@ export class MapProjectDetailComponent implements OnInit {
         hover: true
       },
       manipulation: {
-        enabled: true,
+        enabled: false,
         editEdge: false,
         addNode: false,
         deleteNode: (nodeData, callback) => this.deleteNode(nodeData, callback),

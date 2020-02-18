@@ -1,2 +1,36 @@
 <div id="mynetwork"></div>
+<div id="controls">
+  <button class="btn btn-dark" (click)="saveLayout()" type="button">
+    <i-feather name="save"></i-feather>
+    <br>Save
+  </button>
+  <button class="btn btn-dark" type="button" (click)="getLayout()">
+    <i-feather name="arrow-down-circle"></i-feather>
+    <br>Load
+  </button>
+  <button class="btn btn-dark" type="button" (click)="togglePhysics()">
+    <i-feather name="move"></i-feather>
+    <br>Physics
+  </button>
+  <button *ngIf="!editMode" class="btn btn-dark" type="button" (click)="enableEditMode()">
+    <i-feather name="edit-3"></i-feather>
+    <br>Edit
+  </button>
+  <ng-template [ngIf]="editMode">
+    <button class="btn btn-dark" type="button" (click)="disableEditMode()">
+      <i-feather name="chevron-left"></i-feather>
+      <br>Back
+    </button>
+    <button class="btn btn-dark" type="button" (click)="enableAddEgdeMode()">
+      <i-feather name="arrow-up-right"></i-feather>
+      <br>Edge
+    </button>
+    <button class="btn btn-dark" type="button" (click)="onDeleteSelected()">
+      <i-feather name="x"></i-feather>
+      <br>Delete
+    </button>
+  </ng-template>
+</div>
+
+
 

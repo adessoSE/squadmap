@@ -7,7 +7,6 @@ img {
 
 .project-link {
   font-weight: bold;
-  color: #0275d8;
   cursor: pointer;
 }
 
@@ -22,3 +21,8 @@ img {
 .table-head{
   background-color: #f5f5f5;
 }
+
+.tab{
+  color: black!important;
+}
+

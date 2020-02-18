@@ -1,9 +1,8 @@
 import {async, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {NavigationComponent} from './navigation.component';
-import {BsModalService, ModalModule} from 'ngx-bootstrap';
+import {BsModalService, ModalModule, TabsModule} from 'ngx-bootstrap';
 import {Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import {routes} from '../app.module';
 import {MapComponent} from '../views/map-view/map/map.component';
 import {EmployeeComponent} from '../views/employee-view/employee/employee.component';
 import {ProjectComponent} from '../views/project-view/project/project.component';
@@ -17,6 +16,9 @@ import {FilterProjectsPipe} from '../pipes/filterProjects/filterProjects.pipe';
 import {FilterEmployeesPipe} from '../pipes/filterEmployees/filterEmployees.pipe';
 import {AppComponent} from '../app.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {routes} from '../app.routing';
+import {MapEmployeeDetailComponent} from '../views/map-view/map-employee-detail/map-employee-detail.component';
+
 
 describe('NavigationComponent - Routing', () => {
   let router: Router;
@@ -29,7 +31,8 @@ describe('NavigationComponent - Routing', () => {
         BrowserDynamicTestingModule,
         FormsModule,
         ModalModule.forRoot(),
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        TabsModule.forRoot()
       ],
       declarations: [
         AppComponent,
@@ -40,6 +43,7 @@ describe('NavigationComponent - Routing', () => {
         EmployeeDetailComponent,
         ProjectDetailComponent,
         MapProjectDetailComponent,
+        MapEmployeeDetailComponent,
         PageNotFoundComponent,
         FilterProjectsPipe,
         FilterEmployeesPipe,
@@ -58,12 +62,6 @@ describe('NavigationComponent - Routing', () => {
     tick();
     expect(location.pathname.endsWith('')).toBe(true);
   }));
-
-  // it('should navigate you to /map ', fakeAsync(() => {
-  //   router.navigate(['/map']);
-  //   tick();
-  //   expect(location.pathname.endsWith('map')).toBe(true);
-  // }));
 });
 
 

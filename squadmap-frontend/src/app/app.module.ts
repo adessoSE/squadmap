@@ -18,7 +18,8 @@ import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employe
 import {AddProjectModalComponent} from './modals/add-project-modal/add-project-modal.component';
 import {MessageModalComponent} from './modals/message-modal/message-modal.component';
 import {AppRoutingModule, routingComponents} from './app.routing';
-import { MapEmployeeDetailComponent } from './views/map-view/map-employee-detail/map-employee-detail.component';
+import {MapEmployeeDetailComponent} from './views/map-view/map-employee-detail/map-employee-detail.component';
+import {IconsModule} from './icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { MapEmployeeDetailComponent } from './views/map-view/map-employee-detail
     HttpClientModule,
     ReactiveFormsModule,
     ButtonsModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    IconsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

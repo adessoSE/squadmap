@@ -8,7 +8,7 @@ import {MapProjectDetailComponent} from './views/map-view/map-project-detail/map
 import {PageNotFoundComponent} from './views/page-not-found-view/page-not-found.component';
 import {NgModule} from '@angular/core';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: MapComponent
@@ -36,10 +36,6 @@ const routes: Routes = [
   {
     path: 'map',
     component: MapComponent
-  },
-  {
-    path: 'map/:id',
-    component: MapProjectDetailComponent
   },
   {
     path: '**',

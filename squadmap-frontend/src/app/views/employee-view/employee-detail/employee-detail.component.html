@@ -31,7 +31,7 @@
   </div>
   <div class="col-md-7">
     <tabset>
-      <tab heading="Mapview">
+      <tab heading="Mapview" class="tab">
         <app-map-employee-detail></app-map-employee-detail>
       </tab>
       <tab heading="Tableview">
@@ -47,13 +47,14 @@
           </thead>
           <tbody>
           <tr *ngFor="let project of employee.projects">
-            <td class="project-link" (click)="onOpenProjectDetail(project.project.projectId)">{{project.project.title}}</td>
+            <td class="project-link">{{project.project.title}}</td>
             <td>{{project.since.toDateString()}}</td>
             <td>{{project.until.toDateString()}}</td>
             <td>{{project.workload}}%</td>
             <td>
-              <button class="btn btn-info" type="button" (click)="onEditProject(project)" >Edit</button>
-              <button class="btn btn-danger" type="button" (click)="onDeleteProject(project.workingOnId)" >Delete</button>
+              <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onOpenProjectDetail(project.project.projectId)" >Details</button>
+              <button class="btn btn-outline-info btn-sm" type="button" (click)="onEditProject(project)" >Edit</button>
+              <button class="btn btn-outline-danger btn-sm" type="button" (click)="onDeleteProject(project.workingOnId)" >Delete</button>
             </td>
           </tr>
           </tbody>
@@ -61,7 +62,7 @@
       </tab>
     </tabset>
     <div class="row justify-content-center">
-      <button class="btn btn-outline-secondary btn-sm" (click)="onOpenAddProjectModal()">Add project</button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onOpenAddProjectModal()">Add project</button>
     </div>
   </div>
 </div>

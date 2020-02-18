@@ -1,9 +1,16 @@
 .employee-link{
   font-weight: bold;
-  color: #0275d8;
   cursor: pointer;
 }
 
 .table-head{
   background-color: #f5f5f5;
+}
+
+tabs .nav-link.active{
+  font-weight: bold;
+}
+
+a.nav-link {
+  color: black!important;
 }

@@ -9,6 +9,7 @@ import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -25,13 +26,19 @@ export class MapComponent implements OnInit {
   private editMode: boolean;
   private network: Network;
   private container: HTMLElement;
+  private layoutSeed: number;
+  private isPhysicsEnabled: boolean;
 
   constructor(private employeeService: EmployeeService,
               private projectService: ProjectService,
               private workingOnService: WorkingOnService,
-              private modalService: BsModalService) { }
+              private modalService: BsModalService,
+              private router: Router) { }
 
   ngOnInit() {
+    this.isPhysicsEnabled = false;
+    this.editMode = false;
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
     this.container = document.getElementById('mynetwork');
     this.network = new Network(this.container, {}, {});
     this.editMode = false;
@@ -114,15 +121,12 @@ export class MapComponent implements OnInit {
 
     const options = {
       autoResize: true,
-      layout: {
-        randomSeed: 22222
-      },
       interaction: {
         keyboard: false,
         hover: true
       },
       manipulation: {
-        enabled: true,
+        enabled: false,
         editEdge: false,
         addNode: false,
         deleteNode: (nodeData, callback) => this.deleteNode(nodeData, callback),
@@ -135,7 +139,7 @@ export class MapComponent implements OnInit {
         width: 0.75
       },
       nodes: {
-        physics: true,
+        physics: this.isPhysicsEnabled,
         borderWidth: 0,
       },
       physics: {
@@ -210,8 +214,10 @@ export class MapComponent implements OnInit {
       if (params.nodes.length === 1) {
         let node: any;
         node = nodes.get(params.nodes[0]);
-        if (node.url != null && node.url !== '') {
-          window.location = node.url;
+        if (node.url != null && node.url !== '' && node.group === 'projectNode') {
+            this.router.navigate(['project/' + node.id]);
+        } else if (node.group === 'employeeNode') {
+          this.router.navigate(['employee/' + node.id]);
         }
       }
     });
@@ -229,6 +235,13 @@ export class MapComponent implements OnInit {
         }
       });
     });
+
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    if (this.layoutSeed) {
+      for (const [key, value] of Object.entries(this.layoutSeed)) {
+        this.network.moveNode(key, value.x, value.y);
+      }
+    }
   }
 
   deleteNode(nodeData, callback) {
@@ -417,5 +430,57 @@ export class MapComponent implements OnInit {
         this.projects =  this.projectService.projects;
       });
     });
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    if (this.layoutSeed) {
+      for (const [key, value] of Object.entries(this.layoutSeed)) {
+        this.network.moveNode(key, value.x, value.y);
+      }
+    }
+  }
+
+  saveLayout() {
+    localStorage.setItem('layoutSeed', JSON.stringify(this.network.getPositions()));
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: false,
+      initialState: {
+        message: 'Layout has been saved!'
+      }
+    };
+    this.modalService.show(MessageModalComponent, config);
+  }
+
+  getLayout() {
+    this.layoutSeed = JSON.parse(localStorage.getItem('layoutSeed'));
+    if (this.layoutSeed) {
+      for (const [key, value] of Object.entries(this.layoutSeed)) {
+        this.network.moveNode(key, value.x, value.y);
+      }
+    }
+  }
+
+  togglePhysics() {
+    this.isPhysicsEnabled = !this.isPhysicsEnabled;
+    this.network.setOptions({
+      nodes: {physics: this.isPhysicsEnabled}
+    });
+  }
+
+  enableEditMode() {
+    this.editMode = true;
+    this.network.enableEditMode();
+  }
+
+  disableEditMode() {
+    this.editMode = false;
+    this.network.disableEditMode();
+  }
+
+  enableAddEgdeMode() {
+  this.network.addEdgeMode();
+  }
+
+  onDeleteSelected() {
+    this.network.deleteSelected();
   }
 }

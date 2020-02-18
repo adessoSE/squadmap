@@ -1,13 +1,12 @@
 #controls{
-  height: 40%;
-  width: 70px;
   background-color: grey;
   position: absolute;
-  top: 30%;
-  left: 2%;
+  top: 28%;
+  left: 1%;
   display: flex;
   flex-direction: column;
   margin: 10px;
+  border-radius: 10%;
 }
 
 #controls div{
@@ -15,3 +14,5 @@
   height: 30%;
   background-color: lightgray;
 }
+
+
