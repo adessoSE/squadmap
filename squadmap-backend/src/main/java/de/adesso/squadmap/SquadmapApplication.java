@@ -12,8 +12,7 @@ import java.util.logging.Logger;
 public class SquadmapApplication {
 
     private static Logger logger = Logger.getAnonymousLogger();
-
-    //changed
+    
     public static void main(String[] args) {
         SpringApplication.run(SquadmapApplication.class, args);
         try {
