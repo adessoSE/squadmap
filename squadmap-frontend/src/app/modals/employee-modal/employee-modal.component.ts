@@ -18,7 +18,8 @@ export class EmployeeModalComponent implements OnInit {
   private birthday: string;
   private errorMessage: string;
   private errorOccurred: boolean;
-
+  private imageType: string;
+  private imageSeed: string;
 
   constructor(private modalRef: BsModalRef,
               private employeeService: EmployeeService,
@@ -29,13 +30,27 @@ export class EmployeeModalComponent implements OnInit {
     if (!this.employee) {
       this.employee = new EmployeeModel(0, '', '', new Date(), '',  '', false, '', []);
       this.isNew = true;
+      this.imageType = 'initials';
+      this.imageSeed = '';
     } else {
       this.isNew = false;
+      const index = this.employee.image.indexOf('/');
+      const imageSplit = [this.employee.image.slice(0, index), this.employee.image.slice(index + 1)];
+      this.imageSeed = imageSplit.pop();
+      this.imageType = imageSplit.pop();
     }
     this.birthday = this.dateFormatterService.formatDate(this.employee.birthday);
   }
 
   onCreateEmployee(employeeForm: NgForm) {
+    const pattern = /^[A-Za-z0-9]+$/;
+    if (this.imageType === '') {
+      this.imageType = 'initials';
+      this.imageSeed = employeeForm.value.firstName.charAt(0) + employeeForm.value.lastName.charAt(0);
+    } else if (!pattern.test(this.imageSeed)) {
+      this.handleError('Only the characters A-Z,a-z and 0-9 are allowed');
+      return;
+    }
     const employee = new CreateEmployeeModel(
       employeeForm.value.firstName,
       employeeForm.value.lastName,
@@ -43,7 +58,7 @@ export class EmployeeModalComponent implements OnInit {
       employeeForm.value.email,
       employeeForm.value.phone,
       employeeForm.value.isExternal,
-      employeeForm.value.image
+      this.imageType + '/' + this.imageSeed
     );
     if (this.isNew) {
       this.employeeService.addEmployee(employee).subscribe(() => {
