@@ -5,8 +5,8 @@ jobs:
       - image: circleci/openjdk:11-jdk
     working_directory: ~/squadmap/squadmap-backend
     enviroment:
-      JVM_OPTS: '-Xms512m -Xmx2g'
-      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+      JVM_OPTS: -Xms512m -Xmx2g
+      GRADLE_OPTS: -Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"
     steps:
       - checkout:
           path: ~/squadmap
