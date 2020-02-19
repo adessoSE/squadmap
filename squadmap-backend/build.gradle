@@ -38,10 +38,6 @@ dependencies {
 
 test {
 	useJUnitPlatform()
-	maxHeapSize = "512m"
-	forkEvery 100
-	jvmArgs "-Xmx512m", "-Xms512m"
-	//jvmArgs "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap"
 }
 
 sonarqube {
