@@ -15,7 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = UpdateProjectAdapter.class)
 @ActiveProfiles("test")
 public class UpdateProjectAdapterTest {
 

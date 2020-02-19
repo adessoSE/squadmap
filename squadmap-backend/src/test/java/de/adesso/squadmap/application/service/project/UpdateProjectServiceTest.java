@@ -14,16 +14,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = UpdateProjectService.class)
 @ActiveProfiles("test")
 class UpdateProjectServiceTest {
 
-    @Autowired
-    private UpdateProjectService service;
     @MockBean
     private UpdateProjectPort updateProjectPort;
     @MockBean
     private ProjectDomainMapper projectMapper;
+    @Autowired
+    private UpdateProjectService service;
 
     @Test
     void checkIfUpdateProjectUpdatesTheProject() {

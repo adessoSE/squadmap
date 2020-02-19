@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = ListProjectAdapter.class)
 @ActiveProfiles("test")
 public class ListProjectAdapterTest {
 

@@ -17,7 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = WorkingOnResponseMapper.class)
 @ActiveProfiles("test")
 public class WorkingOnResponseMapperTest {
 
