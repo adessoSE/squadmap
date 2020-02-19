@@ -1,6 +1,5 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +14,7 @@ class ProjectRepositoryTest {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Test
     void checkIfExistsByTitleReturnsTrueWhenExistent() {
         //given
         ProjectNeo4JEntity project = ProjectNeo4JEntityMother.complete().projectId(null).build();
@@ -29,6 +29,7 @@ class ProjectRepositoryTest {
         assertThat(answer).isTrue();
     }
 
+    @Test
     void checkIfExistsByTitleReturnsFalseWhenNotExistent() {
         //given
 
