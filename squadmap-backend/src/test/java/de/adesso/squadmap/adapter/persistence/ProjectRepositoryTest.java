@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = ProjectRepository.class)
 @ActiveProfiles("test")
 class ProjectRepositoryTest {
 

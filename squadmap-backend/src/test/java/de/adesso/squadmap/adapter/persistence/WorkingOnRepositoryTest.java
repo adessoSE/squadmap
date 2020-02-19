@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = WorkingOnRepository.class)
 @ActiveProfiles("test")
 class WorkingOnRepositoryTest {
 

@@ -20,18 +20,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = GetProjectService.class)
 @ActiveProfiles("test")
 class GetProjectServiceTest {
 
-    @Autowired
-    private GetProjectService service;
     @MockBean
     private GetProjectPort getProjectPort;
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
     private ResponseMapper<Project, GetProjectResponse> responseMapper;
+    @Autowired
+    private GetProjectService service;
 
     @Test
     void checkIfGetProjectReturnsTheProject() {

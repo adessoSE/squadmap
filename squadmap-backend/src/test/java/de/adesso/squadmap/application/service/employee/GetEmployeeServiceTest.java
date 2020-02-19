@@ -20,18 +20,18 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = GetEmployeeService.class)
 @ActiveProfiles("test")
 class GetEmployeeServiceTest {
 
-    @Autowired
-    private GetEmployeeService service;
     @MockBean
     private GetEmployeePort getEmployeePort;
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
     private ResponseMapper<Employee, GetEmployeeResponse> responseMapper;
+    @Autowired
+    private GetEmployeeService service;
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() {

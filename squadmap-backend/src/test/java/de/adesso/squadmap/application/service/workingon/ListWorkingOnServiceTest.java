@@ -18,16 +18,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = ListWorkingOnService.class)
 @ActiveProfiles("test")
 class ListWorkingOnServiceTest {
 
-    @Autowired
-    private ListWorkingOnService service;
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
     private ResponseMapper<WorkingOn, GetWorkingOnResponse> responseMapper;
+    @Autowired
+    private ListWorkingOnService service;
 
     @Test
     void checkIfListWorkingOnReturnsAllRelations() {
