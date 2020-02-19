@@ -39,7 +39,9 @@ dependencies {
 test {
 	useJUnitPlatform()
 	maxHeapSize = "512m"
-	//jvmArgs "-Dspring.test.context.cache.maxSize=1 -XX:+UseSerialGC -Xss512k -XX:MaxRAM=72m --no-daemon"
+	forkEvery 100
+	jvmArgs "-Xmx512m", "-Xms512m"
+	//jvmArgs "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap"
 }
 
 sonarqube {
