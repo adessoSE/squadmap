@@ -15,16 +15,16 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = CreateProjectService.class)
 @ActiveProfiles("test")
 class CreateProjectServiceTest {
 
-    @Autowired
-    private CreateProjectService service;
     @MockBean
     private CreateProjectPort createProjectPort;
     @MockBean
     private ProjectDomainMapper projectMapper;
+    @Autowired
+    private CreateProjectService service;
 
     @Test
     void checkIfCreateProjectCreatesAProject() {

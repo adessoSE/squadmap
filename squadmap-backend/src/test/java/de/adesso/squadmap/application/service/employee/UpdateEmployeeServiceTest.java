@@ -14,16 +14,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = UpdateEmployeeService.class)
 @ActiveProfiles("test")
 class UpdateEmployeeServiceTest {
 
-    @Autowired
-    private UpdateEmployeeService service;
     @MockBean
     private UpdateEmployeePort updateEmployeePort;
     @MockBean
     private EmployeeDomainMapper employeeMapper;
+    @Autowired
+    private UpdateEmployeeService service;
 
     @Test
     void checkIfUpdateEmployeeUpdatesTheEmployee() {

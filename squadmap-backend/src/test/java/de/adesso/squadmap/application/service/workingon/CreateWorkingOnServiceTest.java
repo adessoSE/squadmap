@@ -15,12 +15,10 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = CreateWorkingOnService.class)
 @ActiveProfiles("test")
 class CreateWorkingOnServiceTest {
 
-    @Autowired
-    private CreateWorkingOnService service;
     @MockBean
     private CreateWorkingOnPort createWorkingOnPort;
     @MockBean
@@ -29,6 +27,8 @@ class CreateWorkingOnServiceTest {
     private GetProjectPort getProjectPort;
     @MockBean
     private WorkingOnDomainMapper workingOnMapper;
+    @Autowired
+    private CreateWorkingOnService service;
 
     @Test
     void checkIfCreateWorkingOnCreatesTheRelation() {

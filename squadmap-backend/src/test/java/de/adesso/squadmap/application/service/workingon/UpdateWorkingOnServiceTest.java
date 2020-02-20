@@ -14,12 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = UpdateWorkingOnService.class)
 @ActiveProfiles("test")
 class UpdateWorkingOnServiceTest {
 
-    @Autowired
-    private UpdateWorkingOnService service;
     @MockBean
     private UpdateWorkingOnPort updateWorkingOnPort;
     @MockBean
@@ -28,6 +26,8 @@ class UpdateWorkingOnServiceTest {
     private GetProjectPort getProjectPort;
     @MockBean
     private WorkingOnDomainMapper workingOnMapper;
+    @Autowired
+    private UpdateWorkingOnService service;
 
     @Test
     void checkIfUpdateWorkingOnUpdatesTheRelation() {
