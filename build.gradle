@@ -1,6 +1,47 @@
+plugins {
+    id "org.sonarqube" version "2.7.1"
+}
+
 defaultTasks 'build'
 wrapper {
     description "Regenerates the Gradle Wrapper files"
     gradleVersion = '5.0'
     distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectKey", "adessoAG_squadmap"
+        property "sonar.organization", "adesso-ag"
+        property "sonar.login", "${System.env.SONAR_TOKEN}"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+project(":squadmap-backend") {
+    sonarqube {
+        properties {
+            if (System.env.CIRCLE_PULL_REQUEST != null && System.env.CIRCLE_PULL_REQUEST != "") {
+                println "Analyzing branch '${System.env.CIRCLE_BRANCH}' for PR #${System.env.CIRCLE_PULL_REQUEST}"
+                property "sonar.pullrequest.provider", "GitHub"
+                property "sonar.pullrequest.github.repository", "adessoAG/squadmap"
+                property "sonar.pullrequest.branch", "${System.env.CIRCLE_BRANCH}"
+                property "sonar.pullrequest.key", "${System.env.CIRCLE_PULL_REQUEST}"
+            } else if (!"master".equals(System.env.CIRCLE_BRANCH)) {
+                println "Analyzing branch '${System.env.CIRCLE_BRANCH}' without PR"
+                property "sonar.branch.name", "${System.env.CIRCLE_BRANCH}"
+            }
+        }
+    }
+}
+
+project(":squadmap-frontend") {
+    sonarqube {
+        properties {
+            property "sonar.sources", "src"
+            property "sonar.typescript.node", node.variant.nodeExec
+        }
+    }
 }

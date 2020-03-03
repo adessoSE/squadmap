@@ -3,7 +3,6 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 	id 'jacoco'
-	id "org.sonarqube" version "2.7.1"
 }
 
 configurations {
@@ -38,27 +37,6 @@ dependencies {
 
 test {
 	useJUnitPlatform()
-}
-
-sonarqube {
-	properties {
-		property "sonar.projectKey", "adessoAG_squadmap"
-		property "sonar.organization", "adesso-ag"
-		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.login", "${System.env.SONAR_TOKEN}"
-		property "sonar.sourceEncoding", "UTF-8"
-
-		if (System.env.CIRCLE_PULL_REQUEST != null && System.env.CIRCLE_PULL_REQUEST != "") {
-			println "Analyzing branch '${System.env.CIRCLE_BRANCH}' for PR #${System.env.CIRCLE_PULL_REQUEST}"
-			property "sonar.pullrequest.provider", "GitHub"
-			property "sonar.pullrequest.github.repository", "adessoAG/squadmap"
-			property "sonar.pullrequest.branch", "${System.env.CIRCLE_BRANCH}"
-			property "sonar.pullrequest.key", "${System.env.CIRCLE_PULL_REQUEST}"
-		} else if (!"master".equals(System.env.CIRCLE_BRANCH)) {
-			println "Analyzing branch '${System.env.CIRCLE_BRANCH}' without PR"
-			property "sonar.branch.name", "${System.env.CIRCLE_BRANCH}"
-		}
-	}
 }
 
 jacocoTestReport {
