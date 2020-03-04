@@ -1,7 +1,6 @@
 package de.adesso.squadmap.application.port.driver.employee;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -27,6 +26,5 @@ public abstract class EmployeeCommand {
     @NotNull
     private final Boolean isExternal;
     @NotNull
-    @URL(protocol = "file")
     private final String image;
 }
