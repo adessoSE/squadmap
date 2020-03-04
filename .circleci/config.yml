@@ -19,7 +19,7 @@ jobs:
       - run: gradle build
       - run:
           name: Analyze on SonarCloud
-          command: gradle sonarqube
+          command: gradle :sonarqube
 
   frontend:
     docker:
