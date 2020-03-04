@@ -7,20 +7,21 @@
         </div>
         <div class="card-body">
           <table>
-            <tr><th>Project ID:</th></tr>
+            <caption>Project details:</caption>
+            <tr><th scope="row">Project ID:</th></tr>
             <tr><td >{{project.projectId}}</td></tr>
-            <tr><th>Since:</th></tr>
+            <tr><th scope="row">Since:</th></tr>
             <tr><td >{{project.since.toDateString()}}</td></tr>
-            <tr><th>Until:</th></tr>
+            <tr><th scope="row">Until:</th></tr>
             <tr><td >{{project.until.toDateString()}}</td></tr>
             <tr>
-              <th>Description:</th>
+              <th scope="row">Description:</th>
             </tr>
             <tr>
               <td>{{project.description}}</td>
             </tr>
             <tr>
-              <th>Sites:</th>
+              <th scope="row">Sites:</th>
             </tr>
             <tr *ngFor="let site of project.sites">
               <td><a href="{{site}}" target="_blank">{{site}}</a></td>
@@ -28,7 +29,7 @@
             <tr *ngIf="project.sites.length === 0">
               <td>-</td>
             </tr>
-            <tr><th>External:</th></tr>
+            <tr><th scope="row">External:</th></tr>
             <tr><td >{{project.isExternal}}</td></tr>
           </table>
           <div class="row justify-content-center">
@@ -46,12 +47,12 @@
           <table class="table">
             <thead class="table-head">
             <tr>
-              <th>First name</th>
-              <th>Last name</th>
-              <th>Since</th>
-              <th>Until</th>
-              <th>Workload</th>
-              <th>Actions</th>
+              <th scope="col">First name</th>
+              <th scope="col">Last name</th>
+              <th scope="col">Since</th>
+              <th scope="col">Until</th>
+              <th scope="col">Workload</th>
+              <th scope="col">Actions</th>
             </tr>
             </thead>
             <tbody>

@@ -7,9 +7,6 @@
   background-color: #f5f5f5;
 }
 
-tabs .nav-link.active{
-  font-weight: bold;
-}
 
 a.nav-link {
   color: black!important;

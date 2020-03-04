@@ -1,6 +1,7 @@
 
 <div class="search row justify-content-center">
   <div class="col-md-5">
+    <label hidden for="searchText"></label>
     <input placeholder="Search for first name..." class="form-control" type="text" id="searchText" [(ngModel)]="searchText" ngDefaultControl>
   </div>
   <div class="col-md-5 d-flex justify-content-between">
@@ -17,17 +18,18 @@
 <div class="row justify-content-center">
   <div class="col-md-10">
     <table class="table">
+      <caption>List of all employees</caption>
       <thead>
       <tr class="table-head">
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th class="d-flex justify-content-end">Actions</th>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col" class="d-flex justify-content-end">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr id="link" *ngFor="let employee of employees | filterEmployees : {searchText: searchText, hideExternal: hideExternal}">
-        <td class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.employeeId}}</td>
+        <td  class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.employeeId}}</td>
         <td class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.firstName}}</td>
         <td class="align-middle" (click)="onOpenEmployeeProfile(employee)">{{employee.lastName}}</td>
         <td class="d-flex justify-content-end">

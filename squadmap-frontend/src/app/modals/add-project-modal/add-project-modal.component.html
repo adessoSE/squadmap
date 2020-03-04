@@ -8,25 +8,29 @@
   <label class="checkbox-inline" for="searchText" >Search:</label>
   <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText"  autocomplete="off" ngDefaultControl>
   <table class="table">
+    <caption>List of all available projects</caption>
     <thead>
     <tr>
-      <th>Project</th>
-      <th>Since</th>
-      <th>Until</th>
-      <th>Workload</th>
+      <th scope="col">Project</th>
+      <th scope="col">Since</th>
+      <th scope="col">Until</th>
+      <th scope="col">Workload</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let project of allProjects | filterProjects : {searchText: searchText}">
       <td>{{project.title}}</td>
       <td>
-        <input type="date" name="since" #since>
+        <label hidden for="since"></label>
+        <input type="date" name="since" id="since" #since>
       </td>
       <td>
-        <input type="date" name="until" #until>
+        <label hidden for="until"></label>
+        <input type="date" name="until" id="until" #until>
       </td>
       <td>
-        <input type="number" min="0" max="100" #worklaod>
+        <label hidden for="workload"></label>
+        <input type="number" min="0" max="100" id="workload" #worklaod>
       </td>
       <td>
         <button class="btn btn-success" type="button" (click)="onAddProject(project, since, until, worklaod)" >Add</button>
