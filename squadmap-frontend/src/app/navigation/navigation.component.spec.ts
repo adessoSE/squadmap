@@ -69,9 +69,8 @@ describe('NavigationComponent - Routing', () => {
 
 describe('NavigationComponent', () => {
   let fixture;
-  let navigation;
   let element;
-  let de;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -84,9 +83,6 @@ describe('NavigationComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(NavigationComponent);
-    navigation = fixture.componentInstance;     // to access properties and methods
-    element = fixture.nativeElement;            // to access DOM element
-    de = fixture.debugElement;                  // test helper
   });
 
   it('should render the title in the navigation bar',  async(() => {

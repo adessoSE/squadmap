@@ -12,7 +12,6 @@ describe('EmployeeComponent', () => {
   let fixture;
   let component;
   let element;
-  let de;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -31,7 +30,6 @@ describe('EmployeeComponent', () => {
     fixture = TestBed.createComponent(EmployeeComponent);
     component = fixture.componentInstance; // to access properties and methods
     element = fixture.nativeElement; // to access DOM element
-    de = fixture.debugElement; // test helper
   });
 
   it('should create the EmployeeComponent',  () => {

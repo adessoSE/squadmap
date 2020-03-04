@@ -12,7 +12,6 @@ import {RouterTestingModule} from '@angular/router/testing';
 describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let component: MapComponent;
-  let element;
 
   const employeeServiceStub: Partial<EmployeeService> = {};
   const projectServiceStub: Partial<ProjectService> = {};
@@ -40,7 +39,6 @@ describe('MapComponent', () => {
     });
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
-    element = fixture.nativeElement;
   });
 
   it('should be created', () => {
