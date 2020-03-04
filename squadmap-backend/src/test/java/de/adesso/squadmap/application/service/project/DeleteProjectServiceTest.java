@@ -9,14 +9,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = DeleteProjectService.class)
 @ActiveProfiles("test")
 class DeleteProjectServiceTest {
 
-    @Autowired
-    private DeleteProjectService service;
     @MockBean
     private DeleteProjectPort deleteProjectPort;
+    @Autowired
+    private DeleteProjectService service;
 
     @Test
     void checkIfDeleteProjectDeletesTheProject() {

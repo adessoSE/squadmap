@@ -33,7 +33,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = EmployeeController.class)
 @ActiveProfiles("test")
 class EmployeeControllerTest {
 
@@ -287,19 +287,12 @@ class EmployeeControllerTest {
     void checkIfCreateEmployeeThrowsInvalidEmployeeImageException() {
         //given
         CreateEmployeeCommand employeeImageNull = CreateEmployeeCommandMother.complete().image(null).build();
-        CreateEmployeeCommand employeeWrongImage = CreateEmployeeCommandMother.complete().image("null").build();
 
         //then
         assertThatThrownBy(() ->
                 mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeImageNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeImageException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeWrongImage)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeImageException());
     }
@@ -457,19 +450,12 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeImageException() {
         UpdateEmployeeCommand employeeImageNull = UpdateEmployeeCommandMother.complete().image(null).build();
-        UpdateEmployeeCommand employeeWrongImage = UpdateEmployeeCommandMother.complete().image("null").build();
 
         //then
         assertThatThrownBy(() ->
                 mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(employeeImageNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeImageException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeWrongImage)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeeImageException());
     }

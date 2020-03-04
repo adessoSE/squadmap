@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = DeleteProjectAdapter.class)
 @ActiveProfiles("test")
 public class DeleteProjectAdapterTest {
 

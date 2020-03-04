@@ -7,8 +7,8 @@
       </div>
       <div class="card-body">
         <div class="row justify-content-center">
-          <div id="profile-img" >
-            <img src="{{employee.image}}" alt="">
+          <div id="profile-img">
+            <img *ngIf="employee.image != ''" src="https://avatars.dicebear.com/v2/{{employee.image}}.svg" alt="">
           </div>
         </div>
           <table>

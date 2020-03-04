@@ -9,14 +9,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = DeleteWorkingOnService.class)
 @ActiveProfiles("test")
 class DeleteWorkingOnServiceTest {
 
-    @Autowired
-    private DeleteWorkingOnService service;
     @MockBean
     private DeleteWorkingOnPort deleteWorkingOnPort;
+    @Autowired
+    private DeleteWorkingOnService service;
 
     @Test
     void checkIfDeleteWorkingOnDeletesTheRelation() {

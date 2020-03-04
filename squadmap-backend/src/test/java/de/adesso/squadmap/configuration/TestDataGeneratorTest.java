@@ -23,7 +23,7 @@ import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = TestDataGenerator.class)
 @ActiveProfiles("test")
 public class TestDataGeneratorTest {
 

@@ -9,14 +9,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = DeleteEmployeeService.class)
 @ActiveProfiles("test")
 class DeleteEmployeeServiceTest {
 
-    @Autowired
-    private DeleteEmployeeService service;
     @MockBean
     private DeleteEmployeePort deleteEmployeePort;
+    @Autowired
+    private DeleteEmployeeService service;
 
     @Test
     void checkIfDeleteEmployeeDeletesTheEmployee() {
