@@ -1,4 +1,4 @@
-import {async, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {FilterEmployeesPipe} from '../../pipes/filterEmployees/filterEmployees.pipe';
 import {BsModalRef, BsModalService, ModalModule} from 'ngx-bootstrap';
 import {FormsModule} from '@angular/forms';
@@ -47,8 +47,5 @@ describe('Employee Modal Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the error message',  () => {
-    component.handleError('error');
-    expect((element.querySelector('.alert') as HTMLElement).innerText).toEqual('error');
-  });
+
 });
