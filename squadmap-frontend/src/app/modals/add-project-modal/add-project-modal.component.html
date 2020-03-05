@@ -30,10 +30,10 @@
       </td>
       <td>
         <label hidden for="workload"></label>
-        <input type="number" min="0" max="100" id="workload" #worklaod>
+        <input type="number" min="0" max="100" id="workload" #workload>
       </td>
       <td>
-        <button class="btn btn-success" type="button" (click)="onAddProject(project, since, until, worklaod)" >Add</button>
+        <button class="btn btn-success" type="button" (click)="onAddProject(project, since.valueAsDate, until.valueAsDate, +workload.value)" >Add</button>
       </td>
     </tr>
     </tbody>

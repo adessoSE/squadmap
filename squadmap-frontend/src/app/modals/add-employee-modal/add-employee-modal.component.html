@@ -37,12 +37,12 @@
         <td >{{employee.firstName}}</td>
         <td>{{employee.lastName}}</td>
           <td class="justify-content-end">
-            <button id="addEmployee" class="btn btn-success" type="button" (click)="onAddEmployee(employee, since, until, workload)">Add</button>
+            <button id="addEmployee" class="btn btn-success" type="button" (click)="onAddEmployee(employee, since.valueAsDate, until.valueAsDate, +workload.value)">Add</button>
           </td>
       </tr>
       </tbody>
     </table>
-  <div *ngIf="errorOccurred" class="alert alert-danger">
+  <div *ngIf="errorOccurred" class="alert alert-danger" id="alert">
     {{errorMessage}}
   </div>
 </div>
