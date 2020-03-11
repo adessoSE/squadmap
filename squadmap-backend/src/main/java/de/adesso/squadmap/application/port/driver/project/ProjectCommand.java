@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public abstract class ProjectCommand {
@@ -33,10 +34,10 @@ public abstract class ProjectCommand {
         this.since = since;
         this.until = until;
         this.isExternal = isExternal;
-        this.sites = List.copyOf(sites);
-    }
-
-    public List<String> getSites() {
-        return Collections.unmodifiableList(sites);
+        if (Objects.nonNull(sites)) {
+            this.sites = Collections.unmodifiableList(List.copyOf(sites));
+        } else {
+            this.sites = null;
+        }
     }
 }
