@@ -11,3 +11,7 @@
 a.nav-link {
   color: black!important;
 }
+
+.card-body{
+  word-break: break-all;
+}
