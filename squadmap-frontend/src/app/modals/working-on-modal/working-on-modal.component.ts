@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {NgForm} from '@angular/forms';
 import {WorkingOnEmployeeModel} from '../../models/workingOnEmployee.model';
@@ -14,6 +14,7 @@ import {Subject} from 'rxjs';
   styleUrls: ['./working-on-modal.component.css']
 })
 export class WorkingOnModalComponent implements OnInit {
+  @ViewChild(NgForm, {static: true}) employeeForm: NgForm;
   public onClose: Subject<boolean>;
   private workingOnEmployee: WorkingOnEmployeeModel;
   private workingOnProject: WorkingOnProjectModel;
@@ -54,7 +55,7 @@ export class WorkingOnModalComponent implements OnInit {
   }
 
 
-  onSubmit(employeeForm: NgForm) {
+  onSubmit() {
     if (this.projectId) {
       this.employeeId = this.workingOnEmployee.employee.employeeId;
       this.workingOnId = this.workingOnEmployee.workingOnId;
@@ -62,15 +63,15 @@ export class WorkingOnModalComponent implements OnInit {
       this.projectId = this.workingOnProject.project.projectId;
       this.workingOnId = this.workingOnProject.workingOnId;
     }
-    this.since = employeeForm.value.since;
-    this.until = employeeForm.value.until;
+    this.since = this.employeeForm.value.since;
+    this.until = this.employeeForm.value.until;
     if (this.isNew) {
       const newWorkingOn = new CreateWorkingOnModel(
         this.edgeData.from,
         this.edgeData.to,
-        employeeForm.value.since,
-        employeeForm.value.until,
-        +employeeForm.value.workload);
+        this.employeeForm.value.since,
+        this.employeeForm.value.until,
+        +this.employeeForm.value.workload);
       this.workingOnService.createWorkingOn(
         newWorkingOn).subscribe(() => {
         this.onConfirm();
@@ -82,9 +83,9 @@ export class WorkingOnModalComponent implements OnInit {
         this.workingOnId,
         this.employeeId,
         this.projectId,
-        employeeForm.value.since,
-        employeeForm.value.until,
-        +employeeForm.value.workload).subscribe(() => {
+        this.employeeForm.value.since,
+        this.employeeForm.value.until,
+        +this.employeeForm.value.workload).subscribe(() => {
         this.onConfirm();
       }, error => {
         this.handleError(error.error.message);

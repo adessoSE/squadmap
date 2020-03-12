@@ -24,7 +24,7 @@
               <th scope="row">Sites:</th>
             </tr>
             <tr *ngFor="let site of project.sites">
-              <td><a href="{{site}}" target="_blank">{{site}}</a></td>
+              <td>- <a href="{{site}}" target="_blank">{{site}}</a></td>
             </tr>
             <tr *ngIf="project.sites.length === 0">
               <td>-</td>

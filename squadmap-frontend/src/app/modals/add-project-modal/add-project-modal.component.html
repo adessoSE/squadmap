@@ -8,7 +8,7 @@
   <label class="checkbox-inline" for="searchText" >Search:</label>
   <input class="form-control" type="text" id="searchText" [(ngModel)]="searchText"  autocomplete="off" ngDefaultControl>
   <table class="table">
-    <caption>List of all available projects</caption>
+    <caption hidden>List of all available projects</caption>
     <thead>
     <tr>
       <th scope="col">Project</th>
@@ -33,7 +33,7 @@
         <input type="number" min="0" max="100" id="workload" #workload>
       </td>
       <td>
-        <button class="btn btn-success" type="button" (click)="onAddProject(project, since.valueAsDate, until.valueAsDate, +workload.value)" >Add</button>
+        <button class="btn btn-success" type="button" (click)="onAddProject(project, since.valueAsDate, until.valueAsDate, +workload.value)">Add</button>
       </td>
     </tr>
     </tbody>

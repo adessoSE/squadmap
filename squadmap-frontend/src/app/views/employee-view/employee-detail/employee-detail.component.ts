@@ -102,8 +102,8 @@ export class EmployeeDetailComponent implements OnInit {
     this.modalRef = this.modalService.show(EmployeeModalComponent, config);
   }
 
-  private filterProjects(allProjects: ProjectModel[], existingProjects: WorkingOnProjectModel[]) {
-    const filteredProjects = allProjects.filter(project => {
+  filterProjects(allProjects: ProjectModel[], existingProjects: WorkingOnProjectModel[]) {
+    return allProjects.filter(project => {
       let found = false;
       existingProjects.forEach(pro => {
         if (project.projectId === pro.project.projectId) {
@@ -113,7 +113,6 @@ export class EmployeeDetailComponent implements OnInit {
       });
       if (!found) { return project; }
     });
-    return filteredProjects;
   }
   private updateFilteredProjects() {
     this.projectService.getProjects().subscribe(() => {

@@ -44,4 +44,5 @@ describe('MapComponent', () => {
   it('should be created', () => {
     expect(component).toBeDefined();
   });
+
 });
