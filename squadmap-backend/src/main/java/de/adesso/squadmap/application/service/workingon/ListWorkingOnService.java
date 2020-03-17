@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +23,9 @@ class ListWorkingOnService implements ListWorkingOnUseCase {
     @Override
     @Transactional
     public List<GetWorkingOnResponse> listWorkingOn() {
-        List<GetWorkingOnResponse> responses = new ArrayList<>();
         List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
-        listWorkingOnPort.listWorkingOn().forEach(workingOn ->
-                responses.add(workingOnResponseMapper.toResponse(workingOn, allRelations)));
-        return responses;
+        return allRelations.stream()
+                .map(workingOn -> workingOnResponseMapper.toResponse(workingOn, allRelations))
+                .collect(Collectors.toList());
     }
 }

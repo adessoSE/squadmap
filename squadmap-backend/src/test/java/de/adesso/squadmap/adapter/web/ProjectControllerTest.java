@@ -232,19 +232,12 @@ class ProjectControllerTest {
         CreateProjectCommand projectInvalidURL = CreateProjectCommandMother.complete()
                 .sites(Collections.singletonList("null"))
                 .build();
-        CreateProjectCommand projectURLListNull = CreateProjectCommandMother.complete().sites(null).build();
 
         //then
         assertThatThrownBy(() ->
                 mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectInvalidURL)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectUrlListException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectURLListNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectUrlListException());
     }
@@ -350,19 +343,12 @@ class ProjectControllerTest {
         UpdateProjectCommand projectInvalidURL = UpdateProjectCommandMother.complete()
                 .sites(Collections.singletonList("null"))
                 .build();
-        UpdateProjectCommand projectURLListNull = UpdateProjectCommandMother.complete().sites(null).build();
 
         //then
         assertThatThrownBy(() ->
                 mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonMapper.asJsonString(projectInvalidURL)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectUrlListException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectURLListNull)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidProjectUrlListException());
     }

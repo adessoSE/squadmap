@@ -49,7 +49,7 @@ class ListWorkingOnServiceTest {
 
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getWorkingOnResponse));
-        verify(listWorkingOnPort, times(2)).listWorkingOn();
+        verify(listWorkingOnPort, times(1)).listWorkingOn();
         verify(responseMapper, times(1)).toResponse(workingOn1, allRelations);
         verify(responseMapper, times(1)).toResponse(workingOn2, allRelations);
         verifyNoMoreInteractions(listWorkingOnPort);

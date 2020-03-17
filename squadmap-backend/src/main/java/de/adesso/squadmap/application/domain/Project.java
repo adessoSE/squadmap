@@ -4,9 +4,9 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Value
 @Builder
@@ -28,10 +28,12 @@ public class Project {
         this.since = since;
         this.until = until;
         this.isExternal = isExternal;
-        if (Objects.nonNull(sites)) {
-            this.sites = Collections.unmodifiableList(List.copyOf(sites));
-        } else {
-            this.sites = null;
-        }
+        this.sites = Optional.ofNullable(sites).stream().flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getSites() {
+        return new ArrayList<>(sites);
     }
 }
+

@@ -7,9 +7,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public abstract class ProjectCommand {
@@ -24,7 +23,8 @@ public abstract class ProjectCommand {
     private final LocalDate since;
     @NotNull
     private final LocalDate until;
-    private final @NotNull Boolean isExternal;
+    @NotNull
+    private final Boolean isExternal;
     @NotNull
     private final List<@URL String> sites;
 
@@ -34,10 +34,11 @@ public abstract class ProjectCommand {
         this.since = since;
         this.until = until;
         this.isExternal = isExternal;
-        if (Objects.nonNull(sites)) {
-            this.sites = Collections.unmodifiableList(List.copyOf(sites));
-        } else {
-            this.sites = null;
-        }
+        this.sites = Optional.ofNullable(sites).stream().flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getSites(){
+        return new ArrayList<>(this.sites);
     }
 }
