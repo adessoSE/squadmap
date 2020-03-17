@@ -4,7 +4,6 @@ import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import lombok.RequiredArgsConstructor;
-import org.bouncycastle.asn1.x509.sigi.PersonalData;
 import org.springframework.stereotype.Component;
 
 @Component

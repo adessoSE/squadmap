@@ -1,5 +1,7 @@
-package de.adesso.squadmap.application.domain;
+package de.adesso.squadmap.application.domain.mapper;
 
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.mapper.EmployeeDomainMapperImplementation;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommandMother;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
@@ -11,12 +13,12 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EmployeeDomainMapper.class)
+@SpringBootTest(classes = EmployeeDomainMapperImplementation.class)
 @ActiveProfiles("test")
-public class EmployeeDomainMapperTest {
+public class EmployeeDomainMapperImplementationTest {
 
     @Autowired
-    private EmployeeDomainMapper employeeMapper;
+    private EmployeeDomainMapperImplementation employeeMapper;
 
     @Test
     void checkIfMapToDomainEntityMapsCreateCommand() {

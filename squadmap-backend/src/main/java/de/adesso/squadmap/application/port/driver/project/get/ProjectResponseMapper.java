@@ -1,11 +1,10 @@
 package de.adesso.squadmap.application.port.driver.project.get;
 
 import de.adesso.squadmap.application.domain.Project;
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.port.driver.ResponseMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

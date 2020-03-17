@@ -1,11 +1,12 @@
-package de.adesso.squadmap.application.domain;
+package de.adesso.squadmap.application.domain.mapper;
 
+import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommand;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProjectDomainMapper {
+class ProjectDomainMapperImplementation implements ProjectDomainMapper{
 
     public Project mapToDomainEntity(CreateProjectCommand command) {
         return new Project(

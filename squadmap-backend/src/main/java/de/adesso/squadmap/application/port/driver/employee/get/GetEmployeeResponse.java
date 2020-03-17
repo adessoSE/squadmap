@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Value;
-import scala.collection.immutable.Stream;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

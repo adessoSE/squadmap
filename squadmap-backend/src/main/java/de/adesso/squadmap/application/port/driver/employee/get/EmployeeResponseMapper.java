@@ -1,8 +1,8 @@
 package de.adesso.squadmap.application.port.driver.employee.get;
 
 import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.port.driver.ResponseMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

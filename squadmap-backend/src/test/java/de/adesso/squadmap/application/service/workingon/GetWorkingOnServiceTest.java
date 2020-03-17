@@ -1,10 +1,10 @@
 package de.adesso.squadmap.application.service.workingon;
 
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import de.adesso.squadmap.application.port.driven.workingon.GetWorkingOnPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
+import de.adesso.squadmap.application.port.driver.ResponseMapper;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package de.adesso.squadmap.application.service.employee;
 
-import de.adesso.squadmap.application.domain.EmployeeDomainMapper;
+import de.adesso.squadmap.application.domain.mapper.EmployeeDomainMapper;
 import de.adesso.squadmap.application.port.driven.employee.UpdateEmployeePort;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;

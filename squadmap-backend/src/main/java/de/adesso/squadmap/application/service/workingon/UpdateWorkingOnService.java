@@ -1,6 +1,6 @@
 package de.adesso.squadmap.application.service.workingon;
 
-import de.adesso.squadmap.application.domain.WorkingOnDomainMapper;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnDomainMapper;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.project.GetProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.UpdateWorkingOnPort;

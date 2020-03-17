@@ -1,11 +1,12 @@
-package de.adesso.squadmap.application.domain;
+package de.adesso.squadmap.application.domain.mapper;
 
+import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EmployeeDomainMapper {
+class EmployeeDomainMapperImplementation implements EmployeeDomainMapper{
 
     public Employee mapToDomainEntity(CreateEmployeeCommand command) {
         return new Employee(

@@ -1,9 +1,9 @@
 package de.adesso.squadmap.application.service.employee;
 
 import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
+import de.adesso.squadmap.application.port.driver.ResponseMapper;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeUseCase;
 import lombok.RequiredArgsConstructor;
