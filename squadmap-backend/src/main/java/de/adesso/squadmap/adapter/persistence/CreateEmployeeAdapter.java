@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 class CreateEmployeeAdapter implements CreateEmployeePort {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeePersistenceMapper mapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> mapper;
 
     @Override
     public long createEmployee(Employee employee) {

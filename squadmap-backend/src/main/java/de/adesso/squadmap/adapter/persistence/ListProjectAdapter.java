@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 class ListProjectAdapter implements ListProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final ProjectPersistenceMapper mapper;
+    private final PersistenceMapper<Project, ProjectNeo4JEntity> mapper;
 
     @Override
     public List<Project> listProjects() {

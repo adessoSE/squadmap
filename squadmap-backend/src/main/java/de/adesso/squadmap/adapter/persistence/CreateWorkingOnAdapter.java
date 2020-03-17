@@ -15,7 +15,7 @@ class CreateWorkingOnAdapter implements CreateWorkingOnPort {
     private final WorkingOnRepository workingOnRepository;
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
-    private final WorkingOnPersistenceMapper mapper;
+    private final PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> mapper;
 
     @Override
     public long createWorkingOn(WorkingOn workingOn) {

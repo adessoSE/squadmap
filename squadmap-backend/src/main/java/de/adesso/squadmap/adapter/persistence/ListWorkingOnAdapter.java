@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 class ListWorkingOnAdapter implements ListWorkingOnPort {
 
     private final WorkingOnRepository workingOnRepository;
-    private final WorkingOnPersistenceMapper mapper;
+    private final PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> mapper;
 
     @Override
     public List<WorkingOn> listWorkingOn() {

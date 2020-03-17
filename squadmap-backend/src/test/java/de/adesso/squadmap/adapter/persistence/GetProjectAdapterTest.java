@@ -22,7 +22,7 @@ public class GetProjectAdapterTest {
     @MockBean
     private ProjectRepository projectRepository;
     @MockBean
-    private ProjectPersistenceMapper projectPersistenceMapper;
+    private PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
     @Autowired
     private GetProjectAdapter getProjectAdapter;
 

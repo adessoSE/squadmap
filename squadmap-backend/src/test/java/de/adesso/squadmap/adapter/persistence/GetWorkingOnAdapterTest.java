@@ -22,7 +22,7 @@ public class GetWorkingOnAdapterTest {
     @MockBean
     private WorkingOnRepository workingOnRepository;
     @MockBean
-    private WorkingOnPersistenceMapper workingOnPersistenceMapper;
+    private PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> workingOnPersistenceMapper;
     @Autowired
     private GetWorkingOnAdapter getWorkingOnAdapter;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 class GetEmployeeAdapter implements GetEmployeePort {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeePersistenceMapper mapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> mapper;
 
     @Override
     public Employee getEmployee(Long employeeId) {

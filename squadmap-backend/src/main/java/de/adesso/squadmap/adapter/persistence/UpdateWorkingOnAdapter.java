@@ -15,7 +15,7 @@ class UpdateWorkingOnAdapter implements UpdateWorkingOnPort {
     private final WorkingOnRepository workingOnRepository;
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
-    private final WorkingOnPersistenceMapper mapper;
+    private final PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> mapper;
 
     @Override
     public void updateWorkingOn(WorkingOn workingOn) {

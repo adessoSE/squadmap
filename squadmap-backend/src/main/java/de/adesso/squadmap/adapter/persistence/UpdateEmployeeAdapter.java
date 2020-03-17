@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 class UpdateEmployeeAdapter implements UpdateEmployeePort {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeePersistenceMapper mapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> mapper;
 
     @Override
     public void updateEmployee(Employee employee) {

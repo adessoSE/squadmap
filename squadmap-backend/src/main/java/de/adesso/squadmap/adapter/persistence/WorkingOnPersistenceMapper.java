@@ -1,17 +1,20 @@
 package de.adesso.squadmap.adapter.persistence;
 
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.asn1.x509.sigi.PersonalData;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class WorkingOnPersistenceMapper {
+class WorkingOnPersistenceMapper implements PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> {
 
-    private final EmployeePersistenceMapper employeePersistenceMapper;
-    private final ProjectPersistenceMapper projectPersistenceMapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
+    private final PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
 
-    WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn) {
+    public WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn) {
         return new WorkingOnNeo4JEntity(
                 workingOn.getWorkingOnId(),
                 workingOn.getSince(),
@@ -21,7 +24,7 @@ class WorkingOnPersistenceMapper {
                 projectPersistenceMapper.mapToNeo4JEntity(workingOn.getProject()));
     }
 
-    WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {
+    public WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {
         return new WorkingOn(
                 workingOnNeo4JEntity.getWorkingOnId(),
                 workingOnNeo4JEntity.getSince(),

@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 class ListEmployeeAdapter implements ListEmployeePort {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeePersistenceMapper mapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> mapper;
 
     @Override
     public List<Employee> listEmployees() {

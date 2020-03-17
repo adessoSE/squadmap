@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-class ProjectPersistenceMapper {
+class ProjectPersistenceMapper implements PersistenceMapper<Project, ProjectNeo4JEntity> {
 
-    ProjectNeo4JEntity mapToNeo4JEntity(Project project) {
+    public ProjectNeo4JEntity mapToNeo4JEntity(Project project) {
         return new ProjectNeo4JEntity(
                 project.getProjectId(),
                 project.getTitle(),
@@ -20,8 +20,7 @@ class ProjectPersistenceMapper {
                 new ArrayList<>());
     }
 
-    Project
-    mapToDomainEntity(ProjectNeo4JEntity projectNeo4JEntity) {
+    public Project mapToDomainEntity(ProjectNeo4JEntity projectNeo4JEntity) {
         return new Project(
                 projectNeo4JEntity.getProjectId(),
                 projectNeo4JEntity.getTitle(),

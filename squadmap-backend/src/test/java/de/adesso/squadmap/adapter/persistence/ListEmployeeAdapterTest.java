@@ -22,7 +22,7 @@ public class ListEmployeeAdapterTest {
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
-    private EmployeePersistenceMapper employeePersistenceMapper;
+    private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
     @Autowired
     private ListEmployeeAdapter listEmployeePort;
 

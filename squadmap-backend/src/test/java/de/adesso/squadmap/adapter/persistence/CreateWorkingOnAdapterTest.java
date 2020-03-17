@@ -26,7 +26,7 @@ public class CreateWorkingOnAdapterTest {
     @MockBean
     private ProjectRepository projectRepository;
     @MockBean
-    private WorkingOnPersistenceMapper workingOnPersistenceMapper;
+    private PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> workingOnPersistenceMapper;
     @Autowired
     private CreateWorkingOnAdapter createWorkingOnAdapter;
 

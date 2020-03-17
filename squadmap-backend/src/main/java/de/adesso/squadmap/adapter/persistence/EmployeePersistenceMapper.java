@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
-class EmployeePersistenceMapper {
+class EmployeePersistenceMapper implements PersistenceMapper<Employee, EmployeeNeo4JEntity> {
 
-    EmployeeNeo4JEntity mapToNeo4JEntity(Employee employee) {
+    public EmployeeNeo4JEntity mapToNeo4JEntity(Employee employee) {
         return new EmployeeNeo4JEntity(
                 employee.getEmployeeId(),
                 employee.getFirstName(),
@@ -21,7 +21,7 @@ class EmployeePersistenceMapper {
                 new ArrayList<>());
     }
 
-    Employee mapToDomainEntity(EmployeeNeo4JEntity employeeNeo4JEntity) {
+    public Employee mapToDomainEntity(EmployeeNeo4JEntity employeeNeo4JEntity) {
         return new Employee(
                 employeeNeo4JEntity.getEmployeeId(),
                 employeeNeo4JEntity.getFirstName(),

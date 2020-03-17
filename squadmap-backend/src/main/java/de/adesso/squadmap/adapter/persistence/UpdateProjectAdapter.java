@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 class UpdateProjectAdapter implements UpdateProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final ProjectPersistenceMapper mapper;
+    private final PersistenceMapper<Project, ProjectNeo4JEntity> mapper;
 
     @Override
     public void updateProject(Project project) {

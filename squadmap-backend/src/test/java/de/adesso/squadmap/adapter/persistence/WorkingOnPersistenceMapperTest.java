@@ -15,11 +15,11 @@ import static org.mockito.Mockito.when;
 public class WorkingOnPersistenceMapperTest {
 
     @MockBean
-    private EmployeePersistenceMapper employeePersistenceMapper;
+    private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
     @MockBean
-    private ProjectPersistenceMapper projectPersistenceMapper;
+    private PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
     @Autowired
-    private WorkingOnPersistenceMapper workingOnPersistenceMapper;
+    private PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> workingOnPersistenceMapper;
 
     @Test
     void checkIfMapToNeo4JEntityMapsToValidEntity() {
