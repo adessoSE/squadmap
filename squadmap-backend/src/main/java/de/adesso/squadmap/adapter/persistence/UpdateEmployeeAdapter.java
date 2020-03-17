@@ -4,10 +4,11 @@ import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeAlreadyExistsEx
 import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.port.driven.employee.UpdateEmployeePort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class UpdateEmployeeAdapter implements UpdateEmployeePort {
 

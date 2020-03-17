@@ -2,6 +2,7 @@ package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class ListWorkingOnAdapter implements ListWorkingOnPort {
 

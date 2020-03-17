@@ -3,10 +3,11 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class GetEmployeeAdapter implements GetEmployeePort {
 

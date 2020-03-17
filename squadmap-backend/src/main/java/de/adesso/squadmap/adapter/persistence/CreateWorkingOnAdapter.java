@@ -5,10 +5,11 @@ import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundExceptio
 import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnAlreadyExistsException;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driven.workingon.CreateWorkingOnPort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class CreateWorkingOnAdapter implements CreateWorkingOnPort {
 

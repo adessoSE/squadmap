@@ -3,10 +3,11 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.adapter.persistence.exceptions.ProjectAlreadyExistsException;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.port.driven.project.CreateProjectPort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class CreateProjectAdapter implements CreateProjectPort {
 

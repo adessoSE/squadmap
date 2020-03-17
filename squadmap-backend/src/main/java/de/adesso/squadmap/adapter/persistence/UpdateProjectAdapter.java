@@ -4,10 +4,11 @@ import de.adesso.squadmap.adapter.persistence.exceptions.ProjectAlreadyExistsExc
 import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.port.driven.project.UpdateProjectPort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class UpdateProjectAdapter implements UpdateProjectPort {
 
