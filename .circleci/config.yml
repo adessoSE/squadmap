@@ -47,7 +47,9 @@ jobs:
 workflows:
   main:
     jobs:
-      - backend:
-          context: SonarCloud
       - frontend:
           context: SonarCloud
+      - backend:
+          context: SonarCloud
+          reqires:
+            - frontend
