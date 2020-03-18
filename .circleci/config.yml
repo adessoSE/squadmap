@@ -18,6 +18,7 @@ jobs:
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - attach_workspace:
           at: ~/squadmap/squadmap-frontend/coverage/squadmap-frontend
+      - run: ls -A1 ~/squadmap/squadmap-frontend/coverage/squadmap-frontend
       - run: gradle build
       - run:
           name: Analyze on SonarCloud
