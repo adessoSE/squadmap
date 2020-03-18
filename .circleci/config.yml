@@ -51,5 +51,5 @@ workflows:
           context: SonarCloud
       - backend:
           context: SonarCloud
-          reqires:
+          requires:
             - frontend
