@@ -11,7 +11,6 @@ import {Subject} from 'rxjs';
 @Component({
   selector: 'app-working-on-modal',
   templateUrl: './working-on-modal.component.html',
-  styleUrls: ['./working-on-modal.component.css']
 })
 export class WorkingOnModalComponent implements OnInit {
   @ViewChild(NgForm, {static: true}) employeeForm: NgForm;

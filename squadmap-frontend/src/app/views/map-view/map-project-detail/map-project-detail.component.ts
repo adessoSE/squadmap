@@ -14,8 +14,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 @Component({
   selector: 'app-map-project-detail',
   templateUrl: './map-project-detail.component.html',
-  styleUrls: ['./map-project-detail.component.css']
-})
+ })
 export class MapProjectDetailComponent implements OnInit {
 
   private project: ProjectModel;

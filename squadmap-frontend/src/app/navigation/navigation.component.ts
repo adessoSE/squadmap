@@ -7,7 +7,6 @@ import {EmployeeModalComponent} from '../modals/employee-modal/employee-modal.co
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css'],
   providers: [{provide: BsDropdownConfig, useValue: {isAnimated: true, autoClose: true}}]
 })
 export class NavigationComponent implements OnInit {

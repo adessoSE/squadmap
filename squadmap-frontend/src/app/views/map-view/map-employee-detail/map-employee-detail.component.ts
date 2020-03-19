@@ -13,8 +13,7 @@ import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 @Component({
   selector: 'app-map-employee-detail',
   templateUrl: './map-employee-detail.component.html',
-  styleUrls: ['./map-employee-detail.component.css']
-})
+  })
 export class MapEmployeeDetailComponent implements OnInit {
 
   private employee: EmployeeModel;
