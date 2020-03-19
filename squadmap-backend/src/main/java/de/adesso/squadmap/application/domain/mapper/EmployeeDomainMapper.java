@@ -7,5 +7,6 @@ import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployee
 public interface EmployeeDomainMapper {
 
     Employee mapToDomainEntity(CreateEmployeeCommand command);
+
     Employee mapToDomainEntity(UpdateEmployeeCommand command, long employeeId);
 }

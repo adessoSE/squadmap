@@ -4,7 +4,6 @@ import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundExcepti
 import de.adesso.squadmap.application.port.driven.employee.DeleteEmployeePort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @PersistenceAdapter
 @RequiredArgsConstructor

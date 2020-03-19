@@ -22,5 +22,6 @@ class GetProjectResponseWithoutEmployee {
     List<String> sites;
 
     @JsonPOJOBuilder(withPrefix = "")
-    static class GetProjectResponseWithoutEmployeeBuilder { }
+    static class GetProjectResponseWithoutEmployeeBuilder {
+    }
 }

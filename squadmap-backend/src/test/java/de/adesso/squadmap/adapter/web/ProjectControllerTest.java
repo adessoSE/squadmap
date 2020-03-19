@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class ProjectControllerTest {
 
+    private static final String apiUrl = "/api/project";
     @MockBean
     private CreateProjectUseCase createProjectUseCase;
     @MockBean
@@ -49,7 +50,6 @@ class ProjectControllerTest {
     @Autowired
     private ProjectController projectController;
     private MockMvc mockMvc;
-    private static final String apiUrl = "/api/project";
 
     @BeforeEach
     void setUp() {

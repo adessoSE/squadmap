@@ -4,7 +4,6 @@ import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundExceptio
 import de.adesso.squadmap.application.port.driven.project.DeleteProjectPort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @PersistenceAdapter
 @RequiredArgsConstructor

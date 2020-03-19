@@ -1,7 +1,6 @@
 package de.adesso.squadmap.application.domain.mapper;
 
 import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.mapper.EmployeeDomainMapperImplementation;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommandMother;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;

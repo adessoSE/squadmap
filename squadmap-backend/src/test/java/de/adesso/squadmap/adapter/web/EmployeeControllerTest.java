@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class EmployeeControllerTest {
 
+    private static final String apiUrl = "/api/employee";
     @MockBean
     private CreateEmployeeUseCase createEmployeeUseCase;
     @MockBean
@@ -50,7 +51,6 @@ class EmployeeControllerTest {
     @Autowired
     private EmployeeController employeeController;
     private MockMvc mockMvc;
-    private static final String apiUrl = "/api/employee";
 
     @BeforeEach
     void setUp() {
@@ -388,7 +388,7 @@ class EmployeeControllerTest {
     @Test
     void checkIfUpdateEmployeeThrowsInvalidEmployeeEmailException() {
         //given
-        UpdateEmployeeCommand employeeEmailNull =  UpdateEmployeeCommandMother.complete().email(null).build();
+        UpdateEmployeeCommand employeeEmailNull = UpdateEmployeeCommandMother.complete().email(null).build();
         UpdateEmployeeCommand employeeEmailEmpty = UpdateEmployeeCommandMother.complete().email("").build();
         UpdateEmployeeCommand employeeEmailNotValid = UpdateEmployeeCommandMother.complete().email("null").build();
 

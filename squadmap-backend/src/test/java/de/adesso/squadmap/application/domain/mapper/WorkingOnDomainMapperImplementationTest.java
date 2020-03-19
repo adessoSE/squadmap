@@ -1,7 +1,6 @@
 package de.adesso.squadmap.application.domain.mapper;
 
 import de.adesso.squadmap.application.domain.*;
-import de.adesso.squadmap.application.domain.mapper.WorkingOnDomainMapperImplementation;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommandMother;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;

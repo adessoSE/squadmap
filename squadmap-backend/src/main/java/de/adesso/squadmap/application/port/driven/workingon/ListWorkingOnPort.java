@@ -7,6 +7,8 @@ import java.util.List;
 public interface ListWorkingOnPort {
 
     List<WorkingOn> listWorkingOn();
+
     List<WorkingOn> listWorkingOnByEmployeeId(long employeeId);
+
     List<WorkingOn> listWorkingOnByProjectId(long projectId);
 }

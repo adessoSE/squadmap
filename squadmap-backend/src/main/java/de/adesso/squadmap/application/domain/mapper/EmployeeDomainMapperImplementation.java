@@ -6,7 +6,7 @@ import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployee
 import org.springframework.stereotype.Component;
 
 @Component
-class EmployeeDomainMapperImplementation implements EmployeeDomainMapper{
+class EmployeeDomainMapperImplementation implements EmployeeDomainMapper {
 
     public Employee mapToDomainEntity(CreateEmployeeCommand command) {
         return new Employee(

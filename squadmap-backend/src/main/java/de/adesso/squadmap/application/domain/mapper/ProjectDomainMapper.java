@@ -7,5 +7,6 @@ import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCo
 public interface ProjectDomainMapper {
 
     Project mapToDomainEntity(CreateProjectCommand command);
+
     Project mapToDomainEntity(UpdateProjectCommand command, long projectId);
 }

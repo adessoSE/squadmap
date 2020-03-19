@@ -6,7 +6,7 @@ import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCo
 import org.springframework.stereotype.Component;
 
 @Component
-class ProjectDomainMapperImplementation implements ProjectDomainMapper{
+class ProjectDomainMapperImplementation implements ProjectDomainMapper {
 
     public Project mapToDomainEntity(CreateProjectCommand command) {
         return new Project(

@@ -38,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class WorkingOnControllerTest {
 
+    private static final String apiUrl = "/api/workingOn";
     @MockBean
     private CreateWorkingOnUseCase createWorkingOnUseCase;
     @MockBean
@@ -51,8 +52,7 @@ class WorkingOnControllerTest {
     @Autowired
     private WorkingOnController workingOnController;
     private MockMvc mockMvc;
-    private static final String apiUrl = "/api/workingOn";
-    
+
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(this.workingOnController).build();

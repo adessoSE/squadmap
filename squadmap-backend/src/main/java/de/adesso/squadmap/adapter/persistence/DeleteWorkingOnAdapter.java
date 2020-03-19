@@ -4,7 +4,6 @@ import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnNotFoundExcept
 import de.adesso.squadmap.application.port.driven.workingon.DeleteWorkingOnPort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @PersistenceAdapter
 @RequiredArgsConstructor

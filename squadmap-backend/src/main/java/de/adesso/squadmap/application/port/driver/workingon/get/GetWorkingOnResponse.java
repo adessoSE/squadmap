@@ -21,5 +21,6 @@ public class GetWorkingOnResponse {
     Integer workload;
 
     @JsonPOJOBuilder(withPrefix = "")
-    public static class GetWorkingOnResponseBuilder { }
+    public static class GetWorkingOnResponseBuilder {
+    }
 }

@@ -41,7 +41,7 @@ public abstract class ProjectCommand {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getSites(){
+    public List<String> getSites() {
         return new ArrayList<>(this.sites);
     }
 }

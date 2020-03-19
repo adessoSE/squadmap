@@ -9,5 +9,6 @@ import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorking
 public interface WorkingOnDomainMapper {
 
     WorkingOn mapToDomainEntity(CreateWorkingOnCommand command, Employee employee, Project project);
+
     WorkingOn mapToDomainEntity(UpdateWorkingOnCommand command, long workingOnId, Employee employee, Project project);
 }
