@@ -24,7 +24,7 @@ public class ListEmployeeAdapterTest {
     @MockBean
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
     @Autowired
-    private ListEmployeeAdapter listEmployeePort;
+    private ListEmployeeAdapter listEmployeeAdapter;
 
     @Test
     void checkIfListEmployeesListsAllEmployees() {
@@ -50,7 +50,7 @@ public class ListEmployeeAdapterTest {
         when(employeePersistenceMapper.mapToDomainEntity(employeeNeo4JEntity2)).thenReturn(employee2);
 
         //when
-        List<Employee> found = listEmployeePort.listEmployees();
+        List<Employee> found = listEmployeeAdapter.listEmployees();
 
         //then
         assertThat(found).isEqualTo(employees);

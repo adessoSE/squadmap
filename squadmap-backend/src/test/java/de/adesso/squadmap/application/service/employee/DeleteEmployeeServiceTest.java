@@ -16,7 +16,7 @@ class DeleteEmployeeServiceTest {
     @MockBean
     private DeleteEmployeePort deleteEmployeePort;
     @Autowired
-    private DeleteEmployeeService service;
+    private DeleteEmployeeService deleteEmployeeService;
 
     @Test
     void checkIfDeleteEmployeeDeletesTheEmployee() {
@@ -25,7 +25,7 @@ class DeleteEmployeeServiceTest {
         doNothing().when(deleteEmployeePort).deleteEmployee(employeeId);
 
         //when
-        service.deleteEmployee(employeeId);
+        deleteEmployeeService.deleteEmployee(employeeId);
 
         //then
         verify(deleteEmployeePort, times(1)).deleteEmployee(employeeId);

@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 class CreateProjectService implements CreateProjectUseCase {
 
     private final CreateProjectPort createProjectPort;
-    private final ProjectDomainMapper projectMapper;
+    private final ProjectDomainMapper projectDomainMapper;
 
     @Override
     @Transactional
     public Long createProject(CreateProjectCommand command) {
-        return createProjectPort.createProject(projectMapper.mapToDomainEntity(command));
+        return createProjectPort.createProject(projectDomainMapper.mapToDomainEntity(command));
     }
 }

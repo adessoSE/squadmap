@@ -17,12 +17,12 @@ class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
     private final UpdateWorkingOnPort updateWorkingOnPort;
     private final GetEmployeePort getEmployeePort;
     private final GetProjectPort getProjectPort;
-    private final WorkingOnDomainMapper workingOnMapper;
+    private final WorkingOnDomainMapper workingOnDomainMapper;
 
     @Override
     @Transactional
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
-        updateWorkingOnPort.updateWorkingOn(workingOnMapper.mapToDomainEntity(
+        updateWorkingOnPort.updateWorkingOn(workingOnDomainMapper.mapToDomainEntity(
                 command,
                 workingOnId,
                 getEmployeePort.getEmployee(command.getEmployeeId()),

@@ -23,7 +23,7 @@ public class CreateEmployeeAdapterTest {
     @MockBean
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
     @Autowired
-    private CreateEmployeeAdapter createEmployeePort;
+    private CreateEmployeeAdapter createEmployeeAdapter;
 
     @Test
     void checkIfCreateEmployeeCreatesTheEmployee() {
@@ -35,7 +35,7 @@ public class CreateEmployeeAdapterTest {
         when(employeeRepository.save(employeeNeo4JEntity)).thenReturn(employeeNeo4JEntity);
 
         //when
-        long found = createEmployeePort.createEmployee(employee);
+        long found = createEmployeeAdapter.createEmployee(employee);
 
         //then
         assertThat(found).isEqualTo(employee.getEmployeeId());
@@ -53,7 +53,7 @@ public class CreateEmployeeAdapterTest {
         when(employeeRepository.existsByEmail(employee.getEmail())).thenReturn(true);
 
         //when
-        assertThrows(EmployeeAlreadyExistsException.class, () -> createEmployeePort.createEmployee(employee));
+        assertThrows(EmployeeAlreadyExistsException.class, () -> createEmployeeAdapter.createEmployee(employee));
         verify(employeeRepository, times(1)).existsByEmail(employee.getEmail());
         verifyNoMoreInteractions(employeeRepository);
     }

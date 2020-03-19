@@ -22,9 +22,9 @@ class CreateEmployeeServiceTest {
     @MockBean
     private CreateEmployeePort createEmployeePort;
     @MockBean
-    private EmployeeDomainMapper employeeMapper;
+    private EmployeeDomainMapper employeeDomainMapper;
     @Autowired
-    private CreateEmployeeService service;
+    private CreateEmployeeService createEmployeeService;
 
     @Test
     void checkIfCreateEmployeeCreatesAnEmployee() {
@@ -32,17 +32,17 @@ class CreateEmployeeServiceTest {
         long employeeId = 1;
         CreateEmployeeCommand createEmployeeCommand = CreateEmployeeCommandMother.complete().build();
         Employee employee = EmployeeMother.complete().build();
-        when(employeeMapper.mapToDomainEntity(createEmployeeCommand)).thenReturn(employee);
+        when(employeeDomainMapper.mapToDomainEntity(createEmployeeCommand)).thenReturn(employee);
         when(createEmployeePort.createEmployee(employee)).thenReturn(employeeId);
 
         //when
-        long found = service.createEmployee(createEmployeeCommand);
+        long found = createEmployeeService.createEmployee(createEmployeeCommand);
 
         //then
         assertThat(found).isEqualTo(employeeId);
-        verify(employeeMapper, times(1)).mapToDomainEntity(createEmployeeCommand);
+        verify(employeeDomainMapper, times(1)).mapToDomainEntity(createEmployeeCommand);
         verify(createEmployeePort, times(1)).createEmployee(employee);
-        verifyNoMoreInteractions(employeeMapper);
+        verifyNoMoreInteractions(employeeDomainMapper);
         verifyNoMoreInteractions(createEmployeePort);
     }
 }

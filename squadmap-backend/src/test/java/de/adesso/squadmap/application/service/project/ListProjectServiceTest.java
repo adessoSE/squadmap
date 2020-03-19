@@ -30,9 +30,9 @@ class ListProjectServiceTest {
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
-    private ResponseMapper<Project, GetProjectResponse> responseMapper;
+    private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
     @Autowired
-    private ListProjectService service;
+    private ListProjectService listProjectService;
 
     @Test
     void checkIfListProjectsListsAllProjects() {
@@ -43,21 +43,21 @@ class ListProjectServiceTest {
         List<WorkingOn> allRelations = new ArrayList<>();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(responseMapper.toResponse(project1, allRelations)).thenReturn(getProjectResponse);
-        when(responseMapper.toResponse(project2, allRelations)).thenReturn(getProjectResponse);
+        when(projectResponseMapper.toResponse(project1, allRelations)).thenReturn(getProjectResponse);
+        when(projectResponseMapper.toResponse(project2, allRelations)).thenReturn(getProjectResponse);
         when(listProjectPort.listProjects()).thenReturn(projects);
 
         //when
-        List<GetProjectResponse> responses = service.listProjects();
+        List<GetProjectResponse> responses = listProjectService.listProjects();
 
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getProjectResponse));
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(responseMapper, times(1)).toResponse(project1, allRelations);
-        verify(responseMapper, times(1)).toResponse(project2, allRelations);
+        verify(projectResponseMapper, times(1)).toResponse(project1, allRelations);
+        verify(projectResponseMapper, times(1)).toResponse(project2, allRelations);
         verify(listProjectPort, times(1)).listProjects();
         verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(responseMapper);
+        verifyNoMoreInteractions(projectResponseMapper);
         verifyNoMoreInteractions(listProjectPort);
     }
 }

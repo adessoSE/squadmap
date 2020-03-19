@@ -29,9 +29,9 @@ class GetProjectServiceTest {
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
-    private ResponseMapper<Project, GetProjectResponse> responseMapper;
+    private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
     @Autowired
-    private GetProjectService service;
+    private GetProjectService getProjectService;
 
     @Test
     void checkIfGetProjectReturnsTheProject() {
@@ -41,19 +41,19 @@ class GetProjectServiceTest {
         List<WorkingOn> projectsRelations = new ArrayList<>();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOnByProjectId(projectId)).thenReturn(projectsRelations);
-        when(responseMapper.toResponse(project, projectsRelations)).thenReturn(getProjectResponse);
+        when(projectResponseMapper.toResponse(project, projectsRelations)).thenReturn(getProjectResponse);
         when(getProjectPort.getProject(projectId)).thenReturn(project);
 
         //when
-        GetProjectResponse response = service.getProject(projectId);
+        GetProjectResponse response = getProjectService.getProject(projectId);
 
         //then
         assertThat(response).isEqualTo(getProjectResponse);
         verify(listWorkingOnPort, times(1)).listWorkingOnByProjectId(projectId);
-        verify(responseMapper, times(1)).toResponse(project, projectsRelations);
+        verify(projectResponseMapper, times(1)).toResponse(project, projectsRelations);
         verify(getProjectPort, times(1)).getProject(projectId);
         verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(responseMapper);
+        verifyNoMoreInteractions(projectResponseMapper);
         verifyNoMoreInteractions(getProjectPort);
     }
 }

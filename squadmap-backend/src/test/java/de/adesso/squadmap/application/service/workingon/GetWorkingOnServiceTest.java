@@ -28,9 +28,9 @@ class GetWorkingOnServiceTest {
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
-    private ResponseMapper<WorkingOn, GetWorkingOnResponse> responseMapper;
+    private ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
     @Autowired
-    private GetWorkingOnService service;
+    private GetWorkingOnService getWorkingOnService;
 
     @Test
     void checkIfGetWorkingOnReturnsTheRelation() {
@@ -42,19 +42,19 @@ class GetWorkingOnServiceTest {
         List<WorkingOn> allRelations = new ArrayList<>();
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(responseMapper.toResponse(workingOn, allRelations)).thenReturn(getWorkingOnResponse);
+        when(workingOnResponseMapper.toResponse(workingOn, allRelations)).thenReturn(getWorkingOnResponse);
         when(getWorkingOnPort.getWorkingOn(workingOnId)).thenReturn(workingOn);
 
         //when
-        GetWorkingOnResponse response = service.getWorkingOn(workingOnId);
+        GetWorkingOnResponse response = getWorkingOnService.getWorkingOn(workingOnId);
 
         //then
         assertThat(response).isEqualTo(getWorkingOnResponse);
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(responseMapper, times(1)).toResponse(workingOn, allRelations);
+        verify(workingOnResponseMapper, times(1)).toResponse(workingOn, allRelations);
         verify(getWorkingOnPort, times(1)).getWorkingOn(workingOnId);
         verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(responseMapper);
+        verifyNoMoreInteractions(workingOnResponseMapper);
         verifyNoMoreInteractions(getWorkingOnPort);
     }
 }

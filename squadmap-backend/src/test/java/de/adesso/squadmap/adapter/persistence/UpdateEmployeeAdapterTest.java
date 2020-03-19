@@ -24,7 +24,7 @@ public class UpdateEmployeeAdapterTest {
     @MockBean
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
     @Autowired
-    private UpdateEmployeeAdapter updateEmployeePort;
+    private UpdateEmployeeAdapter updateEmployeeAdapter;
 
     @Test
     void checkIfUpdateEmployeeUpdatesTheEmployee() {
@@ -44,7 +44,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.save(employeeNeo4JEntity, 0)).thenReturn(employeeNeo4JEntity);
 
         //when
-        updateEmployeePort.updateEmployee(employee);
+        updateEmployeeAdapter.updateEmployee(employee);
 
         //then
         verify(employeeRepository, times(1)).findById(employee.getEmployeeId(), 0);
@@ -74,7 +74,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.save(employeeNeo4JEntity, 0)).thenReturn(employeeNeo4JEntity);
 
         //when
-        updateEmployeePort.updateEmployee(employee);
+        updateEmployeeAdapter.updateEmployee(employee);
 
         //then
         verify(employeeRepository, times(1)).findById(employee.getEmployeeId(), 0);
@@ -95,7 +95,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.findById(employeeId, 0)).thenReturn(Optional.empty());
 
         //when
-        assertThrows(EmployeeNotFoundException.class, () -> updateEmployeePort.updateEmployee(employee));
+        assertThrows(EmployeeNotFoundException.class, () -> updateEmployeeAdapter.updateEmployee(employee));
 
         //then
         verify(employeeRepository, times(1)).findById(employeeId, 0);
@@ -119,7 +119,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.existsByEmail(employee.getEmail())).thenReturn(true);
 
         //when
-        assertThrows(EmployeeAlreadyExistsException.class, () -> updateEmployeePort.updateEmployee(employee));
+        assertThrows(EmployeeAlreadyExistsException.class, () -> updateEmployeeAdapter.updateEmployee(employee));
 
         //then
         verify(employeeRepository, times(1)).findById(employeeId, 0);

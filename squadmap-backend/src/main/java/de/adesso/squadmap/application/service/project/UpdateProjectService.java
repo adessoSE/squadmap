@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 class UpdateProjectService implements UpdateProjectUseCase {
 
     private final UpdateProjectPort updateProjectPort;
-    private final ProjectDomainMapper projectMapper;
+    private final ProjectDomainMapper projectDomainMapper;
 
     @Override
     @Transactional
     public void updateProject(UpdateProjectCommand command, Long projectId) {
-        updateProjectPort.updateProject(projectMapper.mapToDomainEntity(command, projectId));
+        updateProjectPort.updateProject(projectDomainMapper.mapToDomainEntity(command, projectId));
     }
 }

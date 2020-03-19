@@ -15,15 +15,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkingOnResponseMapper implements ResponseMapper<WorkingOn, GetWorkingOnResponse> {
 
-    private final ResponseMapper<Employee, GetEmployeeResponse> employeeMapper;
-    private final ResponseMapper<Project, GetProjectResponse> projectMapper;
+    private final ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private final ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
 
     @Override
     public GetWorkingOnResponse toResponse(WorkingOn workingOn, List<WorkingOn> workingOns) {
         return new GetWorkingOnResponse(
                 workingOn.getWorkingOnId(),
-                employeeMapper.toResponse(workingOn.getEmployee(), workingOns),
-                projectMapper.toResponse(workingOn.getProject(), workingOns),
+                employeeResponseMapper.toResponse(workingOn.getEmployee(), workingOns),
+                projectResponseMapper.toResponse(workingOn.getProject(), workingOns),
                 workingOn.getSince(),
                 workingOn.getUntil(),
                 workingOn.getWorkload());

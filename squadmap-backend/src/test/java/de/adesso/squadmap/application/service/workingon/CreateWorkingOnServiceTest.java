@@ -27,9 +27,9 @@ class CreateWorkingOnServiceTest {
     @MockBean
     private GetProjectPort getProjectPort;
     @MockBean
-    private WorkingOnDomainMapper workingOnMapper;
+    private WorkingOnDomainMapper workingOnDomainMapper;
     @Autowired
-    private CreateWorkingOnService service;
+    private CreateWorkingOnService createWorkingOnService;
 
     @Test
     void checkIfCreateWorkingOnCreatesTheRelation() {
@@ -50,21 +50,21 @@ class CreateWorkingOnServiceTest {
         WorkingOn workingOn = WorkingOnMother.complete().build();
         when(getEmployeePort.getEmployee(employeeId)).thenReturn(employee);
         when(getProjectPort.getProject(projectId)).thenReturn(project);
-        when(workingOnMapper.mapToDomainEntity(createWorkingOnCommand, employee, project)).thenReturn(workingOn);
+        when(workingOnDomainMapper.mapToDomainEntity(createWorkingOnCommand, employee, project)).thenReturn(workingOn);
         when(createWorkingOnPort.createWorkingOn(workingOn)).thenReturn(workingOnId);
 
         //when
-        long found = service.createWorkingOn(createWorkingOnCommand);
+        long found = createWorkingOnService.createWorkingOn(createWorkingOnCommand);
 
         //then
         assertThat(found).isEqualTo(workingOnId);
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
         verify(getProjectPort, times(1)).getProject(projectId);
-        verify(workingOnMapper, times(1)).mapToDomainEntity(createWorkingOnCommand, employee, project);
+        verify(workingOnDomainMapper, times(1)).mapToDomainEntity(createWorkingOnCommand, employee, project);
         verify(createWorkingOnPort, times(1)).createWorkingOn(workingOn);
         verifyNoMoreInteractions(getEmployeePort);
         verifyNoMoreInteractions(getProjectPort);
-        verifyNoMoreInteractions(workingOnMapper);
+        verifyNoMoreInteractions(workingOnDomainMapper);
         verifyNoMoreInteractions(createWorkingOnPort);
     }
 }

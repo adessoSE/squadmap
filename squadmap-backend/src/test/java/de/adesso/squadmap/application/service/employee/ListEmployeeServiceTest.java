@@ -30,9 +30,9 @@ class ListEmployeeServiceTest {
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
-    private ResponseMapper<Employee, GetEmployeeResponse> responseMapper;
+    private ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
     @Autowired
-    private ListEmployeeService service;
+    private ListEmployeeService listEmployeeService;
 
     @Test
     void checkIfListEmployeesListsAllEmployees() {
@@ -43,21 +43,21 @@ class ListEmployeeServiceTest {
         List<WorkingOn> allRelations = new ArrayList<>();
         GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(responseMapper.toResponse(employee1, allRelations)).thenReturn(getEmployeeResponse);
-        when(responseMapper.toResponse(employee2, allRelations)).thenReturn(getEmployeeResponse);
+        when(employeeResponseMapper.toResponse(employee1, allRelations)).thenReturn(getEmployeeResponse);
+        when(employeeResponseMapper.toResponse(employee2, allRelations)).thenReturn(getEmployeeResponse);
         when(listEmployeePort.listEmployees()).thenReturn(employees);
 
         //when
-        List<GetEmployeeResponse> responses = service.listEmployees();
+        List<GetEmployeeResponse> responses = listEmployeeService.listEmployees();
 
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getEmployeeResponse));
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(responseMapper, times(1)).toResponse(employee1, allRelations);
-        verify(responseMapper, times(1)).toResponse(employee2, allRelations);
+        verify(employeeResponseMapper, times(1)).toResponse(employee1, allRelations);
+        verify(employeeResponseMapper, times(1)).toResponse(employee2, allRelations);
         verify(listEmployeePort, times(1)).listEmployees();
         verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(responseMapper);
+        verifyNoMoreInteractions(employeeResponseMapper);
         verifyNoMoreInteractions(listEmployeePort);
     }
 }

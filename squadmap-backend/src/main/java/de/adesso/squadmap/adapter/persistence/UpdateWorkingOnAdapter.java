@@ -7,7 +7,6 @@ import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driven.workingon.UpdateWorkingOnPort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ class UpdateWorkingOnAdapter implements UpdateWorkingOnPort {
     private final WorkingOnRepository workingOnRepository;
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
-    private final PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> mapper;
+    private final PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> workingOnPersistenceMapper;
 
     @Override
     public void updateWorkingOn(WorkingOn workingOn) {
@@ -29,6 +28,6 @@ class UpdateWorkingOnAdapter implements UpdateWorkingOnPort {
         if (!workingOnRepository.existsById(workingOn.getWorkingOnId())) {
             throw new WorkingOnNotFoundException();
         }
-        workingOnRepository.save(mapper.mapToNeo4JEntity(workingOn), 0);
+        workingOnRepository.save(workingOnPersistenceMapper.mapToNeo4JEntity(workingOn), 0);
     }
 }

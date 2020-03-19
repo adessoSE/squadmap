@@ -21,9 +21,9 @@ class UpdateEmployeeServiceTest {
     @MockBean
     private UpdateEmployeePort updateEmployeePort;
     @MockBean
-    private EmployeeDomainMapper employeeMapper;
+    private EmployeeDomainMapper employeeDomainMapper;
     @Autowired
-    private UpdateEmployeeService service;
+    private UpdateEmployeeService updateEmployeeService;
 
     @Test
     void checkIfUpdateEmployeeUpdatesTheEmployee() {
@@ -31,16 +31,16 @@ class UpdateEmployeeServiceTest {
         long employeeId = 1;
         UpdateEmployeeCommand updateEmployeeCommand = UpdateEmployeeCommandMother.complete().build();
         Employee employee = EmployeeMother.complete().build();
-        when(employeeMapper.mapToDomainEntity(updateEmployeeCommand, employeeId)).thenReturn(employee);
+        when(employeeDomainMapper.mapToDomainEntity(updateEmployeeCommand, employeeId)).thenReturn(employee);
         doNothing().when(updateEmployeePort).updateEmployee(employee);
 
         //when
-        service.updateEmployee(updateEmployeeCommand, employeeId);
+        updateEmployeeService.updateEmployee(updateEmployeeCommand, employeeId);
 
         //then
-        verify(employeeMapper, times(1)).mapToDomainEntity(updateEmployeeCommand, employeeId);
+        verify(employeeDomainMapper, times(1)).mapToDomainEntity(updateEmployeeCommand, employeeId);
         verify(updateEmployeePort, times(1)).updateEmployee(employee);
-        verifyNoMoreInteractions(employeeMapper);
+        verifyNoMoreInteractions(employeeDomainMapper);
         verifyNoMoreInteractions(updateEmployeePort);
     }
 }

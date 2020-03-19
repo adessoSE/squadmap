@@ -21,9 +21,9 @@ class UpdateProjectServiceTest {
     @MockBean
     private UpdateProjectPort updateProjectPort;
     @MockBean
-    private ProjectDomainMapper projectMapper;
+    private ProjectDomainMapper projectDomainMapper;
     @Autowired
-    private UpdateProjectService service;
+    private UpdateProjectService updateProjectService;
 
     @Test
     void checkIfUpdateProjectUpdatesTheProject() {
@@ -31,16 +31,16 @@ class UpdateProjectServiceTest {
         long projectId = 1;
         UpdateProjectCommand updateProjectCommand = UpdateProjectCommandMother.complete().build();
         Project project = ProjectMother.complete().build();
-        when(projectMapper.mapToDomainEntity(updateProjectCommand, projectId)).thenReturn(project);
+        when(projectDomainMapper.mapToDomainEntity(updateProjectCommand, projectId)).thenReturn(project);
         doNothing().when(updateProjectPort).updateProject(project);
 
         //when
-        service.updateProject(updateProjectCommand, projectId);
+        updateProjectService.updateProject(updateProjectCommand, projectId);
 
         //then
-        verify(projectMapper, times(1)).mapToDomainEntity(updateProjectCommand, projectId);
+        verify(projectDomainMapper, times(1)).mapToDomainEntity(updateProjectCommand, projectId);
         verify(updateProjectPort, times(1)).updateProject(project);
-        verifyNoMoreInteractions(projectMapper);
+        verifyNoMoreInteractions(projectDomainMapper);
         verifyNoMoreInteractions(updateProjectPort);
     }
 }

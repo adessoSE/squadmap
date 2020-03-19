@@ -18,7 +18,7 @@ public class DeleteEmployeeAdapterTest {
     @MockBean
     private EmployeeRepository employeeRepository;
     @Autowired
-    private DeleteEmployeeAdapter deleteEmployeePort;
+    private DeleteEmployeeAdapter deleteEmployeeAdapter;
 
     @Test
     void checkIfDeleteEmployeeDeletesTheEmployee() {
@@ -28,7 +28,7 @@ public class DeleteEmployeeAdapterTest {
         doNothing().when(employeeRepository).deleteById(employeeId);
 
         //when
-        deleteEmployeePort.deleteEmployee(employeeId);
+        deleteEmployeeAdapter.deleteEmployee(employeeId);
 
         //then
         verify(employeeRepository, times(1)).existsById(employeeId);
@@ -43,7 +43,7 @@ public class DeleteEmployeeAdapterTest {
         when(employeeRepository.existsById(employeeId)).thenReturn(false);
 
         //when
-        assertThrows(EmployeeNotFoundException.class, () -> deleteEmployeePort.deleteEmployee(employeeId));
+        assertThrows(EmployeeNotFoundException.class, () -> deleteEmployeeAdapter.deleteEmployee(employeeId));
 
         //then
         verify(employeeRepository, times(1)).existsById(employeeId);

@@ -6,14 +6,13 @@ import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.port.driven.employee.UpdateEmployeePort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
 class UpdateEmployeeAdapter implements UpdateEmployeePort {
 
     private final EmployeeRepository employeeRepository;
-    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> mapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
 
     @Override
     public void updateEmployee(Employee employee) {
@@ -22,6 +21,6 @@ class UpdateEmployeeAdapter implements UpdateEmployeePort {
         if (employeeRepository.existsByEmail(employee.getEmail()) && !employee.getEmail().equals(existingEmployee.getEmail())) {
             throw new EmployeeAlreadyExistsException();
         }
-        employeeRepository.save(mapper.mapToNeo4JEntity(employee), 0);
+        employeeRepository.save(employeePersistenceMapper.mapToNeo4JEntity(employee), 0);
     }
 }

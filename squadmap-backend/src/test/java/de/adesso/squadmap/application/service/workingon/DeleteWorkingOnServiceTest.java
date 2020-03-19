@@ -16,7 +16,7 @@ class DeleteWorkingOnServiceTest {
     @MockBean
     private DeleteWorkingOnPort deleteWorkingOnPort;
     @Autowired
-    private DeleteWorkingOnService service;
+    private DeleteWorkingOnService deleteWorkingOnService;
 
     @Test
     void checkIfDeleteWorkingOnDeletesTheRelation() {
@@ -25,7 +25,7 @@ class DeleteWorkingOnServiceTest {
         doNothing().when(deleteWorkingOnPort).deleteWorkingOn(workingOnId);
 
         //when
-        service.deleteWorkingOn(workingOnId);
+        deleteWorkingOnService.deleteWorkingOn(workingOnId);
 
         //then
         verify(deleteWorkingOnPort, times(1)).deleteWorkingOn(workingOnId);

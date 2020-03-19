@@ -24,7 +24,7 @@ public class GetEmployeeAdapterTest {
     @MockBean
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
     @Autowired
-    private GetEmployeeAdapter getEmployeePort;
+    private GetEmployeeAdapter getEmployeeAdapter;
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() {
@@ -38,7 +38,7 @@ public class GetEmployeeAdapterTest {
         when(employeePersistenceMapper.mapToDomainEntity(employeeNeo4JEntity)).thenReturn(employee);
 
         //when
-        Employee found = getEmployeePort.getEmployee(employeeId);
+        Employee found = getEmployeeAdapter.getEmployee(employeeId);
 
         //then
         assertThat(found).isEqualTo(employee);
@@ -55,7 +55,7 @@ public class GetEmployeeAdapterTest {
         when(employeeRepository.findById(employeeId, 0)).thenReturn(Optional.empty());
 
         //when
-        assertThrows(EmployeeNotFoundException.class, () -> getEmployeePort.getEmployee(employeeId));
+        assertThrows(EmployeeNotFoundException.class, () -> getEmployeeAdapter.getEmployee(employeeId));
 
         //then
         verify(employeeRepository, times(1)).findById(employeeId, 0);

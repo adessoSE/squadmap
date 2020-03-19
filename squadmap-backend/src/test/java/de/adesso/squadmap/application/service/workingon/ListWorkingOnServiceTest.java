@@ -25,9 +25,9 @@ class ListWorkingOnServiceTest {
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
     @MockBean
-    private ResponseMapper<WorkingOn, GetWorkingOnResponse> responseMapper;
+    private ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
     @Autowired
-    private ListWorkingOnService service;
+    private ListWorkingOnService listWorkingOnService;
 
     @Test
     void checkIfListWorkingOnReturnsAllRelations() {
@@ -41,18 +41,18 @@ class ListWorkingOnServiceTest {
         List<WorkingOn> allRelations = Arrays.asList(workingOn1, workingOn2);
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(responseMapper.toResponse(workingOn1, allRelations)).thenReturn(getWorkingOnResponse);
-        when(responseMapper.toResponse(workingOn2, allRelations)).thenReturn(getWorkingOnResponse);
+        when(workingOnResponseMapper.toResponse(workingOn1, allRelations)).thenReturn(getWorkingOnResponse);
+        when(workingOnResponseMapper.toResponse(workingOn2, allRelations)).thenReturn(getWorkingOnResponse);
 
         //when
-        List<GetWorkingOnResponse> responses = service.listWorkingOn();
+        List<GetWorkingOnResponse> responses = listWorkingOnService.listWorkingOn();
 
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getWorkingOnResponse));
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(responseMapper, times(1)).toResponse(workingOn1, allRelations);
-        verify(responseMapper, times(1)).toResponse(workingOn2, allRelations);
+        verify(workingOnResponseMapper, times(1)).toResponse(workingOn1, allRelations);
+        verify(workingOnResponseMapper, times(1)).toResponse(workingOn2, allRelations);
         verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(responseMapper);
+        verifyNoMoreInteractions(workingOnResponseMapper);
     }
 }

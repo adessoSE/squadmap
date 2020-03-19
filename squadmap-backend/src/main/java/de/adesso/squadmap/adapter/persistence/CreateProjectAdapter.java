@@ -5,20 +5,19 @@ import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.port.driven.project.CreateProjectPort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
 class CreateProjectAdapter implements CreateProjectPort {
 
     private final ProjectRepository projectRepository;
-    private final PersistenceMapper<Project, ProjectNeo4JEntity> mapper;
+    private final PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
 
     @Override
     public long createProject(Project project) {
         if (projectRepository.existsByTitle(project.getTitle())) {
             throw new ProjectAlreadyExistsException();
         }
-        return projectRepository.save(mapper.mapToNeo4JEntity(project)).getProjectId();
+        return projectRepository.save(projectPersistenceMapper.mapToNeo4JEntity(project)).getProjectId();
     }
 }

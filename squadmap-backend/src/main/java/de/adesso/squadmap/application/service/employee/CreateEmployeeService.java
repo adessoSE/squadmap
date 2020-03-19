@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 class CreateEmployeeService implements CreateEmployeeUseCase {
 
     private final CreateEmployeePort createEmployeePort;
-    private final EmployeeDomainMapper employeeMapper;
+    private final EmployeeDomainMapper employeeDomainMapper;
 
     @Override
     @Transactional
     public Long createEmployee(CreateEmployeeCommand command) {
-        return createEmployeePort.createEmployee(employeeMapper.mapToDomainEntity(command));
+        return createEmployeePort.createEmployee(employeeDomainMapper.mapToDomainEntity(command));
     }
 }

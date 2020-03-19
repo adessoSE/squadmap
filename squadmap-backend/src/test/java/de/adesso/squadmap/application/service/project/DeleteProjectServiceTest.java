@@ -16,7 +16,7 @@ class DeleteProjectServiceTest {
     @MockBean
     private DeleteProjectPort deleteProjectPort;
     @Autowired
-    private DeleteProjectService service;
+    private DeleteProjectService deleteProjectService;
 
     @Test
     void checkIfDeleteProjectDeletesTheProject() {
@@ -25,7 +25,7 @@ class DeleteProjectServiceTest {
         doNothing().when(deleteProjectPort).deleteProject(projectId);
 
         //when
-        service.deleteProject(projectId);
+        deleteProjectService.deleteProject(projectId);
 
         //then
         verify(deleteProjectPort, times(1)).deleteProject(projectId);

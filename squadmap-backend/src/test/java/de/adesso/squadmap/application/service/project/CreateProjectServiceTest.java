@@ -22,9 +22,9 @@ class CreateProjectServiceTest {
     @MockBean
     private CreateProjectPort createProjectPort;
     @MockBean
-    private ProjectDomainMapper projectMapper;
+    private ProjectDomainMapper projectDomainMapper;
     @Autowired
-    private CreateProjectService service;
+    private CreateProjectService createProjectService;
 
     @Test
     void checkIfCreateProjectCreatesAProject() {
@@ -32,17 +32,17 @@ class CreateProjectServiceTest {
         long projectId = 1;
         CreateProjectCommand createProjectCommand = CreateProjectCommandMother.complete().build();
         Project project = ProjectMother.complete().build();
-        when(projectMapper.mapToDomainEntity(createProjectCommand)).thenReturn(project);
+        when(projectDomainMapper.mapToDomainEntity(createProjectCommand)).thenReturn(project);
         when(createProjectPort.createProject(project)).thenReturn(projectId);
 
         //when
-        long found = service.createProject(createProjectCommand);
+        long found = createProjectService.createProject(createProjectCommand);
 
         //then
         assertThat(found).isEqualTo(projectId);
-        verify(projectMapper, times(1)).mapToDomainEntity(createProjectCommand);
+        verify(projectDomainMapper, times(1)).mapToDomainEntity(createProjectCommand);
         verify(createProjectPort, times(1)).createProject(project);
-        verifyNoMoreInteractions(projectMapper);
+        verifyNoMoreInteractions(projectDomainMapper);
         verifyNoMoreInteractions(createProjectPort);
     }
 }

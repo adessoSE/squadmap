@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
     private final UpdateEmployeePort updateEmployeePort;
-    private final EmployeeDomainMapper employeeMapper;
+    private final EmployeeDomainMapper employeeDomainMapper;
 
     @Override
     @Transactional
     public void updateEmployee(UpdateEmployeeCommand command, Long employeeId) {
-        updateEmployeePort.updateEmployee(employeeMapper.mapToDomainEntity(command, employeeId));
+        updateEmployeePort.updateEmployee(employeeDomainMapper.mapToDomainEntity(command, employeeId));
     }
 }
