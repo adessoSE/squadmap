@@ -13,7 +13,6 @@ import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorking
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,17 +43,13 @@ class WorkingOnController {
 
     @PostMapping("/create")
     public Long createWorkingOn(@RequestBody @Valid CreateWorkingOnCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
+        checkInput(bindingResult);
         return createWorkingOnUseCase.createWorkingOn(command);
     }
 
     @PutMapping("/update/{workingOnId}")
     public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody @Valid UpdateWorkingOnCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
+        checkInput(bindingResult);
         updateWorkingOnUseCase.updateWorkingOn(command, workingOnId);
     }
 
@@ -63,16 +58,18 @@ class WorkingOnController {
         deleteWorkingOnUseCase.deleteWorkingOn(workingOnId);
     }
 
-    private void throwError(FieldError error) {
-        switch (error.getField()) {
-            case "since":
-                throw new InvalidWorkingOnSinceException();
-            case "until":
-                throw new InvalidWorkingOnUntilException();
-            case "workload":
-                throw new InvalidWorkingOnWorkloadException();
-            default:
-                throw new IllegalArgumentException("Invalid input");
+    private void checkInput(BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            switch (Objects.requireNonNull(bindingResult.getFieldError()).getField()) {
+                case "since":
+                    throw new InvalidWorkingOnSinceException();
+                case "until":
+                    throw new InvalidWorkingOnUntilException();
+                case "workload":
+                    throw new InvalidWorkingOnWorkloadException();
+                default:
+                    throw new IllegalArgumentException("Invalid input");
+            }
         }
     }
 }

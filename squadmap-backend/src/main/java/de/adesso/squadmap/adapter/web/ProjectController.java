@@ -11,7 +11,6 @@ import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCo
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,17 +41,13 @@ class ProjectController {
 
     @PostMapping("/create")
     public Long createProject(@RequestBody @Valid CreateProjectCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
+        checkInput(bindingResult);
         return createProjectUseCase.createProject(command);
     }
 
     @PutMapping("/update/{projectId}")
     public void updateProject(@PathVariable long projectId, @RequestBody @Valid UpdateProjectCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
+        checkInput(bindingResult);
         updateProjectUseCase.updateProject(command, projectId);
     }
 
@@ -61,22 +56,24 @@ class ProjectController {
         deleteProjectUseCase.deleteProject(projectId);
     }
 
-    private void throwError(FieldError error) {
-        String field = error.getField();
-        if ("title".equals(field)) {
-            throw new InvalidProjectTitleException();
-        } else if ("description".equals(field)) {
-            throw new InvalidProjectDescriptionException();
-        } else if ("since".equals(field)) {
-            throw new InvalidProjectSinceException();
-        } else if ("until".equals(field)) {
-            throw new InvalidProjectUntilException();
-        } else if (field.startsWith("sites")) {
-            throw new InvalidProjectUrlListException();
-        } else if ("isExternal".equals(field)) {
-            throw new InvalidProjectIsExternalException();
-        } else {
-            throw new IllegalArgumentException("Invalid input");
+    private void checkInput(BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            String field = Objects.requireNonNull(bindingResult.getFieldError()).getField();
+            if ("title".equals(field)) {
+                throw new InvalidProjectTitleException();
+            } else if ("description".equals(field)) {
+                throw new InvalidProjectDescriptionException();
+            } else if ("since".equals(field)) {
+                throw new InvalidProjectSinceException();
+            } else if ("until".equals(field)) {
+                throw new InvalidProjectUntilException();
+            } else if (field.startsWith("sites")) {
+                throw new InvalidProjectUrlListException();
+            } else if ("isExternal".equals(field)) {
+                throw new InvalidProjectIsExternalException();
+            } else {
+                throw new IllegalArgumentException("Invalid input");
+            }
         }
     }
 }

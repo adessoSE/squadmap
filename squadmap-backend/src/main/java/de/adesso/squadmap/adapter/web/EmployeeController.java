@@ -11,7 +11,6 @@ import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployee
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,17 +41,13 @@ class EmployeeController {
 
     @PostMapping("/create")
     public Long createEmployee(@RequestBody @Valid CreateEmployeeCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
+        checkInput(bindingResult);
         return createEmployeeUseCase.createEmployee(command);
     }
 
     @PutMapping("/update/{employeeId}")
     public void updateEmployee(@PathVariable long employeeId, @RequestBody @Valid UpdateEmployeeCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
+        checkInput(bindingResult);
         updateEmployeeUseCase.updateEmployee(command, employeeId);
     }
 
@@ -61,25 +56,27 @@ class EmployeeController {
         deleteEmployeeUseCase.deleteEmployee(employeeId);
     }
 
-    private void throwError(FieldError error) {
-        String field = error.getField();
-        switch (field) {
-            case "firstName":
-                throw new InvalidEmployeeFirstNameException();
-            case "lastName":
-                throw new InvalidEmployeeLastNameException();
-            case "birthday":
-                throw new InvalidEmployeeBirthdayException();
-            case "email":
-                throw new InvalidEmployeeEmailException();
-            case "phone":
-                throw new InvalidEmployeePhoneNumberException();
-            case "image":
-                throw new InvalidEmployeeImageException();
-            case "isExternal":
-                throw new InvalidEmployeeIsExternalException();
-            default:
-                throw new IllegalArgumentException("Invalid input");
+    private void checkInput(BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            String field = Objects.requireNonNull(bindingResult.getFieldError()).getField();
+            switch (field) {
+                case "firstName":
+                    throw new InvalidEmployeeFirstNameException();
+                case "lastName":
+                    throw new InvalidEmployeeLastNameException();
+                case "birthday":
+                    throw new InvalidEmployeeBirthdayException();
+                case "email":
+                    throw new InvalidEmployeeEmailException();
+                case "phone":
+                    throw new InvalidEmployeePhoneNumberException();
+                case "image":
+                    throw new InvalidEmployeeImageException();
+                case "isExternal":
+                    throw new InvalidEmployeeIsExternalException();
+                default:
+                    throw new IllegalArgumentException("Invalid input");
+            }
         }
 
     }

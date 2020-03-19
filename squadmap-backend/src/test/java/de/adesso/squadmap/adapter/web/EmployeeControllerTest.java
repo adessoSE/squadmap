@@ -259,8 +259,8 @@ class EmployeeControllerTest {
     void checkIfCreateEmployeeThrowsInvalidEmployeePhoneException() {
         //given
         CreateEmployeeCommand employeePhoneNull = CreateEmployeeCommandMother.complete().phone(null).build();
-        CreateEmployeeCommand employeePhoneEmpty = CreateEmployeeCommandMother.complete().phone("").build();
-        CreateEmployeeCommand employeePhoneNotValid = CreateEmployeeCommandMother.complete().phone("1").build();
+        CreateEmployeeCommand employeePhoneTooLong = CreateEmployeeCommandMother.complete()
+                .phone("000000000000000000000").build();
 
         //then
         assertThatThrownBy(() ->
@@ -272,13 +272,7 @@ class EmployeeControllerTest {
         assertThatThrownBy(() ->
                 mockMvc.perform(post(apiUrl + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneNotValid)))
+                        .content(JsonMapper.asJsonString(employeePhoneTooLong)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeePhoneNumberException());
     }
@@ -423,8 +417,8 @@ class EmployeeControllerTest {
     void checkIfUpdateEmployeeThrowsInvalidEmployeePhoneException() {
         //given
         UpdateEmployeeCommand employeePhoneNull = UpdateEmployeeCommandMother.complete().phone(null).build();
-        UpdateEmployeeCommand employeePhoneEmpty = UpdateEmployeeCommandMother.complete().phone("").build();
-        UpdateEmployeeCommand employeePhoneNotValid = UpdateEmployeeCommandMother.complete().phone("null").build();
+        UpdateEmployeeCommand employeePhoneTooLong = UpdateEmployeeCommandMother.complete()
+                .phone("000000000000000000000").build();
 
         //then
         assertThatThrownBy(() ->
@@ -436,13 +430,7 @@ class EmployeeControllerTest {
         assertThatThrownBy(() ->
                 mockMvc.perform(put(apiUrl + "/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneNotValid)))
+                        .content(JsonMapper.asJsonString(employeePhoneTooLong)))
                         .andExpect(status().isOk()))
                 .hasCause(new InvalidEmployeePhoneNumberException());
     }
