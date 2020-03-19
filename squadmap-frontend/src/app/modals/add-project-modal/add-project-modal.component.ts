@@ -23,9 +23,9 @@ export class AddProjectModalComponent implements OnInit {
     this.errorMessage = '';
   }
 
-  onAddProject(project: ProjectModel, since: HTMLInputElement, until: HTMLInputElement, workload: HTMLInputElement) {
+  onAddProject(project: ProjectModel, since: Date, until: Date, workload: number) {
     this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(this.employeeId, project.projectId, since.valueAsDate, until.valueAsDate, +workload.value)).subscribe(() => {
+      new CreateWorkingOnModel(this.employeeId, project.projectId, since, until, workload)).subscribe(() => {
       this.modalRef.hide();
       location.reload();
     }, error => {

@@ -12,15 +12,16 @@
           </div>
         </div>
           <table>
-            <tr><th>Id: </th></tr>
+            <caption hidden>Employee details:</caption>
+            <tr><th scope="row">Id: </th></tr>
             <tr> <td>{{employee.employeeId}}</td></tr>
-            <tr><th>Email: </th></tr>
+            <tr><th scope="row">Email: </th></tr>
             <tr><td>{{employee.email}}</td></tr>
-            <tr><th>Phone: </th></tr>
+            <tr><th scope="row">Phone: </th></tr>
             <tr><td >{{employee.phone}}</td></tr>
-            <tr><th>Birthday: </th></tr>
+            <tr><th scope="row">Birthday: </th></tr>
             <tr><td >{{employee.birthday.toDateString()}}</td></tr>
-            <tr><th>External: </th></tr>
+            <tr><th scope="row">External: </th></tr>
             <tr> <td>{{employee.isExternal}}</td></tr>
           </table>
         <div class="row justify-content-center">
@@ -36,13 +37,14 @@
       </tab>
       <tab heading="Tableview">
         <table class="table">
+          <caption hidden>List of all projects</caption>
           <thead class="table-head">
           <tr>
-            <th>Project</th>
-            <th>Since</th>
-            <th>Until</th>
-            <th>Workload</th>
-            <th>Actions</th>
+            <th scope="col">Project</th>
+            <th scope="col">Since</th>
+            <th scope="col">Until</th>
+            <th scope="col">Workload</th>
+            <th scope="col">Actions</th>
           </tr>
           </thead>
           <tbody>

@@ -28,7 +28,7 @@ export class FilterProjectsPipe implements PipeTransform {
       projectList = projectList.filter(project => {
         const currentDate: Date = new Date();
         currentDate.setHours(0);
-        if (!(project.until < currentDate)) {
+        if (project.until >= currentDate) {
           return project;
         }
       });

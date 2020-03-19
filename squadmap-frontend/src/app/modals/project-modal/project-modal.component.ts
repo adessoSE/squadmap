@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {NgForm} from '@angular/forms';
 import {ProjectService} from '../../services/project/project.service';
@@ -20,6 +20,7 @@ export class ProjectModalComponent implements OnInit {
   private errorOccurred: boolean;
   private errorMessage: string;
   private sitesString: string;
+  @ViewChild(NgForm, {static: true}) projectForm: NgForm;
 
   constructor(public modalRef: BsModalRef,
               public projectService: ProjectService,
@@ -41,18 +42,18 @@ export class ProjectModalComponent implements OnInit {
     this.until = this.dateFormatter.formatDate(this.project.until);
   }
 
-  onCreateProject(projectForm: NgForm) {
+  onCreateProject() {
     let sites: string[] = [];
-    if (projectForm.value.sites) {
-      sites = projectForm.value.sites.split(',');
+    if (this.projectForm.value.sites) {
+      sites = this.projectForm.value.sites.split(',');
       sites = sites.map( url => url.trim());
     }
     const newProject = new CreateProjectModel(
-      projectForm.value.title,
-      projectForm.value.description,
-      new Date(projectForm.value.since),
-      new Date(projectForm.value.until),
-      projectForm.value.isExternal,
+      this.projectForm.value.title,
+      this.projectForm.value.description,
+      new Date(this.projectForm.value.since),
+      new Date(this.projectForm.value.until),
+      this.projectForm.value.isExternal,
       sites
     );
     if (this.isNew) {
