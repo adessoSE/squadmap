@@ -17,7 +17,7 @@ export class EmployeeService {
   getEmployees() {
     this.employees = [];
     return this.http.get<EmployeeModel[]>('http://localhost:8080/api/employee/all').pipe(map( res => {
-      Object.values(res).map(receivedData => {
+        Object.values(res).forEach(receivedData => {
           for (const project of receivedData.projects) {
             project.since = new Date(project.since);
             project.until = new Date(project.until);

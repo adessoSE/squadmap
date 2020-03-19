@@ -15,7 +15,7 @@ export class ProjectService {
   getProjects() {
     this.projects = [];
     return this.http.get<ProjectModel[]>('http://localhost:8080/api/project/all').pipe(map(res => {
-      Object.values(res).map(receivedData => {
+      Object.values(res).forEach(receivedData => {
         this.projects.push(new ProjectModel(
           receivedData.projectId,
           receivedData.title,
