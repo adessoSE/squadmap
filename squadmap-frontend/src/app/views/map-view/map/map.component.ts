@@ -24,7 +24,7 @@ export class MapComponent implements OnInit {
   modalRef: BsModalRef;
   @ViewChild('createWorkingOnModal', {static: false}) createWorkingOnModal: TemplateRef<any>;
   private editMode: boolean;
-  private network: Network;
+  public network: Network;
   private container: HTMLElement;
   private layoutSeed: number;
   private isPhysicsEnabled: boolean;

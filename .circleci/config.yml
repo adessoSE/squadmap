@@ -16,6 +16,8 @@ jobs:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
+      - attach_workspace:
+          at: ~/squadmap/squadmap-frontend/coverage/squadmap-frontend
       - run: gradle build
       - run:
           name: Analyze on SonarCloud
@@ -36,11 +38,17 @@ jobs:
           paths:
             - "node_modules"
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - persist_to_workspace:
+          root: .
+          paths:
+            - coverage/squadmap-frontend
 
 workflows:
   main:
     jobs:
-      - backend:
-          context: SonarCloud
       - frontend:
           context: SonarCloud
+      - backend:
+          context: SonarCloud
+          requires:
+            - frontend

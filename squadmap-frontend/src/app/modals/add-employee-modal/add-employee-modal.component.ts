@@ -23,9 +23,9 @@ export class AddEmployeeModalComponent implements OnInit {
     this.errorMessage = '';
   }
 
-  onAddEmployee(employee: EmployeeModel, since: HTMLInputElement, until: HTMLInputElement, workload: HTMLInputElement) {
+  onAddEmployee(employee: EmployeeModel, since: Date, until: Date, workload: number) {
     this.workingOnService.createWorkingOn(
-      new CreateWorkingOnModel(employee.employeeId, this.projectId, since.valueAsDate, until.valueAsDate, +workload.value))
+      new CreateWorkingOnModel(employee.employeeId, this.projectId, since, until, workload))
       .subscribe(() => {
       this.modalRef.hide();
       location.reload();

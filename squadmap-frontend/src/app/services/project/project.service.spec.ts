@@ -9,6 +9,8 @@ describe('ProjectService', () => {
   let service: ProjectService;
   let httpMock: HttpTestingController;
 
+  let dummyProjects: ProjectModel[];
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -16,18 +18,8 @@ describe('ProjectService', () => {
     });
     service = TestBed.get(ProjectService);
     httpMock = TestBed.get(HttpTestingController);
-  });
 
-  afterAll(() => {
-    httpMock.verify();
-  });
-
-  it('should be created',  () => {
-    expect(TestBed.get(EmployeeService)).toBeTruthy();
-  });
-
-  it('should be able to retrieve all projects from the API via GET', () => {
-    const dummyProjects: ProjectModel[] = [
+    dummyProjects = [
       {
         projectId: 1,
         title: 'Test1',
@@ -49,6 +41,17 @@ describe('ProjectService', () => {
         employees: []
       },
     ];
+  });
+
+  afterAll(() => {
+    httpMock.verify();
+  });
+
+  it('should be created',  () => {
+    expect(TestBed.get(EmployeeService)).toBeTruthy();
+  });
+
+  it('should be able to retrieve all projects from the API via GET', () => {
     service.getProjects().subscribe(() => {
       expect(service.projects.length).toBe(2);
       expect(JSON.stringify(service.projects)).toEqual(JSON.stringify(dummyProjects));
@@ -78,28 +81,6 @@ describe('ProjectService', () => {
   });
 
   it('should be able to delete a project from the API via DELETE', () => {
-    const dummyProjects: ProjectModel[] = [
-      {
-        projectId: 1,
-        title: 'Test1',
-        description: 'Description1',
-        since: new Date(),
-        until: new Date(),
-        isExternal: false,
-        sites: [],
-        employees: []
-      },
-      {
-        projectId: 2,
-        title: 'Test2',
-        description: 'Description2',
-        since: new Date(),
-        until: new Date(),
-        isExternal: false,
-        sites: [],
-        employees: []
-      },
-    ];
     service.deleteProject(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProjects));
     });
@@ -110,28 +91,6 @@ describe('ProjectService', () => {
   });
 
   it('should be able to update a project from the API via PUT',  () => {
-    const dummyProjects: ProjectModel[] = [
-      {
-        projectId: 1,
-        title: 'Test1',
-        description: 'Description1',
-        since: new Date(),
-        until: new Date(),
-        isExternal: false,
-        sites: [],
-        employees: []
-      },
-      {
-        projectId: 2,
-        title: 'Test2',
-        description: 'Description2',
-        since: new Date(),
-        until: new Date(),
-        isExternal: false,
-        sites: [],
-        employees: []
-      },
-    ];
     const newDummyProject: CreateProjectModel = {
       title: 'TestNew',
       description: 'Description3',

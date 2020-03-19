@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form #projectForm="ngForm" (ngSubmit)="onCreateProject(projectForm)">
+  <form #projectForm="ngForm" (ngSubmit)="onCreateProject()">
     <div class="form-group">
       <label for="title">Project title</label>
       <input type="text" id="title" name="title" class="form-control" ngModel="{{project.title}}">

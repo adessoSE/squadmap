@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {NgForm} from '@angular/forms';
 import {CreateEmployeeModel} from '../../models/createEmployee.model';
@@ -20,6 +20,7 @@ export class EmployeeModalComponent implements OnInit {
   private errorOccurred: boolean;
   private imageType: string;
   private imageSeed: string;
+  @ViewChild(NgForm, {static: true}) employeeForm: NgForm;
 
   constructor(private modalRef: BsModalRef,
               private employeeService: EmployeeService,
@@ -47,15 +48,15 @@ export class EmployeeModalComponent implements OnInit {
     this.birthday = this.dateFormatterService.formatDate(this.employee.birthday);
   }
 
-  onCreateEmployee(employeeForm: NgForm) {
+  onCreateEmployee() {
     const employee = new CreateEmployeeModel(
-      employeeForm.value.firstName,
-      employeeForm.value.lastName,
-      employeeForm.value.birthday,
-      employeeForm.value.email,
-      employeeForm.value.phone,
-      employeeForm.value.isExternal,
-      this.getImage(employeeForm)
+      this.employeeForm.value.firstName,
+      this.employeeForm.value.lastName,
+      this.employeeForm.value.birthday,
+      this.employeeForm.value.email,
+      this.employeeForm.value.phone,
+      this.employeeForm.value.isExternal,
+      this.getImage(this.employeeForm.value.firstName, this.employeeForm.value.lastName)
     );
     if (this.isNew) {
       this.employeeService.addEmployee(employee).subscribe(() => {
@@ -100,11 +101,11 @@ export class EmployeeModalComponent implements OnInit {
     }
   }
 
-  private getImage(employeeForm: NgForm): string {
+  private getImage(firstName: string, lastName: string): string {
     let image = '';
     const pattern = /^[A-Za-z0-9]+$/;
     if (this.imageType === '' || this.imageType === 'initials') {
-      image = 'initials/' + employeeForm.value.firstName.charAt(0) + '_' + employeeForm.value.lastName.charAt(0);
+      image = 'initials/' + firstName.charAt(0) + '_' + lastName.charAt(0);
     } else if (this.imageSeed !== '' && !pattern.test(this.imageSeed)) {
       this.handleError('Only the characters A-Z, a-z and 0-9 are allowed');
       return;
