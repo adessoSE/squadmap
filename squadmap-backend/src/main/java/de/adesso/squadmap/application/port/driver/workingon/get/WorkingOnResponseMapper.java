@@ -20,12 +20,13 @@ public class WorkingOnResponseMapper implements ResponseMapper<WorkingOn, GetWor
 
     @Override
     public GetWorkingOnResponse toResponse(WorkingOn workingOn, List<WorkingOn> workingOns) {
-        return new GetWorkingOnResponse(
-                workingOn.getWorkingOnId(),
-                employeeResponseMapper.toResponse(workingOn.getEmployee(), workingOns),
-                projectResponseMapper.toResponse(workingOn.getProject(), workingOns),
-                workingOn.getSince(),
-                workingOn.getUntil(),
-                workingOn.getWorkload());
+        return GetWorkingOnResponse.builder()
+                .workingOnId(workingOn.getWorkingOnId())
+                .since(workingOn.getSince())
+                .until(workingOn.getUntil())
+                .workload(workingOn.getWorkload())
+                .employee(employeeResponseMapper.toResponse(workingOn.getEmployee(), workingOns))
+                .project(projectResponseMapper.toResponse(workingOn.getProject(), workingOns))
+                .build();
     }
 }

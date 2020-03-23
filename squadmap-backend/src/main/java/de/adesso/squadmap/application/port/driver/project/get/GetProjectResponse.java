@@ -2,8 +2,7 @@ package de.adesso.squadmap.application.port.driver.project.get;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import java.util.stream.Collectors;
 @Value
 @Builder(builderClassName = "GetProjectResponseBuilder")
 @JsonDeserialize(builder = GetProjectResponse.GetProjectResponseBuilder.class)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetProjectResponse {
 
     Long projectId;
@@ -26,31 +26,17 @@ public class GetProjectResponse {
     List<String> sites;
     List<GetWorkingOnResponseWithoutProject> employees;
 
-    private GetProjectResponse(
-            Long projectId,
-            String title,
-            String description,
-            LocalDate since,
-            LocalDate until,
-            Boolean isExternal,
-            List<String> sites,
-            List<GetWorkingOnResponseWithoutProject> employees) {
-        this.projectId = projectId;
-        this.title = title;
-        this.description = description;
-        this.since = since;
-        this.until = until;
-        this.isExternal = isExternal;
-        this.sites = sites;
-        this.employees = Optional.ofNullable(employees).stream().flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
-
     public List<GetWorkingOnResponseWithoutProject> getEmployees() {
         return new ArrayList<>(this.employees);
     }
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class GetProjectResponseBuilder {
+
+        public GetProjectResponseBuilder employees(List<GetWorkingOnResponseWithoutProject> employees) {
+            this.employees = Optional.ofNullable(employees).stream().flatMap(Collection::stream)
+                .collect(Collectors.toList());
+            return this;
+        }
     }
 }

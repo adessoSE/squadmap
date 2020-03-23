@@ -24,15 +24,15 @@ public class ProjectResponseMapper implements ResponseMapper<Project, GetProject
                                 .until(workingOn.getUntil())
                                 .workload(workingOn.getWorkload())
                                 .employee(GetEmployeeResponseWithoutProject.builder()
-                                                .employeeId(workingOn.getEmployee().getEmployeeId())
-                                                .firstName(workingOn.getEmployee().getFirstName())
-                                                .lastName(workingOn.getEmployee().getLastName())
-                                                .birthday(workingOn.getEmployee().getBirthday())
-                                                .email(workingOn.getEmployee().getEmail())
-                                                .phone(workingOn.getEmployee().getPhone())
-                                                .image(workingOn.getEmployee().getImage())
-                                                .isExternal(workingOn.getEmployee().getIsExternal())
-                                                .build())
+                                        .employeeId(workingOn.getEmployee().getEmployeeId())
+                                        .firstName(workingOn.getEmployee().getFirstName())
+                                        .lastName(workingOn.getEmployee().getLastName())
+                                        .birthday(workingOn.getEmployee().getBirthday())
+                                        .email(workingOn.getEmployee().getEmail())
+                                        .phone(workingOn.getEmployee().getPhone())
+                                        .image(workingOn.getEmployee().getImage())
+                                        .isExternal(workingOn.getEmployee().getIsExternal())
+                                        .build())
                                 .build())
                 .collect(Collectors.toList());
 
@@ -46,5 +46,6 @@ public class ProjectResponseMapper implements ResponseMapper<Project, GetProject
                 .isExternal(project.getIsExternal())
                 .employees(workingOnResponseWithoutProjectList)
                 .build();
+
     }
 }
