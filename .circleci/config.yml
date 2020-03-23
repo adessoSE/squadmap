@@ -42,7 +42,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - squadmap-frontend/coverage/squadmap-frontend
+            - squadmap/squadmap-frontend/coverage
 
 workflows:
   main:
