@@ -18,6 +18,8 @@ jobs:
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - attach_workspace:
           at: .
+      - run: ls -A1 ~/
+      - run: ls -A1 ~/squadmap
       - run: ls -A1 ~/squadmap/squadmap-frontend
       - run: ls -A1 ~/squadmap/squadmap-frontend/coverage
       - run: ls -A1 ~/squadmap/squadmap-frontend/coverage/squadmap-frontend
