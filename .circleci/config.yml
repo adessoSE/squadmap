@@ -19,6 +19,7 @@ jobs:
       - attach_workspace:
           at: ~/squadmap/squadmap-frontend
       - run: ls -A1 ~/squadmap/squadmap-frontend
+      - run: ls -A1 ~/squadmap/squadmap-frontend/squadmap-frontend
       - run: gradle build
       - run:
           name: Analyze on SonarCloud
@@ -40,9 +41,9 @@ jobs:
             - "node_modules"
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - persist_to_workspace:
-          root: ./coverage/squadmap-frontend
+          root: ./coverage
           paths:
-            -
+            - squadmap-frontend
 
 workflows:
   main:
