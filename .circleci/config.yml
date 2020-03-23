@@ -17,7 +17,7 @@ jobs:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - attach_workspace:
-          at: ~/squadmap
+          at: ~/
       - run: ls -A1 ~/squadmap/squadmap-frontend
       - run: gradle build
       - run:
@@ -40,10 +40,9 @@ jobs:
             - "node_modules"
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - persist_to_workspace:
-          root: ./coverage
+          root: ~/
           paths:
-            - squadmap-frontend
-
+            - squadmap/squadmap-frontend/coverage
 workflows:
   main:
     jobs:
