@@ -17,30 +17,34 @@ public class ProjectResponseMapper implements ResponseMapper<Project, GetProject
         List<GetWorkingOnResponseWithoutProject> workingOnResponseWithoutProjectList = workingOns.stream()
                 .filter(Objects::nonNull)
                 .filter(workingOn -> workingOn.getProject().getProjectId().equals(project.getProjectId()))
-                .map(workingOn -> new GetWorkingOnResponseWithoutProject(
-                        workingOn.getWorkingOnId(),
-                        new GetEmployeeResponseWithoutProject(
-                                workingOn.getEmployee().getEmployeeId(),
-                                workingOn.getEmployee().getFirstName(),
-                                workingOn.getEmployee().getLastName(),
-                                workingOn.getEmployee().getBirthday(),
-                                workingOn.getEmployee().getEmail(),
-                                workingOn.getEmployee().getPhone(),
-                                workingOn.getEmployee().getIsExternal(),
-                                workingOn.getEmployee().getImage()),
-                        workingOn.getSince(),
-                        workingOn.getUntil(),
-                        workingOn.getWorkload()))
+                .map(workingOn ->
+                        GetWorkingOnResponseWithoutProject.builder()
+                                .workingOnId(workingOn.getWorkingOnId())
+                                .since(workingOn.getSince())
+                                .until(workingOn.getUntil())
+                                .workload(workingOn.getWorkload())
+                                .employee(GetEmployeeResponseWithoutProject.builder()
+                                                .employeeId(workingOn.getEmployee().getEmployeeId())
+                                                .firstName(workingOn.getEmployee().getFirstName())
+                                                .lastName(workingOn.getEmployee().getLastName())
+                                                .birthday(workingOn.getEmployee().getBirthday())
+                                                .email(workingOn.getEmployee().getEmail())
+                                                .phone(workingOn.getEmployee().getPhone())
+                                                .image(workingOn.getEmployee().getImage())
+                                                .isExternal(workingOn.getEmployee().getIsExternal())
+                                                .build())
+                                .build())
                 .collect(Collectors.toList());
 
-        return new GetProjectResponse(
-                project.getProjectId(),
-                project.getTitle(),
-                project.getDescription(),
-                project.getSince(),
-                project.getUntil(),
-                project.getIsExternal(),
-                project.getSites(),
-                workingOnResponseWithoutProjectList);
+        return GetProjectResponse.builder()
+                .projectId(project.getProjectId())
+                .title(project.getTitle())
+                .description(project.getDescription())
+                .since(project.getSince())
+                .until(project.getUntil())
+                .sites(project.getSites())
+                .isExternal(project.getIsExternal())
+                .employees(workingOnResponseWithoutProjectList)
+                .build();
     }
 }
