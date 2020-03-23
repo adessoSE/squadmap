@@ -19,7 +19,6 @@ jobs:
       - attach_workspace:
           at: ~/squadmap
       - run: ls -A1 ~/squadmap/squadmap-frontend
-      - run: ls -A1 ~/squadmap/squadmap-frontend/squadmap-frontend
       - run: gradle build
       - run:
           name: Analyze on SonarCloud
