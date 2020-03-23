@@ -40,9 +40,9 @@ jobs:
             - "node_modules"
       - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - persist_to_workspace:
-          root: ./squadmap/squadmap-frontend
+          root: ./coverage
           paths:
-            - coverage
+            - squadmap-frontend
 
 workflows:
   main:
