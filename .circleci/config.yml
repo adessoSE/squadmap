@@ -17,12 +17,11 @@ jobs:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - run: gradle build
-      - run: ls -A1 ~/sqaudmap/squadmap-backend
-      - run: ls -r -A1 ~/sqaudmap/squadmap-backend
+      - run: ls -r -A1 ~/squadmap/squadmap-backend
       - persist_to_workspace:
           root: ~/
           paths:
-            - squadmap/sqaudmap-backend/build
+            - squadmap/squadmap-backend/build
 
   frontend:
     docker:
