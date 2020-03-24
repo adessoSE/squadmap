@@ -54,7 +54,7 @@ jobs:
           at: ~/
       - run:
           name: Analyze on Sonarcloud
-          command: gradle :sonarcloud
+          command: gradle sonarqube
 
 workflows:
   main:
