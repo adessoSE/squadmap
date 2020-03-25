@@ -11,22 +11,24 @@ import org.springframework.stereotype.Component;
 class WorkingOnDomainMapperImplementation implements WorkingOnDomainMapper {
 
     public WorkingOn mapToDomainEntity(CreateWorkingOnCommand command, Employee employee, Project project) {
-        return new WorkingOn(
-                null,
-                command.getSince(),
-                command.getUntil(),
-                command.getWorkload(),
-                employee,
-                project);
+        return  WorkingOn.builder()
+                .workingOnId(null)
+                .since(command.getSince())
+                .until(command.getUntil())
+                .workload(command.getWorkload())
+                .employee(employee)
+                .project(project)
+                .build();
     }
 
     public WorkingOn mapToDomainEntity(UpdateWorkingOnCommand command, long workingOnId, Employee employee, Project project) {
-        return new WorkingOn(
-                workingOnId,
-                command.getSince(),
-                command.getUntil(),
-                command.getWorkload(),
-                employee,
-                project);
+        return WorkingOn.builder()
+                .workingOnId(workingOnId)
+                .since(command.getSince())
+                .until(command.getUntil())
+                .workload(command.getWorkload())
+                .employee(employee)
+                .project(project)
+                .build();
     }
 }

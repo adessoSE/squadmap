@@ -24,7 +24,7 @@ class ListWorkingOnService implements ListWorkingOnUseCase {
     public List<GetWorkingOnResponse> listWorkingOn() {
         List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
         return allRelations.stream()
-                .map(workingOn -> workingOnResponseMapper.toResponse(workingOn, allRelations))
+                .map(workingOn -> workingOnResponseMapper.mapToResponseEntity(workingOn, allRelations))
                 .collect(Collectors.toList());
     }
 }

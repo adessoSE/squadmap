@@ -9,26 +9,28 @@ import org.springframework.stereotype.Component;
 class EmployeeDomainMapperImplementation implements EmployeeDomainMapper {
 
     public Employee mapToDomainEntity(CreateEmployeeCommand command) {
-        return new Employee(
-                null,
-                command.getFirstName(),
-                command.getLastName(),
-                command.getBirthday(),
-                command.getEmail(),
-                command.getPhone(),
-                command.getIsExternal(),
-                command.getImage());
+        return Employee.builder()
+                .employeeId(null)
+                .firstName(command.getFirstName())
+                .lastName(command.getLastName())
+                .birthday(command.getBirthday())
+                .email(command.getEmail())
+                .phone(command.getPhone())
+                .image(command.getImage())
+                .isExternal(command.getIsExternal())
+                .build();
     }
 
     public Employee mapToDomainEntity(UpdateEmployeeCommand command, long employeeId) {
-        return new Employee(
-                employeeId,
-                command.getFirstName(),
-                command.getLastName(),
-                command.getBirthday(),
-                command.getEmail(),
-                command.getPhone(),
-                command.getIsExternal(),
-                command.getImage());
+        return Employee.builder()
+                .employeeId(employeeId)
+                .firstName(command.getFirstName())
+                .lastName(command.getLastName())
+                .birthday(command.getBirthday())
+                .email(command.getEmail())
+                .phone(command.getPhone())
+                .image(command.getImage())
+                .isExternal(command.getIsExternal())
+                .build();
     }
 }

@@ -20,13 +20,14 @@ class ProjectDomainMapperImplementation implements ProjectDomainMapper {
     }
 
     public Project mapToDomainEntity(UpdateProjectCommand command, long projectId) {
-        return new Project(
-                projectId,
-                command.getTitle(),
-                command.getDescription(),
-                command.getSince(),
-                command.getUntil(),
-                command.getIsExternal(),
-                command.getSites());
+        return Project.builder()
+                .projectId(projectId)
+                .title(command.getTitle())
+                .description(command.getDescription())
+                .since(command.getSince())
+                .until(command.getUntil())
+                .isExternal(command.getIsExternal())
+                .sites(command.getSites())
+                .build();
     }
 }

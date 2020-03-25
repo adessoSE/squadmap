@@ -21,7 +21,7 @@ class GetEmployeeService implements GetEmployeeUseCase {
     @Override
     @Transactional
     public GetEmployeeResponse getEmployee(Long employeeId) {
-        return employeeResponseMapper.toResponse(
+        return employeeResponseMapper.mapToResponseEntity(
                 getEmployeePort.getEmployee(employeeId),
                 listWorkingOnPort.listWorkingOnByEmployeeId(employeeId));
     }

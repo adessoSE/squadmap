@@ -41,8 +41,8 @@ class ListWorkingOnServiceTest {
         List<WorkingOn> allRelations = Arrays.asList(workingOn1, workingOn2);
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(workingOnResponseMapper.toResponse(workingOn1, allRelations)).thenReturn(getWorkingOnResponse);
-        when(workingOnResponseMapper.toResponse(workingOn2, allRelations)).thenReturn(getWorkingOnResponse);
+        when(workingOnResponseMapper.mapToResponseEntity(workingOn1, allRelations)).thenReturn(getWorkingOnResponse);
+        when(workingOnResponseMapper.mapToResponseEntity(workingOn2, allRelations)).thenReturn(getWorkingOnResponse);
 
         //when
         List<GetWorkingOnResponse> responses = listWorkingOnService.listWorkingOn();
@@ -50,8 +50,8 @@ class ListWorkingOnServiceTest {
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getWorkingOnResponse));
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1)).toResponse(workingOn1, allRelations);
-        verify(workingOnResponseMapper, times(1)).toResponse(workingOn2, allRelations);
+        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn1, allRelations);
+        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn2, allRelations);
         verifyNoMoreInteractions(listWorkingOnPort);
         verifyNoMoreInteractions(workingOnResponseMapper);
     }

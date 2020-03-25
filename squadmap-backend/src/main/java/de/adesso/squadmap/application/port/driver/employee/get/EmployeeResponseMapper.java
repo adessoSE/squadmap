@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 class EmployeeResponseMapper implements ResponseMapper<Employee, GetEmployeeResponse> {
 
     @Override
-    public GetEmployeeResponse toResponse(Employee employee, List<WorkingOn> workingOns) {
+    public GetEmployeeResponse mapToResponseEntity(Employee employee, List<WorkingOn> workingOns) {
         List<GetWorkingOnResponseWithoutEmployee> workingOnResponseList = workingOns.stream()
                 .filter(Objects::nonNull)
                 .filter(workingOn -> workingOn.getEmployee().getEmployeeId().equals(employee.getEmployeeId()))

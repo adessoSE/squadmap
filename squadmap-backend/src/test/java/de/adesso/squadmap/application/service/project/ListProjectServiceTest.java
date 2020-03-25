@@ -43,8 +43,8 @@ class ListProjectServiceTest {
         List<WorkingOn> allRelations = new ArrayList<>();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(projectResponseMapper.toResponse(project1, allRelations)).thenReturn(getProjectResponse);
-        when(projectResponseMapper.toResponse(project2, allRelations)).thenReturn(getProjectResponse);
+        when(projectResponseMapper.mapToResponseEntity(project1, allRelations)).thenReturn(getProjectResponse);
+        when(projectResponseMapper.mapToResponseEntity(project2, allRelations)).thenReturn(getProjectResponse);
         when(listProjectPort.listProjects()).thenReturn(projects);
 
         //when
@@ -53,8 +53,8 @@ class ListProjectServiceTest {
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getProjectResponse));
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(projectResponseMapper, times(1)).toResponse(project1, allRelations);
-        verify(projectResponseMapper, times(1)).toResponse(project2, allRelations);
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project1, allRelations);
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project2, allRelations);
         verify(listProjectPort, times(1)).listProjects();
         verifyNoMoreInteractions(listWorkingOnPort);
         verifyNoMoreInteractions(projectResponseMapper);

@@ -21,7 +21,7 @@ class GetProjectService implements GetProjectUseCase {
     @Override
     @Transactional
     public GetProjectResponse getProject(Long projectId) {
-        return projectResponseMapper.toResponse(
+        return projectResponseMapper.mapToResponseEntity(
                 getProjectPort.getProject(projectId),
                 listWorkingOnPort.listWorkingOnByProjectId(projectId));
     }

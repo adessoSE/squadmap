@@ -41,7 +41,7 @@ class GetProjectServiceTest {
         List<WorkingOn> projectsRelations = new ArrayList<>();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOnByProjectId(projectId)).thenReturn(projectsRelations);
-        when(projectResponseMapper.toResponse(project, projectsRelations)).thenReturn(getProjectResponse);
+        when(projectResponseMapper.mapToResponseEntity(project, projectsRelations)).thenReturn(getProjectResponse);
         when(getProjectPort.getProject(projectId)).thenReturn(project);
 
         //when
@@ -50,7 +50,7 @@ class GetProjectServiceTest {
         //then
         assertThat(response).isEqualTo(getProjectResponse);
         verify(listWorkingOnPort, times(1)).listWorkingOnByProjectId(projectId);
-        verify(projectResponseMapper, times(1)).toResponse(project, projectsRelations);
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project, projectsRelations);
         verify(getProjectPort, times(1)).getProject(projectId);
         verifyNoMoreInteractions(listWorkingOnPort);
         verifyNoMoreInteractions(projectResponseMapper);

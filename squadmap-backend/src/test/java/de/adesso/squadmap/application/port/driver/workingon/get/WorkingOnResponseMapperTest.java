@@ -41,11 +41,11 @@ public class WorkingOnResponseMapperTest {
         GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
         GetProjectResponse projectResponse = GetProjectResponseMother.complete().build();
         List<WorkingOn> workingOnList = Collections.singletonList(workingOn);
-        when(employeeResponseMapper.toResponse(employee, workingOnList)).thenReturn(employeeResponse);
-        when(projectResponseMapper.toResponse(project, workingOnList)).thenReturn(projectResponse);
+        when(employeeResponseMapper.mapToResponseEntity(employee, workingOnList)).thenReturn(employeeResponse);
+        when(projectResponseMapper.mapToResponseEntity(project, workingOnList)).thenReturn(projectResponse);
 
         //when
-        GetWorkingOnResponse getWorkingOnResponse = workingOnResponseMapper.toResponse(workingOn, workingOnList);
+        GetWorkingOnResponse getWorkingOnResponse = workingOnResponseMapper.mapToResponseEntity(workingOn, workingOnList);
 
         //then
         assertThat(getWorkingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());
@@ -54,7 +54,7 @@ public class WorkingOnResponseMapperTest {
         assertThat(getWorkingOnResponse.getWorkload()).isEqualTo(workingOn.getWorkload());
         assertThat(getWorkingOnResponse.getEmployee()).isEqualTo(employeeResponse);
         assertThat(getWorkingOnResponse.getProject()).isEqualTo(projectResponse);
-        verify(employeeResponseMapper, times(1)).toResponse(employee, workingOnList);
-        verify(projectResponseMapper, times(1)).toResponse(project, workingOnList);
+        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, workingOnList);
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project, workingOnList);
     }
 }

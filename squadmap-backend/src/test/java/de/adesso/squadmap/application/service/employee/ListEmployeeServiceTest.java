@@ -43,8 +43,8 @@ class ListEmployeeServiceTest {
         List<WorkingOn> allRelations = new ArrayList<>();
         GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(employeeResponseMapper.toResponse(employee1, allRelations)).thenReturn(getEmployeeResponse);
-        when(employeeResponseMapper.toResponse(employee2, allRelations)).thenReturn(getEmployeeResponse);
+        when(employeeResponseMapper.mapToResponseEntity(employee1, allRelations)).thenReturn(getEmployeeResponse);
+        when(employeeResponseMapper.mapToResponseEntity(employee2, allRelations)).thenReturn(getEmployeeResponse);
         when(listEmployeePort.listEmployees()).thenReturn(employees);
 
         //when
@@ -53,8 +53,8 @@ class ListEmployeeServiceTest {
         //then
         responses.forEach(response -> assertThat(response).isEqualTo(getEmployeeResponse));
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(employeeResponseMapper, times(1)).toResponse(employee1, allRelations);
-        verify(employeeResponseMapper, times(1)).toResponse(employee2, allRelations);
+        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee1, allRelations);
+        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee2, allRelations);
         verify(listEmployeePort, times(1)).listEmployees();
         verifyNoMoreInteractions(listWorkingOnPort);
         verifyNoMoreInteractions(employeeResponseMapper);

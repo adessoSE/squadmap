@@ -27,7 +27,7 @@ class ListProjectService implements ListProjectUseCase {
     public List<GetProjectResponse> listProjects() {
         List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
         return listProjectPort.listProjects().stream()
-                .map(project -> projectResponseMapper.toResponse(project, allRelations))
+                .map(project -> projectResponseMapper.mapToResponseEntity(project, allRelations))
                 .collect(Collectors.toList());
     }
 }

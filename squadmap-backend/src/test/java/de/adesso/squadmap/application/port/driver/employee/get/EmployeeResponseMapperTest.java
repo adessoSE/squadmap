@@ -31,7 +31,7 @@ public class EmployeeResponseMapperTest {
         List<WorkingOn> workingOnList = Collections.singletonList(workingOn);
 
         //when
-        GetEmployeeResponse getEmployeeResponse = employeeResponseMapper.toResponse(employee, workingOnList);
+        GetEmployeeResponse getEmployeeResponse = employeeResponseMapper.mapToResponseEntity(employee, workingOnList);
 
         //then
         assertThat(getEmployeeResponse.getEmployeeId()).isEqualTo(employee.getEmployeeId());

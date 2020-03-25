@@ -18,7 +18,7 @@ public class CreateProjectCommand extends ProjectCommand {
 
     @Builder
     @JsonCreator
-    public CreateProjectCommand(
+    CreateProjectCommand(
             @JsonProperty("title") String title,
             @JsonProperty("description") String description,
             @JsonProperty("since") LocalDate since,

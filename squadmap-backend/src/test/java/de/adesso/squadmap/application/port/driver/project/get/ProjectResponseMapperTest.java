@@ -30,7 +30,7 @@ public class ProjectResponseMapperTest {
         List<WorkingOn> workingOnList = Collections.singletonList(workingOn);
 
         //when
-        GetProjectResponse getProjectResponse = projectResponseMapper.toResponse(project, workingOnList);
+        GetProjectResponse getProjectResponse = projectResponseMapper.mapToResponseEntity(project, workingOnList);
 
         //then
         assertThat(getProjectResponse.getProjectId()).isEqualTo(project.getProjectId());

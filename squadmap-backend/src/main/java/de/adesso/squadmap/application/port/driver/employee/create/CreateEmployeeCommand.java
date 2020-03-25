@@ -17,7 +17,7 @@ public class CreateEmployeeCommand extends EmployeeCommand {
 
     @Builder
     @JsonCreator
-    public CreateEmployeeCommand(
+    CreateEmployeeCommand(
             @JsonProperty("firstName") String firstName,
             @JsonProperty("lastName") String lastName,
             @JsonProperty("birthday") LocalDate birthday,

@@ -27,7 +27,7 @@ class ListEmployeeService implements ListEmployeeUseCase {
     public List<GetEmployeeResponse> listEmployees() {
         List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
         return listEmployeePort.listEmployees().stream()
-                .map(employee -> employeeResponseMapper.toResponse(employee, allRelations))
+                .map(employee -> employeeResponseMapper.mapToResponseEntity(employee, allRelations))
                 .collect(Collectors.toList());
     }
 }

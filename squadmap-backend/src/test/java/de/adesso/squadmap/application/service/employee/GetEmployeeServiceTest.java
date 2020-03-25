@@ -43,7 +43,7 @@ class GetEmployeeServiceTest {
         List<WorkingOn> employeesRelations = new ArrayList<>();
         GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
         when(getEmployeePort.getEmployee(employeeId)).thenReturn(employee);
-        when(employeeResponseMapper.toResponse(employee, employeesRelations)).thenReturn(getEmployeeResponse);
+        when(employeeResponseMapper.mapToResponseEntity(employee, employeesRelations)).thenReturn(getEmployeeResponse);
         when(listWorkingOnPort.listWorkingOnByEmployeeId(employeeId)).thenReturn(employeesRelations);
 
         //when
@@ -52,7 +52,7 @@ class GetEmployeeServiceTest {
         //then
         assertThat(response).isEqualTo(getEmployeeResponse);
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
-        verify(employeeResponseMapper, times(1)).toResponse(employee, employeesRelations);
+        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, employeesRelations);
         verify(listWorkingOnPort, times(1)).listWorkingOnByEmployeeId(employeeId);
         verifyNoMoreInteractions(getEmployeePort);
         verifyNoMoreInteractions(employeeResponseMapper);

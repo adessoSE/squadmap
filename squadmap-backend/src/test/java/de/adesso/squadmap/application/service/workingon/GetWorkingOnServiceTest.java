@@ -42,7 +42,7 @@ class GetWorkingOnServiceTest {
         List<WorkingOn> allRelations = new ArrayList<>();
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
         when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(workingOnResponseMapper.toResponse(workingOn, allRelations)).thenReturn(getWorkingOnResponse);
+        when(workingOnResponseMapper.mapToResponseEntity(workingOn, allRelations)).thenReturn(getWorkingOnResponse);
         when(getWorkingOnPort.getWorkingOn(workingOnId)).thenReturn(workingOn);
 
         //when
@@ -51,7 +51,7 @@ class GetWorkingOnServiceTest {
         //then
         assertThat(response).isEqualTo(getWorkingOnResponse);
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1)).toResponse(workingOn, allRelations);
+        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn, allRelations);
         verify(getWorkingOnPort, times(1)).getWorkingOn(workingOnId);
         verifyNoMoreInteractions(listWorkingOnPort);
         verifyNoMoreInteractions(workingOnResponseMapper);

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class ProjectResponseMapper implements ResponseMapper<Project, GetProjectResponse> {
 
     @Override
-    public GetProjectResponse toResponse(Project project, List<WorkingOn> workingOns) {
+    public GetProjectResponse mapToResponseEntity(Project project, List<WorkingOn> workingOns) {
         List<GetWorkingOnResponseWithoutProject> workingOnResponseWithoutProjectList = workingOns.stream()
                 .filter(Objects::nonNull)
                 .filter(workingOn -> workingOn.getProject().getProjectId().equals(project.getProjectId()))

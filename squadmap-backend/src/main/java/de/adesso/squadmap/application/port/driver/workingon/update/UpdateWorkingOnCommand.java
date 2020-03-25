@@ -17,7 +17,7 @@ public class UpdateWorkingOnCommand extends WorkingOnCommand {
 
     @Builder
     @JsonCreator
-    public UpdateWorkingOnCommand(
+    UpdateWorkingOnCommand(
             @JsonProperty("employeeId") long employeeId,
             @JsonProperty("projectId") long projectId,
             @JsonProperty("since") LocalDate since,

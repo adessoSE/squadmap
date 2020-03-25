@@ -21,7 +21,7 @@ class GetWorkingOnService implements GetWorkingOnUseCase {
     @Override
     @Transactional
     public GetWorkingOnResponse getWorkingOn(Long workingOnId) {
-        return workingOnResponseMapper.toResponse(
+        return workingOnResponseMapper.mapToResponseEntity(
                 getWorkingOnPort.getWorkingOn(workingOnId),
                 listWorkingOnPort.listWorkingOn());
     }
