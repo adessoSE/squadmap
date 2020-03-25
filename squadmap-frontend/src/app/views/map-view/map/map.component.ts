@@ -18,8 +18,8 @@ import {Router} from '@angular/router';
 })
 export class MapComponent implements OnInit {
 
-  private employees: EmployeeModel[];
-  private projects: ProjectModel[];
+  public employees: EmployeeModel[];
+  public projects: ProjectModel[];
   private dateThreshold: Date;
   modalRef: BsModalRef;
   @ViewChild('createWorkingOnModal', {static: false}) createWorkingOnModal: TemplateRef<any>;
@@ -27,7 +27,7 @@ export class MapComponent implements OnInit {
   public network: Network;
   private container: HTMLElement;
   private layoutSeed: number;
-  private isPhysicsEnabled: boolean;
+  public isPhysicsEnabled: boolean;
 
   constructor(private employeeService: EmployeeService,
               private projectService: ProjectService,
