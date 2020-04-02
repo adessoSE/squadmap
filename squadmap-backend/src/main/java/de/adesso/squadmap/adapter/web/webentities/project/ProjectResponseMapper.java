@@ -1,8 +1,8 @@
-package de.adesso.squadmap.application.port.driver.project.get;
+package de.adesso.squadmap.adapter.web.webentities.project;
 
+import de.adesso.squadmap.adapter.web.ResponseMapper;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.port.driver.ResponseMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

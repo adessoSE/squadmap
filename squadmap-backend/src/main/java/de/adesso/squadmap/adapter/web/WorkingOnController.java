@@ -3,10 +3,11 @@ package de.adesso.squadmap.adapter.web;
 import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnSinceException;
 import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnUntilException;
 import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnWorkloadException;
+import de.adesso.squadmap.adapter.web.webentities.workingon.GetWorkingOnResponse;
+import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
-import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -30,15 +32,22 @@ class WorkingOnController {
     private final CreateWorkingOnUseCase createWorkingOnUseCase;
     private final UpdateWorkingOnUseCase updateWorkingOnUseCase;
     private final DeleteWorkingOnUseCase deleteWorkingOnUseCase;
+    private final ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
 
     @GetMapping("/all")
     public List<GetWorkingOnResponse> getAllWorkingOn() {
-        return listWorkingOnUseCase.listWorkingOn();
+        List<WorkingOn> workingOnList = listWorkingOnUseCase.listWorkingOn();
+        return workingOnList.stream()
+                .map(workingOn -> workingOnResponseMapper.mapToResponseEntity(
+                        workingOn, workingOnList))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{workingOnId}")
     public GetWorkingOnResponse getWorkingOn(@PathVariable long workingOnId) {
-        return getWorkingOnUseCase.getWorkingOn(workingOnId);
+        return workingOnResponseMapper.mapToResponseEntity(
+                getWorkingOnUseCase.getWorkingOn(workingOnId),
+                listWorkingOnUseCase.listWorkingOn());
     }
 
     @PostMapping("/create")

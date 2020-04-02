@@ -1,11 +1,11 @@
-package de.adesso.squadmap.application.port.driver.workingon.get;
+package de.adesso.squadmap.adapter.web.webentities.workingon;
 
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.port.driver.ResponseMapper;
-import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
+import de.adesso.squadmap.adapter.web.ResponseMapper;
+import de.adesso.squadmap.adapter.web.webentities.employee.GetEmployeeResponse;
+import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

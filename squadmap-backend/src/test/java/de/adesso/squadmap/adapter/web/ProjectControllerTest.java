@@ -1,17 +1,21 @@
 package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.adapter.web.exceptions.*;
+import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
+import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponseMother;
+import de.adesso.squadmap.application.domain.Project;
+import de.adesso.squadmap.application.domain.ProjectMother;
+import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommandMother;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.delete.DeleteProjectUseCase;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommandMother;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectUseCase;
+import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +52,10 @@ class ProjectControllerTest {
     private ListProjectUseCase listProjectUseCase;
     @MockBean
     private UpdateProjectUseCase updateProjectUseCase;
+    @MockBean
+    private ListWorkingOnUseCase listWorkingOnUseCase;
+    @MockBean
+    private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
     @Autowired
     private ProjectController projectController;
     private MockMvc mockMvc;
@@ -59,8 +68,12 @@ class ProjectControllerTest {
     @Test
     void checkIfGetAllProjectsReturnsAll() throws Exception {
         //given
+        Project project = ProjectMother.complete().build();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
-        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(getProjectResponse));
+        List<WorkingOn> workingOns = new ArrayList<>();
+        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(project));
+        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(workingOns);
+        when(projectResponseMapper.mapToResponseEntity(project, workingOns)).thenReturn(getProjectResponse);
 
         //when
         MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
@@ -72,14 +85,20 @@ class ProjectControllerTest {
         assertThat(responses.size()).isOne();
         assertThat(responses.get(0)).isEqualTo(getProjectResponse);
         verify(listProjectUseCase, times(1)).listProjects();
+        verify(listWorkingOnUseCase, times(1)).listWorkingOn();
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project, workingOns);
     }
 
     @Test
     void checkIfGetProjectReturnsTheProject() throws Exception {
         //given
         long projectId = 1;
+        Project project = ProjectMother.complete().build();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
-        when(getProjectUseCase.getProject(projectId)).thenReturn(getProjectResponse);
+        List<WorkingOn> workingOns = new ArrayList<>();
+        when(getProjectUseCase.getProject(projectId)).thenReturn(project);
+        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(workingOns);
+        when(projectResponseMapper.mapToResponseEntity(project, workingOns)).thenReturn(getProjectResponse);
 
         //when
         MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", projectId))
@@ -90,6 +109,8 @@ class ProjectControllerTest {
         //then
         assertThat(response).isEqualTo(getProjectResponse);
         verify(getProjectUseCase, times(1)).getProject(projectId);
+        verify(listWorkingOnUseCase, times(1)).listWorkingOn();
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project, workingOns);
     }
 
     @Test

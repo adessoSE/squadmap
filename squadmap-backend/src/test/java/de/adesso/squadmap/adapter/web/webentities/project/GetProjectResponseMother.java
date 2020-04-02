@@ -1,4 +1,4 @@
-package de.adesso.squadmap.application.port.driver.project.get;
+package de.adesso.squadmap.adapter.web.webentities.project;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,8 +1,11 @@
-package de.adesso.squadmap.application.port.driver.project.get;
+package de.adesso.squadmap.adapter.web.webentities.project;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

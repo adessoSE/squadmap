@@ -1,6 +1,8 @@
 package de.adesso.squadmap.application.port.driver.employee.get;
 
+import de.adesso.squadmap.application.domain.Employee;
+
 public interface GetEmployeeUseCase {
 
-    GetEmployeeResponse getEmployee(Long employeeId);
+    Employee getEmployee(Long employeeId);
 }

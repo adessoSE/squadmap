@@ -3,9 +3,6 @@ package de.adesso.squadmap.application.service.workingon;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
-import de.adesso.squadmap.application.port.driver.ResponseMapper;
-import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
-import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +21,6 @@ class ListWorkingOnServiceTest {
 
     @MockBean
     private ListWorkingOnPort listWorkingOnPort;
-    @MockBean
-    private ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
     @Autowired
     private ListWorkingOnService listWorkingOnService;
 
@@ -38,21 +33,15 @@ class ListWorkingOnServiceTest {
         WorkingOn workingOn2 = WorkingOnMother.complete()
                 .workingOnId(2L)
                 .build();
-        List<WorkingOn> allRelations = Arrays.asList(workingOn1, workingOn2);
-        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn1, allRelations)).thenReturn(getWorkingOnResponse);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn2, allRelations)).thenReturn(getWorkingOnResponse);
+        List<WorkingOn> workingOns = Arrays.asList(workingOn1, workingOn2);
+        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
 
         //when
-        List<GetWorkingOnResponse> responses = listWorkingOnService.listWorkingOn();
+        List<WorkingOn> responses = listWorkingOnService.listWorkingOn();
 
         //then
-        responses.forEach(response -> assertThat(response).isEqualTo(getWorkingOnResponse));
+        assertThat(responses).isEqualTo(workingOns);
         verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn1, allRelations);
-        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn2, allRelations);
         verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(workingOnResponseMapper);
     }
 }

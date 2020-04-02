@@ -1,6 +1,8 @@
 package de.adesso.squadmap.application.port.driver.workingon.get;
 
+import de.adesso.squadmap.application.domain.WorkingOn;
+
 public interface GetWorkingOnUseCase {
 
-    GetWorkingOnResponse getWorkingOn(Long workingOnId);
+    WorkingOn getWorkingOn(Long workingOnId);
 }

@@ -1,14 +1,14 @@
 package de.adesso.squadmap.configuration;
 
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.EmployeeMother;
+import de.adesso.squadmap.application.domain.Project;
+import de.adesso.squadmap.application.domain.ProjectMother;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
-import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
-import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import de.adesso.squadmap.application.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
 import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
@@ -66,8 +66,8 @@ public class TestDataGeneratorTest {
     @Test
     void checkIfRunGeneratesNothingWhenEmployeeOnRepositoryContainsData() {
         //given
-        GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
-        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
+        Employee employee = EmployeeMother.complete().build();
+        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employee));
 
         //when
         testDataGenerator.run();
@@ -83,9 +83,9 @@ public class TestDataGeneratorTest {
     @Test
     void checkIfRunGeneratesNothingWhenProjectOnRepositoryContainsData() {
         //given
-        GetProjectResponse projectResponse = GetProjectResponseMother.complete().build();
+        Project project = ProjectMother.complete().build();
         when(listEmployeeUseCase.listEmployees()).thenReturn(new ArrayList<>());
-        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(projectResponse));
+        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(project));
 
         //when
         testDataGenerator.run();

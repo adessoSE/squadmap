@@ -1,7 +1,7 @@
-package de.adesso.squadmap.application.port.driver.workingon.get;
+package de.adesso.squadmap.adapter.web.webentities.workingon;
 
-import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
+import de.adesso.squadmap.adapter.web.webentities.employee.GetEmployeeResponseMother;
+import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponseMother;
 
 import java.time.LocalDate;
 

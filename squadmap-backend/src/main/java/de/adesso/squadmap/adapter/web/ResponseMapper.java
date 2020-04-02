@@ -1,4 +1,4 @@
-package de.adesso.squadmap.application.port.driver;
+package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
 
