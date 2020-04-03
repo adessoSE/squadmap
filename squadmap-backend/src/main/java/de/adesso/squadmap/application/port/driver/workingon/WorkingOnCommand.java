@@ -11,11 +11,11 @@ public abstract class WorkingOnCommand {
 
     private final long employeeId;
     private final long projectId;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final LocalDate since;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final LocalDate until;
-    @NotNull
-    @Range(min = 0, max = 100)
+    @NotNull(message = "should not be null")
+    @Range(min = 0, max = 100, message = "should be a number between {min} and {max}")
     private final Integer workload;
 }

@@ -50,44 +50,17 @@ class EmployeeController {
     }
 
     @PostMapping("/create")
-    public Long createEmployee(@RequestBody @Valid CreateEmployeeCommand command, BindingResult bindingResult) {
-        checkInput(bindingResult);
+    public Long createEmployee(@RequestBody CreateEmployeeCommand command) {
         return createEmployeeUseCase.createEmployee(command);
     }
 
     @PutMapping("/update/{employeeId}")
-    public void updateEmployee(@PathVariable long employeeId, @RequestBody @Valid UpdateEmployeeCommand command, BindingResult bindingResult) {
-        checkInput(bindingResult);
+    public void updateEmployee(@PathVariable long employeeId, @RequestBody UpdateEmployeeCommand command) {
         updateEmployeeUseCase.updateEmployee(command, employeeId);
     }
 
     @DeleteMapping("delete/{employeeId}")
     public void deleteEmployee(@PathVariable long employeeId) {
         deleteEmployeeUseCase.deleteEmployee(employeeId);
-    }
-
-    private void checkInput(BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            String field = Objects.requireNonNull(bindingResult.getFieldError()).getField();
-            switch (field) {
-                case "firstName":
-                    throw new InvalidEmployeeFirstNameException();
-                case "lastName":
-                    throw new InvalidEmployeeLastNameException();
-                case "birthday":
-                    throw new InvalidEmployeeBirthdayException();
-                case "email":
-                    throw new InvalidEmployeeEmailException();
-                case "phone":
-                    throw new InvalidEmployeePhoneNumberException();
-                case "image":
-                    throw new InvalidEmployeeImageException();
-                case "isExternal":
-                    throw new InvalidEmployeeIsExternalException();
-                default:
-                    throw new IllegalArgumentException("Invalid input");
-            }
-        }
-
     }
 }

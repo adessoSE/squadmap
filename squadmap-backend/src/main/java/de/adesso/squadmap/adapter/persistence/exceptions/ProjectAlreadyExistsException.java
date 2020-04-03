@@ -1,6 +1,8 @@
 package de.adesso.squadmap.adapter.persistence.exceptions;
 
-public class ProjectAlreadyExistsException extends RuntimeException {
+import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
+
+public class ProjectAlreadyExistsException extends AlreadyExistsException {
     public ProjectAlreadyExistsException() {
         super("The title is already used");
     }

@@ -1,6 +1,8 @@
 package de.adesso.squadmap.adapter.persistence.exceptions;
 
-public class WorkingOnNotFoundException extends RuntimeException {
+import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
+
+public class WorkingOnNotFoundException extends NotFoundException {
     public WorkingOnNotFoundException() {
         super("No matching workingOn relation was found");
     }

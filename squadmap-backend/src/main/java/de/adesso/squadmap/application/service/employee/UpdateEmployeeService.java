@@ -17,7 +17,7 @@ class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
     @Override
     @Transactional
-    public void updateEmployee(UpdateEmployeeCommand command, Long employeeId) {
-        updateEmployeePort.updateEmployee(employeeDomainMapper.mapToDomainEntity(command, employeeId));
+    public void updateEmployee(UpdateEmployeeCommand updateEmployeeCommand, Long employeeId) {
+        updateEmployeePort.updateEmployee(employeeDomainMapper.mapToDomainEntity(updateEmployeeCommand, employeeId));
     }
 }

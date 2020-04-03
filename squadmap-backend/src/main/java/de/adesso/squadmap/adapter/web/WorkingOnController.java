@@ -51,34 +51,17 @@ class WorkingOnController {
     }
 
     @PostMapping("/create")
-    public Long createWorkingOn(@RequestBody @Valid CreateWorkingOnCommand command, BindingResult bindingResult) {
-        checkInput(bindingResult);
+    public Long createWorkingOn(@RequestBody CreateWorkingOnCommand command) {
         return createWorkingOnUseCase.createWorkingOn(command);
     }
 
     @PutMapping("/update/{workingOnId}")
-    public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody @Valid UpdateWorkingOnCommand command, BindingResult bindingResult) {
-        checkInput(bindingResult);
+    public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody UpdateWorkingOnCommand command) {
         updateWorkingOnUseCase.updateWorkingOn(command, workingOnId);
     }
 
     @DeleteMapping("/delete/{workingOnId}")
     public void deleteWorkingOn(@PathVariable long workingOnId) {
         deleteWorkingOnUseCase.deleteWorkingOn(workingOnId);
-    }
-
-    private void checkInput(BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            switch (Objects.requireNonNull(bindingResult.getFieldError()).getField()) {
-                case "since":
-                    throw new InvalidWorkingOnSinceException();
-                case "until":
-                    throw new InvalidWorkingOnUntilException();
-                case "workload":
-                    throw new InvalidWorkingOnWorkloadException();
-                default:
-                    throw new IllegalArgumentException("Invalid input");
-            }
-        }
     }
 }

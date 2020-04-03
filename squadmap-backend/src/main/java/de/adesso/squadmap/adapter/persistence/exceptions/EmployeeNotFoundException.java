@@ -1,6 +1,8 @@
 package de.adesso.squadmap.adapter.persistence.exceptions;
 
-public class EmployeeNotFoundException extends RuntimeException {
+import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
+
+public class EmployeeNotFoundException extends NotFoundException {
     public EmployeeNotFoundException() {
         super("No matching employee was found");
     }

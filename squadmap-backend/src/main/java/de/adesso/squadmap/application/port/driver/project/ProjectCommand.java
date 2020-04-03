@@ -16,20 +16,20 @@ import java.util.stream.Collectors;
 @Data
 public abstract class ProjectCommand {
 
-    @NotEmpty
-    @Size(min = 1, max = 100)
+    @NotEmpty(message = "should not be empty")
+    @Size(min = 1, max = 100, message = "has to be between {min} and {max} characters long")
     private final String title;
-    @NotNull
-    @Size(max = 1000)
+    @NotNull(message = "should not be null")
+    @Size(max = 1000, message = "should not contain more than {max} characters")
     private final String description;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final LocalDate since;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final LocalDate until;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final Boolean isExternal;
-    @NotNull
-    private final List<@URL String> sites;
+    @NotNull(message = "should not be null")
+    private final List<@URL(message = "has to be a valid url") String> sites;
 
     public ProjectCommand(String title, String description, LocalDate since, LocalDate until, Boolean isExternal, List<String> sites) {
         this.title = title;

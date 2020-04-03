@@ -1,6 +1,5 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.exceptions.*;
 import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
 import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponseMother;
 import de.adesso.squadmap.application.domain.Project;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -166,225 +164,225 @@ class ProjectControllerTest {
         verify(deleteProjectUseCase, times(1)).deleteProject(projectId);
     }
 
-    @Test
-    void checkIfCreateProjectThrowsInvalidProjectTitleException() {
-        //given
-        CreateProjectCommand projectTitleNull = CreateProjectCommandMother.complete().title(null).build();
-        CreateProjectCommand projectTitleEmpty = CreateProjectCommandMother.complete().title("").build();
-        CreateProjectCommand projectTitleTooLong = CreateProjectCommandMother.complete()
-                .title("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-                .build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectTitleNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectTitleException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectTitleEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectTitleException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectTitleTooLong)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectTitleException());
-    }
-
-    @Test
-    void checkIfCreateProjectThrowsInvalidProjectDescriptionException() {
-        //given
-        CreateProjectCommand projectDescriptionNull = CreateProjectCommandMother.complete().description(null).build();
-        CreateProjectCommand projectDescriptionTooLong = CreateProjectCommandMother.complete()
-                .description("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-                .build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectDescriptionNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectDescriptionException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectDescriptionTooLong)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectDescriptionException());
-    }
-
-    @Test
-    void checkIfCreateProjectThrowsInvalidProjectSinceException() {
-        //given
-        CreateProjectCommand projectSinceNull = CreateProjectCommandMother.complete().since(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectSinceNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectSinceException());
-    }
-
-    @Test
-    void checkIfCreateProjectThrowsInvalidProjectUntilException() {
-        //given
-        CreateProjectCommand projectUntilNull = CreateProjectCommandMother.complete().until(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectUntilNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectUntilException());
-    }
-
-    @Test
-    void checkIfCreateProjectThrowsInvalidProjectURLException() {
-        //given
-        CreateProjectCommand projectInvalidURL = CreateProjectCommandMother.complete()
-                .sites(Collections.singletonList("null"))
-                .build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectInvalidURL)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectUrlListException());
-    }
-
-    @Test
-    void checkIfCreateProjectThrowsInvalidProjectIsExternalException() {
-        //given
-        CreateProjectCommand projectIsExternalNull = CreateProjectCommandMother.complete().isExternal(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectIsExternalNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectIsExternalException());
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsInvalidProjectTitleException() {
-        //given
-        UpdateProjectCommand projectTitleNull = UpdateProjectCommandMother.complete().title(null).build();
-        UpdateProjectCommand projectTitleEmpty = UpdateProjectCommandMother.complete().title("").build();
-        UpdateProjectCommand projectTitleTooLong = UpdateProjectCommandMother.complete()
-                .title("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-                .build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectTitleNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectTitleException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectTitleEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectTitleException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectTitleTooLong)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectTitleException());
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsInvalidProjectDescriptionException() {
-        //given
-        UpdateProjectCommand projectDescriptionNull = UpdateProjectCommandMother.complete().description(null).build();
-        UpdateProjectCommand projectDescriptionTooLong = UpdateProjectCommandMother.complete()
-                .description("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-                .build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectDescriptionNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectDescriptionException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectDescriptionTooLong)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectDescriptionException());
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsInvalidProjectSinceException() {
-        //given
-        UpdateProjectCommand projectSinceNull = UpdateProjectCommandMother.complete().since(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectSinceNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectSinceException());
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsInvalidProjectUntilException() {
-        //given
-        UpdateProjectCommand projectUntilNull = UpdateProjectCommandMother.complete().until(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectUntilNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectUntilException());
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsInvalidProjectURLException() {
-        //given
-        UpdateProjectCommand projectInvalidURL = UpdateProjectCommandMother.complete()
-                .sites(Collections.singletonList("null"))
-                .build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectInvalidURL)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectUrlListException());
-    }
-
-    @Test
-    void checkIfUpdateProjectThrowsInvalidProjectIsExternalException() {
-        //given
-        UpdateProjectCommand projectIsExternalNull = UpdateProjectCommandMother.complete().isExternal(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(projectIsExternalNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidProjectIsExternalException());
-    }
+//    @Test
+//    void checkIfCreateProjectThrowsInvalidProjectTitleException() {
+//        //given
+//        CreateProjectCommand projectTitleNull = CreateProjectCommandMother.complete().title(null).build();
+//        CreateProjectCommand projectTitleEmpty = CreateProjectCommandMother.complete().title("").build();
+//        CreateProjectCommand projectTitleTooLong = CreateProjectCommandMother.complete()
+//                .title("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+//                .build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectTitleNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectTitleException());
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectTitleEmpty)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectTitleException());
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectTitleTooLong)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectTitleException());
+//    }
+//
+//    @Test
+//    void checkIfCreateProjectThrowsInvalidProjectDescriptionException() {
+//        //given
+//        CreateProjectCommand projectDescriptionNull = CreateProjectCommandMother.complete().description(null).build();
+//        CreateProjectCommand projectDescriptionTooLong = CreateProjectCommandMother.complete()
+//                .description("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+//                .build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectDescriptionNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectDescriptionException());
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectDescriptionTooLong)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectDescriptionException());
+//    }
+//
+//    @Test
+//    void checkIfCreateProjectThrowsInvalidProjectSinceException() {
+//        //given
+//        CreateProjectCommand projectSinceNull = CreateProjectCommandMother.complete().since(null).build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectSinceNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectSinceException());
+//    }
+//
+//    @Test
+//    void checkIfCreateProjectThrowsInvalidProjectUntilException() {
+//        //given
+//        CreateProjectCommand projectUntilNull = CreateProjectCommandMother.complete().until(null).build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectUntilNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectUntilException());
+//    }
+//
+//    @Test
+//    void checkIfCreateProjectThrowsInvalidProjectURLException() {
+//        //given
+//        CreateProjectCommand projectInvalidURL = CreateProjectCommandMother.complete()
+//                .sites(Collections.singletonList("null"))
+//                .build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectInvalidURL)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectUrlListException());
+//    }
+//
+//    @Test
+//    void checkIfCreateProjectThrowsInvalidProjectIsExternalException() {
+//        //given
+//        CreateProjectCommand projectIsExternalNull = CreateProjectCommandMother.complete().isExternal(null).build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(post(apiUrl + "/create")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectIsExternalNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectIsExternalException());
+//    }
+//
+//    @Test
+//    void checkIfUpdateProjectThrowsInvalidProjectTitleException() {
+//        //given
+//        UpdateProjectCommand projectTitleNull = UpdateProjectCommandMother.complete().title(null).build();
+//        UpdateProjectCommand projectTitleEmpty = UpdateProjectCommandMother.complete().title("").build();
+//        UpdateProjectCommand projectTitleTooLong = UpdateProjectCommandMother.complete()
+//                .title("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+//                .build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectTitleNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectTitleException());
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectTitleEmpty)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectTitleException());
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectTitleTooLong)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectTitleException());
+//    }
+//
+//    @Test
+//    void checkIfUpdateProjectThrowsInvalidProjectDescriptionException() {
+//        //given
+//        UpdateProjectCommand projectDescriptionNull = UpdateProjectCommandMother.complete().description(null).build();
+//        UpdateProjectCommand projectDescriptionTooLong = UpdateProjectCommandMother.complete()
+//                .description("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+//                .build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectDescriptionNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectDescriptionException());
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectDescriptionTooLong)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectDescriptionException());
+//    }
+//
+//    @Test
+//    void checkIfUpdateProjectThrowsInvalidProjectSinceException() {
+//        //given
+//        UpdateProjectCommand projectSinceNull = UpdateProjectCommandMother.complete().since(null).build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectSinceNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectSinceException());
+//    }
+//
+//    @Test
+//    void checkIfUpdateProjectThrowsInvalidProjectUntilException() {
+//        //given
+//        UpdateProjectCommand projectUntilNull = UpdateProjectCommandMother.complete().until(null).build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectUntilNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectUntilException());
+//    }
+//
+//    @Test
+//    void checkIfUpdateProjectThrowsInvalidProjectURLException() {
+//        //given
+//        UpdateProjectCommand projectInvalidURL = UpdateProjectCommandMother.complete()
+//                .sites(Collections.singletonList("null"))
+//                .build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectInvalidURL)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectUrlListException());
+//    }
+//
+//    @Test
+//    void checkIfUpdateProjectThrowsInvalidProjectIsExternalException() {
+//        //given
+//        UpdateProjectCommand projectIsExternalNull = UpdateProjectCommandMother.complete().isExternal(null).build();
+//
+//        //then
+//        assertThatThrownBy(() ->
+//                mockMvc.perform(put(apiUrl + "/update/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JsonMapper.asJsonString(projectIsExternalNull)))
+//                        .andExpect(status().isOk()))
+//                .hasCause(new InvalidProjectIsExternalException());
+//    }
 }

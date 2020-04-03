@@ -17,7 +17,7 @@ class CreateEmployeeService implements CreateEmployeeUseCase {
 
     @Override
     @Transactional
-    public Long createEmployee(CreateEmployeeCommand command) {
-        return createEmployeePort.createEmployee(employeeDomainMapper.mapToDomainEntity(command));
+    public Long createEmployee(CreateEmployeeCommand createEmployeeCommand) {
+        return createEmployeePort.createEmployee(employeeDomainMapper.mapToDomainEntity(createEmployeeCommand));
     }
 }
