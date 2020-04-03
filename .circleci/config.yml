@@ -17,7 +17,6 @@ jobs:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - run: gradle build
-      - run: ls -r -A1 ~/squadmap/squadmap-backend
       - persist_to_workspace:
           root: ~/
           paths:
