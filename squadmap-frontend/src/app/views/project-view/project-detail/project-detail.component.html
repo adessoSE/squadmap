@@ -64,9 +64,9 @@
               <td>{{employee.until.toDateString()}}</td>
               <td>{{employee.workload}}%</td>
               <td>
+                <button class="btn btn-outline-secondary btn-sm employee-link" type="button" (click)="onOpenEmployeeDetail(employee.employee.employeeId)">Details</button>
                 <button class="btn btn-outline-info btn-sm" type="button" (click)="onEdit(employee)" >Edit</button>
                 <button class="btn btn-outline-danger btn-sm" type="button" (click)="onDelete(employee)">Delete</button>
-                <button class="btn btn-outline-secondary btn-sm employee-link" type="button" (click)="onOpenEmployeeDetail(employee.employee.employeeId)">Details</button>
               </td>
             </tr>
             </tbody>

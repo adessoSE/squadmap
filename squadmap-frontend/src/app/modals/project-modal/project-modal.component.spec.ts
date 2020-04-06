@@ -1,4 +1,4 @@
-import {TestBed} from "@angular/core/testing";
+import {fakeAsync, flush, TestBed, tick} from "@angular/core/testing";
 import {FilterProjectsPipe} from "../../pipes/filterProjects/filterProjects.pipe";
 import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap";
 import {FormsModule} from "@angular/forms";
@@ -42,24 +42,12 @@ describe('Project Modal', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show an error message in the modal', () => {
+  it('should show an error message in the modal', fakeAsync(() => {
     component.handleError('error');
     expect(component.errorOccurred).toBeTruthy();
     expect(component.errorMessage).toEqual('error');
-    // TODO check error message on DOM Element
-  });
-
-  // it('should call addProject when its new',  () =>{
-  //   fixture.detectChanges();
-  //   component.isNew = true;
-  //   component.projectForm.value.title = 'title';
-  //   component.projectForm.value.description = 'test';
-  //   component.projectForm.value.since = '2019-01-01';
-  //   component.projectForm.value.until = '2020-01-01';
-  //   component.projectForm.value.isExternal = false;
-  //   component.onCreateEmployee();
-  //   expect(addProjectServiceSpy).toHaveBeenCalled();
-  // });
-
+    flush();
+    expect(component.errorOccurred).toBeFalsy();
+  }));
 
 });

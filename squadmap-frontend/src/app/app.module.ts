@@ -20,6 +20,10 @@ import {MessageModalComponent} from './modals/message-modal/message-modal.compon
 import {AppRoutingModule, routingComponents} from './app.routing';
 import {MapEmployeeDetailComponent} from './views/map-view/map-employee-detail/map-employee-detail.component';
 import {IconsModule} from './icons/icons.module';
+import {NewWorkingOnModalComponent} from './modals/new-working-on-modal/new-working-on-modal.component';
+import { UpdateWorkingOnProjectModalComponent } from './modals/update-working-on-project-modal/update-working-on-project-modal.component';
+import { UpdateWorkingOnEmployeeModalComponent } from './modals/update-working-on-employee-modal/update-working-on-employee-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +38,10 @@ import {IconsModule} from './icons/icons.module';
     AddProjectModalComponent,
     MessageModalComponent,
     routingComponents,
-    MapEmployeeDetailComponent
+    MapEmployeeDetailComponent,
+    NewWorkingOnModalComponent,
+    UpdateWorkingOnProjectModalComponent,
+    UpdateWorkingOnEmployeeModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -44,8 +51,8 @@ import {IconsModule} from './icons/icons.module';
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,
-    HttpClientModule,
     ReactiveFormsModule,
+    HttpClientModule,
     ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     IconsModule
@@ -59,6 +66,9 @@ import {IconsModule} from './icons/icons.module';
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
+    NewWorkingOnModalComponent,
+    UpdateWorkingOnProjectModalComponent,
+    UpdateWorkingOnEmployeeModalComponent
   ]
 })
 export class AppModule {

@@ -10,6 +10,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {AddEmployeeModalComponent} from '../../../modals/add-employee-modal/add-employee-modal.component';
 import {ProjectModalComponent} from '../../../modals/project-modal/project-modal.component';
+import {UpdateWorkingOnEmployeeModalComponent} from "../../../modals/update-working-on-employee-modal/update-working-on-employee-modal.component";
 
 @Component({
   selector: 'app-project-detail',
@@ -82,7 +83,7 @@ export class ProjectDetailComponent implements OnInit {
         workload: workingOnEmployee.workload
       }
     };
-    this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
+    this.modalRef = this.modalService.show(UpdateWorkingOnEmployeeModalComponent, config);
   }
 
   onOpenEmployeeDetail(employeeId: number) {

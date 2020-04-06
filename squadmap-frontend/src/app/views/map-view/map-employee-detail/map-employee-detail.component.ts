@@ -9,6 +9,7 @@ import {MessageModalComponent} from '../../../modals/message-modal/message-modal
 import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {EmployeeModel} from '../../../models/employee.model';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
+import {NewWorkingOnModalComponent} from "../../../modals/new-working-on-modal/new-working-on-modal.component";
 
 @Component({
   selector: 'app-map-employee-detail',
@@ -16,9 +17,9 @@ import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
   })
 export class MapEmployeeDetailComponent implements OnInit {
 
-  private employee: EmployeeModel;
+  public employee: EmployeeModel;
   private dateThreshold: Date;
-  private network: Network;
+  public network: Network;
   private container: HTMLElement;
   modalRef: BsModalRef;
 
@@ -268,7 +269,7 @@ export class MapEmployeeDetailComponent implements OnInit {
             isNew: true,
           }
         };
-        this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
+        this.modalRef = this.modalService.show(NewWorkingOnModalComponent, config);
         this.modalRef.content.onClose.subscribe(wasSuccessfully => {
           if (wasSuccessfully) {
             let employee: EmployeeModel;

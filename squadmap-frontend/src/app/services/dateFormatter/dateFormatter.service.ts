@@ -6,6 +6,11 @@ import {Injectable} from '@angular/core';
 })
 export class DateFormatterService {
   constructor() {}
+
+  /*
+  Takes an Date Object and returns it as a string in format YYYY-MM-DD
+  */
+
   public formatDate(date: Date): string {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
