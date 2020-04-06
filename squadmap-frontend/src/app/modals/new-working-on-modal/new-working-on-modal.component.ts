@@ -2,9 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef} from "ngx-bootstrap";
 import {WorkingOnService} from "../../services/workingOn/workingOn.service";
-import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
-import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {CreateWorkingOnModel} from "../../models/createWorkingOn.model";
+import {minimumDateValidator} from "../../validators/minimum-date-validator";
 
 @Component({
   selector: 'app-new-working-on-modal',

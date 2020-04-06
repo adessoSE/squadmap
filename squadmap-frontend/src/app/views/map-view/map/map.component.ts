@@ -7,9 +7,9 @@ import {ProjectModel} from '../../../models/project.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
 import {Router} from '@angular/router';
+import {NewWorkingOnModalComponent} from "../../../modals/new-working-on-modal/new-working-on-modal.component";
 
 @Component({
   selector: 'app-map',
@@ -299,7 +299,7 @@ export class MapComponent implements OnInit {
             isNew: true,
           }
         };
-        this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
+        this.modalRef = this.modalService.show(NewWorkingOnModalComponent, config);
         this.modalRef.content.onClose.subscribe(wasSuccessfully => {
           if (wasSuccessfully) {
             let employee: EmployeeModel;

@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef} from "ngx-bootstrap";
 import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
-import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {WorkingOnEmployeeModel} from "../../models/workingOnEmployee.model";
+import {minimumDateValidator} from "../../validators/minimum-date-validator";
 
 @Component({
   selector: 'app-update-working-on-employee-modal',

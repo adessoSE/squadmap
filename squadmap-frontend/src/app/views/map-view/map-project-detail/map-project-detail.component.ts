@@ -7,7 +7,6 @@ import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {EmployeeModel} from '../../../models/employee.model';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
-import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {MessageModalComponent} from '../../../modals/message-modal/message-modal.component';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {NewWorkingOnModalComponent} from "../../../modals/new-working-on-modal/new-working-on-modal.component";
