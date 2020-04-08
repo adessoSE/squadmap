@@ -13,10 +13,10 @@ import java.time.LocalDate;
 class GetWorkingOnResponseWithoutEmployee {
 
     Long workingOnId;
-    GetProjectResponseWithoutEmployee project;
     LocalDate since;
     LocalDate until;
     Integer workload;
+    GetProjectResponseWithoutEmployee project;
 
     @JsonPOJOBuilder(withPrefix = "")
     static class GetWorkingOnResponseWithoutEmployeeBuilder {

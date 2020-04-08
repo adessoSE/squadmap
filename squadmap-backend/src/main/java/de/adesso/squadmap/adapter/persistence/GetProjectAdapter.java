@@ -16,6 +16,6 @@ class GetProjectAdapter implements GetProjectPort {
     @Override
     public Project getProject(Long projectId) {
         return projectPersistenceMapper.mapToDomainEntity(projectRepository.findById(projectId, 0)
-                .orElseThrow(ProjectNotFoundException::new));
+                .orElseThrow(() -> new ProjectNotFoundException(projectId)));
     }
 }

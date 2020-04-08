@@ -17,9 +17,9 @@ class UpdateEmployeeAdapter implements UpdateEmployeePort {
     @Override
     public void updateEmployee(Employee employee) {
         EmployeeNeo4JEntity existingEmployee = employeeRepository.findById(employee.getEmployeeId(), 0)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(() -> new EmployeeNotFoundException(employee.getEmployeeId()));
         if (employeeRepository.existsByEmail(employee.getEmail()) && !employee.getEmail().equals(existingEmployee.getEmail())) {
-            throw new EmployeeAlreadyExistsException();
+            throw new EmployeeAlreadyExistsException(employee.getEmail());
         }
         employeeRepository.save(employeePersistenceMapper.mapToNeo4JEntity(employee), 0);
     }

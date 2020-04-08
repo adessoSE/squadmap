@@ -16,7 +16,7 @@ class CreateEmployeeAdapter implements CreateEmployeePort {
     @Override
     public long createEmployee(Employee employee) {
         if (employeeRepository.existsByEmail(employee.getEmail())) {
-            throw new EmployeeAlreadyExistsException();
+            throw new EmployeeAlreadyExistsException(employee.getEmail());
         }
         return employeeRepository.save(employeePersistenceMapper.mapToNeo4JEntity(employee)).getEmployeeId();
     }

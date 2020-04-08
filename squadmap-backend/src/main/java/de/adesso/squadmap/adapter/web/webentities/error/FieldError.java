@@ -13,7 +13,7 @@ import java.util.stream.StreamSupport;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class FieldError extends SubError{
+public class FieldError implements SubError{
 
     private String object;
     private String field;

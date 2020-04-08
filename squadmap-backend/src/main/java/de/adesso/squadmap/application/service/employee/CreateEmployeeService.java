@@ -7,8 +7,12 @@ import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployee
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 class CreateEmployeeService implements CreateEmployeeUseCase {
 
@@ -17,7 +21,7 @@ class CreateEmployeeService implements CreateEmployeeUseCase {
 
     @Override
     @Transactional
-    public Long createEmployee(CreateEmployeeCommand createEmployeeCommand) {
+    public Long createEmployee(@Valid CreateEmployeeCommand createEmployeeCommand) {
         return createEmployeePort.createEmployee(employeeDomainMapper.mapToDomainEntity(createEmployeeCommand));
     }
 }

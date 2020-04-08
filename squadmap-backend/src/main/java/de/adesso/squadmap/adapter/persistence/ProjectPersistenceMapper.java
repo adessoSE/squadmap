@@ -3,7 +3,6 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.application.domain.Project;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 @Component

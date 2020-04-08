@@ -2,7 +2,6 @@ package de.adesso.squadmap.application.service.project;
 
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.port.driven.project.ListProjectPort;
-import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

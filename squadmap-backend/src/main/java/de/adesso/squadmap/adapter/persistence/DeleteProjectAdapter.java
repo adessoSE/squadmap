@@ -14,7 +14,7 @@ class DeleteProjectAdapter implements DeleteProjectPort {
     @Override
     public void deleteProject(Long projectId) {
         if (!projectRepository.existsById(projectId)) {
-            throw new ProjectNotFoundException();
+            throw new ProjectNotFoundException(projectId);
         }
         projectRepository.deleteById(projectId);
     }

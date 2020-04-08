@@ -16,7 +16,7 @@ class CreateProjectAdapter implements CreateProjectPort {
     @Override
     public long createProject(Project project) {
         if (projectRepository.existsByTitle(project.getTitle())) {
-            throw new ProjectAlreadyExistsException();
+            throw new ProjectAlreadyExistsException(project.getTitle());
         }
         return projectRepository.save(projectPersistenceMapper.mapToNeo4JEntity(project)).getProjectId();
     }

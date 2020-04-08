@@ -17,7 +17,6 @@ import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployee
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.neo4j.cypher.ConstraintValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

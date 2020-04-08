@@ -1,23 +1,19 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.exceptions.*;
+import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequest;
 import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
+import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequest;
 import de.adesso.squadmap.application.domain.Project;
-import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.delete.DeleteProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase;
-import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,13 +46,13 @@ class ProjectController {
     }
 
     @PostMapping("/create")
-    public Long createProject(@RequestBody CreateProjectCommand command) {
-        return createProjectUseCase.createProject(command);
+    public Long createProject(@RequestBody CreateProjectRequest command) {
+        return createProjectUseCase.createProject(command.getCommand());
     }
 
     @PutMapping("/update/{projectId}")
-    public void updateProject(@PathVariable long projectId, @RequestBody @Valid UpdateProjectCommand command) {
-        updateProjectUseCase.updateProject(command, projectId);
+    public void updateProject(@PathVariable long projectId, @RequestBody UpdateProjectRequest command) {
+        updateProjectUseCase.updateProject(command.getCommand(), projectId);
     }
 
     @DeleteMapping("/delete/{projectId}")

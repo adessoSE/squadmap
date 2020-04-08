@@ -16,6 +16,6 @@ class GetWorkingOnAdapter implements GetWorkingOnPort {
     @Override
     public WorkingOn getWorkingOn(Long workingOnId) {
         return workingOnPersistenceMapper.mapToDomainEntity(workingOnRepository.findById(workingOnId, 0)
-                .orElseThrow(WorkingOnNotFoundException::new));
+                .orElseThrow(() -> new WorkingOnNotFoundException(workingOnId)));
     }
 }

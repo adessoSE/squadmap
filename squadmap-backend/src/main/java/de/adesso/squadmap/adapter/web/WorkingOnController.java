@@ -1,24 +1,18 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnSinceException;
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnUntilException;
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnWorkloadException;
+import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequest;
 import de.adesso.squadmap.adapter.web.webentities.workingon.GetWorkingOnResponse;
+import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
-import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,13 +45,13 @@ class WorkingOnController {
     }
 
     @PostMapping("/create")
-    public Long createWorkingOn(@RequestBody CreateWorkingOnCommand command) {
-        return createWorkingOnUseCase.createWorkingOn(command);
+    public Long createWorkingOn(@RequestBody CreateWorkingOnRequest command) {
+        return createWorkingOnUseCase.createWorkingOn(command.getCommand());
     }
 
     @PutMapping("/update/{workingOnId}")
-    public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody UpdateWorkingOnCommand command) {
-        updateWorkingOnUseCase.updateWorkingOn(command, workingOnId);
+    public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody UpdateWorkingOnRequest command) {
+        updateWorkingOnUseCase.updateWorkingOn(command.getCommand(), workingOnId);
     }
 
     @DeleteMapping("/delete/{workingOnId}")

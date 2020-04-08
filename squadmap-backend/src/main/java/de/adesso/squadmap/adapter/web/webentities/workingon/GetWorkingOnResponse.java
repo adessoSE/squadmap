@@ -17,11 +17,11 @@ import java.time.LocalDate;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetWorkingOnResponse {
     Long workingOnId;
-    GetEmployeeResponse employee;
-    GetProjectResponse project;
     LocalDate since;
     LocalDate until;
     Integer workload;
+    GetEmployeeResponse employee;
+    GetProjectResponse project;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class GetWorkingOnResponseBuilder {

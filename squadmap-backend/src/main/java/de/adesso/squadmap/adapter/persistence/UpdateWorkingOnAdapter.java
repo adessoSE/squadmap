@@ -20,13 +20,13 @@ class UpdateWorkingOnAdapter implements UpdateWorkingOnPort {
     @Override
     public void updateWorkingOn(WorkingOn workingOn) {
         if (!employeeRepository.existsById(workingOn.getEmployee().getEmployeeId())) {
-            throw new EmployeeNotFoundException();
+            throw new EmployeeNotFoundException(workingOn.getEmployee().getEmployeeId());
         }
         if (!projectRepository.existsById(workingOn.getProject().getProjectId())) {
-            throw new ProjectNotFoundException();
+            throw new ProjectNotFoundException(workingOn.getProject().getProjectId());
         }
         if (!workingOnRepository.existsById(workingOn.getWorkingOnId())) {
-            throw new WorkingOnNotFoundException();
+            throw new WorkingOnNotFoundException(workingOn.getWorkingOnId());
         }
         workingOnRepository.save(workingOnPersistenceMapper.mapToNeo4JEntity(workingOn), 0);
     }

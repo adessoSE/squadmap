@@ -17,9 +17,9 @@ class UpdateProjectAdapter implements UpdateProjectPort {
     @Override
     public void updateProject(Project project) {
         ProjectNeo4JEntity existingProject = projectRepository.findById(project.getProjectId(), 0)
-                .orElseThrow(ProjectNotFoundException::new);
+                .orElseThrow(() -> new ProjectNotFoundException(project.getProjectId()));
         if (projectRepository.existsByTitle(project.getTitle()) && !existingProject.getTitle().equals(project.getTitle())) {
-            throw new ProjectAlreadyExistsException();
+            throw new ProjectAlreadyExistsException(project.getTitle());
         }
         projectRepository.save(projectPersistenceMapper.mapToNeo4JEntity(project), 0);
     }

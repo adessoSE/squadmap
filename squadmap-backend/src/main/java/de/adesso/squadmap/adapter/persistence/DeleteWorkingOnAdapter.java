@@ -14,7 +14,7 @@ class DeleteWorkingOnAdapter implements DeleteWorkingOnPort {
     @Override
     public void deleteWorkingOn(Long workingOnId) {
         if (!workingOnRepository.existsById(workingOnId)) {
-            throw new WorkingOnNotFoundException();
+            throw new WorkingOnNotFoundException(workingOnId);
         }
         workingOnRepository.deleteById(workingOnId);
     }

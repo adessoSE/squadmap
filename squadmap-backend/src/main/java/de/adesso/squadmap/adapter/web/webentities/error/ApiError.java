@@ -32,7 +32,7 @@ public class ApiError {
         this();
         this.status = status;
         this.message = message;
-        this.debugMessage = ex.getLocalizedMessage();
+        this.debugMessage = ex.toString();
     }
 
     public void addSubError(SubError subError) {

@@ -20,10 +20,10 @@ class CreateWorkingOnAdapter implements CreateWorkingOnPort {
     @Override
     public long createWorkingOn(WorkingOn workingOn) {
         if (!employeeRepository.existsById(workingOn.getEmployee().getEmployeeId())) {
-            throw new EmployeeNotFoundException();
+            throw new EmployeeNotFoundException(workingOn.getEmployee().getEmployeeId());
         }
         if (!projectRepository.existsById(workingOn.getProject().getProjectId())) {
-            throw new ProjectNotFoundException();
+            throw new ProjectNotFoundException(workingOn.getProject().getProjectId());
         }
         if (workingOnRepository.existsByEmployeeAndProject(workingOn.getEmployee().getEmployeeId(), workingOn.getProject().getProjectId())) {
             throw new WorkingOnAlreadyExistsException();

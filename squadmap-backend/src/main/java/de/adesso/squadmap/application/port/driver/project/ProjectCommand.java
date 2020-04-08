@@ -3,7 +3,7 @@ package de.adesso.squadmap.application.port.driver.project;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @Data
 public abstract class ProjectCommand {
 
-    @NotEmpty(message = "should not be empty")
-    @Size(min = 1, max = 100, message = "has to be between {min} and {max} characters long")
+    @NotBlank(message = "should not be empty")
+    @Size(max = 100, message = "has to be between {min} and {max} characters long")
     private final String title;
     @NotNull(message = "should not be null")
     @Size(max = 1000, message = "should not contain more than {max} characters")

@@ -1,6 +1,6 @@
 package de.adesso.squadmap.application.domain.exceptions;
 
-public abstract class NotFoundException extends ApiException {
+public abstract class NotFoundException extends RuntimeException {
 
     public NotFoundException() {
     }

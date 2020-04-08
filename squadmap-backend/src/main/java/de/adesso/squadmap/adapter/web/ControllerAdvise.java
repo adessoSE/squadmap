@@ -12,15 +12,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ControllerAdvice
 public class ControllerAdvise extends ResponseEntityExceptionHandler {
+
+    private static Logger logger = Logger.getAnonymousLogger();
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     ApiError handleConstraintViolationException(ConstraintViolationException ex) {
-        ex.getConstraintViolations().forEach(v-> System.out.println(v.getRootBeanClass()));
+        logger.log(Level.SEVERE, "handled ConstraintViolationException", ex);
+        ex.getConstraintViolations().forEach(v -> System.out.println(v.getRootBeanClass()));
         ApiError error = new ApiError(ex.getMessage(), ex, HttpStatus.BAD_REQUEST);
         error.setSubErrors(FieldError.getErrors(ex.getConstraintViolations()));
         return error;
@@ -30,6 +35,7 @@ public class ControllerAdvise extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     ApiError handleNotFoundException(NotFoundException ex) {
+        logger.log(Level.SEVERE, "handled NotFoundException", ex);
         return new ApiError(ex.getMessage(), ex, HttpStatus.NOT_FOUND);
     }
 
@@ -37,6 +43,7 @@ public class ControllerAdvise extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(AlreadyExistsException.class)
     ApiError handleAlreadyExistsException(AlreadyExistsException ex) {
+        logger.log(Level.SEVERE, "handled AlreadyExistsException", ex);
         return new ApiError(ex.getMessage(), ex, HttpStatus.CONFLICT);
     }
 
@@ -44,6 +51,8 @@ public class ControllerAdvise extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     ApiError handleAll(Exception ex) {
-        return new ApiError(ex.getMessage(), ex,  HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.log(Level.SEVERE, "unknown Exception", ex);
+        return new ApiError(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

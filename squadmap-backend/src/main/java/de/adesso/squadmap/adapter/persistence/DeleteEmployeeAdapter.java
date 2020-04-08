@@ -14,7 +14,7 @@ class DeleteEmployeeAdapter implements DeleteEmployeePort {
     @Override
     public void deleteEmployee(Long employeeId) {
         if (!employeeRepository.existsById(employeeId)) {
-            throw new EmployeeNotFoundException();
+            throw new EmployeeNotFoundException(employeeId);
         }
         employeeRepository.deleteById(employeeId);
     }
