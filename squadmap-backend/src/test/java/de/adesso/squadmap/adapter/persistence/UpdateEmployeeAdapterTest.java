@@ -5,9 +5,10 @@ import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundExcepti
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -15,15 +16,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateEmployeeAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class UpdateEmployeeAdapterTest {
 
-    @MockBean
+    @Mock
     private EmployeeRepository employeeRepository;
-    @MockBean
+    @Mock
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
-    @Autowired
+    @InjectMocks
     private UpdateEmployeeAdapter updateEmployeeAdapter;
 
     @Test

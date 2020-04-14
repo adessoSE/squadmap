@@ -6,10 +6,11 @@ import de.adesso.squadmap.adapter.web.webentities.employee.GetEmployeeResponseMo
 import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
 import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponseMother;
 import de.adesso.squadmap.application.domain.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Collections;
@@ -18,16 +19,21 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = WorkingOnResponseMapper.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class WorkingOnResponseMapperTest {
 
-    @MockBean
+    @Mock
     private ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
-    @MockBean
+    @Mock
     private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
-    @Autowired
+
     private WorkingOnResponseMapper workingOnResponseMapper;
+
+    @BeforeEach
+    void init() {
+        workingOnResponseMapper = new WorkingOnResponseMapper(employeeResponseMapper, projectResponseMapper);
+    }
 
     @Test
     void checkIfMapToResponseMapsToResponse() {

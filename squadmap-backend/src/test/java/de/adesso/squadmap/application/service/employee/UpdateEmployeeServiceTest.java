@@ -7,22 +7,23 @@ import de.adesso.squadmap.application.port.driven.employee.UpdateEmployeePort;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommandMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateEmployeeService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class UpdateEmployeeServiceTest {
 
-    @MockBean
+    @Mock
     private UpdateEmployeePort updateEmployeePort;
-    @MockBean
+    @Mock
     private EmployeeDomainMapper employeeDomainMapper;
-    @Autowired
+    @InjectMocks
     private UpdateEmployeeService updateEmployeeService;
 
     @Test

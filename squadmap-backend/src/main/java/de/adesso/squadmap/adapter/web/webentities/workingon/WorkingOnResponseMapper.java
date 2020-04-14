@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class WorkingOnResponseMapper implements ResponseMapper<WorkingOn, GetWorkingOnResponse> {
+class WorkingOnResponseMapper implements ResponseMapper<WorkingOn, GetWorkingOnResponse> {
 
     private final ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
     private final ResponseMapper<Project, GetProjectResponse> projectResponseMapper;

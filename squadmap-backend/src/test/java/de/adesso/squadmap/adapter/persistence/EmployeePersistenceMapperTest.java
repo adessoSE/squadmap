@@ -3,18 +3,14 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EmployeePersistenceMapper.class)
 @ActiveProfiles("test")
 public class EmployeePersistenceMapperTest {
 
-    @Autowired
-    private EmployeePersistenceMapper employeePersistenceMapper;
+    private EmployeePersistenceMapper employeePersistenceMapper = new EmployeePersistenceMapper();
 
     @Test
     void checkIfMapToNeo4JEntityMapsToValidEntity() {

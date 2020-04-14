@@ -6,18 +6,14 @@ import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployee
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommandMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EmployeeDomainMapperImplementation.class)
 @ActiveProfiles("test")
 public class EmployeeDomainMapperImplementationTest {
 
-    @Autowired
-    private EmployeeDomainMapperImplementation employeeMapper;
+    private EmployeeDomainMapperImplementation employeeMapper = new EmployeeDomainMapperImplementation();
 
     @Test
     void checkIfMapToDomainEntityMapsCreateCommand() {

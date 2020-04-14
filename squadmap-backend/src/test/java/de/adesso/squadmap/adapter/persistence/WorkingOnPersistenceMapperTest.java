@@ -1,25 +1,31 @@
 package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.application.domain.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = WorkingOnPersistenceMapper.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class WorkingOnPersistenceMapperTest {
 
-    @MockBean
+    @Mock
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
-    @MockBean
+    @Mock
     private PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
-    @Autowired
-    private PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> workingOnPersistenceMapper;
+
+    private WorkingOnPersistenceMapper workingOnPersistenceMapper;
+
+    @BeforeEach
+    void init() {
+        workingOnPersistenceMapper = new WorkingOnPersistenceMapper(employeePersistenceMapper, projectPersistenceMapper);
+    }
 
     @Test
     void checkIfMapToNeo4JEntityMapsToValidEntity() {

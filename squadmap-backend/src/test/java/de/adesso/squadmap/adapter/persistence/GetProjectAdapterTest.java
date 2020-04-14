@@ -4,9 +4,10 @@ import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundExceptio
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.ProjectMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -15,15 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = GetProjectAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class GetProjectAdapterTest {
 
-    @MockBean
+    @Mock
     private ProjectRepository projectRepository;
-    @MockBean
+    @Mock
     private PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
-    @Autowired
+    @InjectMocks
     private GetProjectAdapter getProjectAdapter;
 
     @Test

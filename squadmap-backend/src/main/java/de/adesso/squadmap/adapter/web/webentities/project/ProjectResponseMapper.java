@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
-public class ProjectResponseMapper implements ResponseMapper<Project, GetProjectResponse> {
+class ProjectResponseMapper implements ResponseMapper<Project, GetProjectResponse> {
 
     @Override
     public GetProjectResponse mapToResponseEntity(Project project, List<WorkingOn> workingOns) {

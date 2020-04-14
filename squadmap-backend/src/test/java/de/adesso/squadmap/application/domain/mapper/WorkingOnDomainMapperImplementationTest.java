@@ -6,18 +6,14 @@ import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorking
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommandMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = WorkingOnDomainMapperImplementation.class)
 @ActiveProfiles("test")
 public class WorkingOnDomainMapperImplementationTest {
 
-    @Autowired
-    private WorkingOnDomainMapperImplementation workingOnMapper;
+    private WorkingOnDomainMapperImplementation workingOnMapper = new WorkingOnDomainMapperImplementation();
 
     @Test
     void checkIfMapToDomainEntityMapsCreateCommand() {

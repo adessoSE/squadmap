@@ -4,9 +4,10 @@ import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.port.driven.employee.ListEmployeePort;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
@@ -15,13 +16,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = ListEmployeeService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class ListEmployeeServiceTest {
 
-    @MockBean
+    @Mock
     private ListEmployeePort listEmployeePort;
-    @Autowired
+    @InjectMocks
     private ListEmployeeService listEmployeeService;
 
     @Test

@@ -4,21 +4,22 @@ import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = GetEmployeeService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class GetEmployeeServiceTest {
 
-    @MockBean
+    @Mock
     private GetEmployeePort getEmployeePort;
-    @Autowired
+    @InjectMocks
     private GetEmployeeService getEmployeeService;
 
     @Test

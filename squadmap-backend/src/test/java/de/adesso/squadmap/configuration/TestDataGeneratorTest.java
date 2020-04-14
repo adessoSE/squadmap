@@ -13,9 +13,10 @@ import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = TestDataGenerator.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class TestDataGeneratorTest {
 

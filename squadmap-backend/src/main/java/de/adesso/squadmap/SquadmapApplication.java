@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SpringBootApplication
-@EnableNeo4jRepositories("de.adesso.squadmap.adapter.persistence")
 public class SquadmapApplication {
 
     private static Logger logger = Logger.getAnonymousLogger();

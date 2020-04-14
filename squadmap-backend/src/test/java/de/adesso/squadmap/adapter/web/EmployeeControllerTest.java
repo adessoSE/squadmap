@@ -4,24 +4,20 @@ import de.adesso.squadmap.adapter.web.webentities.employee.*;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.delete.DeleteEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.ListEmployeeUseCase;
-import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +28,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = EmployeeController.class)
+@WebMvcTest(EmployeeController.class)
 @ActiveProfiles("test")
 class EmployeeControllerTest {
 
@@ -52,13 +48,7 @@ class EmployeeControllerTest {
     @MockBean
     private ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
     @Autowired
-    private EmployeeController employeeController;
     private MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.employeeController).build();
-    }
 
     @Test
     void checkIfGetAllEmployeesReturnsAll() throws Exception {

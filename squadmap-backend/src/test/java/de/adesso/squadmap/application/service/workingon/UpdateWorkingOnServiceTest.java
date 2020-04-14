@@ -8,26 +8,27 @@ import de.adesso.squadmap.application.port.driven.workingon.UpdateWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommandMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateWorkingOnService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class UpdateWorkingOnServiceTest {
 
-    @MockBean
+    @Mock
     private UpdateWorkingOnPort updateWorkingOnPort;
-    @MockBean
+    @Mock
     private GetEmployeePort getEmployeePort;
-    @MockBean
+    @Mock
     private GetProjectPort getProjectPort;
-    @MockBean
+    @Mock
     private WorkingOnDomainMapper workingOnDomainMapper;
-    @Autowired
+    @InjectMocks
     private UpdateWorkingOnService updateWorkingOnService;
 
     @Test

@@ -6,27 +6,28 @@ import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnNotFoundExcept
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateWorkingOnAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class UpdateWorkingOnAdapterTest {
 
-    @MockBean
+    @Mock
     private WorkingOnRepository workingOnRepository;
-    @MockBean
+    @Mock
     private EmployeeRepository employeeRepository;
-    @MockBean
+    @Mock
     private ProjectRepository projectRepository;
-    @MockBean
+    @Mock
     private PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> workingOnPersistenceMapper;
-    @Autowired
+    @InjectMocks
     private UpdateWorkingOnAdapter updateWorkingOnAdapter;
 
     @Test

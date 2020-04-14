@@ -4,21 +4,22 @@ import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import de.adesso.squadmap.application.port.driven.workingon.GetWorkingOnPort;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = GetWorkingOnService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class GetWorkingOnServiceTest {
 
-    @MockBean
+    @Mock
     private GetWorkingOnPort getWorkingOnPort;
-    @Autowired
+    @InjectMocks
     private GetWorkingOnService getWorkingOnService;
 
     @Test
