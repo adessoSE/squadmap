@@ -7,7 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -21,6 +25,21 @@ public class UpdateProjectRequest {
     private final Boolean isExternal;
     private final List< String> sites;
 
+    public UpdateProjectRequest(String title,
+                                String description,
+                                LocalDate since,
+                                LocalDate until,
+                                Boolean isExternal,
+                                List<String> sites) {
+        this.title = title;
+        this.description = description;
+        this.since = since;
+        this.until = until;
+        this.isExternal = isExternal;
+        this.sites = Optional.ofNullable(sites).stream().flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
     public UpdateProjectCommand asCommand() {
         return UpdateProjectCommand.builder()
                 .title(title)
@@ -30,6 +49,10 @@ public class UpdateProjectRequest {
                 .isExternal(isExternal)
                 .sites(sites)
                 .build();
+    }
+
+    public List<String> getSites(){
+        return new ArrayList<>(sites);
     }
 
     @JsonPOJOBuilder(withPrefix = "")
