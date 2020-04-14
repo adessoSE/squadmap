@@ -37,67 +37,67 @@ class TestDataGenerator implements CommandLineRunner {
         String phone = "0162123123";
 
         CreateEmployeeCommand createEmployeeCommand1 = CreateEmployeeCommand.builder()
-                .firstName("Bob").lastName("Apple").birthday(now())
+                .firstName("Bob").lastName("Apple").birthday(now().minusYears(1))
                 .email("b.a@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand2 = CreateEmployeeCommand.builder()
-                .firstName("Kevin").lastName("Peach").birthday(now())
+                .firstName("Kevin").lastName("Peach").birthday(now().minusYears(1))
                 .email("k.p@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand3 = CreateEmployeeCommand.builder()
-                .firstName("Bert").lastName("Melon").birthday(now())
+                .firstName("Bert").lastName("Melon").birthday(now().minusYears(1))
                 .email("b.m@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand4 = CreateEmployeeCommand.builder()
-                .firstName("Treena").lastName("Utecht").birthday(now())
+                .firstName("Treena").lastName("Utecht").birthday(now().minusYears(1))
                 .email("t.u@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand5 = CreateEmployeeCommand.builder()
-                .firstName("Chris").lastName("Urbaniak").birthday(now())
+                .firstName("Chris").lastName("Urbaniak").birthday(now().minusYears(1))
                 .email("c.u@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand6 = CreateEmployeeCommand.builder()
-                .firstName("Kiley").lastName("Dula").birthday(now())
+                .firstName("Kiley").lastName("Dula").birthday(now().minusYears(1))
                 .email("k.d@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
 
         CreateEmployeeCommand createEmployeeCommand7 = CreateEmployeeCommand.builder()
-                .firstName("Reba").lastName("Raisor").birthday(now())
+                .firstName("Reba").lastName("Raisor").birthday(now().minusYears(1))
                 .email("r.r@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
 
         CreateEmployeeCommand createEmployeeCommand8 = CreateEmployeeCommand.builder()
-                .firstName("Long").lastName("Staillings").birthday(now())
+                .firstName("Long").lastName("Staillings").birthday(now().minusYears(1))
                 .email("l.s@adesso.de").phone(phone).isExternal(false).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand9 = CreateEmployeeCommand.builder()
-                .firstName("Herma").lastName("Tworek").birthday(now())
+                .firstName("Herma").lastName("Tworek").birthday(now().minusYears(1))
                 .email("h.t@adesso.de").phone(phone).isExternal(true).image("")
                 .build();
         CreateEmployeeCommand createEmployeeCommand10 = CreateEmployeeCommand.builder()
-                .firstName("Gloria").lastName("Nunley").birthday(now())
+                .firstName("Gloria").lastName("Nunley").birthday(now().minusYears(1))
                 .email("g.n@adesso.de").phone(phone).isExternal(true).image("")
                 .build();
 
 
         CreateProjectCommand createProjectCommand1 = CreateProjectCommand.builder()
                 .title("squadmap").description("Description of squadmap")
-                .since(now()).until(now())
+                .since(now().minusYears(1)).until(now().minusYears(1))
                 .isExternal(false).sites(new ArrayList<>())
                 .build();
         CreateProjectCommand createProjectCommand2 = CreateProjectCommand.builder()
                 .title("coderadar").description("Description of coderadar")
-                .since(now()).until(now())
+                .since(now().minusYears(1)).until(now().minusYears(1))
                 .isExternal(false).sites(new ArrayList<>())
                 .build();
         CreateProjectCommand createProjectCommand3 = CreateProjectCommand.builder()
                 .title("devblog").description("Description of devblog")
-                .since(now()).until(now())
+                .since(now().minusYears(1)).until(now().minusYears(1))
                 .isExternal(false).sites(new ArrayList<>())
                 .build();
         CreateProjectCommand createProjectCommand4 = CreateProjectCommand.builder()
                 .title("project-board").description("Description of project-board")
-                .since(now()).until(now())
+                .since(now().minusYears(1)).until(now().minusYears(1))
                 .isExternal(true).sites(new ArrayList<>())
                 .build();
 
@@ -118,43 +118,43 @@ class TestDataGenerator implements CommandLineRunner {
         long project4Id = createProjectUseCase.createProject(createProjectCommand4);
 
         CreateWorkingOnCommand createWorkingOnCommand1 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee1Id).projectId(project1Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand2 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee1Id).projectId(project2Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand3 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee2Id).projectId(project2Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand4 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee3Id).projectId(project4Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand5 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee4Id).projectId(project4Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand6 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee5Id).projectId(project4Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand7 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee6Id).projectId(project2Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand8 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now().plusMonths(5)).workload(0)
+                .since(now().minusYears(1)).until(now().plusMonths(5)).workload(0)
                 .employeeId(employee7Id).projectId(project1Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand9 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now()).workload(0)
+                .since(now().minusYears(1)).until(now().minusYears(1)).workload(0)
                 .employeeId(employee8Id).projectId(project2Id)
                 .build();
         CreateWorkingOnCommand createWorkingOnCommand10 = CreateWorkingOnCommand.builder()
-                .since(now()).until(now()).workload(0)
+                .since(now().minusYears(1)).until(now().minusYears(1)).workload(0)
                 .employeeId(employee9Id).projectId(project3Id)
                 .build();
 

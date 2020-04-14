@@ -47,12 +47,12 @@ class ProjectController {
 
     @PostMapping("/create")
     public Long createProject(@RequestBody CreateProjectRequest command) {
-        return createProjectUseCase.createProject(command.getCommand());
+        return createProjectUseCase.createProject(command.asCommand());
     }
 
     @PutMapping("/update/{projectId}")
     public void updateProject(@PathVariable long projectId, @RequestBody UpdateProjectRequest command) {
-        updateProjectUseCase.updateProject(command.getCommand(), projectId);
+        updateProjectUseCase.updateProject(command.asCommand(), projectId);
     }
 
     @DeleteMapping("/delete/{projectId}")

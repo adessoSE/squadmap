@@ -46,12 +46,12 @@ class WorkingOnController {
 
     @PostMapping("/create")
     public Long createWorkingOn(@RequestBody CreateWorkingOnRequest command) {
-        return createWorkingOnUseCase.createWorkingOn(command.getCommand());
+        return createWorkingOnUseCase.createWorkingOn(command.asCommand());
     }
 
     @PutMapping("/update/{workingOnId}")
     public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody UpdateWorkingOnRequest command) {
-        updateWorkingOnUseCase.updateWorkingOn(command.getCommand(), workingOnId);
+        updateWorkingOnUseCase.updateWorkingOn(command.asCommand(), workingOnId);
     }
 
     @DeleteMapping("/delete/{workingOnId}")

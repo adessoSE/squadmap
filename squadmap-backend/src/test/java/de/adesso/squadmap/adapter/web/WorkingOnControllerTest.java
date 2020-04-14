@@ -1,17 +1,12 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.webentities.workingon.GetWorkingOnResponse;
-import de.adesso.squadmap.adapter.web.webentities.workingon.GetWorkingOnResponseMother;
+import de.adesso.squadmap.adapter.web.webentities.workingon.*;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
-import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
-import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommandMother;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
-import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
-import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommandMother;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,13 +104,13 @@ class WorkingOnControllerTest {
     void checkIfCreateWorkingOnCreatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        CreateWorkingOnCommand createWorkingOnCommand = CreateWorkingOnCommandMother.complete().build();
-        when(createWorkingOnUseCase.createWorkingOn(createWorkingOnCommand)).thenReturn(workingOnId);
+        CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.complete().build();
+        when(createWorkingOnUseCase.createWorkingOn(any())).thenReturn(workingOnId);
 
         //when
         MvcResult result = mockMvc.perform(post(apiUrl + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createWorkingOnCommand))
+                .content(JsonMapper.asJsonString(createWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -123,25 +118,25 @@ class WorkingOnControllerTest {
 
         //then
         assertThat(response).isEqualTo(workingOnId);
-        verify(createWorkingOnUseCase, times(1)).createWorkingOn(createWorkingOnCommand);
+        verify(createWorkingOnUseCase, times(1)).createWorkingOn(any());
     }
 
     @Test
     void checkIfUpdateWorkingOnUpdatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        UpdateWorkingOnCommand updateWorkingOnCommand = UpdateWorkingOnCommandMother.complete().build();
-        doNothing().when(updateWorkingOnUseCase).updateWorkingOn(updateWorkingOnCommand, workingOnId);
+        UpdateWorkingOnRequest updateWorkingOnRequest = UpdateWorkingOnRequestMother.complete().build();
+        doNothing().when(updateWorkingOnUseCase).updateWorkingOn(any(), eq(workingOnId));
 
         //when
         mockMvc.perform(put(apiUrl + "/update/{id}", workingOnId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateWorkingOnCommand))
+                .content(JsonMapper.asJsonString(updateWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         //then
-        verify(updateWorkingOnUseCase, times(1)).updateWorkingOn(updateWorkingOnCommand, workingOnId);
+        verify(updateWorkingOnUseCase, times(1)).updateWorkingOn(any(), eq(workingOnId));
     }
 
     @Test
@@ -157,88 +152,4 @@ class WorkingOnControllerTest {
         //then
         verify(deleteWorkingOnUseCase, times(1)).deleteWorkingOn(workingOnId);
     }
-
-//    @Test
-//    void checkIfCreateWorkingOnThrowsInvalidWorkingONSinceException() {
-//        //given
-//        CreateWorkingOnCommand workingOnSinceNull = CreateWorkingOnCommandMother.complete().since(null).build();
-//
-//        //then
-//        assertThatThrownBy(() ->
-//                mockMvc.perform(post(apiUrl + "/create")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(JsonMapper.asJsonString(workingOnSinceNull)))
-//                        .andExpect(status().isOk()))
-//                .hasCause(new InvalidWorkingOnSinceException());
-//    }
-//
-//    @Test
-//    void checkIfCreateWorkingOnThrowsInvalidWorkingOnUntilException() {
-//        //given
-//        CreateWorkingOnCommand workingOnUntilNull = CreateWorkingOnCommandMother.complete().until(null).build();
-//
-//        //then
-//        assertThatThrownBy(() ->
-//                mockMvc.perform(post(apiUrl + "/create")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(JsonMapper.asJsonString(workingOnUntilNull)))
-//                        .andExpect(status().isOk()))
-//                .hasCause(new InvalidWorkingOnUntilException());
-//    }
-//
-//    @Test
-//    void checkIfCreateWorkingOnThrowsInvalidWorkingOnWorkloadException() {
-//        //given
-//        CreateWorkingOnCommand workingOnWorkloadOutOfBound = CreateWorkingOnCommandMother.complete().workload(-1).build();
-//
-//        //then
-//        assertThatThrownBy(() ->
-//                mockMvc.perform(post(apiUrl + "/create")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(JsonMapper.asJsonString(workingOnWorkloadOutOfBound)))
-//                        .andExpect(status().isOk()))
-//                .hasCause(new InvalidWorkingOnWorkloadException());
-//    }
-//
-//    @Test
-//    void checkIfUpdateWorkingOnThrowsInvalidWorkingONSinceException() {
-//        //given
-//        UpdateWorkingOnCommand workingOnSinceNull = UpdateWorkingOnCommandMother.complete().since(null).build();
-//
-//        //then
-//        assertThatThrownBy(() ->
-//                mockMvc.perform(put(apiUrl + "/update/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(JsonMapper.asJsonString(workingOnSinceNull)))
-//                        .andExpect(status().isOk()))
-//                .hasCause(new InvalidWorkingOnSinceException());
-//    }
-//
-//    @Test
-//    void checkIfUpdateWorkingOnThrowsInvalidWorkingOnUntilException() {
-//        //given
-//        UpdateWorkingOnCommand workingOnUntilNull = UpdateWorkingOnCommandMother.complete().until(null).build();
-//
-//        //then
-//        assertThatThrownBy(() ->
-//                mockMvc.perform(put(apiUrl + "/update/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(JsonMapper.asJsonString(workingOnUntilNull)))
-//                        .andExpect(status().isOk()))
-//                .hasCause(new InvalidWorkingOnUntilException());
-//    }
-//
-//    @Test
-//    void checkIfUpdateWorkingOnThrowsInvalidWorkingOnWorkloadException() {
-//        //given
-//        UpdateWorkingOnCommand workingOnWorkloadOutOfBound = UpdateWorkingOnCommandMother.complete().workload(-1).build();
-//
-//        //then
-//        assertThatThrownBy(() ->
-//                mockMvc.perform(put(apiUrl + "/update/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(JsonMapper.asJsonString(workingOnWorkloadOutOfBound)))
-//                        .andExpect(status().isOk()))
-//                .hasCause(new InvalidWorkingOnWorkloadException());
-//    }
 }

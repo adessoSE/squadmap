@@ -1,7 +1,5 @@
 package de.adesso.squadmap.application.port.driver.project.create;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.adesso.squadmap.application.port.driver.project.ProjectCommand;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -17,14 +15,13 @@ import java.util.List;
 public class CreateProjectCommand extends ProjectCommand {
 
     @Builder
-    @JsonCreator
     CreateProjectCommand(
-            @JsonProperty("title") String title,
-            @JsonProperty("description") String description,
-            @JsonProperty("since") LocalDate since,
-            @JsonProperty("until") LocalDate until,
-            @JsonProperty("isExternal") Boolean isExternal,
-            @JsonProperty("sites") List<String> sites) {
+            String title,
+            String description,
+            LocalDate since,
+            LocalDate until,
+            Boolean isExternal,
+            List<String> sites) {
         super(title, description, since, until, isExternal, sites);
     }
 }

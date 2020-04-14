@@ -47,12 +47,12 @@ class EmployeeController {
 
     @PostMapping("/create")
     public Long createEmployee(@RequestBody CreateEmployeeRequest command) {
-        return createEmployeeUseCase.createEmployee(command.getCommand());
+        return createEmployeeUseCase.createEmployee(command.asCommand());
     }
 
     @PutMapping("/update/{employeeId}")
     public void updateEmployee(@PathVariable long employeeId, @RequestBody UpdateEmployeeRequest command) {
-        updateEmployeeUseCase.updateEmployee(command.getCommand(), employeeId);
+        updateEmployeeUseCase.updateEmployee(command.asCommand(), employeeId);
     }
 
     @DeleteMapping("delete/{employeeId}")

@@ -1,5 +1,6 @@
 package de.adesso.squadmap.application.port.driver.project;
 
+import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
-public abstract class ProjectCommand {
+public abstract class ProjectCommand extends SelfValidating<ProjectCommand> {
 
     @NotBlank(message = "should not be empty")
     @Size(max = 100, message = "has to be between {min} and {max} characters long")
@@ -31,7 +32,12 @@ public abstract class ProjectCommand {
     @NotNull(message = "should not be null")
     private final List<@URL(message = "has to be a valid url") String> sites;
 
-    public ProjectCommand(String title, String description, LocalDate since, LocalDate until, Boolean isExternal, List<String> sites) {
+    public ProjectCommand(String title,
+                          String description,
+                          LocalDate since,
+                          LocalDate until,
+                          Boolean isExternal,
+                          List<String> sites) {
         this.title = title;
         this.description = description;
         this.since = since;
@@ -39,6 +45,7 @@ public abstract class ProjectCommand {
         this.isExternal = isExternal;
         this.sites = Optional.ofNullable(sites).stream().flatMap(Collection::stream)
                 .collect(Collectors.toList());
+        this.validateSelf();
     }
 
     public List<String> getSites() {

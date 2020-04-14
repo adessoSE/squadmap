@@ -1,12 +1,14 @@
 package de.adesso.squadmap.application.port.driver.employee;
 
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
-public abstract class EmployeeCommand {
+public abstract class EmployeeCommand extends SelfValidating<Employee> {
 
     @NotBlank(message = "should not be empty")
     @Size(max = 50, message = "should be maximal {max} characters long")
@@ -27,4 +29,21 @@ public abstract class EmployeeCommand {
     private final Boolean isExternal;
     @NotNull(message = "should not be null")
     private final String image;
+
+    public EmployeeCommand(String firstName,
+                           String lastName,
+                           LocalDate birthday,
+                           String email,
+                           String phone,
+                           Boolean isExternal,
+                           String image) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.email = email;
+        this.phone = phone;
+        this.isExternal = isExternal;
+        this.image = image;
+        this.validateSelf();
+    }
 }

@@ -1,33 +1,44 @@
 package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.adapter.web.webentities.error.ApiError;
-import de.adesso.squadmap.adapter.web.webentities.error.FieldError;
+import de.adesso.squadmap.adapter.web.webentities.error.Violation;
 import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
 import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ControllerAdvice
-public class ControllerAdvise extends ResponseEntityExceptionHandler {
+public class ControllerAdvise {
 
-    private static Logger logger = Logger.getAnonymousLogger();
+    Logger logger = Logger.getAnonymousLogger();
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ApiError handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        logger.log(Level.SEVERE, "handled MethodArgumentNotValidException", ex);
+        ApiError error = new ApiError(
+                ex.getMessage(), ex, HttpStatus.BAD_REQUEST.value());
+        error.setErrors(Violation.getViolations(ex.getBindingResult().getFieldErrors()));
+        return error;
+    }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     ApiError handleConstraintViolationException(ConstraintViolationException ex) {
         logger.log(Level.SEVERE, "handled ConstraintViolationException", ex);
-        ex.getConstraintViolations().forEach(v -> System.out.println(v.getRootBeanClass()));
-        ApiError error = new ApiError(ex.getMessage(), ex, HttpStatus.BAD_REQUEST);
-        error.setSubErrors(FieldError.getErrors(ex.getConstraintViolations()));
+        ApiError error = new ApiError(
+                ex.getMessage(), ex, HttpStatus.BAD_REQUEST.value());
+        error.setErrors(Violation.getViolations(ex.getConstraintViolations()));
         return error;
     }
 
@@ -36,7 +47,8 @@ public class ControllerAdvise extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     ApiError handleNotFoundException(NotFoundException ex) {
         logger.log(Level.SEVERE, "handled NotFoundException", ex);
-        return new ApiError(ex.getMessage(), ex, HttpStatus.NOT_FOUND);
+        return new ApiError(
+                ex.getMessage(), ex, HttpStatus.NOT_FOUND.value());
     }
 
     @ResponseBody
@@ -44,7 +56,8 @@ public class ControllerAdvise extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AlreadyExistsException.class)
     ApiError handleAlreadyExistsException(AlreadyExistsException ex) {
         logger.log(Level.SEVERE, "handled AlreadyExistsException", ex);
-        return new ApiError(ex.getMessage(), ex, HttpStatus.CONFLICT);
+        return new ApiError(
+                ex.getMessage(), ex, HttpStatus.CONFLICT.value());
     }
 
     @ResponseBody
@@ -52,7 +65,8 @@ public class ControllerAdvise extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     ApiError handleAll(Exception ex) {
         logger.log(Level.SEVERE, "unknown Exception", ex);
-        return new ApiError(ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ApiError(
+                ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
 }
