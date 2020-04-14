@@ -3,11 +3,13 @@ package de.adesso.squadmap.application.port.driver.employee;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public abstract class EmployeeCommand extends SelfValidating<Employee> {
 
     @NotBlank(message = "should not be empty")

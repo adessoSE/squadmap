@@ -2,6 +2,7 @@ package de.adesso.squadmap.application.port.driver.project;
 
 import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public abstract class ProjectCommand extends SelfValidating<ProjectCommand> {
 
     @NotBlank(message = "should not be empty")
