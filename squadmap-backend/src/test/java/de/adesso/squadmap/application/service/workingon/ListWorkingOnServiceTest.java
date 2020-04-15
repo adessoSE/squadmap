@@ -1,11 +1,11 @@
 package de.adesso.squadmap.application.service.workingon;
 
-import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
+import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

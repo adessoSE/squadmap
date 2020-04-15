@@ -1,6 +1,9 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.webentities.workingon.*;
+import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequest;
+import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequestMother;
+import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
+import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequestMother;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;

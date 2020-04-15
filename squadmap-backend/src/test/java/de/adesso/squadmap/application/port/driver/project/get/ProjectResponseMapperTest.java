@@ -1,10 +1,6 @@
 package de.adesso.squadmap.application.port.driver.project.get;
 
 import de.adesso.squadmap.application.domain.*;
-import de.adesso.squadmap.application.port.driver.project.get.GetEmployeeResponseWithoutProject;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
-import de.adesso.squadmap.application.port.driver.project.get.GetWorkingOnResponseWithoutProject;
-import de.adesso.squadmap.application.port.driver.project.get.ProjectResponseMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 

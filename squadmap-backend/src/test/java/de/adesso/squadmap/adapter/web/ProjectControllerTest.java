@@ -1,6 +1,9 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.webentities.project.*;
+import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequest;
+import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequestMother;
+import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequest;
+import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequestMother;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.delete.DeleteProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;

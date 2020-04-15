@@ -1,6 +1,9 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.webentities.employee.*;
+import de.adesso.squadmap.adapter.web.webentities.employee.CreateEmployeeRequest;
+import de.adesso.squadmap.adapter.web.webentities.employee.CreateEmployeeRequestMother;
+import de.adesso.squadmap.adapter.web.webentities.employee.UpdateEmployeeRequest;
+import de.adesso.squadmap.adapter.web.webentities.employee.UpdateEmployeeRequestMother;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.delete.DeleteEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
