@@ -1,15 +1,13 @@
 package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.adapter.web.webentities.employee.*;
-import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.EmployeeMother;
-import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.delete.DeleteEmployeeUseCase;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.ListEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;
-import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,22 +40,14 @@ class EmployeeControllerTest {
     private ListEmployeeUseCase listEmployeeUseCase;
     @MockBean
     private UpdateEmployeeUseCase updateEmployeeUseCase;
-    @MockBean
-    private ListWorkingOnUseCase listWorkingOnUseCase;
-    @MockBean
-    private ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void checkIfGetAllEmployeesReturnsAll() throws Exception {
         //given
-        Employee employee = EmployeeMother.complete().build();
         GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
-        List<WorkingOn> workingOns = new ArrayList<>();
-        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employee));
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(workingOns);
-        when(employeeResponseMapper.mapToResponseEntity(employee, workingOns)).thenReturn(getEmployeeResponse);
+        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(getEmployeeResponse));
 
         //when
         MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
@@ -69,21 +58,17 @@ class EmployeeControllerTest {
         //then
         assertThat(responses.size()).isOne();
         assertThat(responses.get(0)).isEqualTo(getEmployeeResponse);
-        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, workingOns);
-        verify(listWorkingOnUseCase, times(1)).listWorkingOn();
         verify(listEmployeeUseCase, times(1)).listEmployees();
+        verifyNoMoreInteractions(listEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, getEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        Employee employee = EmployeeMother.complete().build();
         GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
-        List<WorkingOn> workingOns = new ArrayList<>();
-        when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(employee);
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(workingOns);
-        when(employeeResponseMapper.mapToResponseEntity(employee, workingOns)).thenReturn(getEmployeeResponse);
+        when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(getEmployeeResponse);
 
         //when
         MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", employeeId))
@@ -93,9 +78,9 @@ class EmployeeControllerTest {
 
         //then
         assertThat(response).isEqualTo(getEmployeeResponse);
-        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, workingOns);
-        verify(listWorkingOnUseCase, times(1)).listWorkingOn();
         verify(getEmployeeUseCase, times(1)).getEmployee(employeeId);
+        verifyNoMoreInteractions(getEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
@@ -117,6 +102,8 @@ class EmployeeControllerTest {
         //then
         assertThat(response).isEqualTo(employeeId);
         verify(createEmployeeUseCase, times(1)).createEmployee(any());
+        verifyNoMoreInteractions(createEmployeeUseCase);
+        verifyNoInteractions(deleteEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
@@ -135,6 +122,8 @@ class EmployeeControllerTest {
 
         //then
         verify(updateEmployeeUseCase, times(1)).updateEmployee(any(), eq(employeeId));
+        verifyNoMoreInteractions(updateEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase);
     }
 
     @Test
@@ -149,5 +138,7 @@ class EmployeeControllerTest {
 
         //then
         verify(deleteEmployeeUseCase, times(1)).deleteEmployee(employeeId);
+        verifyNoMoreInteractions(deleteEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 }

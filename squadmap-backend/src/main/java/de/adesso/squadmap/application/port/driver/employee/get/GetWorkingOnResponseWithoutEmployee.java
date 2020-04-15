@@ -1,4 +1,4 @@
-package de.adesso.squadmap.adapter.web.webentities.employee;
+package de.adesso.squadmap.application.port.driver.employee.get;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;

@@ -1,4 +1,8 @@
-package de.adesso.squadmap.adapter.web.webentities.employee;
+package de.adesso.squadmap.application.port.driver.employee.get;
+
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.employee.get.GetProjectResponseWithoutEmployee;
+import de.adesso.squadmap.application.port.driver.employee.get.GetWorkingOnResponseWithoutEmployee;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

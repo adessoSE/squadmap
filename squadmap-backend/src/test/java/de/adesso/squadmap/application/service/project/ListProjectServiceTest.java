@@ -1,8 +1,13 @@
 package de.adesso.squadmap.application.service.project;
 
+import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.ProjectMother;
+import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
 import de.adesso.squadmap.application.port.driven.project.ListProjectPort;
+import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +28,10 @@ class ListProjectServiceTest {
 
     @Mock
     private ListProjectPort listProjectPort;
+    @Mock
+    private ListWorkingOnPort listWorkingOnPort;
+    @Mock
+    private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
     @InjectMocks
     private ListProjectService listProjectService;
 
@@ -31,14 +41,24 @@ class ListProjectServiceTest {
         Project project1 = ProjectMother.complete().projectId(1L).build();
         Project project2 = ProjectMother.complete().projectId(2L).build();
         List<Project> projects = Arrays.asList(project1, project2);
+        GetProjectResponse getProjectResponse1 = GetProjectResponseMother.complete().projectId(1L).build();
+        GetProjectResponse getProjectResponse2 = GetProjectResponseMother.complete().projectId(2L).build();
+        List<GetProjectResponse> getProjectResponses = Arrays.asList(getProjectResponse1, getProjectResponse2);
+        List<WorkingOn> workingOns = Collections.emptyList();
         when(listProjectPort.listProjects()).thenReturn(projects);
+        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
+        when(projectResponseMapper.mapToResponseEntity(project1, workingOns)).thenReturn(getProjectResponse1);
+        when(projectResponseMapper.mapToResponseEntity(project2, workingOns)).thenReturn(getProjectResponse2);
 
         //when
-        List<Project> responses = listProjectService.listProjects();
+        List<GetProjectResponse> responses = listProjectService.listProjects();
 
         //then
-        assertThat(responses).isEqualTo(projects);
+        assertThat(responses).isEqualTo(getProjectResponses);
         verify(listProjectPort, times(1)).listProjects();
-        verifyNoMoreInteractions(listProjectPort);
+        verify(listWorkingOnPort, times(1)).listWorkingOn();
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project1, workingOns);
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project2, workingOns);
+        verifyNoMoreInteractions(listProjectPort, listWorkingOnPort, projectResponseMapper);
     }
 }

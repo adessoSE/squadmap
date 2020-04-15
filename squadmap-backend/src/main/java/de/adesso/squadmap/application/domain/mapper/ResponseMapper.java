@@ -1,4 +1,4 @@
-package de.adesso.squadmap.adapter.web;
+package de.adesso.squadmap.application.domain.mapper;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
 

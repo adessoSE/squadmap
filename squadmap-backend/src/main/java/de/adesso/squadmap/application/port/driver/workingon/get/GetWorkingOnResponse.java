@@ -1,9 +1,9 @@
-package de.adesso.squadmap.adapter.web.webentities.workingon;
+package de.adesso.squadmap.application.port.driver.workingon.get;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import de.adesso.squadmap.adapter.web.webentities.employee.GetEmployeeResponse;
-import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

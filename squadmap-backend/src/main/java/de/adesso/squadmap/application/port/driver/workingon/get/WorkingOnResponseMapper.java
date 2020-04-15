@@ -1,8 +1,8 @@
-package de.adesso.squadmap.adapter.web.webentities.workingon;
+package de.adesso.squadmap.application.port.driver.workingon.get;
 
-import de.adesso.squadmap.adapter.web.ResponseMapper;
-import de.adesso.squadmap.adapter.web.webentities.employee.GetEmployeeResponse;
-import de.adesso.squadmap.adapter.web.webentities.project.GetProjectResponse;
+import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
+import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;

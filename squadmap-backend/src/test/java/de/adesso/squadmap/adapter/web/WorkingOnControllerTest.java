@@ -1,10 +1,10 @@
 package de.adesso.squadmap.adapter.web;
 
 import de.adesso.squadmap.adapter.web.webentities.workingon.*;
-import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.WorkingOnMother;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
+import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
+import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
@@ -17,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,19 +40,14 @@ class WorkingOnControllerTest {
     private ListWorkingOnUseCase listWorkingOnUseCase;
     @MockBean
     private UpdateWorkingOnUseCase updateWorkingOnUseCase;
-    @MockBean
-    private ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void checkIfGetAllWorkingOnReturnsAll() throws Exception {
         //given
-        WorkingOn workingOn = WorkingOnMother.complete().build();
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        List<WorkingOn> workingOns = Collections.singletonList(workingOn);
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(workingOns);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn, workingOns)).thenReturn(getWorkingOnResponse);
+        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(Collections.singletonList(getWorkingOnResponse));
 
         //when
         MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
@@ -65,19 +59,16 @@ class WorkingOnControllerTest {
         assertThat(responses.size()).isOne();
         assertThat(responses.get(0)).isEqualTo(getWorkingOnResponse);
         verify(listWorkingOnUseCase, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn, workingOns);
+        verifyNoMoreInteractions(listWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, getWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
     void checkIfGetWorkingOnReturnsTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        WorkingOn workingOn = WorkingOnMother.complete().build();
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        List<WorkingOn> workingOns = new ArrayList<>();
-        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(workingOn);
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(workingOns);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn, workingOns)).thenReturn(getWorkingOnResponse);
+        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
 
         //when
         MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", workingOnId))
@@ -88,8 +79,8 @@ class WorkingOnControllerTest {
         //then
         assertThat(response).isEqualTo(getWorkingOnResponse);
         verify(getWorkingOnUseCase, times(1)).getWorkingOn(workingOnId);
-        verify(listWorkingOnUseCase, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn, workingOns);
+        verifyNoMoreInteractions(getWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
@@ -111,6 +102,8 @@ class WorkingOnControllerTest {
         //then
         assertThat(response).isEqualTo(workingOnId);
         verify(createWorkingOnUseCase, times(1)).createWorkingOn(any());
+        verifyNoMoreInteractions(createWorkingOnUseCase);
+        verifyNoInteractions(deleteWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
@@ -129,6 +122,8 @@ class WorkingOnControllerTest {
 
         //then
         verify(updateWorkingOnUseCase, times(1)).updateWorkingOn(any(), eq(workingOnId));
+        verifyNoMoreInteractions(updateWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase);
     }
 
     @Test
@@ -143,5 +138,7 @@ class WorkingOnControllerTest {
 
         //then
         verify(deleteWorkingOnUseCase, times(1)).deleteWorkingOn(workingOnId);
+        verifyNoMoreInteractions(deleteWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 }
