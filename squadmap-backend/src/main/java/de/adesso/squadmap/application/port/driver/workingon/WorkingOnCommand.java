@@ -1,10 +1,8 @@
 package de.adesso.squadmap.application.port.driver.workingon;
 
-import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
@@ -12,7 +10,7 @@ import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class WorkingOnCommand extends SelfValidating<WorkingOn> {
+public abstract class WorkingOnCommand extends SelfValidating<WorkingOnCommand> {
 
     private final long employeeId;
     private final long projectId;

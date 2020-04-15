@@ -1,6 +1,5 @@
 package de.adesso.squadmap.application.port.driver.employee;
 
-import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class EmployeeCommand extends SelfValidating<Employee> {
+public abstract class EmployeeCommand extends SelfValidating<EmployeeCommand> {
 
     @NotBlank(message = "should not be empty")
     @Size(max = 50, message = "should be maximal {max} characters long")
