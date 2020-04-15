@@ -7,6 +7,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
 import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {ProjectService} from "../../services/project/project.service";
+import {MapComponent} from "../../views/map-view/map/map.component";
 
 describe('UpdateProjectModalComponent', () => {
   let component: UpdateProjectModalComponent;
@@ -33,6 +34,16 @@ describe('UpdateProjectModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateProjectModalComponent);
     component = fixture.componentInstance;
+    component.project = {
+      projectId: 3,
+      title: 'Test1',
+      description: 'Description1',
+      since: new Date(),
+      until: new Date(),
+      isExternal: false,
+      sites: [],
+      employees: []
+    };
     fixture.detectChanges();
   });
 

@@ -13,7 +13,7 @@ import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.s
 })
 export class UpdateProjectModalComponent implements OnInit {
 
-  private project: ProjectModel;
+  public project: ProjectModel;
 
   private errorOccurred: boolean;
   private errorMessage: string;
