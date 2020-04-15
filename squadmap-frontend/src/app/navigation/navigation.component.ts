@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BsDropdownConfig, BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ProjectModalComponent} from '../modals/project-modal/project-modal.component';
 import {EmployeeModalComponent} from '../modals/employee-modal/employee-modal.component';
+import {CreateProjectModalComponent} from "../modals/create-project-modal/create-project-modal.component";
 
 
 @Component({
@@ -32,11 +32,8 @@ export class NavigationComponent implements OnInit {
   addProjectModal() {
     const config = {
       backdrop: true,
-      ignoreBackdropClick: true,
-      initialState: {
-        header: 'Create'
-      }
+      ignoreBackdropClick: true
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, config);
+    this.modalRef = this.modalService.show(CreateProjectModalComponent, config);
   }
 }

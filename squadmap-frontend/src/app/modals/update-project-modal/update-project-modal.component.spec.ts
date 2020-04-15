@@ -1,19 +1,20 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {UpdateWorkingOnEmployeeModalComponent} from './update-working-on-employee-modal.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import { UpdateProjectModalComponent } from './update-project-modal.component';
 import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap";
+import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
 import {WorkingOnService} from "../../services/workingOn/workingOn.service";
+import {ProjectService} from "../../services/project/project.service";
 
-describe('UpdateWorkingOnEmployeeModalComponent', () => {
-  let component: UpdateWorkingOnEmployeeModalComponent;
-  let fixture: ComponentFixture<UpdateWorkingOnEmployeeModalComponent>;
+describe('UpdateProjectModalComponent', () => {
+  let component: UpdateProjectModalComponent;
+  let fixture: ComponentFixture<UpdateProjectModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdateWorkingOnEmployeeModalComponent ],
+      declarations: [ UpdateProjectModalComponent ],
       imports: [
         ModalModule.forRoot(),
         ReactiveFormsModule,
@@ -23,19 +24,19 @@ describe('UpdateWorkingOnEmployeeModalComponent', () => {
         BsModalService,
         BsModalRef,
         DateFormatterService,
-        WorkingOnService
+        ProjectService
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateWorkingOnEmployeeModalComponent);
+    fixture = TestBed.createComponent(UpdateProjectModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

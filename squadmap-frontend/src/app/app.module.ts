@@ -10,7 +10,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects/filterProjects.pipe';
-import {ProjectModalComponent} from './modals/project-modal/project-modal.component';
 import {EmployeeModalComponent} from './modals/employee-modal/employee-modal.component';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employee-modal.component';
@@ -22,6 +21,8 @@ import {IconsModule} from './icons/icons.module';
 import {NewWorkingOnModalComponent} from './modals/new-working-on-modal/new-working-on-modal.component';
 import {UpdateWorkingOnProjectModalComponent} from './modals/update-working-on-project-modal/update-working-on-project-modal.component';
 import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-employee-modal/update-working-on-employee-modal.component';
+import {CreateProjectModalComponent} from './modals/create-project-modal/create-project-modal.component';
+import {UpdateProjectModalComponent} from './modals/update-project-modal/update-project-modal.component';
 
 
 @NgModule({
@@ -30,7 +31,6 @@ import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-
     NavigationComponent,
     FilterProjectsPipe,
     FilterEmployeesPipe,
-    ProjectModalComponent,
     EmployeeModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
@@ -39,7 +39,9 @@ import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-
     MapEmployeeDetailComponent,
     NewWorkingOnModalComponent,
     UpdateWorkingOnProjectModalComponent,
-    UpdateWorkingOnEmployeeModalComponent
+    UpdateWorkingOnEmployeeModalComponent,
+    CreateProjectModalComponent,
+    UpdateProjectModalComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -58,14 +60,15 @@ import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    ProjectModalComponent,
     EmployeeModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
     NewWorkingOnModalComponent,
     UpdateWorkingOnProjectModalComponent,
-    UpdateWorkingOnEmployeeModalComponent
+    UpdateWorkingOnEmployeeModalComponent,
+    CreateProjectModalComponent,
+    UpdateProjectModalComponent,
   ]
 })
 export class AppModule {

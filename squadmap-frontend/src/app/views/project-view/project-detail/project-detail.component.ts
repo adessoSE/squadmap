@@ -8,8 +8,8 @@ import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
 import {WorkingOnEmployeeModel} from '../../../models/workingOnEmployee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {AddEmployeeModalComponent} from '../../../modals/add-employee-modal/add-employee-modal.component';
-import {ProjectModalComponent} from '../../../modals/project-modal/project-modal.component';
 import {UpdateWorkingOnEmployeeModalComponent} from "../../../modals/update-working-on-employee-modal/update-working-on-employee-modal.component";
+import {UpdateProjectModalComponent} from "../../../modals/update-project-modal/update-project-modal.component";
 
 @Component({
   selector: 'app-project-detail',
@@ -95,10 +95,9 @@ export class ProjectDetailComponent implements OnInit {
       ignoreBackdropClick: true,
       initialState: {
         project: this.project,
-        actionName: 'Update'
       }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, config);
+    this.modalRef = this.modalService.show(UpdateProjectModalComponent, config);
   }
 
   filterEmployees(allEmployees: EmployeeModel[], existingEmployees: WorkingOnEmployeeModel[]): EmployeeModel[] {

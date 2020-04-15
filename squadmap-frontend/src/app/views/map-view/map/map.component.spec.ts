@@ -12,68 +12,71 @@ import {Observable} from "rxjs";
 import {WorkingOnProjectModel} from "../../../models/workingOnProject.model";
 import {MessageModalComponent} from "../../../modals/message-modal/message-modal.component";
 
+export let projects = [
+  {
+    projectId: 3,
+    title: 'Test1',
+    description: 'Description1',
+    since: new Date(),
+    until: new Date(),
+    isExternal: false,
+    sites: [],
+    employees: []
+  },
+];
+export let employees = [
+  {
+    employeeId: 1,
+    firstName: 'Test1',
+    lastName: 'Name',
+    birthday: new Date(),
+    email: 'test1@name.de',
+    phone: '0123456789',
+    isExternal: false,
+    image: '',
+    projects: []
+  },
+  {
+    employeeId: 2,
+    firstName: 'Test2',
+    lastName: 'Name',
+    birthday: new Date(),
+    email: 'test2@name.de',
+    phone: '0123456789',
+    isExternal: true,
+    image: '',
+    projects: [new WorkingOnProjectModel(4, projects[0],new Date(), new Date(), 50)]
+  },
+];
+
+export const employeeServiceStub = {
+  employees,
+  getEmployees(): Observable<Object> {
+    return new Observable<Object>();
+  },
+  getEmployee():Observable<Object> {
+    return new Observable<Object>();
+  },
+  deleteEmployee(id: number): Observable<Object>{
+    return new Observable<Object>();
+  }
+};
+
+export const projectServiceStub = {
+  projects,
+  getProjects(): Observable<Object> {
+    return new Observable<Object>();
+  }
+};
+export const workingOnServiceStub: Partial<WorkingOnService> = {};
+
+export const modalServiceStub = {
+  show(){}
+};
+
 describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let component: MapComponent;
-
-  let projects = [
-    {
-      projectId: 3,
-      title: 'Test1',
-      description: 'Description1',
-      since: new Date(),
-      until: new Date(),
-      isExternal: false,
-      sites: [],
-      employees: []
-    },
-  ];
-  let employees = [
-    {
-      employeeId: 1,
-      firstName: 'Test1',
-      lastName: 'Name',
-      birthday: new Date(),
-      email: 'test1@name.de',
-      phone: '0123456789',
-      isExternal: false,
-      image: '',
-      projects: []
-    },
-    {
-      employeeId: 2,
-      firstName: 'Test2',
-      lastName: 'Name',
-      birthday: new Date(),
-      email: 'test2@name.de',
-      phone: '0123456789',
-      isExternal: true,
-      image: '',
-      projects: [new WorkingOnProjectModel(4, projects[0],new Date(), new Date(), 50)]
-    },
-  ];
-
-  const employeeServiceStub = {
-    employees,
-    getEmployees(): Observable<Object> {
-      return new Observable<Object>();
-    },
-    deleteEmployee(id: number): Observable<Object>{
-      return new Observable<Object>();
-    }
-  };
-
-  const projectServiceStub = {
-    projects,
-    getProjects(): Observable<Object> {
-      return new Observable<Object>();
-    }
-  };
-  const workingOnServiceStub: Partial<WorkingOnService> = {};
-
-  const modalServiceStub = {
-    show(){}
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

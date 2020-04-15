@@ -6,7 +6,6 @@ import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
 import {minimumDateValidator} from "../../validators/minimum-date-validator";
 
-
 @Component({
   selector: 'app-update-working-on-project-modal',
   templateUrl: './update-working-on-project-modal.component.html'
