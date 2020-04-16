@@ -12,13 +12,10 @@ class JsonMapper {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     static String asJsonString(final Object obj) {
-        System.out.println("Found: " + obj);
         try {
             mapper.registerModule(new Jdk8Module());
             mapper.registerModule(new JavaTimeModule());
-            String jsonString = mapper.writeValueAsString(obj);
-            System.out.println("Created: " + jsonString);
-            return jsonString;
+            return mapper.writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
