@@ -23,6 +23,7 @@ import {UpdateWorkingOnProjectModalComponent} from './modals/update-working-on-p
 import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-employee-modal/update-working-on-employee-modal.component';
 import {CreateProjectModalComponent} from './modals/create-project-modal/create-project-modal.component';
 import {UpdateProjectModalComponent} from './modals/update-project-modal/update-project-modal.component';
+import { CreateEmployeeModalComponent } from './modals/create-employee-modal/create-employee-modal.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {UpdateProjectModalComponent} from './modals/update-project-modal/update-
     UpdateWorkingOnEmployeeModalComponent,
     CreateProjectModalComponent,
     UpdateProjectModalComponent,
+    CreateEmployeeModalComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -69,6 +71,7 @@ import {UpdateProjectModalComponent} from './modals/update-project-modal/update-
     UpdateWorkingOnEmployeeModalComponent,
     CreateProjectModalComponent,
     UpdateProjectModalComponent,
+    CreateEmployeeModalComponent
   ]
 })
 export class AppModule {
