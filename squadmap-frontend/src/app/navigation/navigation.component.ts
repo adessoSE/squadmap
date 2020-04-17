@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {BsDropdownConfig, BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {EmployeeModalComponent} from '../modals/employee-modal/employee-modal.component';
 import {CreateProjectModalComponent} from "../modals/create-project-modal/create-project-modal.component";
 import {CreateEmployeeModalComponent} from "../modals/create-employee-modal/create-employee-modal.component";
 

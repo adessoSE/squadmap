@@ -10,7 +10,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects/filterProjects.pipe';
-import {EmployeeModalComponent} from './modals/employee-modal/employee-modal.component';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employee-modal.component';
 import {AddProjectModalComponent} from './modals/add-project-modal/add-project-modal.component';
@@ -23,7 +22,8 @@ import {UpdateWorkingOnProjectModalComponent} from './modals/update-working-on-p
 import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-employee-modal/update-working-on-employee-modal.component';
 import {CreateProjectModalComponent} from './modals/create-project-modal/create-project-modal.component';
 import {UpdateProjectModalComponent} from './modals/update-project-modal/update-project-modal.component';
-import { CreateEmployeeModalComponent } from './modals/create-employee-modal/create-employee-modal.component';
+import {CreateEmployeeModalComponent} from './modals/create-employee-modal/create-employee-modal.component';
+import {UpdateEmployeeModalComponent} from './modals/update-employee-modal/update-employee-modal.component';
 
 
 @NgModule({
@@ -32,7 +32,6 @@ import { CreateEmployeeModalComponent } from './modals/create-employee-modal/cre
     NavigationComponent,
     FilterProjectsPipe,
     FilterEmployeesPipe,
-    EmployeeModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
@@ -44,6 +43,7 @@ import { CreateEmployeeModalComponent } from './modals/create-employee-modal/cre
     CreateProjectModalComponent,
     UpdateProjectModalComponent,
     CreateEmployeeModalComponent,
+    UpdateEmployeeModalComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -62,7 +62,6 @@ import { CreateEmployeeModalComponent } from './modals/create-employee-modal/cre
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    EmployeeModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
@@ -71,7 +70,8 @@ import { CreateEmployeeModalComponent } from './modals/create-employee-modal/cre
     UpdateWorkingOnEmployeeModalComponent,
     CreateProjectModalComponent,
     UpdateProjectModalComponent,
-    CreateEmployeeModalComponent
+    CreateEmployeeModalComponent,
+    UpdateEmployeeModalComponent
   ]
 })
 export class AppModule {

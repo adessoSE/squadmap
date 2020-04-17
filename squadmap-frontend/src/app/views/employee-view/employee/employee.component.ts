@@ -3,8 +3,8 @@ import {Router} from '@angular/router';
 import {EmployeeService} from '../../../services/employee/employee.service';
 import {EmployeeModel} from '../../../models/employee.model';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {EmployeeModalComponent} from '../../../modals/employee-modal/employee-modal.component';
 import {CreateEmployeeModalComponent} from "../../../modals/create-employee-modal/create-employee-modal.component";
+import {UpdateEmployeeModalComponent} from "../../../modals/update-employee-modal/update-employee-modal.component";
 
 @Component({
   selector: 'app-employee',
@@ -57,10 +57,9 @@ export class EmployeeComponent implements OnInit {
       ignoreBackdropClick: true,
       initialState: {
         employee,
-        header: 'Update'
       }
     };
-    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
+    this.modalRef = this.modalService.show(UpdateEmployeeModalComponent, config);
   }
 
 
