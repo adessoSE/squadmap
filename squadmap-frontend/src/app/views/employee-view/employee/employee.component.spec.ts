@@ -64,7 +64,6 @@ describe('EmployeeComponent', () => {
     router = fixture.debugElement.injector.get(Router);
     routerNavigateSpy = spyOn(router, 'navigate').and.callThrough();
 
-
   });
 
   it('should create the EmployeeComponent',  () => {

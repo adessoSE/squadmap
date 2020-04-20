@@ -69,7 +69,11 @@ describe('NavigationComponent - Routing', () => {
 
 describe('NavigationComponent', () => {
   let fixture;
+  let component;
   let element;
+  let bsModalService;
+  let showModalServiceSpy;
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -83,9 +87,11 @@ describe('NavigationComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(NavigationComponent);
-    // navigation = fixture.componentInstance;     // to access properties and methods
-    element = fixture.nativeElement;            // to access DOM element
-    // de = fixture.debugElement;                  // test helper
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    bsModalService = fixture.debugElement.injector.get(BsModalService);
+    showModalServiceSpy = spyOn(bsModalService, 'show');
   });
 
   it('should render the title in the navigation bar',  async(() => {
@@ -94,5 +100,15 @@ describe('NavigationComponent', () => {
       expect(element.querySelector('.navbar-brand').innerText).toBe('Squadmap');
     });
   }));
+
+  it('should call the show method with createEmployee',  ()=> {
+    component.addEmployeeModal();
+    expect(showModalServiceSpy).toHaveBeenCalled();
+  });
+
+  it('should call the show method with createProject',  ()=> {
+    component.addProjectModal();
+    expect(showModalServiceSpy).toHaveBeenCalled();
+  });
 });
 

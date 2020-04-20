@@ -22,9 +22,6 @@ export class NavigationComponent implements OnInit {
     const config = {
       backdrop: true,
       ignoreBackdropClick: true,
-      initialState: {
-        header: 'Create'
-      }
     };
     this.modalRef = this.modalService.show(CreateEmployeeModalComponent, config);
   }
