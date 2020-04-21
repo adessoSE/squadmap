@@ -15,17 +15,17 @@ import {filter} from "rxjs/operators";
 export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
 
 
-  private errorMessage: string;
-  private errorOccurred: boolean;
+  public errorMessage: string;
+  public errorOccurred: boolean;
 
   private imageType: string;
-  private imageSeed: string;
+  imageSeed: string;
 
-  private form: FormGroup;
+  form: FormGroup;
   private sub: Subscription;
 
-  constructor(private modalRef: BsModalRef,
-              private employeeService: EmployeeService,
+  constructor(public modalRef: BsModalRef,
+              public employeeService: EmployeeService,
               private formBuilder: FormBuilder) {
   }
 
@@ -72,22 +72,21 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
       this.form.value.email,
       this.form.value.phone,
       this.form.value.isExternal,
-      this.getImage()
+      this.form.value.imageType + '/' + this.generateRandomString()
     );
       this.employeeService.addEmployee(employee).subscribe(() => {
         this.closeModal();
       }, error => {
         this.handleError(error.error.message);
       });
-
   }
 
-  private closeModal() {
+  closeModal() {
     this.modalRef.hide();
     location.reload();
   }
 
-  private handleError(message: string) {
+  public handleError(message: string) {
     this.errorOccurred = true;
     this.errorMessage = message;
     setTimeout(() => {
@@ -95,7 +94,7 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
     }, 10000);
   }
 
-  private generateRandomString(): string {
+  generateRandomString(): string {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 5; i++) {
@@ -104,15 +103,11 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
     return result;
   }
 
-  private getImage(){
-    return  this.form.value.imageType + '/' + this.generateRandomString();
-  }
-
   changeSeed() {
     if(this.form.value.imageType === '' || this.form.value.imageType === 'initials'){
       this.imageSeed ='initials/' + this.form.value.firstName.charAt(0) + '_' + this.form.value.lastName.charAt(0);
     }else {
-      this.imageSeed = this.getImage();
+      this.imageSeed = this.form.value.imageType + '/' + this.generateRandomString();
     }
   }
 }
