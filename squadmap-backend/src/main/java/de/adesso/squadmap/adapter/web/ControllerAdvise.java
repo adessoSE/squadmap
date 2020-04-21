@@ -25,8 +25,7 @@ public class ControllerAdvise {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ApiError handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         logger.log(Level.SEVERE, "handled MethodArgumentNotValidException", ex);
-        ApiError error = new ApiError(
-                ex.getMessage(), ex, HttpStatus.BAD_REQUEST.value());
+        ApiError error = new ApiError(ex.getMessage(), ex, HttpStatus.BAD_REQUEST.value());
         error.setErrors(Violation.getViolations(ex.getBindingResult().getFieldErrors()));
         return error;
     }
@@ -36,8 +35,7 @@ public class ControllerAdvise {
     @ExceptionHandler(ConstraintViolationException.class)
     ApiError handleConstraintViolationException(ConstraintViolationException ex) {
         logger.log(Level.SEVERE, "handled ConstraintViolationException", ex);
-        ApiError error = new ApiError(
-                ex.getMessage(), ex, HttpStatus.BAD_REQUEST.value());
+        ApiError error = new ApiError(ex.getMessage(), ex, HttpStatus.BAD_REQUEST.value());
         error.setErrors(Violation.getViolations(ex.getConstraintViolations()));
         return error;
     }
@@ -47,8 +45,7 @@ public class ControllerAdvise {
     @ExceptionHandler(NotFoundException.class)
     ApiError handleNotFoundException(NotFoundException ex) {
         logger.log(Level.SEVERE, "handled NotFoundException", ex);
-        return new ApiError(
-                ex.getMessage(), ex, HttpStatus.NOT_FOUND.value());
+        return new ApiError(ex.getMessage(), ex, HttpStatus.NOT_FOUND.value());
     }
 
     @ResponseBody
@@ -56,8 +53,7 @@ public class ControllerAdvise {
     @ExceptionHandler(AlreadyExistsException.class)
     ApiError handleAlreadyExistsException(AlreadyExistsException ex) {
         logger.log(Level.SEVERE, "handled AlreadyExistsException", ex);
-        return new ApiError(
-                ex.getMessage(), ex, HttpStatus.CONFLICT.value());
+        return new ApiError(ex.getMessage(), ex, HttpStatus.CONFLICT.value());
     }
 
     @ResponseBody
@@ -65,8 +61,6 @@ public class ControllerAdvise {
     @ExceptionHandler(Exception.class)
     ApiError handleAll(Exception ex) {
         logger.log(Level.SEVERE, "unknown Exception", ex);
-        return new ApiError(
-                ex.getMessage(), ex, HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ApiError(ex, HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
-
 }

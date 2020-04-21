@@ -12,4 +12,13 @@ public class UpdateWorkingOnRequestMother {
                 .until(LocalDate.now())
                 .workload(0);
     }
+
+    public static UpdateWorkingOnRequest.UpdateWorkingOnRequestBuilder invalid() {
+        return UpdateWorkingOnRequest.builder()
+                .employeeId(0)
+                .projectId(0)
+                .since(null)
+                .until(null)
+                .workload(null);
+    }
 }

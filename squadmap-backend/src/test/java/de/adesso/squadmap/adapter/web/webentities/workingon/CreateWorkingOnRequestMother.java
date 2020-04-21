@@ -12,4 +12,13 @@ public class CreateWorkingOnRequestMother {
                 .until(LocalDate.now())
                 .workload(0);
     }
+
+    public static CreateWorkingOnRequest.CreateWorkingOnRequestBuilder invalid() {
+        return CreateWorkingOnRequest.builder()
+                .employeeId(0)
+                .projectId(0)
+                .since(null)
+                .until(null)
+                .workload(null);
+    }
 }

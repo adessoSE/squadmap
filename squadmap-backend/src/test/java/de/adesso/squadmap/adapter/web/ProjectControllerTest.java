@@ -4,6 +4,8 @@ import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequest;
 import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequestMother;
 import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequest;
 import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequestMother;
+import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.delete.DeleteProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -32,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class ProjectControllerTest {
 
-    private static final String apiUrl = "/api/project";
+    private static final String API_URL = "/api/project";
     @MockBean
     private CreateProjectUseCase createProjectUseCase;
     @MockBean
@@ -53,7 +55,7 @@ class ProjectControllerTest {
         when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(getProjectResponse));
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
+        MvcResult result = mockMvc.perform(get(API_URL + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
         List<GetProjectResponse> responses = JsonMapper.asResponseList(result, GetProjectResponse.class);
@@ -74,7 +76,7 @@ class ProjectControllerTest {
         when(getProjectUseCase.getProject(projectId)).thenReturn(getProjectResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", projectId))
+        MvcResult result = mockMvc.perform(get(API_URL + "/{id}", projectId))
                 .andExpect(status().isOk())
                 .andReturn();
         GetProjectResponse response = JsonMapper.asResponse(result, GetProjectResponse.class);
@@ -94,7 +96,7 @@ class ProjectControllerTest {
         when(createProjectUseCase.createProject(any())).thenReturn(projectId);
 
         //when
-        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
+        MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(createProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
@@ -117,7 +119,7 @@ class ProjectControllerTest {
         doNothing().when(updateProjectUseCase).updateProject(any(), eq(projectId));
 
         //when
-        mockMvc.perform(put(apiUrl + "/update/{id}", projectId)
+        mockMvc.perform(put(API_URL + "/update/{id}", projectId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(updateProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
@@ -136,12 +138,81 @@ class ProjectControllerTest {
         doNothing().when(deleteProjectUseCase).deleteProject(projectId);
 
         //when
-        mockMvc.perform(delete(apiUrl + "/delete/{id}", projectId))
+        mockMvc.perform(delete(API_URL + "/delete/{id}", projectId))
                 .andExpect(status().isOk());
 
         //then
         verify(deleteProjectUseCase, times(1)).deleteProject(projectId);
         verifyNoMoreInteractions(deleteProjectUseCase);
         verifyNoInteractions(createProjectUseCase, getProjectUseCase, listProjectUseCase, updateProjectUseCase);
+    }
+
+    @Test
+    void checkIfCreateProjectTriggersValidation() throws Exception {
+        //given
+        CreateProjectRequest createProjectRequest = CreateProjectRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonMapper.asJsonString(createProjectRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        //then
+        verifyNoInteractions(createProjectUseCase, deleteProjectUseCase,
+                getProjectUseCase, listProjectUseCase, updateProjectUseCase);
+    }
+
+    @Test
+    void checkIfUpdateProjectTriggersValidation() throws Exception {
+        //given
+        long projectId = 1;
+        UpdateProjectRequest updateProjectRequest = UpdateProjectRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(put(API_URL + "/update/{id}", projectId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonMapper.asJsonString(updateProjectRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        //then
+        verifyNoInteractions(createProjectUseCase, deleteProjectUseCase,
+                getProjectUseCase, listProjectUseCase, updateProjectUseCase);
+    }
+
+    @Test
+    void checkIfProjectNotFoundExceptionGetsHandled() throws Exception {
+        //given
+        long projectId = 1;
+        when(getProjectUseCase.getProject(projectId)).thenThrow(new NotFoundException());
+
+        //when
+        mockMvc.perform(get(API_URL + "/get/{id}", projectId))
+                .andExpect(status().isNotFound());
+
+        //then
+        verifyNoInteractions(createProjectUseCase, deleteProjectUseCase,
+                getProjectUseCase, listProjectUseCase, updateProjectUseCase);
+    }
+
+    @Test
+    void checkIfProjectAlreadyExistsExceptionGetsHandled() throws Exception {
+        //given
+        CreateProjectRequest createProjectRequest = CreateProjectRequestMother.complete().build();
+        when(createProjectUseCase.createProject(any())).thenThrow(new AlreadyExistsException());
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonMapper.asJsonString(createProjectRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+
+        //then
+        verify(createProjectUseCase, times(1)).createProject(any());
+        verifyNoMoreInteractions(createProjectUseCase);
+        verifyNoInteractions(deleteProjectUseCase, getProjectUseCase, listProjectUseCase, updateProjectUseCase);
     }
 }

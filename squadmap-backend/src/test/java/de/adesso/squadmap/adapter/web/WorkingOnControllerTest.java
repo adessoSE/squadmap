@@ -4,6 +4,8 @@ import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnReque
 import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequestMother;
 import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
 import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequestMother;
+import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
@@ -32,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class WorkingOnControllerTest {
 
-    private static final String apiUrl = "/api/workingOn";
+    private static final String API_URL = "/api/workingOn";
     @MockBean
     private CreateWorkingOnUseCase createWorkingOnUseCase;
     @MockBean
@@ -53,7 +55,7 @@ class WorkingOnControllerTest {
         when(listWorkingOnUseCase.listWorkingOn()).thenReturn(Collections.singletonList(getWorkingOnResponse));
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
+        MvcResult result = mockMvc.perform(get(API_URL + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
         List<GetWorkingOnResponse> responses = JsonMapper.asResponseList(result, GetWorkingOnResponse.class);
@@ -74,7 +76,7 @@ class WorkingOnControllerTest {
         when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", workingOnId))
+        MvcResult result = mockMvc.perform(get(API_URL + "/{id}", workingOnId))
                 .andExpect(status().isOk())
                 .andReturn();
         GetWorkingOnResponse response = JsonMapper.asResponse(result, GetWorkingOnResponse.class);
@@ -94,7 +96,7 @@ class WorkingOnControllerTest {
         when(createWorkingOnUseCase.createWorkingOn(any())).thenReturn(workingOnId);
 
         //when
-        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
+        MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(createWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
@@ -117,7 +119,7 @@ class WorkingOnControllerTest {
         doNothing().when(updateWorkingOnUseCase).updateWorkingOn(any(), eq(workingOnId));
 
         //when
-        mockMvc.perform(put(apiUrl + "/update/{id}", workingOnId)
+        mockMvc.perform(put(API_URL + "/update/{id}", workingOnId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonMapper.asJsonString(updateWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
@@ -136,12 +138,82 @@ class WorkingOnControllerTest {
         doNothing().when(deleteWorkingOnUseCase).deleteWorkingOn(workingOnId);
 
         //when
-        mockMvc.perform(delete(apiUrl + "/delete/{id}", workingOnId))
+        mockMvc.perform(delete(API_URL + "/delete/{id}", workingOnId))
                 .andExpect(status().isOk());
 
         //then
         verify(deleteWorkingOnUseCase, times(1)).deleteWorkingOn(workingOnId);
         verifyNoMoreInteractions(deleteWorkingOnUseCase);
         verifyNoInteractions(createWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
+    }
+
+    @Test
+    void checkIfCreateWorkingOnTriggersValidation() throws Exception {
+        //given
+        CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonMapper.asJsonString(createWorkingOnRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        //then
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase,
+                getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
+    }
+
+    @Test
+    void checkIfUpdateWorkingOnTriggersValidation() throws Exception {
+        //given
+        long workingOnId = 1;
+        UpdateWorkingOnRequest updateWorkingOnRequest = UpdateWorkingOnRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(put(API_URL + "/update/{id}", workingOnId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonMapper.asJsonString(updateWorkingOnRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        //then
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase,
+                getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
+    }
+
+    @Test
+    void checkIfWorkingOnNotFoundExceptionGetsHandled() throws Exception {
+        //given
+        long workingOnId = 1;
+        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenThrow(new NotFoundException());
+
+        //when
+        mockMvc.perform(get(API_URL + "/get/{id}", workingOnId))
+                .andExpect(status().isNotFound());
+
+        //then
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase,
+                getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
+    }
+
+    @Test
+    void checkIfWorkingOnAlreadyExistsExceptionGetsHandled() throws Exception {
+        //given
+        CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.complete().build();
+        when(createWorkingOnUseCase.createWorkingOn(any())).thenThrow(new AlreadyExistsException());
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonMapper.asJsonString(createWorkingOnRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+
+
+        //then
+        verify(createWorkingOnUseCase, times(1)).createWorkingOn(any());
+        verifyNoMoreInteractions(createWorkingOnUseCase);
+        verifyNoInteractions(deleteWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 }

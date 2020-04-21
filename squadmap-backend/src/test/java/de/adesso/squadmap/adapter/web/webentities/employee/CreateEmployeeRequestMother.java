@@ -15,4 +15,15 @@ public class CreateEmployeeRequestMother {
                 .image("file://file.file");
     }
 
+    public static CreateEmployeeRequest.CreateEmployeeRequestBuilder invalid() {
+        return CreateEmployeeRequest.builder()
+                .firstName(null)
+                .lastName(null)
+                .birthday(null)
+                .email(null)
+                .phone(null)
+                .isExternal(null)
+                .image(null);
+    }
+
 }

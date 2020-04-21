@@ -14,4 +14,15 @@ public class UpdateEmployeeRequestMother {
                 .isExternal(true)
                 .image("file://file.file");
     }
+
+    public static UpdateEmployeeRequest.UpdateEmployeeRequestBuilder invalid() {
+        return UpdateEmployeeRequest.builder()
+                .firstName(null)
+                .lastName(null)
+                .birthday(null)
+                .email(null)
+                .phone(null)
+                .isExternal(null)
+                .image(null);
+    }
 }

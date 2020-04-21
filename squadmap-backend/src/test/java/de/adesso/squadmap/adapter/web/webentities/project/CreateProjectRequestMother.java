@@ -14,4 +14,14 @@ public class CreateProjectRequestMother {
                 .isExternal(true)
                 .sites(new ArrayList<>());
     }
+
+    public static CreateProjectRequest.CreateProjectRequestBuilder invalid() {
+        return CreateProjectRequest.builder()
+                .title(null)
+                .description(null)
+                .since(null)
+                .until(null)
+                .isExternal(null)
+                .sites(null);
+    }
 }
