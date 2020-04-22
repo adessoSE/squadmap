@@ -8,6 +8,7 @@ import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.s
 import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {ProjectService} from "../../services/project/project.service";
 import {MapComponent} from "../../views/map-view/map/map.component";
+import {Observable} from "rxjs";
 
 describe('UpdateProjectModalComponent', () => {
   let component: UpdateProjectModalComponent;
@@ -49,5 +50,17 @@ describe('UpdateProjectModalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show an error message in the modal', () => {
+    component.handleError('error');
+    expect(component.errorOccurred).toBeTruthy();
+    expect(component.errorMessage).toEqual('error');
+  });
+
+  it('should call the updateProject method',  () => {
+    let spy = spyOn(component.projectService, 'updateProject').and.returnValue(new Observable());
+    component.onSubmit();
+    expect(spy).toHaveBeenCalled();
   });
 });

@@ -15,8 +15,8 @@ export class UpdateProjectModalComponent implements OnInit {
 
   public project: ProjectModel;
 
-  private errorOccurred: boolean;
-  private errorMessage: string;
+  errorOccurred: boolean;
+  errorMessage: string;
 
   private form: FormGroup;
 
@@ -73,7 +73,7 @@ export class UpdateProjectModalComponent implements OnInit {
     });
   }
 
-  private handleError(message: string) {
+  handleError(message: string) {
     this.errorOccurred = true;
     this.errorMessage = message;
     setTimeout(() => {

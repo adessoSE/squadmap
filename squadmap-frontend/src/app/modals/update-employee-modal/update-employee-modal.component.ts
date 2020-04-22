@@ -15,16 +15,16 @@ export class UpdateEmployeeModalComponent implements OnInit {
 
   public employee: EmployeeModel;
 
-  private errorMessage: string;
-  private errorOccurred: boolean;
+  errorMessage: string;
+  errorOccurred: boolean;
 
   private imageType: string;
-  private imageSeed: string;
+  imageSeed: string;
 
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(private modalRef: BsModalRef,
-              private employeeService: EmployeeService,
+              public employeeService: EmployeeService,
               private dateFormatterService: DateFormatterService,
               private formBuilder: FormBuilder) {
   }
@@ -84,7 +84,7 @@ export class UpdateEmployeeModalComponent implements OnInit {
     });
   }
 
-  private handleError(message: string) {
+  handleError(message: string) {
     this.errorOccurred = true;
     this.errorMessage = message;
     setTimeout(() => {
@@ -92,7 +92,7 @@ export class UpdateEmployeeModalComponent implements OnInit {
     }, 10000);
   }
 
-  private generateRandomString(): string {
+  generateRandomString(): string {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 5; i++) {
