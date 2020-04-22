@@ -11,16 +11,16 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 })
 export class NewWorkingOnModalComponent implements OnInit {
 
-  private edgeData: any;
+  edgeData: any;
 
-  private errorOccurred: boolean;
-  private errorMessage: string;
+  errorOccurred: boolean;
+  errorMessage: string;
 
   private form: FormGroup;
 
   constructor(private modalRef: BsModalRef,
               private formBuilder: FormBuilder,
-              private workingOnService: WorkingOnService) { }
+              public workingOnService: WorkingOnService) { }
 
   ngOnInit() {
     this.errorMessage = '';
@@ -57,7 +57,7 @@ export class NewWorkingOnModalComponent implements OnInit {
     });
   }
 
-  private handleError(message: string) {
+  handleError(message: string) {
     this.errorOccurred = true;
     this.errorMessage = message;
     setTimeout(() => {

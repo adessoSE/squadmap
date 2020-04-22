@@ -51,7 +51,6 @@ describe('CreateEmployeeModalComponent', () => {
     component.handleError('error');
     expect(component.errorOccurred).toBeTruthy();
     expect(component.errorMessage).toEqual('error');
-    // TODO check error message on DOM Element
   });
 
   it('should generate a random string of length 5',  () => {

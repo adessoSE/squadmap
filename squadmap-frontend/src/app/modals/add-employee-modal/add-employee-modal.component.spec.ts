@@ -51,6 +51,7 @@ describe('Add Employee Modal Component', () => {
   });
 
   it('should create the modal', () =>  {
+    component.ngOnInit();
     fixture.detectChanges();
     expect(component.errorMessage).toEqual('');
     expect(component).toBeTruthy();
