@@ -6,6 +6,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
 import {ProjectService} from "../../services/project/project.service";
+import {Observable} from "rxjs";
 
 describe('CreateProjectModalComponent', () => {
   let component: CreateProjectModalComponent;
@@ -37,5 +38,17 @@ describe('CreateProjectModalComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show an error message in the modal', () => {
+    component.handleError('error');
+    expect(component.errorOccurred).toBeTruthy();
+    expect(component.errorMessage).toEqual('error');
+  });
+
+  it('should call the addProject method',  () => {
+    let spyProjectService = spyOn(component.projectService, 'addProject').and.returnValue(new Observable());
+    component.onSubmit();
+    expect(spyProjectService).toHaveBeenCalled();
   });
 });

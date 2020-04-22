@@ -11,8 +11,8 @@ import {CreateProjectModel} from "../../models/createProject.model";
 })
 export class CreateProjectModalComponent implements OnInit {
 
-  private errorOccurred: boolean;
-  private errorMessage: string;
+  errorOccurred: boolean;
+  errorMessage: string;
 
   private form: FormGroup;
 
@@ -68,7 +68,7 @@ export class CreateProjectModalComponent implements OnInit {
     });
   }
 
-  private handleError(message: string) {
+  handleError(message: string) {
     this.errorOccurred = true;
     this.errorMessage = message;
     setTimeout(() => {
