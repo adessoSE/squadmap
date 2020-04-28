@@ -12,18 +12,18 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 })
 export class UpdateWorkingOnEmployeeModalComponent implements OnInit {
 
-  private workingOnEmployee: WorkingOnEmployeeModel;
+  workingOnEmployee: WorkingOnEmployeeModel;
   private projectId: number;
   private workload: number;
 
-  private errorOccurred: boolean;
-  private errorMessage: string;
+  errorOccurred: boolean;
+  errorMessage: string;
 
   private form: FormGroup;
 
   constructor(private modalRef: BsModalRef,
               private formBuilder: FormBuilder,
-              private workingOnService: WorkingOnService,
+              public workingOnService: WorkingOnService,
               private dateFormatterService: DateFormatterService) { }
 
   ngOnInit() {
@@ -60,7 +60,7 @@ export class UpdateWorkingOnEmployeeModalComponent implements OnInit {
     });
   }
 
-  private handleError(message: string) {
+  handleError(message: string) {
     this.errorOccurred = true;
     this.errorMessage = message;
     setTimeout(() => {
