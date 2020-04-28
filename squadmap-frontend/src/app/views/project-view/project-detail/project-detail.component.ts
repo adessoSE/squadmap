@@ -51,8 +51,8 @@ export class ProjectDetailComponent implements OnInit {
     this.modalRef = this.modalService.show(AddEmployeeModalComponent, config);
   }
 
-  onDelete(workingOn: WorkingOnEmployeeModel) {
-    this.workingOnService.deleteWorkingOn(workingOn.workingOnId).subscribe(() => {
+  onDelete(workingOnId: number) {
+    this.workingOnService.deleteWorkingOn(workingOnId).subscribe(() => {
         this.refreshProject();
     });
   }

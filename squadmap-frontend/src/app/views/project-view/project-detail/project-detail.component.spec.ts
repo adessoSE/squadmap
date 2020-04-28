@@ -4,12 +4,16 @@ import {MapProjectDetailComponent} from "../../map-view/map-project-detail/map-p
 import {BsModalService, ModalModule, TabsModule} from "ngx-bootstrap";
 import {RouterTestingModule} from "@angular/router/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {AddEmployeeModalComponent} from "../../../modals/add-employee-modal/add-employee-modal.component";
+import {FilterEmployeesPipe} from "../../../pipes/filterEmployees/filterEmployees.pipe";
+import {FormsModule} from "@angular/forms";
+import {Observable} from "rxjs";
+import {WorkingOnEmployeeModel} from "../../../models/workingOnEmployee.model";
 
 describe('Project Detail Component', () => {
   let fixture;
   let component;
   let bsModalService;
-  let showModalServiceSpy;
 
   let dummyProject = {
     projectId: 1,
@@ -22,29 +26,67 @@ describe('Project Detail Component', () => {
     employees: []
   };
 
+  let dummyEmployees = [
+    {
+      employeeId: 1,
+      firstName: 'Test1',
+      lastName: 'Name',
+      birthday: new Date(),
+      email: 'test1@name.de',
+      phone: '0123456789',
+      isExternal: false,
+      image: '',
+      projects: []
+    },
+    {
+      employeeId: 2,
+      firstName: 'Test2',
+      lastName: 'Name',
+      birthday: new Date(),
+      email: 'test2@name.de',
+      phone: '0123456789',
+      isExternal: true,
+      image: '',
+      projects: []
+    },
+  ];
+
+  let workingOnEmployee: WorkingOnEmployeeModel = new WorkingOnEmployeeModel(1,{
+    employeeId: 2,
+    firstName: 'Test2',
+    lastName: 'Name',
+    birthday: new Date(),
+    email: 'test2@name.de',
+    phone: '0123456789',
+    isExternal: true,
+    image: '',
+    projects: []
+  },new Date(), new Date(),50);
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ProjectDetailComponent,
-        MapProjectDetailComponent
+        MapProjectDetailComponent,
+        AddEmployeeModalComponent,
+        FilterEmployeesPipe
       ],
       imports: [
         TabsModule.forRoot(),
         ModalModule.forRoot(),
+        FormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
       ],
       providers: [
         BsModalService
-      ]
+      ],
     });
     fixture = TestBed.createComponent(ProjectDetailComponent);
     component = fixture.componentInstance;
 
     bsModalService = fixture.debugElement.injector.get(BsModalService);
-    showModalServiceSpy = spyOn(bsModalService, 'show');
-
     component.project = dummyProject;
   });
 
@@ -53,7 +95,50 @@ describe('Project Detail Component', () => {
   });
 
   it('should call the show method when opening add employee modal',  () => {
+    let showModalServiceSpy = spyOn(bsModalService, 'show');
     component.onOpenAddEmployeeModal();
     expect(showModalServiceSpy).toHaveBeenCalled();
   });
+
+  it('should call the deleteWorkingOn method when onDelete',  () => {
+    let spy = spyOn(component.workingOnService, 'deleteWorkingOn').and.returnValue(new Observable());
+    component.onDelete(1);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should call the right methods when refreshing the project',  () => {
+    let spyProjectService = spyOn(component.projectService, 'getProject').and.returnValue(new Observable());
+    component.refreshProject();
+    expect(spyProjectService).toHaveBeenCalled();
+  });
+
+  it('should call the show method when onEdit',  () => {
+    let showModalServiceSpy = spyOn(bsModalService, 'show');
+    component.onEdit(workingOnEmployee);
+    expect(showModalServiceSpy).toHaveBeenCalled();
+  });
+
+  it('should call the navigate method when onOpenEmployeeDetail',  () => {
+    let spy = spyOn(component.router, 'navigate');
+    component.onOpenEmployeeDetail(1);
+    expect(spy).toHaveBeenCalled();
+  });
+  
+  it('should filter the Employees',  () => {
+   let filtered = component.filterEmployees(dummyEmployees, [workingOnEmployee]);
+   expect(filtered[0].employeeId).toEqual(1);
+  });
+
+  it('should call the navigate method when onOpenEmployeeDetail',  () => {
+    let spy = spyOn(component.router, 'navigate');
+    component.onOpenEmployeeDetail(1);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should call the getEmployees method when updating the project',  () => {
+    let spy = spyOn(component.employeeService, 'getEmployees').and.returnValue(new Observable());
+    component.updateFilteredEmployees();
+    expect(spy).toHaveBeenCalled();
+  });
+
 });
