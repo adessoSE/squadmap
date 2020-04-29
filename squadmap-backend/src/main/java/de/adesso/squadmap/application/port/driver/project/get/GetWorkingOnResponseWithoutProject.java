@@ -1,15 +1,12 @@
 package de.adesso.squadmap.application.port.driver.project.get;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDate;
 
 @Value
-@Builder(builderClassName = "GetWorkingOnResponseWithoutProjectBuilder")
-@JsonDeserialize(builder = GetWorkingOnResponseWithoutProject.GetWorkingOnResponseWithoutProjectBuilder.class)
+@Builder
 class GetWorkingOnResponseWithoutProject {
 
     Long workingOnId;
@@ -17,8 +14,4 @@ class GetWorkingOnResponseWithoutProject {
     LocalDate until;
     Integer workload;
     GetEmployeeResponseWithoutProject employee;
-
-    @JsonPOJOBuilder(withPrefix = "")
-    static class GetWorkingOnResponseWithoutProjectBuilder {
-    }
 }

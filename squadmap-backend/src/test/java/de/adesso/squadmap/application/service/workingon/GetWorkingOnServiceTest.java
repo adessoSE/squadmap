@@ -2,7 +2,7 @@ package de.adesso.squadmap.application.service.workingon;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.RelationResponseMapper;
 import de.adesso.squadmap.application.port.driven.workingon.GetWorkingOnPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
@@ -29,7 +29,7 @@ class GetWorkingOnServiceTest {
     @Mock
     private ListWorkingOnPort listWorkingOnPort;
     @Mock
-    private ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
+    private RelationResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
     @InjectMocks
     private GetWorkingOnService getWorkingOnService;
 
@@ -41,8 +41,9 @@ class GetWorkingOnServiceTest {
         GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().workingOnId(workingOnId).build();
         List<WorkingOn> workingOns = Collections.emptyList();
         when(getWorkingOnPort.getWorkingOn(workingOnId)).thenReturn(workingOn);
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn, workingOns)).thenReturn(getWorkingOnResponse);
+        when(listWorkingOnPort.listWorkingOnByEmployeeId(workingOn.getEmployee().getEmployeeId())).thenReturn(workingOns);
+        when(listWorkingOnPort.listWorkingOnByProjectId(workingOn.getProject().getProjectId())).thenReturn(workingOns);
+        when(workingOnResponseMapper.mapToResponseEntity(workingOn, workingOns, workingOns)).thenReturn(getWorkingOnResponse);
 
         //when
         GetWorkingOnResponse response = getWorkingOnService.getWorkingOn(workingOnId);
@@ -50,8 +51,12 @@ class GetWorkingOnServiceTest {
         //then
         assertThat(response).isEqualTo(getWorkingOnResponse);
         verify(getWorkingOnPort, times(1)).getWorkingOn(workingOnId);
-        verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1)).mapToResponseEntity(workingOn, workingOns);
+        verify(listWorkingOnPort, times(1))
+                .listWorkingOnByEmployeeId(workingOn.getEmployee().getEmployeeId());
+        verify(listWorkingOnPort, times(1))
+                .listWorkingOnByProjectId(workingOn.getProject().getProjectId());
+        verify(workingOnResponseMapper, times(1))
+                .mapToResponseEntity(workingOn, workingOns, workingOns);
         verifyNoMoreInteractions(getWorkingOnPort, listWorkingOnPort, workingOnResponseMapper);
     }
 }

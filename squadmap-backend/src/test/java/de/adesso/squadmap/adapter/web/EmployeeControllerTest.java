@@ -77,18 +77,17 @@ class EmployeeControllerTest {
     void checkIfGetEmployeeReturnsTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
-        when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(getEmployeeResponse);
+        GetEmployeeResponse expectedResponse = GetEmployeeResponseMother.complete().build();
+        when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(API_URL + "/{id}", employeeId))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/{id}", employeeId))
                 .andExpect(status().isOk())
                 .andReturn();
-        GetEmployeeResponse response = JsonMapper.asResponse(result, GetEmployeeResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(response)
-                .isEqualTo(getEmployeeResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(getEmployeeUseCase, times(1)).getEmployee(employeeId);
         verifyNoMoreInteractions(getEmployeeUseCase);
         verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
@@ -104,7 +103,7 @@ class EmployeeControllerTest {
         //when
         MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createEmployeeRequest))
+                .content(objectMapper.writeValueAsString(createEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -127,7 +126,7 @@ class EmployeeControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", employeeId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateEmployeeRequest))
+                .content(objectMapper.writeValueAsString(updateEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -161,7 +160,7 @@ class EmployeeControllerTest {
         //when
         mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createEmployeeRequest))
+                .content(objectMapper.writeValueAsString(createEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -179,7 +178,7 @@ class EmployeeControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", employeeId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateProjectRequest))
+                .content(objectMapper.writeValueAsString(updateProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -198,7 +197,7 @@ class EmployeeControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", employeeId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateEmployeeRequest))
+                .content(objectMapper.writeValueAsString(updateEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
@@ -217,7 +216,7 @@ class EmployeeControllerTest {
         //when
         mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createEmployeeRequest))
+                .content(objectMapper.writeValueAsString(createEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
 

@@ -1,7 +1,7 @@
 package de.adesso.squadmap.application.service.workingon;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.RelationResponseMapper;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
@@ -17,14 +17,23 @@ import java.util.stream.Collectors;
 class ListWorkingOnService implements ListWorkingOnUseCase {
 
     private final ListWorkingOnPort listWorkingOnPort;
-    private final ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
+    private final RelationResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
 
     @Override
     @Transactional
     public List<GetWorkingOnResponse> listWorkingOn() {
         List<WorkingOn> workingOns = listWorkingOnPort.listWorkingOn();
         return workingOns.stream()
-                .map(workingOn -> workingOnResponseMapper.mapToResponseEntity(workingOn,workingOns))
+                .map(workingOn -> workingOnResponseMapper.mapToResponseEntity(
+                        workingOn,
+                        workingOns.stream()
+                                .filter(tempWorkingOn -> tempWorkingOn.getEmployee().getEmployeeId()
+                                        .equals(workingOn.getEmployee().getEmployeeId()))
+                                .collect(Collectors.toList()),
+                        workingOns.stream()
+                                .filter(tempWorkingOn -> tempWorkingOn.getProject().getProjectId()
+                                        .equals(workingOn.getProject().getProjectId()))
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 }

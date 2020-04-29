@@ -1,7 +1,7 @@
 package de.adesso.squadmap.application.service.employee;
 
 import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
@@ -16,7 +16,7 @@ class GetEmployeeService implements GetEmployeeUseCase {
 
     private final GetEmployeePort getEmployeePort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private final EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
 
     @Override
     @Transactional

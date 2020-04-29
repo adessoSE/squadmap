@@ -1,5 +1,6 @@
 package de.adesso.squadmap.adapter.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequest;
 import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequestMother;
 import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
@@ -46,23 +47,25 @@ class WorkingOnControllerTest {
     @MockBean
     private UpdateWorkingOnUseCase updateWorkingOnUseCase;
     @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
     void checkIfGetAllWorkingOnReturnsAll() throws Exception {
         //given
-        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(Collections.singletonList(getWorkingOnResponse));
+        List<GetWorkingOnResponse> expectedResponse =
+                Collections.singletonList(GetWorkingOnResponseMother.complete().build());
+        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(API_URL + "/all"))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
-        List<GetWorkingOnResponse> responses = JsonMapper.asResponseList(result, GetWorkingOnResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(responses.size()).isOne();
-        assertThat(responses.get(0)).isEqualTo(getWorkingOnResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(listWorkingOnUseCase, times(1)).listWorkingOn();
         verifyNoMoreInteractions(listWorkingOnUseCase);
         verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, getWorkingOnUseCase, updateWorkingOnUseCase);
@@ -72,17 +75,17 @@ class WorkingOnControllerTest {
     void checkIfGetWorkingOnReturnsTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
+        GetWorkingOnResponse expectedResponse = GetWorkingOnResponseMother.complete().build();
+        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(API_URL + "/{id}", workingOnId))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/{id}", workingOnId))
                 .andExpect(status().isOk())
                 .andReturn();
-        GetWorkingOnResponse response = JsonMapper.asResponse(result, GetWorkingOnResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(response).isEqualTo(getWorkingOnResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(getWorkingOnUseCase, times(1)).getWorkingOn(workingOnId);
         verifyNoMoreInteractions(getWorkingOnUseCase);
         verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
@@ -98,7 +101,7 @@ class WorkingOnControllerTest {
         //when
         MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createWorkingOnRequest))
+                .content(objectMapper.writeValueAsString(createWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -121,7 +124,7 @@ class WorkingOnControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", workingOnId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateWorkingOnRequest))
+                .content(objectMapper.writeValueAsString(updateWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -155,7 +158,7 @@ class WorkingOnControllerTest {
         //when
         mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createWorkingOnRequest))
+                .content(objectMapper.writeValueAsString(createWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -173,7 +176,7 @@ class WorkingOnControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", workingOnId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateWorkingOnRequest))
+                .content(objectMapper.writeValueAsString(updateWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -206,7 +209,7 @@ class WorkingOnControllerTest {
         //when
         mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createWorkingOnRequest))
+                .content(objectMapper.writeValueAsString(createWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
 

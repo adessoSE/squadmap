@@ -1,9 +1,5 @@
 package de.adesso.squadmap.application.port.driver.employee.get;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
@@ -15,9 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Value
-@Builder(builderClassName = "GetEmployeeResponseBuilder")
-@JsonDeserialize(builder = GetEmployeeResponse.GetEmployeeResponseBuilder.class)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class GetEmployeeResponse {
 
     Long employeeId;
@@ -34,7 +28,6 @@ public class GetEmployeeResponse {
         return new ArrayList<>(this.projects);
     }
 
-    @JsonPOJOBuilder(withPrefix = "")
     public static class GetEmployeeResponseBuilder {
 
         public GetEmployeeResponseBuilder projects(List<GetWorkingOnResponseWithoutEmployee> projects) {

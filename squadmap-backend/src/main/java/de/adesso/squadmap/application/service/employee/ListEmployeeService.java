@@ -2,7 +2,7 @@ package de.adesso.squadmap.application.service.employee;
 
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driven.employee.ListEmployeePort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
@@ -20,14 +20,19 @@ class ListEmployeeService implements ListEmployeeUseCase {
 
     private final ListEmployeePort listEmployeePort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private final EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
 
     @Override
     @Transactional
     public List<GetEmployeeResponse> listEmployees() {
         List<WorkingOn> workingOns = listWorkingOnPort.listWorkingOn();
         return listEmployeePort.listEmployees().stream()
-                .map(employee -> employeeResponseMapper.mapToResponseEntity(employee, workingOns))
+                .map(employee -> employeeResponseMapper.mapToResponseEntity(
+                        employee,
+                        workingOns.stream()
+                                .filter(workingOn -> workingOn.getEmployee().getEmployeeId()
+                                        .equals(employee.getEmployeeId()))
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
 package de.adesso.squadmap.application.port.driver.workingon.get;
 
 import de.adesso.squadmap.application.domain.*;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -24,9 +24,9 @@ import static org.mockito.Mockito.*;
 public class WorkingOnResponseMapperTest {
 
     @Mock
-    private ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
     @Mock
-    private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
 
     private WorkingOnResponseMapper workingOnResponseMapper;
 
@@ -51,7 +51,8 @@ public class WorkingOnResponseMapperTest {
         when(projectResponseMapper.mapToResponseEntity(project, workingOnList)).thenReturn(projectResponse);
 
         //when
-        GetWorkingOnResponse getWorkingOnResponse = workingOnResponseMapper.mapToResponseEntity(workingOn, workingOnList);
+        GetWorkingOnResponse getWorkingOnResponse = workingOnResponseMapper
+                .mapToResponseEntity(workingOn, workingOnList, workingOnList);
 
         //then
         assertThat(getWorkingOnResponse.getWorkingOnId()).isEqualTo(workingOn.getWorkingOnId());

@@ -1,5 +1,6 @@
 package de.adesso.squadmap.adapter.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequest;
 import de.adesso.squadmap.adapter.web.webentities.project.CreateProjectRequestMother;
 import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequest;
@@ -46,23 +47,25 @@ class ProjectControllerTest {
     @MockBean
     private UpdateProjectUseCase updateProjectUseCase;
     @Autowired
+    private ObjectMapper objectMapper;
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
     void checkIfGetAllProjectsReturnsAll() throws Exception {
         //given
-        GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
-        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(getProjectResponse));
+        List<GetProjectResponse> expectedResponse =
+                Collections.singletonList(GetProjectResponseMother.complete().build());
+        when(listProjectUseCase.listProjects()).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(API_URL + "/all"))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
-        List<GetProjectResponse> responses = JsonMapper.asResponseList(result, GetProjectResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(responses.size()).isOne();
-        assertThat(responses.get(0)).isEqualTo(getProjectResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(listProjectUseCase, times(1)).listProjects();
         verifyNoMoreInteractions(listProjectUseCase);
         verifyNoInteractions(createProjectUseCase, deleteProjectUseCase, getProjectUseCase, updateProjectUseCase);
@@ -72,17 +75,17 @@ class ProjectControllerTest {
     void checkIfGetProjectReturnsTheProject() throws Exception {
         //given
         long projectId = 1;
-        GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
-        when(getProjectUseCase.getProject(projectId)).thenReturn(getProjectResponse);
+        GetProjectResponse expectedResponse = GetProjectResponseMother.complete().build();
+        when(getProjectUseCase.getProject(projectId)).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(API_URL + "/{id}", projectId))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/{id}", projectId))
                 .andExpect(status().isOk())
                 .andReturn();
-        GetProjectResponse response = JsonMapper.asResponse(result, GetProjectResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(response).isEqualTo(getProjectResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(getProjectUseCase, times(1)).getProject(projectId);
         verifyNoMoreInteractions(getProjectUseCase);
         verifyNoInteractions(createProjectUseCase, deleteProjectUseCase, listProjectUseCase, updateProjectUseCase);
@@ -98,7 +101,7 @@ class ProjectControllerTest {
         //when
         MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createProjectRequest))
+                .content(objectMapper.writeValueAsString(createProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -121,7 +124,7 @@ class ProjectControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", projectId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateProjectRequest))
+                .content(objectMapper.writeValueAsString(updateProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -155,7 +158,7 @@ class ProjectControllerTest {
         //when
         mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createProjectRequest))
+                .content(objectMapper.writeValueAsString(createProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -173,7 +176,7 @@ class ProjectControllerTest {
         //when
         mockMvc.perform(put(API_URL + "/update/{id}", projectId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateProjectRequest))
+                .content(objectMapper.writeValueAsString(updateProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -206,7 +209,7 @@ class ProjectControllerTest {
         //when
         mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createProjectRequest))
+                .content(objectMapper.writeValueAsString(createProjectRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
 

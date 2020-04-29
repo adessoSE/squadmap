@@ -3,7 +3,7 @@ package de.adesso.squadmap.application.service.project;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.ProjectMother;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driven.project.GetProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -30,7 +30,7 @@ class GetProjectServiceTest {
     @Mock
     private ListWorkingOnPort listWorkingOnPort;
     @Mock
-    private ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
     @InjectMocks
     private GetProjectService getProjectService;
 

@@ -3,7 +3,8 @@ package de.adesso.squadmap.application.port.driver.workingon.get;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.RelationResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,20 +14,21 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-class WorkingOnResponseMapper implements ResponseMapper<WorkingOn, GetWorkingOnResponse> {
+class WorkingOnResponseMapper implements RelationResponseMapper<WorkingOn, GetWorkingOnResponse> {
 
-    private final ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
-    private final ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private final EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private final EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
 
-    @Override
-    public GetWorkingOnResponse mapToResponseEntity(WorkingOn workingOn, List<WorkingOn> workingOns) {
+    public GetWorkingOnResponse mapToResponseEntity(WorkingOn workingOn,
+                                                    List<WorkingOn> employeeWorkingOns,
+                                                    List<WorkingOn> projectWorkingOns) {
         return GetWorkingOnResponse.builder()
                 .workingOnId(workingOn.getWorkingOnId())
                 .since(workingOn.getSince())
                 .until(workingOn.getUntil())
                 .workload(workingOn.getWorkload())
-                .employee(employeeResponseMapper.mapToResponseEntity(workingOn.getEmployee(), workingOns))
-                .project(projectResponseMapper.mapToResponseEntity(workingOn.getProject(), workingOns))
+                .employee(employeeResponseMapper.mapToResponseEntity(workingOn.getEmployee(), employeeWorkingOns))
+                .project(projectResponseMapper.mapToResponseEntity(workingOn.getProject(), projectWorkingOns))
                 .build();
     }
 }

@@ -1,7 +1,7 @@
 package de.adesso.squadmap.application.service.project;
 
 import de.adesso.squadmap.application.domain.Project;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driven.project.GetProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -16,7 +16,7 @@ class GetProjectService implements GetProjectUseCase {
 
     private final GetProjectPort getProjectPort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private final EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
 
     @Override
     @Transactional

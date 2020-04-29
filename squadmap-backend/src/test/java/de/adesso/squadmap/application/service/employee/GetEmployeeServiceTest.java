@@ -3,7 +3,7 @@ package de.adesso.squadmap.application.service.employee;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.ResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
@@ -30,7 +30,7 @@ class GetEmployeeServiceTest {
     @Mock
     private ListWorkingOnPort listWorkingOnPort;
     @Mock
-    private ResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
     @InjectMocks
     private GetEmployeeService getEmployeeService;
 
@@ -52,7 +52,7 @@ class GetEmployeeServiceTest {
         assertThat(response).isEqualTo(getEmployeeResponse);
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
         verify(listWorkingOnPort, times(1)).listWorkingOnByEmployeeId(employeeId);
-        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, workingOns);;
+        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, workingOns);
         verifyNoMoreInteractions(getEmployeePort, listWorkingOnPort, employeeResponseMapper);
     }
 }
