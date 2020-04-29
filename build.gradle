@@ -48,7 +48,7 @@ project(":squadmap-frontend") {
             property "sonar.tests", "src"
             property "sonar.test.inclusions", "**/*.spec.ts"
             property "sonar.nodejs.executable", node.variant.nodeExec
-            property "sonar.typescript.lcov.reportPaths", "coverage/squadmap-frontend/coverage/squadmap-frontend/lcov.info"
+            property "sonar.typescript.lcov.reportPaths", "coverage/squadmap-frontend/lcov.info"
         }
     }
 }
