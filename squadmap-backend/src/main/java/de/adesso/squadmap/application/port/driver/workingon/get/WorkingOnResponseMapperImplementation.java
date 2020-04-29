@@ -1,12 +1,9 @@
 package de.adesso.squadmap.application.port.driver.workingon.get;
 
-import de.adesso.squadmap.application.domain.Employee;
-import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.RelationResponseMapper;
-import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
-import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
-import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
+import de.adesso.squadmap.application.domain.mapper.EmployeeResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.ProjectResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +11,10 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-class WorkingOnResponseMapper implements RelationResponseMapper<WorkingOn, GetWorkingOnResponse> {
+class WorkingOnResponseMapperImplementation implements WorkingOnResponseMapper {
 
-    private final EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
-    private final EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private final EmployeeResponseMapper employeeResponseMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     public GetWorkingOnResponse mapToResponseEntity(WorkingOn workingOn,
                                                     List<WorkingOn> employeeWorkingOns,

@@ -1,6 +1,7 @@
-package de.adesso.squadmap.application.domain.mapper;
+package de.adesso.squadmap.application.domain.mapper.implementation;
 
 import de.adesso.squadmap.application.domain.Project;
+import de.adesso.squadmap.application.domain.mapper.ProjectDomainMapper;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectCommand;
 import de.adesso.squadmap.application.port.driver.project.update.UpdateProjectCommand;
 import org.springframework.stereotype.Component;

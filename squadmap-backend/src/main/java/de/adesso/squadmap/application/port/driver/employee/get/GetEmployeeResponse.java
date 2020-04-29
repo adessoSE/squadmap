@@ -1,5 +1,7 @@
 package de.adesso.squadmap.application.port.driver.employee.get;
 
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.WorkingOn;
 import lombok.Builder;
 import lombok.Value;
 
@@ -26,6 +28,20 @@ public class GetEmployeeResponse {
 
     public List<GetWorkingOnResponseWithoutEmployee> getProjects() {
         return new ArrayList<>(this.projects);
+    }
+
+    static GetEmployeeResponse of(Employee employee, List<WorkingOn> workingOns) {
+        return GetEmployeeResponse.builder()
+                .employeeId(employee.getEmployeeId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .birthday(employee.getBirthday())
+                .email(employee.getEmail())
+                .phone(employee.getPhone())
+                .image(employee.getImage())
+                .isExternal(employee.getIsExternal())
+                .projects(GetWorkingOnResponseWithoutEmployee.of(workingOns))
+                .build();
     }
 
     public static class GetEmployeeResponseBuilder {

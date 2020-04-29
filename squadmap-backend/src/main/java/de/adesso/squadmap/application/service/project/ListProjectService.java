@@ -1,8 +1,7 @@
 package de.adesso.squadmap.application.service.project;
 
-import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.ProjectResponseMapper;
 import de.adesso.squadmap.application.port.driven.project.ListProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -20,7 +19,7 @@ class ListProjectService implements ListProjectUseCase {
 
     private final ListProjectPort listProjectPort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     @Override
     @Transactional

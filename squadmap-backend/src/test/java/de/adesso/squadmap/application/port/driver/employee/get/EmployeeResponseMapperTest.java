@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 public class EmployeeResponseMapperTest {
 
-    private EmployeeResponseMapper employeeResponseMapper = new EmployeeResponseMapper();
+    private EmployeeResponseMapperImplementation employeeResponseMapper = new EmployeeResponseMapperImplementation();
 
     @Test
     void checkIfMapToResponseMapsToResponse() {

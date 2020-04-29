@@ -1,7 +1,8 @@
 package de.adesso.squadmap.application.port.driver.workingon.get;
 
 import de.adesso.squadmap.application.domain.*;
-import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EmployeeResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.ProjectResponseMapper;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -24,15 +25,15 @@ import static org.mockito.Mockito.*;
 public class WorkingOnResponseMapperTest {
 
     @Mock
-    private EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private EmployeeResponseMapper employeeResponseMapper;
     @Mock
-    private EntityResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private ProjectResponseMapper projectResponseMapper;
 
-    private WorkingOnResponseMapper workingOnResponseMapper;
+    private WorkingOnResponseMapperImplementation workingOnResponseMapper;
 
     @BeforeEach
     void init() {
-        workingOnResponseMapper = new WorkingOnResponseMapper(employeeResponseMapper, projectResponseMapper);
+        workingOnResponseMapper = new WorkingOnResponseMapperImplementation(employeeResponseMapper, projectResponseMapper);
     }
 
     @Test

@@ -1,8 +1,7 @@
 package de.adesso.squadmap.application.service.employee;
 
-import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.EntityResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.EmployeeResponseMapper;
 import de.adesso.squadmap.application.port.driven.employee.ListEmployeePort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
@@ -20,7 +19,7 @@ class ListEmployeeService implements ListEmployeeUseCase {
 
     private final ListEmployeePort listEmployeePort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final EntityResponseMapper<Employee, GetEmployeeResponse> employeeResponseMapper;
+    private final EmployeeResponseMapper employeeResponseMapper;
 
     @Override
     @Transactional

@@ -1,5 +1,6 @@
 package de.adesso.squadmap.application.port.driver.employee.get;
 
+import de.adesso.squadmap.application.domain.Project;
 import lombok.Builder;
 import lombok.Value;
 
@@ -17,4 +18,16 @@ class GetProjectResponseWithoutEmployee {
     LocalDate until;
     Boolean isExternal;
     List<String> sites;
+
+    static GetProjectResponseWithoutEmployee of(Project project) {
+        return GetProjectResponseWithoutEmployee.builder()
+                .projectId(project.getProjectId())
+                .title(project.getTitle())
+                .description(project.getDescription())
+                .since(project.getSince())
+                .until(project.getUntil())
+                .sites(project.getSites())
+                .isExternal(project.getIsExternal())
+                .build();
+    }
 }

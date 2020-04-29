@@ -1,7 +1,7 @@
 package de.adesso.squadmap.application.service.workingon;
 
 import de.adesso.squadmap.application.domain.WorkingOn;
-import de.adesso.squadmap.application.domain.mapper.RelationResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnResponseMapper;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 class ListWorkingOnService implements ListWorkingOnUseCase {
 
     private final ListWorkingOnPort listWorkingOnPort;
-    private final RelationResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
+    private final WorkingOnResponseMapper workingOnResponseMapper;
 
     @Override
     @Transactional

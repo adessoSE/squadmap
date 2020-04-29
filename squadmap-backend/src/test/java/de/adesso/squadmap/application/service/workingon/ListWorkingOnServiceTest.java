@@ -4,7 +4,7 @@ import de.adesso.squadmap.application.domain.EmployeeMother;
 import de.adesso.squadmap.application.domain.ProjectMother;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
-import de.adesso.squadmap.application.domain.mapper.RelationResponseMapper;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnResponseMapper;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
@@ -29,7 +29,7 @@ class ListWorkingOnServiceTest {
     @Mock
     private ListWorkingOnPort listWorkingOnPort;
     @Mock
-    private RelationResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
+    private WorkingOnResponseMapper workingOnResponseMapper;
     @InjectMocks
     private ListWorkingOnService listWorkingOnService;
 

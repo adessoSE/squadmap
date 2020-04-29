@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 public class ProjectResponseMapperTest {
 
-    private ProjectResponseMapper projectResponseMapper = new ProjectResponseMapper();
+    private ProjectResponseMapperImplementation projectResponseMapper = new ProjectResponseMapperImplementation();
 
     @Test
     void checkIfMapToResponseMapsToResponse() {
