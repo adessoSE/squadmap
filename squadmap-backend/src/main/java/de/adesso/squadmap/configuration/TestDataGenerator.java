@@ -38,45 +38,43 @@ class TestDataGenerator implements CommandLineRunner {
 
         CreateEmployeeCommand createEmployeeCommand1 = CreateEmployeeCommand.builder()
                 .firstName("Bob").lastName("Apple").birthday(now().minusYears(1))
-                .email("b.a@adesso.de").phone(phone).isExternal(false).image("")
+                .email("b.a@adesso.de").phone(phone).isExternal(false).image("initials/ba")
                 .build();
         CreateEmployeeCommand createEmployeeCommand2 = CreateEmployeeCommand.builder()
                 .firstName("Kevin").lastName("Peach").birthday(now().minusYears(1))
-                .email("k.p@adesso.de").phone(phone).isExternal(false).image("")
+                .email("k.p@adesso.de").phone(phone).isExternal(false).image("initials/kp")
                 .build();
         CreateEmployeeCommand createEmployeeCommand3 = CreateEmployeeCommand.builder()
                 .firstName("Bert").lastName("Melon").birthday(now().minusYears(1))
-                .email("b.m@adesso.de").phone(phone).isExternal(false).image("")
+                .email("b.m@adesso.de").phone(phone).isExternal(false).image("initials/bm")
                 .build();
         CreateEmployeeCommand createEmployeeCommand4 = CreateEmployeeCommand.builder()
                 .firstName("Treena").lastName("Utecht").birthday(now().minusYears(1))
-                .email("t.u@adesso.de").phone(phone).isExternal(false).image("")
+                .email("t.u@adesso.de").phone(phone).isExternal(false).image("initials/tu")
                 .build();
         CreateEmployeeCommand createEmployeeCommand5 = CreateEmployeeCommand.builder()
                 .firstName("Chris").lastName("Urbaniak").birthday(now().minusYears(1))
-                .email("c.u@adesso.de").phone(phone).isExternal(false).image("")
+                .email("c.u@adesso.de").phone(phone).isExternal(false).image("initials/cu")
                 .build();
         CreateEmployeeCommand createEmployeeCommand6 = CreateEmployeeCommand.builder()
                 .firstName("Kiley").lastName("Dula").birthday(now().minusYears(1))
-                .email("k.d@adesso.de").phone(phone).isExternal(false).image("")
+                .email("k.d@adesso.de").phone(phone).isExternal(false).image("initials/kd")
                 .build();
-
         CreateEmployeeCommand createEmployeeCommand7 = CreateEmployeeCommand.builder()
                 .firstName("Reba").lastName("Raisor").birthday(now().minusYears(1))
-                .email("r.r@adesso.de").phone(phone).isExternal(false).image("")
+                .email("r.r@adesso.de").phone(phone).isExternal(false).image("initials/rr")
                 .build();
-
         CreateEmployeeCommand createEmployeeCommand8 = CreateEmployeeCommand.builder()
                 .firstName("Long").lastName("Staillings").birthday(now().minusYears(1))
-                .email("l.s@adesso.de").phone(phone).isExternal(false).image("")
+                .email("l.s@adesso.de").phone(phone).isExternal(false).image("initials/ls")
                 .build();
         CreateEmployeeCommand createEmployeeCommand9 = CreateEmployeeCommand.builder()
                 .firstName("Herma").lastName("Tworek").birthday(now().minusYears(1))
-                .email("h.t@adesso.de").phone(phone).isExternal(true).image("")
+                .email("h.t@adesso.de").phone(phone).isExternal(true).image("initials/ht")
                 .build();
         CreateEmployeeCommand createEmployeeCommand10 = CreateEmployeeCommand.builder()
                 .firstName("Gloria").lastName("Nunley").birthday(now().minusYears(1))
-                .email("g.n@adesso.de").phone(phone).isExternal(true).image("")
+                .email("g.n@adesso.de").phone(phone).isExternal(true).image("initials/gn")
                 .build();
 
 
