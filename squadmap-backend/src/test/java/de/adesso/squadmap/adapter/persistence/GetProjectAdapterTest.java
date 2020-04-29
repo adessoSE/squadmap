@@ -1,6 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.ProjectMother;
 import org.junit.jupiter.api.Test;

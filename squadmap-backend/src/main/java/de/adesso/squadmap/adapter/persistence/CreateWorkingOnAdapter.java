@@ -1,8 +1,8 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
-import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
-import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnAlreadyExistsException;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.port.driven.workingon.CreateWorkingOnPort;
 import de.adesso.squadmap.common.PersistenceAdapter;
@@ -26,7 +26,7 @@ class CreateWorkingOnAdapter implements CreateWorkingOnPort {
             throw new ProjectNotFoundException(workingOn.getProject().getProjectId());
         }
         if (workingOnRepository.existsByEmployeeAndProject(workingOn.getEmployee().getEmployeeId(), workingOn.getProject().getProjectId())) {
-            throw new WorkingOnAlreadyExistsException();
+            throw new WorkingOnAlreadyExistsException(workingOn.getEmployee().getEmployeeId(), workingOn.getProject().getProjectId());
         }
         return workingOnRepository.save(workingOnPersistenceMapper.mapToNeo4JEntity(workingOn), 0).getWorkingOnId();
     }

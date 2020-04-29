@@ -1,6 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

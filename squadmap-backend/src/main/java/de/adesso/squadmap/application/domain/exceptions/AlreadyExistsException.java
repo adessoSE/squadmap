@@ -1,6 +1,6 @@
 package de.adesso.squadmap.application.domain.exceptions;
 
-public class AlreadyExistsException extends RuntimeException {
+public abstract class AlreadyExistsException extends RuntimeException {
 
     public AlreadyExistsException() {
     }

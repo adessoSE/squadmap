@@ -1,6 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeAlreadyExistsException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import org.junit.jupiter.api.Test;

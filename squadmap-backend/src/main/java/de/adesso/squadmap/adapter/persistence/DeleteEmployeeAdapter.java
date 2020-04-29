@@ -1,6 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.port.driven.employee.DeleteEmployeePort;
 import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;

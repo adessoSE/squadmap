@@ -1,6 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnNotFoundException;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import org.junit.jupiter.api.Test;

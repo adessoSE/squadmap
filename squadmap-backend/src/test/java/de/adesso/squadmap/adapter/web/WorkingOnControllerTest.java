@@ -5,8 +5,8 @@ import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnReque
 import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequestMother;
 import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
 import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequestMother;
-import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
-import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnNotFoundException;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
@@ -189,7 +189,7 @@ class WorkingOnControllerTest {
     void checkIfWorkingOnNotFoundExceptionGetsHandled() throws Exception {
         //given
         long workingOnId = 1;
-        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenThrow(new NotFoundException());
+        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenThrow(new WorkingOnNotFoundException(workingOnId));
 
         //when
         mockMvc.perform(get(API_URL + "/get/{id}", workingOnId))
@@ -204,7 +204,8 @@ class WorkingOnControllerTest {
     void checkIfWorkingOnAlreadyExistsExceptionGetsHandled() throws Exception {
         //given
         CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.complete().build();
-        when(createWorkingOnUseCase.createWorkingOn(any())).thenThrow(new AlreadyExistsException());
+        when(createWorkingOnUseCase.createWorkingOn(any()))
+                .thenThrow(new WorkingOnAlreadyExistsException(1, 1));
 
         //when
         mockMvc.perform(post(API_URL + "/create")

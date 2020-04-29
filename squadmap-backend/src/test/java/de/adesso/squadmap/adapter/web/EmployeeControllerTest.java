@@ -5,8 +5,8 @@ import de.adesso.squadmap.adapter.web.webentities.employee.CreateEmployeeRequest
 import de.adesso.squadmap.adapter.web.webentities.employee.CreateEmployeeRequestMother;
 import de.adesso.squadmap.adapter.web.webentities.employee.UpdateEmployeeRequest;
 import de.adesso.squadmap.adapter.web.webentities.employee.UpdateEmployeeRequestMother;
-import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
-import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.delete.DeleteEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
@@ -191,27 +191,22 @@ class EmployeeControllerTest {
     void checkIfEmployeeNotFoundExceptionGetsHandled() throws Exception {
         //given
         long employeeId = 1;
-        UpdateEmployeeRequest updateEmployeeRequest = UpdateEmployeeRequestMother.complete().build();
-        doThrow(new NotFoundException()).when(updateEmployeeUseCase).updateEmployee(any(), eq(employeeId));
+        when(getEmployeeUseCase.getEmployee(employeeId)).thenThrow(new EmployeeNotFoundException(employeeId));
 
         //when
-        mockMvc.perform(put(API_URL + "/update/{id}", employeeId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updateEmployeeRequest))
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(put(API_URL + "/get/{id}", employeeId))
                 .andExpect(status().isNotFound());
 
         //then
-        verify(updateEmployeeUseCase, times(1)).updateEmployee(any(), eq(employeeId));
-        verifyNoMoreInteractions(updateEmployeeUseCase);
-        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase,
+                getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
     void checkIfEmployeeAlreadyExistsExceptionGetsHandled() throws Exception {
         //given
         CreateEmployeeRequest createEmployeeRequest = CreateEmployeeRequestMother.complete().build();
-        when(createEmployeeUseCase.createEmployee(any())).thenThrow(new AlreadyExistsException());
+        when(createEmployeeUseCase.createEmployee(any())).thenThrow(new EmployeeAlreadyExistsException(""));
 
         //when
         mockMvc.perform(post(API_URL + "/create")

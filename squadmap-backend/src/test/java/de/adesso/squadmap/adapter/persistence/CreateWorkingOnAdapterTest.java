@@ -1,8 +1,8 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
-import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
-import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnAlreadyExistsException;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import de.adesso.squadmap.application.domain.WorkingOnMother;
 import org.junit.jupiter.api.Test;

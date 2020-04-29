@@ -7,6 +7,8 @@ import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequest;
 import de.adesso.squadmap.adapter.web.webentities.project.UpdateProjectRequestMother;
 import de.adesso.squadmap.application.domain.exceptions.AlreadyExistsException;
 import de.adesso.squadmap.application.domain.exceptions.NotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.application.port.driver.project.create.CreateProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.delete.DeleteProjectUseCase;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -189,7 +191,7 @@ class ProjectControllerTest {
     void checkIfProjectNotFoundExceptionGetsHandled() throws Exception {
         //given
         long projectId = 1;
-        when(getProjectUseCase.getProject(projectId)).thenThrow(new NotFoundException());
+        when(getProjectUseCase.getProject(projectId)).thenThrow(new ProjectNotFoundException(projectId));
 
         //when
         mockMvc.perform(get(API_URL + "/get/{id}", projectId))
@@ -204,7 +206,7 @@ class ProjectControllerTest {
     void checkIfProjectAlreadyExistsExceptionGetsHandled() throws Exception {
         //given
         CreateProjectRequest createProjectRequest = CreateProjectRequestMother.complete().build();
-        when(createProjectUseCase.createProject(any())).thenThrow(new AlreadyExistsException());
+        when(createProjectUseCase.createProject(any())).thenThrow(new ProjectAlreadyExistsException(""));
 
         //when
         mockMvc.perform(post(API_URL + "/create")
