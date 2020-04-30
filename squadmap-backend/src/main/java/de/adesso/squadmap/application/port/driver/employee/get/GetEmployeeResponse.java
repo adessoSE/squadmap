@@ -2,6 +2,8 @@ package de.adesso.squadmap.application.port.driver.employee.get;
 
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Value
 @Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetEmployeeResponse {
 
     Long employeeId;
@@ -25,27 +28,6 @@ public class GetEmployeeResponse {
     Boolean isExternal;
     String image;
     List<GetWorkingOnResponseWithoutEmployee> projects;
-
-    private GetEmployeeResponse(Long employeeId,
-                                String firstName,
-                                String lastName,
-                                LocalDate birthday,
-                                String email,
-                                String phone,
-                                Boolean isExternal,
-                                String image,
-                                List<GetWorkingOnResponseWithoutEmployee> projects) {
-        this.employeeId = employeeId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.email = email;
-        this.phone = phone;
-        this.isExternal = isExternal;
-        this.image = image;
-        this.projects = Optional.ofNullable(projects).stream().flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
 
     public List<GetWorkingOnResponseWithoutEmployee> getProjects() {
         return new ArrayList<>(this.projects);
@@ -63,5 +45,14 @@ public class GetEmployeeResponse {
                 .isExternal(employee.getIsExternal())
                 .projects(GetWorkingOnResponseWithoutEmployee.of(workingOns))
                 .build();
+    }
+
+    public static class GetEmployeeResponseBuilder {
+
+        public GetEmployeeResponseBuilder projects(List<GetWorkingOnResponseWithoutEmployee> projects) {
+            this.projects = Optional.ofNullable(projects).stream().flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+            return this;
+        }
     }
 }
