@@ -39,33 +39,6 @@ class ListProjectServiceTest {
     @Test
     void checkIfListProjectsListsAllProjects() {
         //given
-        Project project1 = ProjectMother.complete().projectId(1L).build();
-        Project project2 = ProjectMother.complete().projectId(2L).build();
-        List<Project> projects = Arrays.asList(project1, project2);
-        GetProjectResponse getProjectResponse1 = GetProjectResponseMother.complete().projectId(1L).build();
-        GetProjectResponse getProjectResponse2 = GetProjectResponseMother.complete().projectId(2L).build();
-        List<GetProjectResponse> getProjectResponses = Arrays.asList(getProjectResponse1, getProjectResponse2);
-        List<WorkingOn> workingOns = Collections.emptyList();
-        when(listProjectPort.listProjects()).thenReturn(projects);
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
-        when(projectResponseMapper.mapToResponseEntity(project1, workingOns)).thenReturn(getProjectResponse1);
-        when(projectResponseMapper.mapToResponseEntity(project2, workingOns)).thenReturn(getProjectResponse2);
-
-        //when
-        List<GetProjectResponse> responses = listProjectService.listProjects();
-
-        //then
-        assertThat(responses).isEqualTo(getProjectResponses);
-        verify(listProjectPort, times(1)).listProjects();
-        verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(projectResponseMapper, times(1)).mapToResponseEntity(project1, workingOns);
-        verify(projectResponseMapper, times(1)).mapToResponseEntity(project2, workingOns);
-        verifyNoMoreInteractions(listProjectPort, listWorkingOnPort, projectResponseMapper);
-    }
-
-    @Test
-    void checkIfListProjectsFiltersWorkingOns() {
-        //given
         Project project = ProjectMother.complete().projectId(1L).build();
         WorkingOn projectsWorkingOn = WorkingOnMother.complete().project(project).build();
         WorkingOn unwantedWorkingOn = WorkingOnMother.complete()

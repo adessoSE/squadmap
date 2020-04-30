@@ -36,32 +36,6 @@ class ListWorkingOnServiceTest {
     @Test
     void checkIfListWorkingOnReturnsAllRelations() {
         //given
-        WorkingOn workingOn1 = WorkingOnMother.complete().workingOnId(1L).build();
-        WorkingOn workingOn2 = WorkingOnMother.complete().workingOnId(2L).build();
-        List<WorkingOn> workingOns = Arrays.asList(workingOn1, workingOn2);
-        GetWorkingOnResponse getWorkingOnResponse1 = GetWorkingOnResponseMother.complete().workingOnId(1L).build();
-        GetWorkingOnResponse getWorkingOnResponse2 = GetWorkingOnResponseMother.complete().workingOnId(2L).build();
-        List<GetWorkingOnResponse> getWorkingOnResponses = Arrays.asList(getWorkingOnResponse1, getWorkingOnResponse2);
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn1, workingOns, workingOns)).thenReturn(getWorkingOnResponse1);
-        when(workingOnResponseMapper.mapToResponseEntity(workingOn2, workingOns, workingOns)).thenReturn(getWorkingOnResponse2);
-
-        //when
-        List<GetWorkingOnResponse> responses = listWorkingOnService.listWorkingOn();
-
-        //then
-        assertThat(responses).isEqualTo(getWorkingOnResponses);
-        verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(workingOnResponseMapper, times(1))
-                .mapToResponseEntity(workingOn1, workingOns, workingOns);
-        verify(workingOnResponseMapper, times(1))
-                .mapToResponseEntity(workingOn2, workingOns, workingOns);
-        verifyNoMoreInteractions(listWorkingOnPort, workingOnResponseMapper);
-    }
-
-    @Test
-    void checkIfListWorkingOnFiltersWorkingOns() {
-        //given
         WorkingOn workingOn1 = WorkingOnMother.complete()
                 .employee(EmployeeMother.complete().employeeId(1L).build())
                 .project(ProjectMother.complete().projectId(1L).build())

@@ -39,33 +39,6 @@ class ListEmployeeServiceTest {
     @Test
     void checkIfListEmployeesListsAllEmployees() {
         //given
-        Employee employee1 = EmployeeMother.complete().employeeId(1L).build();
-        Employee employee2 = EmployeeMother.complete().employeeId(2L).build();
-        List<Employee> employees = Arrays.asList(employee1, employee2);
-        GetEmployeeResponse getEmployeeResponse1 = GetEmployeeResponseMother.complete().build();
-        GetEmployeeResponse getEmployeeResponse2 = GetEmployeeResponseMother.complete().build();
-        List<GetEmployeeResponse> getEmployeeResponses = Arrays.asList(getEmployeeResponse1, getEmployeeResponse2);
-        List<WorkingOn> workingOns = Collections.emptyList();
-        when(listEmployeePort.listEmployees()).thenReturn(employees);
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(workingOns);
-        when(employeeResponseMapper.mapToResponseEntity(employee1, workingOns)).thenReturn(getEmployeeResponse1);
-        when(employeeResponseMapper.mapToResponseEntity(employee2, workingOns)).thenReturn(getEmployeeResponse2);
-
-        //when
-        List<GetEmployeeResponse> responses = listEmployeeService.listEmployees();
-
-        //then
-        assertThat(responses).isEqualTo(getEmployeeResponses);
-        verify(listEmployeePort, times(1)).listEmployees();
-        verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee1, workingOns);
-        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee2, workingOns);
-        verifyNoMoreInteractions(listEmployeePort, listWorkingOnPort, employeeResponseMapper);
-    }
-
-    @Test
-    void checkIfListEmployeeFiltersWorkingOnList() {
-        //given
         Employee employee = EmployeeMother.complete().employeeId(1L).build();
         WorkingOn employeesWorkingOn = WorkingOnMother.complete().employee(employee).build();
         WorkingOn unwantedWorkingOn = WorkingOnMother.complete()
