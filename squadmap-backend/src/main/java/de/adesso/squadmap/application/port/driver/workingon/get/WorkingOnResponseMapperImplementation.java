@@ -16,6 +16,7 @@ class WorkingOnResponseMapperImplementation implements WorkingOnResponseMapper {
     private final EmployeeResponseMapper employeeResponseMapper;
     private final ProjectResponseMapper projectResponseMapper;
 
+    @Override
     public GetWorkingOnResponse mapToResponseEntity(WorkingOn workingOn,
                                                     List<WorkingOn> employeeWorkingOns,
                                                     List<WorkingOn> projectWorkingOns) {

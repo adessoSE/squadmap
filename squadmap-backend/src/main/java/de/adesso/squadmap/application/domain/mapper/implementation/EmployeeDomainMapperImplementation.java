@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 class EmployeeDomainMapperImplementation implements EmployeeDomainMapper {
 
+    @Override
     public Employee mapToDomainEntity(CreateEmployeeCommand command) {
         return Employee.builder()
                 .employeeId(null)
@@ -22,6 +23,7 @@ class EmployeeDomainMapperImplementation implements EmployeeDomainMapper {
                 .build();
     }
 
+    @Override
     public Employee mapToDomainEntity(UpdateEmployeeCommand command, long employeeId) {
         return Employee.builder()
                 .employeeId(employeeId)

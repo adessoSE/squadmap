@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 class ProjectDomainMapperImplementation implements ProjectDomainMapper {
 
+    @Override
     public Project mapToDomainEntity(CreateProjectCommand command) {
         return new Project(
                 null,
@@ -20,6 +21,7 @@ class ProjectDomainMapperImplementation implements ProjectDomainMapper {
                 command.getSites());
     }
 
+    @Override
     public Project mapToDomainEntity(UpdateProjectCommand command, long projectId) {
         return Project.builder()
                 .projectId(projectId)
