@@ -1,33 +1,35 @@
 package de.adesso.squadmap.application.service.workingon;
 
 import de.adesso.squadmap.application.domain.*;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnDomainMapper;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.project.GetProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.UpdateWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommandMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateWorkingOnService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class UpdateWorkingOnServiceTest {
 
-    @MockBean
+    @Mock
     private UpdateWorkingOnPort updateWorkingOnPort;
-    @MockBean
+    @Mock
     private GetEmployeePort getEmployeePort;
-    @MockBean
+    @Mock
     private GetProjectPort getProjectPort;
-    @MockBean
-    private WorkingOnDomainMapper workingOnMapper;
-    @Autowired
-    private UpdateWorkingOnService service;
+    @Mock
+    private WorkingOnDomainMapper workingOnDomainMapper;
+    @InjectMocks
+    private UpdateWorkingOnService updateWorkingOnService;
 
     @Test
     void checkIfUpdateWorkingOnUpdatesTheRelation() {
@@ -48,20 +50,20 @@ class UpdateWorkingOnServiceTest {
         WorkingOn workingOn = WorkingOnMother.complete().build();
         when(getEmployeePort.getEmployee(employeeId)).thenReturn(employee);
         when(getProjectPort.getProject(projectId)).thenReturn(project);
-        when(workingOnMapper.mapToDomainEntity(updateWorkingOnCommand, workingOnId, employee, project)).thenReturn(workingOn);
+        when(workingOnDomainMapper.mapToDomainEntity(updateWorkingOnCommand, workingOnId, employee, project)).thenReturn(workingOn);
         doNothing().when(updateWorkingOnPort).updateWorkingOn(workingOn);
 
         //when
-        service.updateWorkingOn(updateWorkingOnCommand, workingOnId);
+        updateWorkingOnService.updateWorkingOn(updateWorkingOnCommand, workingOnId);
 
         //then
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
         verify(getProjectPort, times(1)).getProject(projectId);
-        verify(workingOnMapper, times(1)).mapToDomainEntity(updateWorkingOnCommand, workingOnId, employee, project);
+        verify(workingOnDomainMapper, times(1)).mapToDomainEntity(updateWorkingOnCommand, workingOnId, employee, project);
         verify(updateWorkingOnPort, times(1)).updateWorkingOn(workingOn);
         verifyNoMoreInteractions(getEmployeePort);
         verifyNoMoreInteractions(getProjectPort);
-        verifyNoMoreInteractions(workingOnMapper);
+        verifyNoMoreInteractions(workingOnDomainMapper);
         verifyNoMoreInteractions(updateWorkingOnPort);
     }
 }

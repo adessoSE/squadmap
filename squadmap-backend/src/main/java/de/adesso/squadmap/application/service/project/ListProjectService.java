@@ -1,8 +1,7 @@
 package de.adesso.squadmap.application.service.project;
 
-import de.adesso.squadmap.application.domain.Project;
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.domain.mapper.ProjectResponseMapper;
 import de.adesso.squadmap.application.port.driven.project.ListProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
@@ -20,14 +19,19 @@ class ListProjectService implements ListProjectUseCase {
 
     private final ListProjectPort listProjectPort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final ResponseMapper<Project, GetProjectResponse> projectResponseMapper;
+    private final ProjectResponseMapper projectResponseMapper;
 
     @Override
     @Transactional
     public List<GetProjectResponse> listProjects() {
-        List<WorkingOn> allRelations = listWorkingOnPort.listWorkingOn();
+        List<WorkingOn> workingOns = listWorkingOnPort.listWorkingOn();
         return listProjectPort.listProjects().stream()
-                .map(project -> projectResponseMapper.toResponse(project, allRelations))
+                .map(project -> projectResponseMapper.mapToResponseEntity(
+                        project,
+                        workingOns.stream()
+                                .filter(workingOn -> workingOn.getProject().getProjectId()
+                                        .equals(project.getProjectId()))
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 }

@@ -1,24 +1,24 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = DeleteEmployeeAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class DeleteEmployeeAdapterTest {
 
-
-    @MockBean
+    @Mock
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private DeleteEmployeeAdapter deleteEmployeePort;
+    @InjectMocks
+    private DeleteEmployeeAdapter deleteEmployeeAdapter;
 
     @Test
     void checkIfDeleteEmployeeDeletesTheEmployee() {
@@ -28,7 +28,7 @@ public class DeleteEmployeeAdapterTest {
         doNothing().when(employeeRepository).deleteById(employeeId);
 
         //when
-        deleteEmployeePort.deleteEmployee(employeeId);
+        deleteEmployeeAdapter.deleteEmployee(employeeId);
 
         //then
         verify(employeeRepository, times(1)).existsById(employeeId);
@@ -43,7 +43,7 @@ public class DeleteEmployeeAdapterTest {
         when(employeeRepository.existsById(employeeId)).thenReturn(false);
 
         //when
-        assertThrows(EmployeeNotFoundException.class, () -> deleteEmployeePort.deleteEmployee(employeeId));
+        assertThrows(EmployeeNotFoundException.class, () -> deleteEmployeeAdapter.deleteEmployee(employeeId));
 
         //then
         verify(employeeRepository, times(1)).existsById(employeeId);

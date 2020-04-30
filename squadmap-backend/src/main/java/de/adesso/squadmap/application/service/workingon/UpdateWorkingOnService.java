@@ -1,6 +1,6 @@
 package de.adesso.squadmap.application.service.workingon;
 
-import de.adesso.squadmap.application.domain.WorkingOnDomainMapper;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnDomainMapper;
 import de.adesso.squadmap.application.port.driven.employee.GetEmployeePort;
 import de.adesso.squadmap.application.port.driven.project.GetProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.UpdateWorkingOnPort;
@@ -17,12 +17,12 @@ class UpdateWorkingOnService implements UpdateWorkingOnUseCase {
     private final UpdateWorkingOnPort updateWorkingOnPort;
     private final GetEmployeePort getEmployeePort;
     private final GetProjectPort getProjectPort;
-    private final WorkingOnDomainMapper workingOnMapper;
+    private final WorkingOnDomainMapper workingOnDomainMapper;
 
     @Override
     @Transactional
     public void updateWorkingOn(UpdateWorkingOnCommand command, Long workingOnId) {
-        updateWorkingOnPort.updateWorkingOn(workingOnMapper.mapToDomainEntity(
+        updateWorkingOnPort.updateWorkingOn(workingOnDomainMapper.mapToDomainEntity(
                 command,
                 workingOnId,
                 getEmployeePort.getEmployee(command.getEmployeeId()),

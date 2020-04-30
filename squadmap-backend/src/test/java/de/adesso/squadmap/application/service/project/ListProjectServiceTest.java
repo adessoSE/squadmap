@@ -2,62 +2,63 @@ package de.adesso.squadmap.application.service.project;
 
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.ProjectMother;
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.domain.WorkingOnMother;
+import de.adesso.squadmap.application.domain.mapper.ProjectResponseMapper;
 import de.adesso.squadmap.application.port.driven.project.ListProjectPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponse;
 import de.adesso.squadmap.application.port.driver.project.get.GetProjectResponseMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = ListProjectService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class ListProjectServiceTest {
 
-    @MockBean
+    @Mock
     private ListProjectPort listProjectPort;
-    @MockBean
+    @Mock
     private ListWorkingOnPort listWorkingOnPort;
-    @MockBean
-    private ResponseMapper<Project, GetProjectResponse> responseMapper;
-    @Autowired
-    private ListProjectService service;
+    @Mock
+    private ProjectResponseMapper projectResponseMapper;
+    @InjectMocks
+    private ListProjectService listProjectService;
 
     @Test
     void checkIfListProjectsListsAllProjects() {
         //given
-        Project project1 = ProjectMother.complete().projectId(1L).build();
-        Project project2 = ProjectMother.complete().projectId(2L).build();
-        List<Project> projects = Arrays.asList(project1, project2);
-        List<WorkingOn> allRelations = new ArrayList<>();
+        Project project = ProjectMother.complete().projectId(1L).build();
+        WorkingOn projectsWorkingOn = WorkingOnMother.complete().project(project).build();
+        WorkingOn unwantedWorkingOn = WorkingOnMother.complete()
+                .project(ProjectMother.complete().projectId(2L).build())
+                .build();
         GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
-        when(listWorkingOnPort.listWorkingOn()).thenReturn(allRelations);
-        when(responseMapper.toResponse(project1, allRelations)).thenReturn(getProjectResponse);
-        when(responseMapper.toResponse(project2, allRelations)).thenReturn(getProjectResponse);
-        when(listProjectPort.listProjects()).thenReturn(projects);
+        when(listProjectPort.listProjects()).thenReturn(Collections.singletonList(project));
+        when(listWorkingOnPort.listWorkingOn()).thenReturn(Arrays.asList(projectsWorkingOn, unwantedWorkingOn));
+        when(projectResponseMapper.mapToResponseEntity(project, Collections.singletonList(projectsWorkingOn)))
+                .thenReturn(getProjectResponse);
 
         //when
-        List<GetProjectResponse> responses = service.listProjects();
+        List<GetProjectResponse> responses = listProjectService.listProjects();
 
         //then
-        responses.forEach(response -> assertThat(response).isEqualTo(getProjectResponse));
-        verify(listWorkingOnPort, times(1)).listWorkingOn();
-        verify(responseMapper, times(1)).toResponse(project1, allRelations);
-        verify(responseMapper, times(1)).toResponse(project2, allRelations);
+        assertThat(responses).isEqualTo(Collections.singletonList(getProjectResponse));
         verify(listProjectPort, times(1)).listProjects();
-        verifyNoMoreInteractions(listWorkingOnPort);
-        verifyNoMoreInteractions(responseMapper);
-        verifyNoMoreInteractions(listProjectPort);
+        verify(listWorkingOnPort, times(1)).listWorkingOn();
+        verify(projectResponseMapper, times(1))
+                .mapToResponseEntity(project, Collections.singletonList(projectsWorkingOn));
+        verifyNoMoreInteractions(listProjectPort, listWorkingOnPort, projectResponseMapper);
     }
 }

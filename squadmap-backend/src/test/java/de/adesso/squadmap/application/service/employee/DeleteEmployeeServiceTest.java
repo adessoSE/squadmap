@@ -2,21 +2,22 @@ package de.adesso.squadmap.application.service.employee;
 
 import de.adesso.squadmap.application.port.driven.employee.DeleteEmployeePort;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = DeleteEmployeeService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class DeleteEmployeeServiceTest {
 
-    @MockBean
+    @Mock
     private DeleteEmployeePort deleteEmployeePort;
-    @Autowired
-    private DeleteEmployeeService service;
+    @InjectMocks
+    private DeleteEmployeeService deleteEmployeeService;
 
     @Test
     void checkIfDeleteEmployeeDeletesTheEmployee() {
@@ -25,7 +26,7 @@ class DeleteEmployeeServiceTest {
         doNothing().when(deleteEmployeePort).deleteEmployee(employeeId);
 
         //when
-        service.deleteEmployee(employeeId);
+        deleteEmployeeService.deleteEmployee(employeeId);
 
         //then
         verify(deleteEmployeePort, times(1)).deleteEmployee(employeeId);

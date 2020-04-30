@@ -2,8 +2,6 @@ package de.adesso.squadmap.application.port.driver.project.get;
 
 import de.adesso.squadmap.application.domain.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Collections;
@@ -11,12 +9,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = ProjectResponseMapper.class)
 @ActiveProfiles("test")
 public class ProjectResponseMapperTest {
 
-    @Autowired
-    private ProjectResponseMapper projectResponseMapper;
+    private ProjectResponseMapperImplementation projectResponseMapper = new ProjectResponseMapperImplementation();
 
     @Test
     void checkIfMapToResponseMapsToResponse() {
@@ -30,7 +26,7 @@ public class ProjectResponseMapperTest {
         List<WorkingOn> workingOnList = Collections.singletonList(workingOn);
 
         //when
-        GetProjectResponse getProjectResponse = projectResponseMapper.toResponse(project, workingOnList);
+        GetProjectResponse getProjectResponse = projectResponseMapper.mapToResponseEntity(project, workingOnList);
 
         //then
         assertThat(getProjectResponse.getProjectId()).isEqualTo(project.getProjectId());

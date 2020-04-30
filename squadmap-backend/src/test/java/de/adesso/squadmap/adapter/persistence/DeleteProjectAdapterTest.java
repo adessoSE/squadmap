@@ -1,22 +1,23 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = DeleteProjectAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class DeleteProjectAdapterTest {
 
-    @MockBean
+    @Mock
     private ProjectRepository projectRepository;
-    @Autowired
+    @InjectMocks
     private DeleteProjectAdapter deleteProjectAdapter;
 
     @Test

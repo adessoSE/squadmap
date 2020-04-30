@@ -13,9 +13,10 @@ import de.adesso.squadmap.application.port.driver.project.get.ListProjectUseCase
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = TestDataGenerator.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class TestDataGeneratorTest {
 
@@ -56,36 +57,31 @@ public class TestDataGeneratorTest {
         verify(createEmployeeUseCase, times(10)).createEmployee(any(CreateEmployeeCommand.class));
         verify(createProjectUseCase, times(4)).createProject(any(CreateProjectCommand.class));
         verify(createWorkingOnUseCase, times(10)).createWorkingOn(any(CreateWorkingOnCommand.class));
-        verifyNoMoreInteractions(listEmployeeUseCase);
-        verifyNoMoreInteractions(listProjectUseCase);
-        verifyNoMoreInteractions(createEmployeeUseCase);
-        verifyNoMoreInteractions(createProjectUseCase);
-        verifyNoMoreInteractions(createWorkingOnUseCase);
+        verifyNoMoreInteractions(listEmployeeUseCase, listProjectUseCase,
+                createEmployeeUseCase, createProjectUseCase, createWorkingOnUseCase);
     }
 
     @Test
     void checkIfRunGeneratesNothingWhenEmployeeOnRepositoryContainsData() {
         //given
-        GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
-        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
+        GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
+        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(getEmployeeResponse));
 
         //when
         testDataGenerator.run();
 
         //then
         verify(listEmployeeUseCase, times(1)).listEmployees();
-        verifyNoMoreInteractions(listProjectUseCase);
-        verifyNoInteractions(createEmployeeUseCase);
-        verifyNoInteractions(createProjectUseCase);
-        verifyNoInteractions(createWorkingOnUseCase);
+        verifyNoMoreInteractions(listProjectUseCase,
+                createEmployeeUseCase, createProjectUseCase, createWorkingOnUseCase);
     }
 
     @Test
     void checkIfRunGeneratesNothingWhenProjectOnRepositoryContainsData() {
         //given
-        GetProjectResponse projectResponse = GetProjectResponseMother.complete().build();
+        GetProjectResponse getProjectResponse = GetProjectResponseMother.complete().build();
         when(listEmployeeUseCase.listEmployees()).thenReturn(new ArrayList<>());
-        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(projectResponse));
+        when(listProjectUseCase.listProjects()).thenReturn(Collections.singletonList(getProjectResponse));
 
         //when
         testDataGenerator.run();
@@ -93,10 +89,7 @@ public class TestDataGeneratorTest {
         //then
         verify(listEmployeeUseCase, times(1)).listEmployees();
         verify(listProjectUseCase, times(1)).listProjects();
-        verifyNoMoreInteractions(listEmployeeUseCase);
-        verifyNoMoreInteractions(listProjectUseCase);
-        verifyNoInteractions(createEmployeeUseCase);
-        verifyNoInteractions(createProjectUseCase);
-        verifyNoInteractions(createWorkingOnUseCase);
+        verifyNoMoreInteractions(listEmployeeUseCase, listProjectUseCase,
+                createEmployeeUseCase, createProjectUseCase, createWorkingOnUseCase);
     }
 }

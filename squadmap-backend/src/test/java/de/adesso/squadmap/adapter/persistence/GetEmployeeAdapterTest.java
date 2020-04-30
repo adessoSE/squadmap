@@ -1,12 +1,13 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -15,16 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = GetEmployeeAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class GetEmployeeAdapterTest {
 
-    @MockBean
+    @Mock
     private EmployeeRepository employeeRepository;
-    @MockBean
-    private EmployeePersistenceMapper employeePersistenceMapper;
-    @Autowired
-    private GetEmployeeAdapter getEmployeePort;
+    @Mock
+    private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
+    @InjectMocks
+    private GetEmployeeAdapter getEmployeeAdapter;
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() {
@@ -38,7 +39,7 @@ public class GetEmployeeAdapterTest {
         when(employeePersistenceMapper.mapToDomainEntity(employeeNeo4JEntity)).thenReturn(employee);
 
         //when
-        Employee found = getEmployeePort.getEmployee(employeeId);
+        Employee found = getEmployeeAdapter.getEmployee(employeeId);
 
         //then
         assertThat(found).isEqualTo(employee);
@@ -55,7 +56,7 @@ public class GetEmployeeAdapterTest {
         when(employeeRepository.findById(employeeId, 0)).thenReturn(Optional.empty());
 
         //when
-        assertThrows(EmployeeNotFoundException.class, () -> getEmployeePort.getEmployee(employeeId));
+        assertThrows(EmployeeNotFoundException.class, () -> getEmployeeAdapter.getEmployee(employeeId));
 
         //then
         verify(employeeRepository, times(1)).findById(employeeId, 0);

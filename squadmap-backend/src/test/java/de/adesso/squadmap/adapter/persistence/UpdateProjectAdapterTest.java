@@ -1,13 +1,14 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.ProjectAlreadyExistsException;
-import de.adesso.squadmap.adapter.persistence.exceptions.ProjectNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.ProjectNotFoundException;
 import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.ProjectMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -15,15 +16,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateProjectAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class UpdateProjectAdapterTest {
 
-    @MockBean
+    @Mock
     private ProjectRepository projectRepository;
-    @MockBean
-    private ProjectPersistenceMapper projectPersistenceMapper;
-    @Autowired
+    @Mock
+    private PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
+    @InjectMocks
     private UpdateProjectAdapter updateProjectAdapter;
 
     @Test

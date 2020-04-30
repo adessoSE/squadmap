@@ -1,13 +1,14 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeAlreadyExistsException;
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -15,16 +16,16 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = UpdateEmployeeAdapter.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class UpdateEmployeeAdapterTest {
 
-    @MockBean
+    @Mock
     private EmployeeRepository employeeRepository;
-    @MockBean
-    private EmployeePersistenceMapper employeePersistenceMapper;
-    @Autowired
-    private UpdateEmployeeAdapter updateEmployeePort;
+    @Mock
+    private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
+    @InjectMocks
+    private UpdateEmployeeAdapter updateEmployeeAdapter;
 
     @Test
     void checkIfUpdateEmployeeUpdatesTheEmployee() {
@@ -44,7 +45,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.save(employeeNeo4JEntity, 0)).thenReturn(employeeNeo4JEntity);
 
         //when
-        updateEmployeePort.updateEmployee(employee);
+        updateEmployeeAdapter.updateEmployee(employee);
 
         //then
         verify(employeeRepository, times(1)).findById(employee.getEmployeeId(), 0);
@@ -74,7 +75,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.save(employeeNeo4JEntity, 0)).thenReturn(employeeNeo4JEntity);
 
         //when
-        updateEmployeePort.updateEmployee(employee);
+        updateEmployeeAdapter.updateEmployee(employee);
 
         //then
         verify(employeeRepository, times(1)).findById(employee.getEmployeeId(), 0);
@@ -95,7 +96,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.findById(employeeId, 0)).thenReturn(Optional.empty());
 
         //when
-        assertThrows(EmployeeNotFoundException.class, () -> updateEmployeePort.updateEmployee(employee));
+        assertThrows(EmployeeNotFoundException.class, () -> updateEmployeeAdapter.updateEmployee(employee));
 
         //then
         verify(employeeRepository, times(1)).findById(employeeId, 0);
@@ -119,7 +120,7 @@ public class UpdateEmployeeAdapterTest {
         when(employeeRepository.existsByEmail(employee.getEmail())).thenReturn(true);
 
         //when
-        assertThrows(EmployeeAlreadyExistsException.class, () -> updateEmployeePort.updateEmployee(employee));
+        assertThrows(EmployeeAlreadyExistsException.class, () -> updateEmployeeAdapter.updateEmployee(employee));
 
         //then
         verify(employeeRepository, times(1)).findById(employeeId, 0);

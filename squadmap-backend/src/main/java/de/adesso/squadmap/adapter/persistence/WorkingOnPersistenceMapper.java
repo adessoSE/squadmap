@@ -1,33 +1,37 @@
 package de.adesso.squadmap.adapter.persistence;
 
+import de.adesso.squadmap.application.domain.Employee;
+import de.adesso.squadmap.application.domain.Project;
 import de.adesso.squadmap.application.domain.WorkingOn;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class WorkingOnPersistenceMapper {
+class WorkingOnPersistenceMapper implements PersistenceMapper<WorkingOn, WorkingOnNeo4JEntity> {
 
-    private final EmployeePersistenceMapper employeePersistenceMapper;
-    private final ProjectPersistenceMapper projectPersistenceMapper;
+    private final PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
+    private final PersistenceMapper<Project, ProjectNeo4JEntity> projectPersistenceMapper;
 
-    WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn) {
-        return new WorkingOnNeo4JEntity(
-                workingOn.getWorkingOnId(),
-                workingOn.getSince(),
-                workingOn.getUntil(),
-                workingOn.getWorkload(),
-                employeePersistenceMapper.mapToNeo4JEntity(workingOn.getEmployee()),
-                projectPersistenceMapper.mapToNeo4JEntity(workingOn.getProject()));
+    public WorkingOnNeo4JEntity mapToNeo4JEntity(WorkingOn workingOn) {
+        return WorkingOnNeo4JEntity.builder()
+                .workingOnId(workingOn.getWorkingOnId())
+                .since(workingOn.getSince())
+                .until(workingOn.getUntil())
+                .workload(workingOn.getWorkload())
+                .employee(employeePersistenceMapper.mapToNeo4JEntity(workingOn.getEmployee()))
+                .project(projectPersistenceMapper.mapToNeo4JEntity(workingOn.getProject()))
+                .build();
     }
 
-    WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {
-        return new WorkingOn(
-                workingOnNeo4JEntity.getWorkingOnId(),
-                workingOnNeo4JEntity.getSince(),
-                workingOnNeo4JEntity.getUntil(),
-                workingOnNeo4JEntity.getWorkload(),
-                employeePersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity.getEmployee()),
-                projectPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity.getProject()));
+    public WorkingOn mapToDomainEntity(WorkingOnNeo4JEntity workingOnNeo4JEntity) {
+        return WorkingOn.builder()
+                .workingOnId(workingOnNeo4JEntity.getWorkingOnId())
+                .since(workingOnNeo4JEntity.getSince())
+                .until(workingOnNeo4JEntity.getUntil())
+                .workload(workingOnNeo4JEntity.getWorkload())
+                .employee(employeePersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity.getEmployee()))
+                .project(projectPersistenceMapper.mapToDomainEntity(workingOnNeo4JEntity.getProject()))
+                .build();
     }
 }
