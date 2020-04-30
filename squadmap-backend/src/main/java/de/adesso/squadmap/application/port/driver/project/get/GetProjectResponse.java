@@ -25,11 +25,35 @@ public class GetProjectResponse {
     List<String> sites;
     List<GetWorkingOnResponseWithoutProject> employees;
 
+    public GetProjectResponse(Long projectId,
+                              String title,
+                              String description,
+                              LocalDate since,
+                              LocalDate until,
+                              Boolean isExternal,
+                              List<String> sites,
+                              List<GetWorkingOnResponseWithoutProject> employees) {
+        this.projectId = projectId;
+        this.title = title;
+        this.description = description;
+        this.since = since;
+        this.until = until;
+        this.isExternal = isExternal;
+        this.sites = Optional.ofNullable(sites).stream().flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        this.employees = Optional.ofNullable(employees).stream().flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getSites() {
+        return new ArrayList<>(this.sites);
+    }
+
     public List<GetWorkingOnResponseWithoutProject> getEmployees() {
         return new ArrayList<>(this.employees);
     }
 
-    static GetProjectResponse of(Project project, List<WorkingOn> workingOns) {
+    public static GetProjectResponse of(Project project, List<WorkingOn> workingOns) {
         return GetProjectResponse.builder()
                 .projectId(project.getProjectId())
                 .title(project.getTitle())
@@ -40,14 +64,5 @@ public class GetProjectResponse {
                 .isExternal(project.getIsExternal())
                 .employees(GetWorkingOnResponseWithoutProject.of(workingOns))
                 .build();
-    }
-
-    public static class GetProjectResponseBuilder {
-
-        public GetProjectResponseBuilder employees(List<GetWorkingOnResponseWithoutProject> employees) {
-            this.employees = Optional.ofNullable(employees).stream().flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-            return this;
-        }
     }
 }
