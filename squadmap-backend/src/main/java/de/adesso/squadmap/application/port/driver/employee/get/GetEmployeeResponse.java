@@ -26,15 +26,15 @@ public class GetEmployeeResponse {
     String image;
     List<GetWorkingOnResponseWithoutEmployee> projects;
 
-    public GetEmployeeResponse(Long employeeId,
-                               String firstName,
-                               String lastName,
-                               LocalDate birthday,
-                               String email,
-                               String phone,
-                               Boolean isExternal,
-                               String image,
-                               List<GetWorkingOnResponseWithoutEmployee> projects) {
+    private GetEmployeeResponse(Long employeeId,
+                                String firstName,
+                                String lastName,
+                                LocalDate birthday,
+                                String email,
+                                String phone,
+                                Boolean isExternal,
+                                String image,
+                                List<GetWorkingOnResponseWithoutEmployee> projects) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;

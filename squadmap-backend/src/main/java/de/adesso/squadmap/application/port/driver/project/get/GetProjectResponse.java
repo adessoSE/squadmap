@@ -25,14 +25,14 @@ public class GetProjectResponse {
     List<String> sites;
     List<GetWorkingOnResponseWithoutProject> employees;
 
-    public GetProjectResponse(Long projectId,
-                              String title,
-                              String description,
-                              LocalDate since,
-                              LocalDate until,
-                              Boolean isExternal,
-                              List<String> sites,
-                              List<GetWorkingOnResponseWithoutProject> employees) {
+    private GetProjectResponse(Long projectId,
+                               String title,
+                               String description,
+                               LocalDate since,
+                               LocalDate until,
+                               Boolean isExternal,
+                               List<String> sites,
+                               List<GetWorkingOnResponseWithoutProject> employees) {
         this.projectId = projectId;
         this.title = title;
         this.description = description;

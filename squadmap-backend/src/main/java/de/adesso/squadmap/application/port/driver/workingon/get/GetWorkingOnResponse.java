@@ -16,4 +16,18 @@ public class GetWorkingOnResponse {
     Integer workload;
     GetEmployeeResponse employee;
     GetProjectResponse project;
+
+    private GetWorkingOnResponse(Long workingOnId,
+                                 LocalDate since,
+                                 LocalDate until,
+                                 Integer workload,
+                                 GetEmployeeResponse employee,
+                                 GetProjectResponse project) {
+        this.workingOnId = workingOnId;
+        this.since = since;
+        this.until = until;
+        this.workload = workload;
+        this.employee = employee;
+        this.project = project;
+    }
 }
