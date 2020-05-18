@@ -55,9 +55,12 @@ jobs:
           path: ~/squadmap
       - attach_workspace:
           at: ~/
+      - run: ls
+      - run: ls ~/squadmap/squadmap-backend
+      - run: ls ~/squadmap/squadmap-backend/build
       - run:
           name: Analyze on Sonarcloud
-          command: ./gradlew sonarqube --scan
+          command: ./gradlew sonarqube
 
 workflows:
   main:
