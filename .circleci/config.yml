@@ -11,12 +11,12 @@ jobs:
           keys:
             - squadmap-dependencies-{{ checksum "build.gradle" }}
             - squadmap-dependencies-
-      - run: ./gradlew dependencies
+      - run: gradlew dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
-      - run: ./gradlew build
+      - run: gradlew build
       - persist_to_workspace:
           root: ~/
           paths:
@@ -53,7 +53,7 @@ jobs:
           at: ~/
       - run:
           name: Analyze on Sonarcloud
-          command: ./gradlew sonarqube
+          command: gradlew sonarqube
 
 workflows:
   main:
