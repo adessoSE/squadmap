@@ -8,16 +8,10 @@ jobs:
       - checkout:
           path: ~/squadmap
       - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
           keys:
             - squadmap-dependencies-{{ checksum "build.gradle" }}
             - squadmap-dependencies-
-      - run: ../gradlew :squadmap-backend/dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle/wrapper
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - run: ../gradlew :squadmap-backend:dependencies
       - save_cache:
           paths:
             - ~/.gradle
