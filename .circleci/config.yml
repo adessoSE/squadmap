@@ -8,15 +8,21 @@ jobs:
       - checkout:
           path: ~/squadmap
       - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
           keys:
             - squadmap-dependencies-{{ checksum "build.gradle" }}
             - squadmap-dependencies-
-      - run: gradlew dependencies
+      - run: ../gradlew :squadmap-backend/dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - save_cache:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
-      - run: gradlew build
+      - run: ../gradlew :squadmap-backend:build
       - persist_to_workspace:
           root: ~/
           paths:
@@ -53,7 +59,7 @@ jobs:
           at: ~/
       - run:
           name: Analyze on Sonarcloud
-          command: gradlew sonarqube
+          command: ./gradlew sonarqube
 
 workflows:
   main:
