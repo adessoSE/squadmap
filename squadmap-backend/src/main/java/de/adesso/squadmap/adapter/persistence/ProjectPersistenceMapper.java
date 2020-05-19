@@ -3,32 +3,33 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.application.domain.Project;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Component
-class ProjectPersistenceMapper {
+class ProjectPersistenceMapper implements PersistenceMapper<Project, ProjectNeo4JEntity> {
 
-    ProjectNeo4JEntity mapToNeo4JEntity(Project project) {
-        return new ProjectNeo4JEntity(
-                project.getProjectId(),
-                project.getTitle(),
-                project.getDescription(),
-                project.getSince(),
-                project.getUntil(),
-                project.getIsExternal(),
-                project.getSites(),
-                new ArrayList<>());
+    public ProjectNeo4JEntity mapToNeo4JEntity(Project project) {
+        return ProjectNeo4JEntity.builder()
+                .projectId(project.getProjectId())
+                .title(project.getTitle())
+                .description(project.getDescription())
+                .since(project.getSince())
+                .until(project.getUntil())
+                .isExternal(project.getIsExternal())
+                .sites(project.getSites())
+                .employees(Collections.emptyList())
+                .build();
     }
 
-    Project
-    mapToDomainEntity(ProjectNeo4JEntity projectNeo4JEntity) {
-        return new Project(
-                projectNeo4JEntity.getProjectId(),
-                projectNeo4JEntity.getTitle(),
-                projectNeo4JEntity.getDescription(),
-                projectNeo4JEntity.getSince(),
-                projectNeo4JEntity.getUntil(),
-                projectNeo4JEntity.getIsExternal(),
-                projectNeo4JEntity.getSites());
+    public Project mapToDomainEntity(ProjectNeo4JEntity projectNeo4JEntity) {
+        return Project.builder()
+                .projectId(projectNeo4JEntity.getProjectId())
+                .title(projectNeo4JEntity.getTitle())
+                .description(projectNeo4JEntity.getDescription())
+                .since(projectNeo4JEntity.getSince())
+                .until(projectNeo4JEntity.getUntil())
+                .isExternal(projectNeo4JEntity.getIsExternal())
+                .sites(projectNeo4JEntity.getSites())
+                .build();
     }
 }

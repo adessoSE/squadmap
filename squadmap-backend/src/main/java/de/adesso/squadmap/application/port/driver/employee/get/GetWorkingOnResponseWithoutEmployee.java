@@ -1,25 +1,35 @@
 package de.adesso.squadmap.application.port.driver.employee.get;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import de.adesso.squadmap.application.domain.WorkingOn;
 import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Value
-@Builder(builderClassName = "GetWorkingOnResponseWithoutEmployeeBuilder")
-@JsonDeserialize(builder = GetWorkingOnResponseWithoutEmployee.GetWorkingOnResponseWithoutEmployeeBuilder.class)
+@Builder
 class GetWorkingOnResponseWithoutEmployee {
 
     Long workingOnId;
-    GetProjectResponseWithoutEmployee project;
     LocalDate since;
     LocalDate until;
     Integer workload;
+    GetProjectResponseWithoutEmployee project;
 
-    @JsonPOJOBuilder(withPrefix = "")
-    static class GetWorkingOnResponseWithoutEmployeeBuilder {
+    static GetWorkingOnResponseWithoutEmployee of(WorkingOn workingOn) {
+        return GetWorkingOnResponseWithoutEmployee.builder()
+                .workingOnId(workingOn.getWorkingOnId())
+                .since(workingOn.getSince())
+                .until(workingOn.getUntil())
+                .workload(workingOn.getWorkload())
+                .project(GetProjectResponseWithoutEmployee.of(workingOn.getProject()))
+                .build();
+    }
+
+    static List<GetWorkingOnResponseWithoutEmployee> of(List<WorkingOn> workingOns) {
+        return workingOns.stream().map(GetWorkingOnResponseWithoutEmployee::of).collect(Collectors.toList());
     }
 }
 

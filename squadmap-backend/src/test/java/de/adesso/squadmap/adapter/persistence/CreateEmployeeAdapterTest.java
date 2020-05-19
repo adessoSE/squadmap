@@ -1,29 +1,29 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeAlreadyExistsException;
 import de.adesso.squadmap.application.domain.Employee;
 import de.adesso.squadmap.application.domain.EmployeeMother;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = {CreateEmployeeAdapter.class})
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class CreateEmployeeAdapterTest {
 
-
-    @MockBean
+    @Mock
     private EmployeeRepository employeeRepository;
-    @MockBean
-    private EmployeePersistenceMapper employeePersistenceMapper;
-    @Autowired
-    private CreateEmployeeAdapter createEmployeePort;
+    @Mock
+    private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;
+    @InjectMocks
+    private CreateEmployeeAdapter createEmployeeAdapter;
 
     @Test
     void checkIfCreateEmployeeCreatesTheEmployee() {
@@ -35,7 +35,7 @@ public class CreateEmployeeAdapterTest {
         when(employeeRepository.save(employeeNeo4JEntity)).thenReturn(employeeNeo4JEntity);
 
         //when
-        long found = createEmployeePort.createEmployee(employee);
+        long found = createEmployeeAdapter.createEmployee(employee);
 
         //then
         assertThat(found).isEqualTo(employee.getEmployeeId());
@@ -53,7 +53,7 @@ public class CreateEmployeeAdapterTest {
         when(employeeRepository.existsByEmail(employee.getEmail())).thenReturn(true);
 
         //when
-        assertThrows(EmployeeAlreadyExistsException.class, () -> createEmployeePort.createEmployee(employee));
+        assertThrows(EmployeeAlreadyExistsException.class, () -> createEmployeeAdapter.createEmployee(employee));
         verify(employeeRepository, times(1)).existsByEmail(employee.getEmail());
         verifyNoMoreInteractions(employeeRepository);
     }

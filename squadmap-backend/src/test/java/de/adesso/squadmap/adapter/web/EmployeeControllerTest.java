@@ -1,42 +1,41 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.exceptions.*;
-import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommand;
-import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeCommandMother;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.adesso.squadmap.adapter.web.webentities.employee.CreateEmployeeRequest;
+import de.adesso.squadmap.adapter.web.webentities.employee.CreateEmployeeRequestMother;
+import de.adesso.squadmap.adapter.web.webentities.employee.UpdateEmployeeRequest;
+import de.adesso.squadmap.adapter.web.webentities.employee.UpdateEmployeeRequestMother;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.EmployeeNotFoundException;
 import de.adesso.squadmap.application.port.driver.employee.create.CreateEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.delete.DeleteEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponse;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeResponseMother;
 import de.adesso.squadmap.application.port.driver.employee.get.GetEmployeeUseCase;
 import de.adesso.squadmap.application.port.driver.employee.get.ListEmployeeUseCase;
-import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
-import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommandMother;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = EmployeeController.class)
+@WebMvcTest(EmployeeController.class)
 @ActiveProfiles("test")
 class EmployeeControllerTest {
 
+    private static final String API_URL = "/api/employee";
     @MockBean
     private CreateEmployeeUseCase createEmployeeUseCase;
     @MockBean
@@ -48,62 +47,63 @@ class EmployeeControllerTest {
     @MockBean
     private UpdateEmployeeUseCase updateEmployeeUseCase;
     @Autowired
-    private EmployeeController employeeController;
+    private ObjectMapper objectMapper;
+    @Autowired
     private MockMvc mockMvc;
-    private static final String apiUrl = "/api/employee";
 
-    @BeforeEach
-    void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.employeeController).build();
-    }
+
 
     @Test
     void checkIfGetAllEmployeesReturnsAll() throws Exception {
         //given
-        GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
-        when(listEmployeeUseCase.listEmployees()).thenReturn(Collections.singletonList(employeeResponse));
+        List<GetEmployeeResponse> expectedResponse =
+                Collections.singletonList(GetEmployeeResponseMother.complete().build());
+        when(listEmployeeUseCase.listEmployees()).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
-        List<GetEmployeeResponse> responses = JsonMapper.asResponseList(result, GetEmployeeResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(responses.size()).isOne();
-        assertThat(responses.get(0)).isEqualTo(employeeResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(listEmployeeUseCase, times(1)).listEmployees();
+        verifyNoMoreInteractions(listEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, getEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
     void checkIfGetEmployeeReturnsTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        GetEmployeeResponse getEmployeeResponse = GetEmployeeResponseMother.complete().build();
-        when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(getEmployeeResponse);
+        GetEmployeeResponse expectedResponse = GetEmployeeResponseMother.complete().build();
+        when(getEmployeeUseCase.getEmployee(employeeId)).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", employeeId))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/{id}", employeeId))
                 .andExpect(status().isOk())
                 .andReturn();
-        GetEmployeeResponse response = JsonMapper.asResponse(result, GetEmployeeResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(response).isEqualTo(getEmployeeResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(getEmployeeUseCase, times(1)).getEmployee(employeeId);
+        verifyNoMoreInteractions(getEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
     void checkIfCreateEmployeeCreatesTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        CreateEmployeeCommand createEmployeeCommand = CreateEmployeeCommandMother.complete().build();
-        when(createEmployeeUseCase.createEmployee(createEmployeeCommand)).thenReturn(employeeId);
+        CreateEmployeeRequest createEmployeeRequest = CreateEmployeeRequestMother.complete().build();
+        when(createEmployeeUseCase.createEmployee(any())).thenReturn(employeeId);
 
         //when
-        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
+        MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createEmployeeCommand))
+                .content(objectMapper.writeValueAsString(createEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -111,25 +111,29 @@ class EmployeeControllerTest {
 
         //then
         assertThat(response).isEqualTo(employeeId);
-        verify(createEmployeeUseCase, times(1)).createEmployee(createEmployeeCommand);
+        verify(createEmployeeUseCase, times(1)).createEmployee(any());
+        verifyNoMoreInteractions(createEmployeeUseCase);
+        verifyNoInteractions(deleteEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
     void checkIfUpdateEmployeeUpdatesTheEmployee() throws Exception {
         //given
         long employeeId = 1;
-        UpdateEmployeeCommand updateEmployeeCommand = UpdateEmployeeCommandMother.complete().build();
-        doNothing().when(updateEmployeeUseCase).updateEmployee(updateEmployeeCommand, employeeId);
+        UpdateEmployeeRequest updateEmployeeRequest = UpdateEmployeeRequestMother.complete().build();
+        doNothing().when(updateEmployeeUseCase).updateEmployee(any(), eq(employeeId));
 
         //when
-        mockMvc.perform(put(apiUrl + "/update/{id}", employeeId)
+        mockMvc.perform(put(API_URL + "/update/{id}", employeeId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateEmployeeCommand))
+                .content(objectMapper.writeValueAsString(updateEmployeeRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         //then
-        verify(updateEmployeeUseCase, times(1)).updateEmployee(updateEmployeeCommand, employeeId);
+        verify(updateEmployeeUseCase, times(1)).updateEmployee(any(), eq(employeeId));
+        verifyNoMoreInteractions(updateEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase);
     }
 
     @Test
@@ -139,337 +143,82 @@ class EmployeeControllerTest {
         doNothing().when(deleteEmployeeUseCase).deleteEmployee(employeeId);
 
         //when
-        mockMvc.perform(delete(apiUrl + "/delete/{id}", employeeId))
+        mockMvc.perform(delete(API_URL + "/delete/{id}", employeeId))
                 .andExpect(status().isOk());
 
         //then
         verify(deleteEmployeeUseCase, times(1)).deleteEmployee(employeeId);
+        verifyNoMoreInteractions(deleteEmployeeUseCase);
+        verifyNoInteractions(createEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeeFirstNameException() {
+    void checkIfCreateEmployeeTriggersValidation() throws Exception {
         //given
-        CreateEmployeeCommand employeeNullFirstName = CreateEmployeeCommandMother.complete().firstName(null).build();
-        CreateEmployeeCommand employeeEmptyFirstName = CreateEmployeeCommandMother.complete().firstName("").build();
-        CreateEmployeeCommand employeeTooLongFirstName = CreateEmployeeCommandMother.complete()
-                .firstName("fffffffffffffffffffffffffffffffffffffffffffffffffff").build();
+        CreateEmployeeRequest createEmployeeRequest = CreateEmployeeRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createEmployeeRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeNullFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeFirstNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeFirstNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeFirstNameException());
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase,
+                getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeeLastNameException() {
+    void checkIfUpdateEmployeeTriggersValidation() throws Exception {
         //given
-        CreateEmployeeCommand employeeNullFirstName = CreateEmployeeCommandMother.complete().lastName(null).build();
-        CreateEmployeeCommand employeeEmptyFirstName = CreateEmployeeCommandMother.complete().lastName("").build();
-        CreateEmployeeCommand employeeTooLongFirstName = CreateEmployeeCommandMother.complete()
-                .lastName("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll").build();
+        long employeeId = 1;
+        UpdateEmployeeRequest updateProjectRequest = UpdateEmployeeRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(put(API_URL + "/update/{id}", employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateProjectRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeNullFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeLastNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeLastNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeLastNameException());
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase,
+                getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeeBirthdayException() {
+    void checkIfEmployeeNotFoundExceptionGetsHandled() throws Exception {
         //given
-        CreateEmployeeCommand employeeBirthdayNull = CreateEmployeeCommandMother.complete().birthday(null).build();
-        CreateEmployeeCommand employeeBirthdayInFuture = CreateEmployeeCommandMother.complete()
-                .birthday(LocalDate.now().plusDays(1)).build();
+        long employeeId = 1;
+        when(getEmployeeUseCase.getEmployee(employeeId)).thenThrow(new EmployeeNotFoundException(employeeId));
+
+        //when
+        mockMvc.perform(put(API_URL + "/get/{id}", employeeId))
+                .andExpect(status().isNotFound());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeBirthdayNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeBirthdayException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeBirthdayInFuture)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeBirthdayException());
+        verifyNoInteractions(createEmployeeUseCase, deleteEmployeeUseCase,
+                getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
     }
 
     @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeeEmailException() {
+    void checkIfEmployeeAlreadyExistsExceptionGetsHandled() throws Exception {
         //given
-        CreateEmployeeCommand employeeEmailNull = CreateEmployeeCommandMother.complete().email(null).build();
-        CreateEmployeeCommand employeeEmailEmpty = CreateEmployeeCommandMother.complete().email("").build();
-        CreateEmployeeCommand employeeEmailNotValid = CreateEmployeeCommandMother.complete().email("null").build();
+        CreateEmployeeRequest createEmployeeRequest = CreateEmployeeRequestMother.complete().build();
+        when(createEmployeeUseCase.createEmployee(any())).thenThrow(new EmployeeAlreadyExistsException(""));
 
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmailNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeEmailException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmailEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeEmailException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmailNotValid)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeEmailException());
-    }
-
-    @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeePhoneException() {
-        //given
-        CreateEmployeeCommand employeePhoneNull = CreateEmployeeCommandMother.complete().phone(null).build();
-        CreateEmployeeCommand employeePhoneEmpty = CreateEmployeeCommandMother.complete().phone("").build();
-        CreateEmployeeCommand employeePhoneNotValid = CreateEmployeeCommandMother.complete().phone("1").build();
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createEmployeeRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneNotValid)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-    }
+        verify(createEmployeeUseCase, times(1)).createEmployee(any());
+        verifyNoMoreInteractions(createEmployeeUseCase);
+        verifyNoInteractions(deleteEmployeeUseCase, getEmployeeUseCase, listEmployeeUseCase, updateEmployeeUseCase);
 
-    @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeeImageException() {
-        //given
-        CreateEmployeeCommand employeeImageNull = CreateEmployeeCommandMother.complete().image(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeImageNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeImageException());
-    }
-
-    @Test
-    void checkIfCreateEmployeeThrowsInvalidEmployeeIsExternalException() {
-        //given
-        CreateEmployeeCommand employeeIsExternalNull = CreateEmployeeCommandMother.complete().isExternal(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeIsExternalNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeIsExternalException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeeFirstNameException() {
-        //given
-        UpdateEmployeeCommand employeeNullFirstName = UpdateEmployeeCommandMother.complete().firstName(null).build();
-        UpdateEmployeeCommand employeeEmptyFirstName = UpdateEmployeeCommandMother.complete().firstName("").build();
-        UpdateEmployeeCommand employeeTooLongFirstName = UpdateEmployeeCommandMother.complete()
-                .firstName("fffffffffffffffffffffffffffffffffffffffffffffffffff").build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeNullFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeFirstNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeFirstNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeFirstNameException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeeLastNameException() {
-        //given
-        UpdateEmployeeCommand employeeNullFirstName = UpdateEmployeeCommandMother.complete().lastName(null).build();
-        UpdateEmployeeCommand employeeEmptyFirstName = UpdateEmployeeCommandMother.complete().lastName("").build();
-        UpdateEmployeeCommand employeeTooLongFirstName = UpdateEmployeeCommandMother.complete()
-                .lastName("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll").build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeNullFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeLastNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmptyFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeLastNameException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeTooLongFirstName)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeLastNameException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeeBirthdayException() {
-        //given
-        UpdateEmployeeCommand employeeBirthdayNull = UpdateEmployeeCommandMother.complete().birthday(null).build();
-        UpdateEmployeeCommand employeeBirthdayInFuture = UpdateEmployeeCommandMother.complete()
-                .birthday(LocalDate.now().plusDays(1)).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeBirthdayNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeBirthdayException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeBirthdayInFuture)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeBirthdayException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeeEmailException() {
-        //given
-        UpdateEmployeeCommand employeeEmailNull =  UpdateEmployeeCommandMother.complete().email(null).build();
-        UpdateEmployeeCommand employeeEmailEmpty = UpdateEmployeeCommandMother.complete().email("").build();
-        UpdateEmployeeCommand employeeEmailNotValid = UpdateEmployeeCommandMother.complete().email("null").build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmailNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeEmailException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmailEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeEmailException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeEmailNotValid)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeEmailException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeePhoneException() {
-        //given
-        UpdateEmployeeCommand employeePhoneNull = UpdateEmployeeCommandMother.complete().phone(null).build();
-        UpdateEmployeeCommand employeePhoneEmpty = UpdateEmployeeCommandMother.complete().phone("").build();
-        UpdateEmployeeCommand employeePhoneNotValid = UpdateEmployeeCommandMother.complete().phone("null").build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneEmpty)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeePhoneNotValid)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeePhoneNumberException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeeImageException() {
-        UpdateEmployeeCommand employeeImageNull = UpdateEmployeeCommandMother.complete().image(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeImageNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeImageException());
-    }
-
-    @Test
-    void checkIfUpdateEmployeeThrowsInvalidEmployeeIsExternalException() {
-        UpdateEmployeeCommand employeeIsExternalNull = UpdateEmployeeCommandMother.complete().isExternal(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(employeeIsExternalNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidEmployeeIsExternalException());
     }
 }

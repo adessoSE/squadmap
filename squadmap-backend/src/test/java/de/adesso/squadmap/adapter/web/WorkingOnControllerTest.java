@@ -1,43 +1,41 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnSinceException;
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnUntilException;
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnWorkloadException;
-import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
-import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommandMother;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequest;
+import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequestMother;
+import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
+import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequestMother;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnAlreadyExistsException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnNotFoundException;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponseMother;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
-import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
-import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommandMother;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = WorkingOnController.class)
+@WebMvcTest(WorkingOnController.class)
 @ActiveProfiles("test")
 class WorkingOnControllerTest {
 
+    private static final String API_URL = "/api/workingOn";
     @MockBean
     private CreateWorkingOnUseCase createWorkingOnUseCase;
     @MockBean
@@ -49,62 +47,61 @@ class WorkingOnControllerTest {
     @MockBean
     private UpdateWorkingOnUseCase updateWorkingOnUseCase;
     @Autowired
-    private WorkingOnController workingOnController;
+    private ObjectMapper objectMapper;
+    @Autowired
     private MockMvc mockMvc;
-    private static final String apiUrl = "/api/workingOn";
-    
-    @BeforeEach
-    void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.workingOnController).build();
-    }
 
     @Test
     void checkIfGetAllWorkingOnReturnsAll() throws Exception {
         //given
-        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(Collections.singletonList(getWorkingOnResponse));
+        List<GetWorkingOnResponse> expectedResponse =
+                Collections.singletonList(GetWorkingOnResponseMother.complete().build());
+        when(listWorkingOnUseCase.listWorkingOn()).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/all"))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/all"))
                 .andExpect(status().isOk())
                 .andReturn();
-        List<GetWorkingOnResponse> responses = JsonMapper.asResponseList(result, GetWorkingOnResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(responses.size()).isOne();
-        assertThat(responses.get(0)).isEqualTo(getWorkingOnResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(listWorkingOnUseCase, times(1)).listWorkingOn();
+        verifyNoMoreInteractions(listWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, getWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
     void checkIfGetWorkingOnReturnsTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        GetWorkingOnResponse getWorkingOnResponse = GetWorkingOnResponseMother.complete().build();
-        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(getWorkingOnResponse);
+        GetWorkingOnResponse expectedResponse = GetWorkingOnResponseMother.complete().build();
+        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenReturn(expectedResponse);
 
         //when
-        MvcResult result = mockMvc.perform(get(apiUrl + "/{id}", workingOnId))
+        MvcResult mvcResult = mockMvc.perform(get(API_URL + "/{id}", workingOnId))
                 .andExpect(status().isOk())
                 .andReturn();
-        GetWorkingOnResponse response = JsonMapper.asResponse(result, GetWorkingOnResponse.class);
+        String result = mvcResult.getResponse().getContentAsString();
 
         //then
-        assertThat(response).isEqualTo(getWorkingOnResponse);
+        assertThat(result).isEqualToIgnoringWhitespace(objectMapper.writeValueAsString(expectedResponse));
         verify(getWorkingOnUseCase, times(1)).getWorkingOn(workingOnId);
+        verifyNoMoreInteractions(getWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
     void checkIfCreateWorkingOnCreatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        CreateWorkingOnCommand createWorkingOnCommand = CreateWorkingOnCommandMother.complete().build();
-        when(createWorkingOnUseCase.createWorkingOn(createWorkingOnCommand)).thenReturn(workingOnId);
+        CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.complete().build();
+        when(createWorkingOnUseCase.createWorkingOn(any())).thenReturn(workingOnId);
 
         //when
-        MvcResult result = mockMvc.perform(post(apiUrl + "/create")
+        MvcResult result = mockMvc.perform(post(API_URL + "/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(createWorkingOnCommand))
+                .content(objectMapper.writeValueAsString(createWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -112,25 +109,29 @@ class WorkingOnControllerTest {
 
         //then
         assertThat(response).isEqualTo(workingOnId);
-        verify(createWorkingOnUseCase, times(1)).createWorkingOn(createWorkingOnCommand);
+        verify(createWorkingOnUseCase, times(1)).createWorkingOn(any());
+        verifyNoMoreInteractions(createWorkingOnUseCase);
+        verifyNoInteractions(deleteWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
     void checkIfUpdateWorkingOnUpdatesTheRelation() throws Exception {
         //given
         long workingOnId = 1;
-        UpdateWorkingOnCommand updateWorkingOnCommand = UpdateWorkingOnCommandMother.complete().build();
-        doNothing().when(updateWorkingOnUseCase).updateWorkingOn(updateWorkingOnCommand, workingOnId);
+        UpdateWorkingOnRequest updateWorkingOnRequest = UpdateWorkingOnRequestMother.complete().build();
+        doNothing().when(updateWorkingOnUseCase).updateWorkingOn(any(), eq(workingOnId));
 
         //when
-        mockMvc.perform(put(apiUrl + "/update/{id}", workingOnId)
+        mockMvc.perform(put(API_URL + "/update/{id}", workingOnId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonMapper.asJsonString(updateWorkingOnCommand))
+                .content(objectMapper.writeValueAsString(updateWorkingOnRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         //then
-        verify(updateWorkingOnUseCase, times(1)).updateWorkingOn(updateWorkingOnCommand, workingOnId);
+        verify(updateWorkingOnUseCase, times(1)).updateWorkingOn(any(), eq(workingOnId));
+        verifyNoMoreInteractions(updateWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase);
     }
 
     @Test
@@ -140,94 +141,83 @@ class WorkingOnControllerTest {
         doNothing().when(deleteWorkingOnUseCase).deleteWorkingOn(workingOnId);
 
         //when
-        mockMvc.perform(delete(apiUrl + "/delete/{id}", workingOnId))
+        mockMvc.perform(delete(API_URL + "/delete/{id}", workingOnId))
                 .andExpect(status().isOk());
 
         //then
         verify(deleteWorkingOnUseCase, times(1)).deleteWorkingOn(workingOnId);
+        verifyNoMoreInteractions(deleteWorkingOnUseCase);
+        verifyNoInteractions(createWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
-    void checkIfCreateWorkingOnThrowsInvalidWorkingONSinceException() {
+    void checkIfCreateWorkingOnTriggersValidation() throws Exception {
         //given
-        CreateWorkingOnCommand workingOnSinceNull = CreateWorkingOnCommandMother.complete().since(null).build();
+        CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createWorkingOnRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(workingOnSinceNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidWorkingOnSinceException());
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase,
+                getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
-    void checkIfCreateWorkingOnThrowsInvalidWorkingOnUntilException() {
+    void checkIfUpdateWorkingOnTriggersValidation() throws Exception {
         //given
-        CreateWorkingOnCommand workingOnUntilNull = CreateWorkingOnCommandMother.complete().until(null).build();
+        long workingOnId = 1;
+        UpdateWorkingOnRequest updateWorkingOnRequest = UpdateWorkingOnRequestMother.invalid().build();
+
+        //when
+        mockMvc.perform(put(API_URL + "/update/{id}", workingOnId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateWorkingOnRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(workingOnUntilNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidWorkingOnUntilException());
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase,
+                getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
-    void checkIfCreateWorkingOnThrowsInvalidWorkingOnWorkloadException() {
+    void checkIfWorkingOnNotFoundExceptionGetsHandled() throws Exception {
         //given
-        CreateWorkingOnCommand workingOnWorkloadOutOfBound = CreateWorkingOnCommandMother.complete().workload(-1).build();
+        long workingOnId = 1;
+        when(getWorkingOnUseCase.getWorkingOn(workingOnId)).thenThrow(new WorkingOnNotFoundException(workingOnId));
+
+        //when
+        mockMvc.perform(get(API_URL + "/get/{id}", workingOnId))
+                .andExpect(status().isNotFound());
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(post(apiUrl + "/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(workingOnWorkloadOutOfBound)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidWorkingOnWorkloadException());
+        verifyNoInteractions(createWorkingOnUseCase, deleteWorkingOnUseCase,
+                getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 
     @Test
-    void checkIfUpdateWorkingOnThrowsInvalidWorkingONSinceException() {
+    void checkIfWorkingOnAlreadyExistsExceptionGetsHandled() throws Exception {
         //given
-        UpdateWorkingOnCommand workingOnSinceNull = UpdateWorkingOnCommandMother.complete().since(null).build();
+        CreateWorkingOnRequest createWorkingOnRequest = CreateWorkingOnRequestMother.complete().build();
+        when(createWorkingOnUseCase.createWorkingOn(any()))
+                .thenThrow(new WorkingOnAlreadyExistsException(1, 1));
+
+        //when
+        mockMvc.perform(post(API_URL + "/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createWorkingOnRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+
 
         //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(workingOnSinceNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidWorkingOnSinceException());
-    }
-
-    @Test
-    void checkIfUpdateWorkingOnThrowsInvalidWorkingOnUntilException() {
-        //given
-        UpdateWorkingOnCommand workingOnUntilNull = UpdateWorkingOnCommandMother.complete().until(null).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(workingOnUntilNull)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidWorkingOnUntilException());
-    }
-
-    @Test
-    void checkIfUpdateWorkingOnThrowsInvalidWorkingOnWorkloadException() {
-        //given
-        UpdateWorkingOnCommand workingOnWorkloadOutOfBound = UpdateWorkingOnCommandMother.complete().workload(-1).build();
-
-        //then
-        assertThatThrownBy(() ->
-                mockMvc.perform(put(apiUrl + "/update/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonMapper.asJsonString(workingOnWorkloadOutOfBound)))
-                        .andExpect(status().isOk()))
-                .hasCause(new InvalidWorkingOnWorkloadException());
+        verify(createWorkingOnUseCase, times(1)).createWorkingOn(any());
+        verifyNoMoreInteractions(createWorkingOnUseCase);
+        verifyNoInteractions(deleteWorkingOnUseCase, getWorkingOnUseCase, listWorkingOnUseCase, updateWorkingOnUseCase);
     }
 }

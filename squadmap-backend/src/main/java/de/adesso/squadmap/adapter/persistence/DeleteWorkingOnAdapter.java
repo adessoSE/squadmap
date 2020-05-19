@@ -1,11 +1,11 @@
 package de.adesso.squadmap.adapter.persistence;
 
-import de.adesso.squadmap.adapter.persistence.exceptions.WorkingOnNotFoundException;
+import de.adesso.squadmap.application.domain.exceptions.WorkingOnNotFoundException;
 import de.adesso.squadmap.application.port.driven.workingon.DeleteWorkingOnPort;
+import de.adesso.squadmap.common.PersistenceAdapter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
+@PersistenceAdapter
 @RequiredArgsConstructor
 class DeleteWorkingOnAdapter implements DeleteWorkingOnPort {
 
@@ -14,7 +14,7 @@ class DeleteWorkingOnAdapter implements DeleteWorkingOnPort {
     @Override
     public void deleteWorkingOn(Long workingOnId) {
         if (!workingOnRepository.existsById(workingOnId)) {
-            throw new WorkingOnNotFoundException();
+            throw new WorkingOnNotFoundException(workingOnId);
         }
         workingOnRepository.deleteById(workingOnId);
     }

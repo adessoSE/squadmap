@@ -1,30 +1,50 @@
 package de.adesso.squadmap.application.port.driver.employee;
 
+import de.adesso.squadmap.common.SelfValidating;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
-public abstract class EmployeeCommand {
+@EqualsAndHashCode(callSuper = false)
+public abstract class EmployeeCommand extends SelfValidating<EmployeeCommand> {
 
-    @NotEmpty
-    @Size(min = 1, max = 50)
+    @NotBlank(message = "should not be empty")
+    @Size(max = 50, message = "should be maximal {max} characters long")
     private final String firstName;
-    @NotEmpty
-    @Size(min = 1, max = 50)
+    @NotBlank(message = "should not be empty")
+    @Size(max = 50, message = "should be maximal {max} characters long")
     private final String lastName;
-    @NotNull
-    @Past
+    @NotNull(message = "should not be null")
+    @Past(message = "has to be in past")
     private final LocalDate birthday;
-    @NotEmpty
-    @Email(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
+    @NotBlank(message = "should not be empty")
+    @Email(message = "has to be a valid email")
     private final String email;
-    @NotEmpty
-    @Pattern(regexp = "(\\(?([\\d \\-)–+/(]+){6,}\\)?([ .\\-–/]?)([\\d]+))")
+    @NotNull(message = "should not be null")
+    @Size(max = 20, message = "should contain maximal {max} digits")
     private final String phone;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final Boolean isExternal;
-    @NotNull
+    @NotNull(message = "should not be null")
     private final String image;
+
+    public EmployeeCommand(String firstName,
+                           String lastName,
+                           LocalDate birthday,
+                           String email,
+                           String phone,
+                           Boolean isExternal,
+                           String image) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.email = email;
+        this.phone = phone;
+        this.isExternal = isExternal;
+        this.image = image;
+        this.validateSelf();
+    }
 }

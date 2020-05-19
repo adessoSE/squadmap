@@ -2,21 +2,22 @@ package de.adesso.squadmap.application.service.project;
 
 import de.adesso.squadmap.application.port.driven.project.DeleteProjectPort;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = DeleteProjectService.class)
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class DeleteProjectServiceTest {
 
-    @MockBean
+    @Mock
     private DeleteProjectPort deleteProjectPort;
-    @Autowired
-    private DeleteProjectService service;
+    @InjectMocks
+    private DeleteProjectService deleteProjectService;
 
     @Test
     void checkIfDeleteProjectDeletesTheProject() {
@@ -25,7 +26,7 @@ class DeleteProjectServiceTest {
         doNothing().when(deleteProjectPort).deleteProject(projectId);
 
         //when
-        service.deleteProject(projectId);
+        deleteProjectService.deleteProject(projectId);
 
         //then
         verify(deleteProjectPort, times(1)).deleteProject(projectId);

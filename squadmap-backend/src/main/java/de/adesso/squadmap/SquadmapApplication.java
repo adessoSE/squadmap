@@ -2,13 +2,11 @@ package de.adesso.squadmap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SpringBootApplication
-@EnableNeo4jRepositories("de.adesso.squadmap.adapter.persistence")
 public class SquadmapApplication {
 
     private static Logger logger = Logger.getAnonymousLogger();

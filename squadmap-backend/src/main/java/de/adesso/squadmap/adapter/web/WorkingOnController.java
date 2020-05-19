@@ -1,24 +1,17 @@
 package de.adesso.squadmap.adapter.web;
 
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnSinceException;
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnUntilException;
-import de.adesso.squadmap.adapter.web.exceptions.InvalidWorkingOnWorkloadException;
-import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommand;
+import de.adesso.squadmap.adapter.web.webentities.workingon.CreateWorkingOnRequest;
+import de.adesso.squadmap.adapter.web.webentities.workingon.UpdateWorkingOnRequest;
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.delete.DeleteWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnUseCase;
 import de.adesso.squadmap.application.port.driver.workingon.get.ListWorkingOnUseCase;
-import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnCommand;
 import de.adesso.squadmap.application.port.driver.workingon.update.UpdateWorkingOnUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -43,36 +36,17 @@ class WorkingOnController {
     }
 
     @PostMapping("/create")
-    public Long createWorkingOn(@RequestBody @Valid CreateWorkingOnCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
-        return createWorkingOnUseCase.createWorkingOn(command);
+    public Long createWorkingOn(@RequestBody CreateWorkingOnRequest command) {
+        return createWorkingOnUseCase.createWorkingOn(command.asCommand());
     }
 
     @PutMapping("/update/{workingOnId}")
-    public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody @Valid UpdateWorkingOnCommand command, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            throwError(Objects.requireNonNull(bindingResult.getFieldError()));
-        }
-        updateWorkingOnUseCase.updateWorkingOn(command, workingOnId);
+    public void updateWorkingOn(@PathVariable long workingOnId, @RequestBody UpdateWorkingOnRequest command) {
+        updateWorkingOnUseCase.updateWorkingOn(command.asCommand(), workingOnId);
     }
 
     @DeleteMapping("/delete/{workingOnId}")
     public void deleteWorkingOn(@PathVariable long workingOnId) {
         deleteWorkingOnUseCase.deleteWorkingOn(workingOnId);
-    }
-
-    private void throwError(FieldError error) {
-        switch (error.getField()) {
-            case "since":
-                throw new InvalidWorkingOnSinceException();
-            case "until":
-                throw new InvalidWorkingOnUntilException();
-            case "workload":
-                throw new InvalidWorkingOnWorkloadException();
-            default:
-                throw new IllegalArgumentException("Invalid input");
-        }
     }
 }

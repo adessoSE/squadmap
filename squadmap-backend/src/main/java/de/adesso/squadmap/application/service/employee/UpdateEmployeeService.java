@@ -1,6 +1,6 @@
 package de.adesso.squadmap.application.service.employee;
 
-import de.adesso.squadmap.application.domain.EmployeeDomainMapper;
+import de.adesso.squadmap.application.domain.mapper.EmployeeDomainMapper;
 import de.adesso.squadmap.application.port.driven.employee.UpdateEmployeePort;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeCommand;
 import de.adesso.squadmap.application.port.driver.employee.update.UpdateEmployeeUseCase;
@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 class UpdateEmployeeService implements UpdateEmployeeUseCase {
 
     private final UpdateEmployeePort updateEmployeePort;
-    private final EmployeeDomainMapper employeeMapper;
+    private final EmployeeDomainMapper employeeDomainMapper;
 
     @Override
     @Transactional
-    public void updateEmployee(UpdateEmployeeCommand command, Long employeeId) {
-        updateEmployeePort.updateEmployee(employeeMapper.mapToDomainEntity(command, employeeId));
+    public void updateEmployee(UpdateEmployeeCommand updateEmployeeCommand, Long employeeId) {
+        updateEmployeePort.updateEmployee(employeeDomainMapper.mapToDomainEntity(updateEmployeeCommand, employeeId));
     }
 }

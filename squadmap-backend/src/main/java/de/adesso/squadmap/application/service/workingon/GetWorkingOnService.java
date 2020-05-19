@@ -1,7 +1,7 @@
 package de.adesso.squadmap.application.service.workingon;
 
-import de.adesso.squadmap.application.domain.ResponseMapper;
 import de.adesso.squadmap.application.domain.WorkingOn;
+import de.adesso.squadmap.application.domain.mapper.WorkingOnResponseMapper;
 import de.adesso.squadmap.application.port.driven.workingon.GetWorkingOnPort;
 import de.adesso.squadmap.application.port.driven.workingon.ListWorkingOnPort;
 import de.adesso.squadmap.application.port.driver.workingon.get.GetWorkingOnResponse;
@@ -16,13 +16,15 @@ class GetWorkingOnService implements GetWorkingOnUseCase {
 
     private final GetWorkingOnPort getWorkingOnPort;
     private final ListWorkingOnPort listWorkingOnPort;
-    private final ResponseMapper<WorkingOn, GetWorkingOnResponse> workingOnResponseMapper;
+    private final WorkingOnResponseMapper workingOnResponseMapper;
 
     @Override
     @Transactional
     public GetWorkingOnResponse getWorkingOn(Long workingOnId) {
-        return workingOnResponseMapper.toResponse(
-                getWorkingOnPort.getWorkingOn(workingOnId),
-                listWorkingOnPort.listWorkingOn());
+        WorkingOn workingOn = getWorkingOnPort.getWorkingOn(workingOnId);
+        return workingOnResponseMapper.mapToResponseEntity(
+                workingOn,
+                listWorkingOnPort.listWorkingOnByEmployeeId(workingOn.getEmployee().getEmployeeId()),
+                listWorkingOnPort.listWorkingOnByProjectId(workingOn.getProject().getProjectId()));
     }
 }
