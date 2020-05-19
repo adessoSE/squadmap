@@ -21,6 +21,7 @@ jobs:
       - run:
           name: Build Backend
           command: ../gradlew :squadmap-backend:build
+      - run: ls ~/squadmap
       - persist_to_workspace:
           root: ~/
           paths:
@@ -45,6 +46,7 @@ jobs:
       - run:
           name: Test Frontend
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run: ls ~/squadmap
       - persist_to_workspace:
           root: ~/
           paths:
@@ -65,7 +67,7 @@ jobs:
           at: ~/
       - run:
           name: Analyze on Sonarcloud
-          command: ./gradlew sonarqube --build-cache
+          command: ./gradlew sonarqube
 
 workflows:
   main:
