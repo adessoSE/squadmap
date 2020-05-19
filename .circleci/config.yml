@@ -24,9 +24,10 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
+            - squadmap/.gradle
             - squadmap/squadmap-backend/build
             - squadmap/squadmap-frontend/.gradle
-            - squadmap/.gradle
+            - squadmap/squadmap-frontend/build
 
   frontend:
     docker:
@@ -47,13 +48,10 @@ jobs:
       - run:
           name: Test
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-      - run: ls -a ~/squadmap/squadmap-frontend
       - persist_to_workspace:
           root: ~/
           paths:
-            - squadmap/squadmap-frontend/build
             - squadmap/squadmap-frontend/coverage
-            - squadmap/squadmap-frontend/dist
             - squadmap/squadmap-frontend/node_modules
             - squadmap/squadmap-frontend/out-tsc
 
