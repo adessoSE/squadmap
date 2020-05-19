@@ -11,12 +11,16 @@ jobs:
           keys:
             - squadmap-dependencies-{{ checksum "build.gradle" }}
             - squadmap-dependencies-
-      - run: ../gradlew :squadmap-backend:dependencies
+      - run:
+          name: Download dependencies
+          command: ../gradlew :squadmap-backend:dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
-      - run: ../gradlew :squadmap-backend:build
+      - run:
+          name: Build Backend
+          command: ../gradlew :squadmap-backend:build
       - persist_to_workspace:
           root: ~/
           paths:
@@ -31,12 +35,16 @@ jobs:
           path: ~/squadmap
       - restore_cache:
           key: squadmap-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+      - run:
+          name: Npm install
+          command: npm install
       - save_cache:
           key: squadmap-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run:
+          name: Test Frontend
+          command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - persist_to_workspace:
           root: ~/
           paths:
@@ -55,12 +63,9 @@ jobs:
           path: ~/squadmap
       - attach_workspace:
           at: ~/
-      - run: ls
-      - run: ls ~/squadmap/squadmap-backend
-      - run: ls ~/squadmap/squadmap-backend/build
       - run:
           name: Analyze on Sonarcloud
-          command: ./gradlew sonarqube
+          command: ./gradlew sonarqube --build-cache
 
 workflows:
   main:
