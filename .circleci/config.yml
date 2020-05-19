@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Test Frontend
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-      - run: ls ~/squadmap
+      - run: ls -a ~/squadmap
       - persist_to_workspace:
           root: ~/
           paths:
