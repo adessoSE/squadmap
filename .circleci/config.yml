@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Build Backend
           command: ../gradlew :squadmap-backend:build
-      - run: ls ~/squadmap
+      - run: ls -a ~/squadmap
       - persist_to_workspace:
           root: ~/
           paths:
