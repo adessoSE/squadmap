@@ -20,7 +20,7 @@ jobs:
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - run:
           name: Build
-          command: ../gradlew :squadmap-backend:build --scan
+          command: ../gradlew :squadmap-backend:build
       - persist_to_workspace:
           root: ~/
           paths:
@@ -66,7 +66,7 @@ jobs:
           at: ~/
       - run:
           name: Analyze on Sonarcloud
-          command: ./gradlew sonarqube --scan
+          command: ./gradlew sonarqube
 
 workflows:
   main:
