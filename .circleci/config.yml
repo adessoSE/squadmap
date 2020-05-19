@@ -12,14 +12,14 @@ jobs:
             - squadmap-dependencies-{{ checksum "build.gradle" }}
             - squadmap-dependencies-
       - run:
-          name: Download dependencies
+          name: Dependencies
           command: ../gradlew :squadmap-backend:dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
       - run:
-          name: Build Backend
+          name: Build
           command: ../gradlew :squadmap-backend:build
       - persist_to_workspace:
           root: ~/
@@ -44,11 +44,12 @@ jobs:
           paths:
             - "node_modules"
       - run:
-          name: Test Frontend
+          name: Test
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - persist_to_workspace:
           root: ~/
           paths:
+            - squadmap/squadmap-frontend/.gradle
             - squadmap/squadmap-frontend/build
             - squadmap/squadmap-frontend/coverage
             - squadmap/squadmap-frontend/dist
