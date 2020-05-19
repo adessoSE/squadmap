@@ -20,8 +20,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.neo4j:neo4j'
     runtimeOnly project(':squadmap-frontend')
+
+    implementation 'org.neo4j:neo4j'
     implementation 'org.neo4j:neo4j-ogm-test:3.2.0-alpha02'
     implementation 'org.neo4j:neo4j-ogm-embedded-driver'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
