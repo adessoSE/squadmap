@@ -3,6 +3,7 @@ import {EmployeeService} from './employee.service';
 import {EmployeeModel} from '../../models/employee.model';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {CreateEmployeeModel} from '../../models/createEmployee.model';
+import {environment} from "../../../environments/environment";
 
 describe('EmployeeService', () => {
   let service: EmployeeService;
@@ -56,7 +57,7 @@ describe('EmployeeService', () => {
       expect(service.employees.length).toBe(2);
       expect(JSON.stringify(service.employees)).toEqual(JSON.stringify(dummyEmployees));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/employee/all');
+    const request = httpMock.expectOne(environment.base_api_url + '/employee/all');
     expect(request.request.method).toBe('GET');
     request.flush(dummyEmployees);
   });
@@ -65,7 +66,7 @@ describe('EmployeeService', () => {
     service.getEmployee(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees[0]));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/employee/1');
+    const request = httpMock.expectOne(environment.base_api_url + '/employee/1');
     expect(request.request.method).toBe('GET');
     request.flush(dummyEmployees[0]);
   });
@@ -94,7 +95,7 @@ describe('EmployeeService', () => {
     service.addEmployee(dummyEmployee).subscribe(() => {
       expect(dummyEmployeeAPI.employeeId).toBe(1);
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/employee/create');
+    const request = httpMock.expectOne(environment.base_api_url + '/employee/create');
     expect(request.request.method).toBe('POST');
     request.flush(dummyEmployeeAPI);
   });
@@ -103,7 +104,7 @@ describe('EmployeeService', () => {
     service.deleteEmployee(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/employee/delete/1');
+    const request = httpMock.expectOne(environment.base_api_url + '/employee/delete/1');
     expect(request.request.method).toBe('DELETE');
     dummyEmployees.splice(0, 1);
     request.flush(dummyEmployees);
@@ -122,7 +123,7 @@ describe('EmployeeService', () => {
     service.updateEmployee(newDummyEmployee, 1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyEmployees));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/employee/update/1');
+    const request = httpMock.expectOne(environment.base_api_url + '/employee/update/1');
     expect(request.request.method).toBe('PUT');
     dummyEmployees[0] = new EmployeeModel(
       1,

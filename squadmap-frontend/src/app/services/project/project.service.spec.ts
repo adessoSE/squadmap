@@ -4,6 +4,7 @@ import {TestBed} from '@angular/core/testing';
 import {EmployeeService} from '../employee/employee.service';
 import {ProjectModel} from '../../models/project.model';
 import {CreateProjectModel} from '../../models/createProject.model';
+import {environment} from "../../../environments/environment";
 
 describe('ProjectService', () => {
   let service: ProjectService;
@@ -56,7 +57,7 @@ describe('ProjectService', () => {
       expect(service.projects.length).toBe(2);
       expect(JSON.stringify(service.projects)).toEqual(JSON.stringify(dummyProjects));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/project/all');
+    const request = httpMock.expectOne(environment.base_api_url + '/project/all');
     expect(request.request.method).toBe('GET');
     request.flush(dummyProjects);
   });
@@ -75,7 +76,7 @@ describe('ProjectService', () => {
     service.getProject(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProject));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/project/1');
+    const request = httpMock.expectOne(environment.base_api_url + '/project/1');
     expect(request.request.method).toBe('GET');
     request.flush(dummyProject);
   });
@@ -84,7 +85,7 @@ describe('ProjectService', () => {
     service.deleteProject(1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProjects));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/project/delete/1');
+    const request = httpMock.expectOne(environment.base_api_url + '/project/delete/1');
     expect(request.request.method).toBe('DELETE');
     dummyProjects.splice(0, 1);
     request.flush(dummyProjects);
@@ -102,7 +103,7 @@ describe('ProjectService', () => {
     service.updateProject(newDummyProject, 1).subscribe(res => {
       expect(JSON.stringify(res)).toEqual(JSON.stringify(dummyProjects));
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/project/update/1');
+    const request = httpMock.expectOne(environment.base_api_url + '/project/update/1');
     expect(request.request.method).toBe('PUT');
     dummyProjects[0] = new ProjectModel(
       1,
@@ -138,7 +139,7 @@ describe('ProjectService', () => {
     service.addProject(newDummyProject).subscribe(() => {
       expect(dummyProjectAPI.projectId).toBe(1);
     });
-    const request = httpMock.expectOne('http://localhost:8080/api/project/create');
+    const request = httpMock.expectOne(environment.base_api_url + '/project/create');
     expect(request.request.method).toBe('POST');
     request.flush(dummyProjectAPI);
   });

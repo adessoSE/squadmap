@@ -3,6 +3,7 @@ import {EmployeeModel} from '../../models/employee.model';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {CreateEmployeeModel} from '../../models/createEmployee.model';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class EmployeeService {
 
   getEmployees() {
     this.employees = [];
-    return this.http.get<EmployeeModel[]>('http://localhost:8080/api/employee/all').pipe(map( res => {
+    return this.http.get<EmployeeModel[]>(environment.base_api_url + '/employee/all').pipe(map( res => {
         Object.values(res).forEach(receivedData => {
           for (const project of receivedData.projects) {
             project.since = new Date(project.since);
@@ -39,7 +40,7 @@ export class EmployeeService {
   }
 
   getEmployee(id: number) {
-    return this.http.get<EmployeeModel>('http://localhost:8080/api/employee/' + id).pipe(map(res => {
+    return this.http.get<EmployeeModel>(environment.base_api_url + '/employee/' + id).pipe(map(res => {
       res.birthday = new Date(res.birthday);
       for (const project of res.projects) {
         project.since = new Date(project.since);
@@ -50,7 +51,7 @@ export class EmployeeService {
   }
 
   addEmployee(employee: CreateEmployeeModel) {
-    return this.http.post<number>('http://localhost:8080/api/employee/create', {
+    return this.http.post<number>(environment.base_api_url + '/employee/create', {
       firstName: employee.firstName,
       lastName: employee.lastName,
       birthday: employee.birthday,
@@ -62,11 +63,11 @@ export class EmployeeService {
   }
 
   deleteEmployee(employeeId: number) {
-    return this.http.delete('http://localhost:8080/api/employee/delete/' + employeeId);
+    return this.http.delete(environment.base_api_url + '/employee/delete/' + employeeId);
   }
 
   updateEmployee(newEmployee: CreateEmployeeModel, employeeId: number) {
-    return this.http.put('http://localhost:8080/api/employee/update/' + employeeId, {
+    return this.http.put(environment.base_api_url + '/employee/update/' + employeeId, {
       firstName: newEmployee.firstName,
       lastName: newEmployee.lastName,
       birthday: newEmployee.birthday,
