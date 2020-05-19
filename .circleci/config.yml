@@ -28,6 +28,7 @@ jobs:
             - squadmap/squadmap-backend/build
             - squadmap/squadmap-frontend/.gradle
             - squadmap/squadmap-frontend/build
+            - squadmap/squadmap-frontend/dist
 
   frontend:
     docker:
@@ -53,7 +54,6 @@ jobs:
           paths:
             - squadmap/squadmap-frontend/coverage
             - squadmap/squadmap-frontend/node_modules
-            - squadmap/squadmap-frontend/out-tsc
 
   sonarcloud:
     docker:
