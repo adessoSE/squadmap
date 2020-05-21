@@ -11,16 +11,34 @@ jobs:
           keys:
             - squadmap-dependencies-{{ checksum "build.gradle" }}
             - squadmap-dependencies-
-      - run: gradle dependencies
+      - run:
+          name: Dependencies
+          command: ../gradlew :squadmap-backend:dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: squadmap-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle build
+      - run:
+          name: Build
+          command: ../gradlew :squadmap-backend:build
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
       - persist_to_workspace:
           root: ~/
           paths:
+            - squadmap/.gradle
             - squadmap/squadmap-backend/build
+            - squadmap/squadmap-frontend/.gradle
+            - squadmap/squadmap-frontend/build
+            - squadmap/squadmap-frontend/dist
 
   frontend:
     docker:
@@ -31,16 +49,21 @@ jobs:
           path: ~/squadmap
       - restore_cache:
           key: squadmap-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+      - run:
+          name: Npm install
+          command: npm install
       - save_cache:
           key: squadmap-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run:
+          name: Test
+          command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - persist_to_workspace:
           root: ~/
           paths:
             - squadmap/squadmap-frontend/coverage
+            - squadmap/squadmap-frontend/node_modules
 
   sonarcloud:
     docker:
@@ -53,7 +76,7 @@ jobs:
           at: ~/
       - run:
           name: Analyze on Sonarcloud
-          command: gradle sonarqube
+          command: ./gradlew sonarqube
 
 workflows:
   main:
