@@ -8,7 +8,6 @@ import {EmployeeComponent} from '../views/employee-view/employee/employee.compon
 import {ProjectComponent} from '../views/project-view/project/project.component';
 import {EmployeeDetailComponent} from '../views/employee-view/employee-detail/employee-detail.component';
 import {ProjectDetailComponent} from '../views/project-view/project-detail/project-detail.component';
-import {MapProjectDetailComponent} from '../views/map-view/map-project-detail/map-project-detail.component';
 import {PageNotFoundComponent} from '../views/page-not-found-view/page-not-found.component';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {FormsModule} from '@angular/forms';
@@ -17,7 +16,6 @@ import {FilterEmployeesPipe} from '../pipes/filterEmployees/filterEmployees.pipe
 import {AppComponent} from '../app.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {routes} from '../app.routing';
-import {MapEmployeeDetailComponent} from '../views/map-view/map-employee-detail/map-employee-detail.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 
@@ -43,8 +41,6 @@ describe('NavigationComponent - Routing', () => {
         ProjectComponent,
         EmployeeDetailComponent,
         ProjectDetailComponent,
-        MapProjectDetailComponent,
-        MapEmployeeDetailComponent,
         PageNotFoundComponent,
         FilterProjectsPipe,
         FilterEmployeesPipe,

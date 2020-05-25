@@ -11,6 +11,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {Observable} from "rxjs";
 import {WorkingOnProjectModel} from "../../../models/workingOnProject.model";
 import {MessageModalComponent} from "../../../modals/message-modal/message-modal.component";
+import {ActivatedRoute} from "@angular/router";
 
 export let projects = [
   {
@@ -77,6 +78,12 @@ export const modalServiceStub = {
   show(){}
 };
 
+const activatedRouteStub = {
+  snapshot: {
+    url: []
+  }
+};
+
 describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let component: MapComponent;
@@ -97,6 +104,7 @@ describe('MapComponent', () => {
         {provide: EmployeeService, useValue: employeeServiceStub},
         {provide: ProjectService, useValue: projectServiceStub},
         {provide: WorkingOnService, useValue: workingOnServiceStub},
+        {provide: ActivatedRoute, useValue: activatedRouteStub},
         // BsModalService,
         {provide: BsModalService, useValue: modalServiceStub},
         ComponentLoaderFactory,
@@ -106,12 +114,14 @@ describe('MapComponent', () => {
     });
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
-    component.ngOnInit();
-    component.employees = employees;
-    component.projects = projects;
+    // component.ngOnInit();
+    // component.employees = employees;
+    // component.projects = projects;
   });
 
   it('should be created', () => {
+    activatedRouteStub.snapshot.url.push('map');
+    component.ngOnInit();
     expect(component).toBeDefined();
     expect(component.network).toBeDefined();
   });

@@ -1,6 +1,5 @@
 import {TestBed} from "@angular/core/testing";
 import {ProjectDetailComponent} from "./project-detail.component";
-import {MapProjectDetailComponent} from "../../map-view/map-project-detail/map-project-detail.component";
 import {BsModalService, ModalModule, TabsModule} from "ngx-bootstrap";
 import {RouterTestingModule} from "@angular/router/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
@@ -9,6 +8,8 @@ import {FilterEmployeesPipe} from "../../../pipes/filterEmployees/filterEmployee
 import {FormsModule} from "@angular/forms";
 import {Observable} from "rxjs";
 import {WorkingOnEmployeeModel} from "../../../models/workingOnEmployee.model";
+import {MapComponent} from "../../map-view/map/map.component";
+import {IconsModule} from "../../../icons/icons.module";
 
 describe('Project Detail Component', () => {
   let fixture;
@@ -68,7 +69,7 @@ describe('Project Detail Component', () => {
     TestBed.configureTestingModule({
       declarations: [
         ProjectDetailComponent,
-        MapProjectDetailComponent,
+        MapComponent,
         AddEmployeeModalComponent,
         FilterEmployeesPipe
       ],
@@ -78,6 +79,7 @@ describe('Project Detail Component', () => {
         FormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
+        IconsModule,
       ],
       providers: [
         BsModalService
@@ -123,7 +125,7 @@ describe('Project Detail Component', () => {
     component.onOpenEmployeeDetail(1);
     expect(spy).toHaveBeenCalled();
   });
-  
+
   it('should filter the Employees',  () => {
    let filtered = component.filterEmployees(dummyEmployees, [workingOnEmployee]);
    expect(filtered[0].employeeId).toEqual(1);

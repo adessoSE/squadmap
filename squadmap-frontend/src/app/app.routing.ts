@@ -4,7 +4,6 @@ import {EmployeeComponent} from './views/employee-view/employee/employee.compone
 import {EmployeeDetailComponent} from './views/employee-view/employee-detail/employee-detail.component';
 import {ProjectComponent} from './views/project-view/project/project.component';
 import {ProjectDetailComponent} from './views/project-view/project-detail/project-detail.component';
-import {MapProjectDetailComponent} from './views/map-view/map-project-detail/map-project-detail.component';
 import {PageNotFoundComponent} from './views/page-not-found-view/page-not-found.component';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
@@ -34,10 +33,6 @@ export const routes: Routes = [
     component: ProjectDetailComponent
   },
   {
-    path: 'map',
-    component: MapComponent
-  },
-  {
     path: '**',
     component: PageNotFoundComponent
   }
@@ -57,5 +52,4 @@ export const routingComponents = [
   ProjectComponent,
   ProjectDetailComponent,
   PageNotFoundComponent,
-  MapProjectDetailComponent
 ];

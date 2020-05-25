@@ -15,7 +15,6 @@ import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employe
 import {AddProjectModalComponent} from './modals/add-project-modal/add-project-modal.component';
 import {MessageModalComponent} from './modals/message-modal/message-modal.component';
 import {AppRoutingModule, routingComponents} from './app.routing';
-import {MapEmployeeDetailComponent} from './views/map-view/map-employee-detail/map-employee-detail.component';
 import {IconsModule} from './icons/icons.module';
 import {NewWorkingOnModalComponent} from './modals/new-working-on-modal/new-working-on-modal.component';
 import {UpdateWorkingOnProjectModalComponent} from './modals/update-working-on-project-modal/update-working-on-project-modal.component';
@@ -36,7 +35,6 @@ import {UpdateEmployeeModalComponent} from './modals/update-employee-modal/updat
     AddProjectModalComponent,
     MessageModalComponent,
     routingComponents,
-    MapEmployeeDetailComponent,
     NewWorkingOnModalComponent,
     UpdateWorkingOnProjectModalComponent,
     UpdateWorkingOnEmployeeModalComponent,
