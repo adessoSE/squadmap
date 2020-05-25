@@ -1,5 +1,5 @@
 <div id="mynetwork"></div>
-<div id="controls">
+<div id="controls" *ngIf="showBar">
   <button class="btn btn-dark" (click)="saveLayout()" type="button">
     <i-feather name="save"></i-feather>
     <br>Save

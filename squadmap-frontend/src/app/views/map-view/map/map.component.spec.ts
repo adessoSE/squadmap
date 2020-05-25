@@ -51,6 +51,9 @@ export let employees = [
 
 export const employeeServiceStub = {
   employees,
+  addEmployee(): Observable<Object> {
+    return new Observable<Object>();
+  },
   getEmployees(): Observable<Object> {
     return new Observable<Object>();
   },
