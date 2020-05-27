@@ -1,0 +1,9 @@
+dependencies {
+    implementation project(':squadmap-backend:common')
+    implementation project(':squadmap-backend:application')
+    implementation project(':squadmap-backend:adapter:web')
+    implementation project(':squadmap-backend:adapter:persistence')
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
