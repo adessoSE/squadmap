@@ -11,7 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-public class EmployeeResponseMapperTest {
+class EmployeeResponseMapperTest {
 
     private EmployeeResponseMapperImplementation employeeResponseMapper = new EmployeeResponseMapperImplementation();
 

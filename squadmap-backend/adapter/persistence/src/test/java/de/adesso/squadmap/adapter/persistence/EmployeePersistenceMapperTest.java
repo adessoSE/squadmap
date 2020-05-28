@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-public class EmployeePersistenceMapperTest {
+class EmployeePersistenceMapperTest {
 
     private EmployeePersistenceMapper employeePersistenceMapper = new EmployeePersistenceMapper();
 

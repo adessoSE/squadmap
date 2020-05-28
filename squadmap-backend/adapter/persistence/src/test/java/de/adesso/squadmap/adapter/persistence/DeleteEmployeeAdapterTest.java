@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class DeleteEmployeeAdapterTest {
+class DeleteEmployeeAdapterTest {
 
     @Mock
     private EmployeeRepository employeeRepository;

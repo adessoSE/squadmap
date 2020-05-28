@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class TestDataGeneratorTest {
+class TestDataGeneratorTest {
 
     @Mock
     CreateEmployeeUseCase createEmployeeUseCase;

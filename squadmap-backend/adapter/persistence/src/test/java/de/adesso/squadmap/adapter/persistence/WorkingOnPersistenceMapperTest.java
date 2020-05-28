@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class WorkingOnPersistenceMapperTest {
+class WorkingOnPersistenceMapperTest {
 
     @Mock
     private PersistenceMapper<Employee, EmployeeNeo4JEntity> employeePersistenceMapper;

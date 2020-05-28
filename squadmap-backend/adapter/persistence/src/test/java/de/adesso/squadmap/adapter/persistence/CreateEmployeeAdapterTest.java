@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class CreateEmployeeAdapterTest {
+class CreateEmployeeAdapterTest {
 
     @Mock
     private EmployeeRepository employeeRepository;

@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-public class ProjectDomainMapperImplementationTest {
+class ProjectDomainMapperImplementationTest {
 
     private ProjectDomainMapperImplementation projectMapper = new ProjectDomainMapperImplementation();
 

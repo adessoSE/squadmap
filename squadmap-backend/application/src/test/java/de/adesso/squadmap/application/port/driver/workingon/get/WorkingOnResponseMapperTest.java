@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class WorkingOnResponseMapperTest {
+class WorkingOnResponseMapperTest {
 
     @Mock
     private EmployeeResponseMapper employeeResponseMapper;
