@@ -8,8 +8,17 @@ repositories {
     mavenCentral()
 }
 
-subprojects {
+build {
+    dependsOn(':squadmap-backend:configuration:build')
+    dependsOn(':squadmap-backend:application:build')
+    dependsOn(':squadmap-backend:adapter:build')
+    dependsOn(':squadmap-backend:adapter:web:build')
+    dependsOn(':squadmap-backend:adapter:persistence:build')
+    dependsOn(':squadmap-backend:common:build')
+    dependsOn(':squadmap-backend:test-data:build')
+}
 
+subprojects {
     group = 'de.adesso.squadmap'
     version = '0.0.1-SNAPSHOT'
 
@@ -24,7 +33,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.0.RELEASE")
+            mavenBom 'org.springframework.boot:spring-boot-dependencies:2.3.0.RELEASE'
         }
     }
 
@@ -43,6 +52,7 @@ subprojects {
     }
 
     jacocoTestReport {
+        dependsOn test
         reports {
             xml.enabled true
             html.enabled true

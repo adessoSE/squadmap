@@ -1,8 +1,10 @@
 rootProject.name = 'squadmap'
+
 include 'squadmap-backend:common'
+include 'squadmap-backend:configuration'
 include 'squadmap-backend:application'
 include 'squadmap-backend:adapter:web'
 include 'squadmap-backend:adapter:persistence'
-include 'squadmap-backend:configuration'
 include 'squadmap-backend:test-data'
+
 include 'squadmap-frontend'
