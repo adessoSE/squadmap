@@ -92,12 +92,12 @@ export class MapComponent implements OnInit {
   private networkOptions = networkOptions;
   private showBar: boolean;
 
-  constructor(private employeeService: EmployeeService,
+  constructor(public employeeService: EmployeeService,
               private projectService: ProjectService,
               private workingOnService: WorkingOnService,
               private modalService: BsModalService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.isPhysicsEnabled = false;
@@ -172,6 +172,10 @@ export class MapComponent implements OnInit {
   }
 
   getNodeData(nodeList, edgeList){
+
+    if(!this.employees) this.employees = [];
+    if(!this.projects) this.projects = [];
+
     if(this.employees.length != 0 && this.projects.length != 0 ){
       this.employees.forEach( employee => {
         nodeList.push(
@@ -217,66 +221,70 @@ export class MapComponent implements OnInit {
       });
     } else if(this.projects.length === 0 ){
       const employee = this.employees[0];
-      nodeList.push({
-        id: employee.employeeId,
-        label:employee.firstName,
-        color: employee.isExternal ? '#c9c9c9' : '#ffebad',
-        group: 'employeeNode'
-      });
-      employee.projects.forEach( project => {
-        nodeList.push(
-          { id: project.project.projectId,
-            label: project.project.title,
-            title: 'Id: ' + project.project.projectId +
-              '<br>Since: ' + project.since.toDateString() +
-              '<br> Until: ' + project.until.toDateString(),
-            color: project.project.isExternal ? '#c9c9c9' : '#65a4f7',
-            url: 'http://localhost:4200/employee/' + project.project.projectId,
-            group: 'projectNode'
+      if(employee){
+        nodeList.push({
+          id: employee.employeeId,
+          label:employee.firstName,
+          color: employee.isExternal ? '#c9c9c9' : '#ffebad',
+          group: 'employeeNode'
+        });
+        employee.projects.forEach( project => {
+          nodeList.push(
+            { id: project.project.projectId,
+              label: project.project.title,
+              title: 'Id: ' + project.project.projectId +
+                '<br>Since: ' + project.since.toDateString() +
+                '<br> Until: ' + project.until.toDateString(),
+              color: project.project.isExternal ? '#c9c9c9' : '#65a4f7',
+              url: 'http://localhost:4200/employee/' + project.project.projectId,
+              group: 'projectNode'
 
-          });
-        edgeList.push(
-          { id: project.workingOnId,
-            from: employee.employeeId,
-            to: project.project.projectId,
-            title: 'Id: ' + project.workingOnId +
-              '<br>Since: ' + project.since.toDateString() +
-              '<br> Until: ' + project.until.toDateString() +
-              '<br> Workload: ' + project.workload + '%',
-            color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
-            dashes: project.project.isExternal
-          });
-      });
+            });
+          edgeList.push(
+            { id: project.workingOnId,
+              from: employee.employeeId,
+              to: project.project.projectId,
+              title: 'Id: ' + project.workingOnId +
+                '<br>Since: ' + project.since.toDateString() +
+                '<br> Until: ' + project.until.toDateString() +
+                '<br> Workload: ' + project.workload + '%',
+              color: project.until < this.dateThreshold ? '#ff0002' : '#000000',
+              dashes: project.project.isExternal
+            });
+        });
+      }
     } else if(this.employees.length === 0 ){
       const project = this.projects[0];
-      nodeList.push(
-        { id: project.projectId,
-          label: project.title,
-          color: project.isExternal ? '#c9c9c9' : '#ffebad',
-          group: 'projectNode'
-        });
-
-      project.employees.forEach( employee => {
+      if(project){
         nodeList.push(
-          { id: employee.employee.employeeId,
-            label: employee.employee.firstName + ' ' + employee.employee.lastName,
-            title: 'Email: ' + employee.employee.email + '<br> Phone: ' + employee.employee.phone,
-            color: employee.employee.isExternal ? '#c9c9c9' : '#65a4f7',
-            url: 'http://localhost:4200/employee/' + employee.employee.employeeId,
-            group: 'employeeNode'
+          { id: project.projectId,
+            label: project.title,
+            color: project.isExternal ? '#c9c9c9' : '#ffebad',
+            group: 'projectNode'
           });
-        edgeList.push(
-          { id: employee.workingOnId,
-            from: employee.employee.employeeId,
-            to: project.projectId,
-            title: 'Id: ' + employee.workingOnId +
-              '<br>Since: ' + employee.since.toDateString() +
-              '<br> Until: ' + employee.until.toDateString() +
-              '<br> Workload: ' + employee.workload + '%',
-            color: employee.until < this.dateThreshold ? '#ff0002' : '#000000',
-            dashes: employee.employee.isExternal
-          });
-      });
+
+        project.employees.forEach( employee => {
+          nodeList.push(
+            { id: employee.employee.employeeId,
+              label: employee.employee.firstName + ' ' + employee.employee.lastName,
+              title: 'Email: ' + employee.employee.email + '<br> Phone: ' + employee.employee.phone,
+              color: employee.employee.isExternal ? '#c9c9c9' : '#65a4f7',
+              url: 'http://localhost:4200/employee/' + employee.employee.employeeId,
+              group: 'employeeNode'
+            });
+          edgeList.push(
+            { id: employee.workingOnId,
+              from: employee.employee.employeeId,
+              to: project.projectId,
+              title: 'Id: ' + employee.workingOnId +
+                '<br>Since: ' + employee.since.toDateString() +
+                '<br> Until: ' + employee.until.toDateString() +
+                '<br> Workload: ' + employee.workload + '%',
+              color: employee.until < this.dateThreshold ? '#ff0002' : '#000000',
+              dashes: employee.employee.isExternal
+            });
+        });
+      }
     }
 
     return {
@@ -431,9 +439,11 @@ export class MapComponent implements OnInit {
 
   isEmployee(id: number): boolean {
     let i;
-    for (i = 0; i < this.employees.length; i++) {
-      if (this.employees[i].employeeId === id) {
-        return true;
+    if(this.employees){
+      for (i = 0; i < this.employees.length; i++) {
+        if (this.employees[i].employeeId === id) {
+          return true;
+        }
       }
     }
     return false;
@@ -441,9 +451,11 @@ export class MapComponent implements OnInit {
 
   isProject(id: number): boolean {
     let i;
-    for (i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].projectId === id) {
-        return true;
+    if(this.projects){
+      for (i = 0; i < this.projects.length; i++) {
+        if (this.projects[i].projectId === id) {
+          return true;
+        }
       }
     }
     return false;

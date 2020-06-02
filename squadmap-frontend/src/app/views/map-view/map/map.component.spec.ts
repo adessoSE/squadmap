@@ -12,6 +12,8 @@ import {Observable} from "rxjs";
 import {WorkingOnProjectModel} from "../../../models/workingOnProject.model";
 import {MessageModalComponent} from "../../../modals/message-modal/message-modal.component";
 import {ActivatedRoute} from "@angular/router";
+import {EmployeeModel} from "../../../models/employee.model";
+import {ProjectModel} from "../../../models/project.model";
 
 export let projects = [
   {
@@ -80,7 +82,7 @@ export const modalServiceStub = {
 
 const activatedRouteStub = {
   snapshot: {
-    url: []
+    url: [{path: ''}]
   }
 };
 
@@ -114,13 +116,12 @@ describe('MapComponent', () => {
     });
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
-    // component.ngOnInit();
+    component.ngOnInit();
     // component.employees = employees;
     // component.projects = projects;
   });
 
   it('should be created', () => {
-    activatedRouteStub.snapshot.url.push('map');
     component.ngOnInit();
     expect(component).toBeDefined();
     expect(component.network).toBeDefined();
@@ -128,27 +129,19 @@ describe('MapComponent', () => {
 
 
   it('should create the map', () => {
+    let spyGetNodeData = spyOn(component, 'getNodeData').and.returnValue({nodeList: [], edgeList: []});
+    let spyInitializeCurserOptions = spyOn(component, 'initializeCurserOptions');
+    let spyGetLayout = spyOn(component, 'getLayout');
     component.createMap();
-    const amountOfNodes = Object.keys(component.network.getPositions()).length;
-    expect(amountOfNodes).toEqual(3);
-  });
-
-  it('should be able to delete a node',  () => {
-    component.createMap();
-    component.network.selectNodes([1]);
-    component.network.deleteSelected();
-    const amountOfNodes = Object.keys(component.network.getPositions()).length;
-    expect(amountOfNodes).toEqual(2);
-  });
-
-  it('should be able to delete an edge',  () => {
-    component.createMap();
-    component.network.selectEdges([4]);
-    component.network.deleteSelected();
-    expect(component.network.selectEdges([4])).toBeUndefined();
+    expect(spyGetNodeData).toHaveBeenCalled();
+    expect(spyInitializeCurserOptions).toHaveBeenCalled();
+    expect(spyGetLayout).toHaveBeenCalled();
+    expect(component.network).toBeDefined();
   });
 
   it('should check if the given correct id is an existing Employee',  () =>{
+    component.employees = [];
+    component.employees.push(new EmployeeModel(1,'','',new Date(), '','',false,'',[]));
     expect(component.isEmployee(1)).toBeTruthy();
   });
 
@@ -157,6 +150,8 @@ describe('MapComponent', () => {
   });
 
   it('should check if the given correct id is an existing Project',  () =>{
+    component.projects = [];
+    component.projects.push(new ProjectModel(3,'','',new Date(), new Date(), false, [], []));
     expect(component.isProject(3)).toBeTruthy();
   });
 
@@ -165,18 +160,21 @@ describe('MapComponent', () => {
   });
 
   it('should refresh the component',  () =>{
-    expect(component.projects.length).toBeGreaterThan(0);
-    expect(component.employees.length).toBeGreaterThan(0);
+    let spy = spyOn(component.employeeService, 'getEmployees').and.returnValue(new Observable());
     component.refresh();
     expect(component.projects.length).toEqual(0);
     expect(component.employees.length).toEqual(0);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should be able to toggle Physics',  () =>{
     expect(component.isPhysicsEnabled).toBeFalsy();
+    let spy = spyOn(component.network, 'setOptions');
     component.togglePhysics();
     expect(component.isPhysicsEnabled).toBeTruthy();
+    expect(spy).toHaveBeenCalled();
     component.togglePhysics();
     expect(component.isPhysicsEnabled).toBeFalsy();
+    expect(spy).toHaveBeenCalled();
   });
 });
