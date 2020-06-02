@@ -34,7 +34,7 @@ sonarqube {
 project(":squadmap-backend") {
     sonarqube {
         properties {
-            property "sonar.exclusions", ["**/de/adesso/squadmap/common/**", "**de/adesso/squadmap/**/*Mother.class"]
+            property "sonar.exclusions", ["**/de/adesso/squadmap/common/**", "**de/adesso/squadmap/**/*Mother.java"]
         }
     }
 }
