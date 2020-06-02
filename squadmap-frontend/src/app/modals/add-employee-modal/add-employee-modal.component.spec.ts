@@ -6,6 +6,20 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AddEmployeeModalComponent} from './add-employee-modal.component';
 import {WorkingOnService} from '../../services/workingOn/workingOn.service';
 import {EmployeeModel} from "../../models/employee.model";
+import {CreateWorkingOnModel} from "../../models/createWorkingOn.model";
+import {Observable} from "rxjs";
+
+class WorkingOnServiceStub{
+  createWorkingOn(createWorkingOn: CreateWorkingOnModel): Observable<Object>{
+    return new Observable<Object>();
+  }
+  deleteWorkingOn(id: number): Observable<Object> {
+    return new Observable<Object>();
+  }
+  updateWorkingOn(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date, workload: number): Observable<Object> {
+    return new Observable<Object>();
+  }
+}
 
 describe('Add Employee Modal Component', () => {
   let fixture;
@@ -25,18 +39,19 @@ describe('Add Employee Modal Component', () => {
         HttpClientTestingModule,
       ],
       providers: [BsModalService,
-        WorkingOnService,
+        {provide: WorkingOnService, useClass: WorkingOnServiceStub},
         BsModalRef]
-    });
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AddEmployeeModalComponent);
-    component = fixture.componentInstance; // to access properties and methods
+    component = fixture.componentInstance;
+
     workingOnService = fixture.debugElement.injector.get(WorkingOnService);
     workinOnServiceSpy = spyOn(workingOnService, 'createWorkingOn').and.callThrough();
-    fixture.detectChanges();
   });
 
   it('should create the modal', () =>  {
+    component.ngOnInit();
     fixture.detectChanges();
     expect(component.errorMessage).toEqual('');
     expect(component).toBeTruthy();

@@ -7,7 +7,6 @@ import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
 @Component({
   selector: 'app-add-employee-modal',
   templateUrl: './add-employee-modal.component.html',
-  styleUrls: ['./add-employee-modal.component.css']
 })
 export class AddEmployeeModalComponent implements OnInit {
   private employees: EmployeeModel[];

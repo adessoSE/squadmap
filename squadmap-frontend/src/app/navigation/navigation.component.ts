@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {BsDropdownConfig, BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ProjectModalComponent} from '../modals/project-modal/project-modal.component';
-import {EmployeeModalComponent} from '../modals/employee-modal/employee-modal.component';
+import {CreateProjectModalComponent} from "../modals/create-project-modal/create-project-modal.component";
+import {CreateEmployeeModalComponent} from "../modals/create-employee-modal/create-employee-modal.component";
 
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css'],
   providers: [{provide: BsDropdownConfig, useValue: {isAnimated: true, autoClose: true}}]
 })
 export class NavigationComponent implements OnInit {
@@ -23,21 +22,15 @@ export class NavigationComponent implements OnInit {
     const config = {
       backdrop: true,
       ignoreBackdropClick: true,
-      initialState: {
-        header: 'Create'
-      }
     };
-    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
+    this.modalRef = this.modalService.show(CreateEmployeeModalComponent, config);
   }
 
   addProjectModal() {
     const config = {
       backdrop: true,
-      ignoreBackdropClick: true,
-      initialState: {
-        header: 'Create'
-      }
+      ignoreBackdropClick: true
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, config);
+    this.modalRef = this.modalService.show(CreateProjectModalComponent, config);
   }
 }

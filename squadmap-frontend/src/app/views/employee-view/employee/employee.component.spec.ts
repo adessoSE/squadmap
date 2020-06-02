@@ -13,8 +13,6 @@ import {MapComponent} from "../../map-view/map/map.component";
 import {ProjectComponent} from "../../project-view/project/project.component";
 import {EmployeeDetailComponent} from "../employee-detail/employee-detail.component";
 import {ProjectDetailComponent} from "../../project-view/project-detail/project-detail.component";
-import {MapProjectDetailComponent} from "../../map-view/map-project-detail/map-project-detail.component";
-import {MapEmployeeDetailComponent} from "../../map-view/map-employee-detail/map-employee-detail.component";
 import {PageNotFoundComponent} from "../../page-not-found-view/page-not-found.component";
 import {IconsModule} from "../../../icons/icons.module";
 import {FilterProjectsPipe} from "../../../pipes/filterProjects/filterProjects.pipe";
@@ -37,8 +35,6 @@ describe('EmployeeComponent', () => {
         ProjectComponent,
         EmployeeDetailComponent,
         ProjectDetailComponent,
-        MapProjectDetailComponent,
-        MapEmployeeDetailComponent,
         PageNotFoundComponent,
         FilterEmployeesPipe,
         FilterProjectsPipe
@@ -63,7 +59,6 @@ describe('EmployeeComponent', () => {
 
     router = fixture.debugElement.injector.get(Router);
     routerNavigateSpy = spyOn(router, 'navigate').and.callThrough();
-
 
   });
 

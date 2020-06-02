@@ -10,16 +10,20 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {FilterEmployeesPipe} from './pipes/filterEmployees/filterEmployees.pipe';
 import {FilterProjectsPipe} from './pipes/filterProjects/filterProjects.pipe';
-import {ProjectModalComponent} from './modals/project-modal/project-modal.component';
-import {EmployeeModalComponent} from './modals/employee-modal/employee-modal.component';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
-import {WorkingOnModalComponent} from './modals/working-on-modal/working-on-modal.component';
 import {AddEmployeeModalComponent} from './modals/add-employee-modal/add-employee-modal.component';
 import {AddProjectModalComponent} from './modals/add-project-modal/add-project-modal.component';
 import {MessageModalComponent} from './modals/message-modal/message-modal.component';
 import {AppRoutingModule, routingComponents} from './app.routing';
-import {MapEmployeeDetailComponent} from './views/map-view/map-employee-detail/map-employee-detail.component';
 import {IconsModule} from './icons/icons.module';
+import {NewWorkingOnModalComponent} from './modals/new-working-on-modal/new-working-on-modal.component';
+import {UpdateWorkingOnProjectModalComponent} from './modals/update-working-on-project-modal/update-working-on-project-modal.component';
+import {UpdateWorkingOnEmployeeModalComponent} from './modals/update-working-on-employee-modal/update-working-on-employee-modal.component';
+import {CreateProjectModalComponent} from './modals/create-project-modal/create-project-modal.component';
+import {UpdateProjectModalComponent} from './modals/update-project-modal/update-project-modal.component';
+import {CreateEmployeeModalComponent} from './modals/create-employee-modal/create-employee-modal.component';
+import {UpdateEmployeeModalComponent} from './modals/update-employee-modal/update-employee-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -27,14 +31,17 @@ import {IconsModule} from './icons/icons.module';
     NavigationComponent,
     FilterProjectsPipe,
     FilterEmployeesPipe,
-    ProjectModalComponent,
-    EmployeeModalComponent,
-    WorkingOnModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
     routingComponents,
-    MapEmployeeDetailComponent
+    NewWorkingOnModalComponent,
+    UpdateWorkingOnProjectModalComponent,
+    UpdateWorkingOnEmployeeModalComponent,
+    CreateProjectModalComponent,
+    UpdateProjectModalComponent,
+    CreateEmployeeModalComponent,
+    UpdateEmployeeModalComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -44,8 +51,8 @@ import {IconsModule} from './icons/icons.module';
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,
-    HttpClientModule,
     ReactiveFormsModule,
+    HttpClientModule,
     ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     IconsModule
@@ -53,12 +60,16 @@ import {IconsModule} from './icons/icons.module';
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    ProjectModalComponent,
-    EmployeeModalComponent,
-    WorkingOnModalComponent,
     AddEmployeeModalComponent,
     AddProjectModalComponent,
     MessageModalComponent,
+    NewWorkingOnModalComponent,
+    UpdateWorkingOnProjectModalComponent,
+    UpdateWorkingOnEmployeeModalComponent,
+    CreateProjectModalComponent,
+    UpdateProjectModalComponent,
+    CreateEmployeeModalComponent,
+    UpdateEmployeeModalComponent
   ]
 })
 export class AppModule {

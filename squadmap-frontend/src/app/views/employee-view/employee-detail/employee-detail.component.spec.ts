@@ -6,10 +6,11 @@ import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/tes
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {EmployeeDetailComponent} from "./employee-detail.component";
-import {MapEmployeeDetailComponent} from "../../map-view/map-employee-detail/map-employee-detail.component";
 import {EmployeeModel} from "../../../models/employee.model";
 import {WorkingOnProjectModel} from "../../../models/workingOnProject.model";
 import {ProjectModel} from "../../../models/project.model";
+import {MapComponent} from "../../map-view/map/map.component";
+import {IconsModule} from "../../../icons/icons.module";
 
 describe('EmployeeDetailComponent', () => {
   let fixture;
@@ -33,7 +34,7 @@ describe('EmployeeDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeDetailComponent,
-        MapEmployeeDetailComponent,
+        MapComponent,
         FilterEmployeesPipe
       ],
       imports: [
@@ -43,6 +44,7 @@ describe('EmployeeDetailComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         TabsModule.forRoot(),
+        IconsModule,
       ],
       providers: [BsModalService]
     });
