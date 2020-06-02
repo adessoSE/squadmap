@@ -7,9 +7,9 @@ import {ProjectModel} from '../../../models/project.model';
 import {ProjectService} from '../../../services/project/project.service';
 import {WorkingOnProjectModel} from '../../../models/workingOnProject.model';
 import {WorkingOnService} from '../../../services/workingOn/workingOn.service';
-import {WorkingOnModalComponent} from '../../../modals/working-on-modal/working-on-modal.component';
 import {AddProjectModalComponent} from '../../../modals/add-project-modal/add-project-modal.component';
-import {EmployeeModalComponent} from '../../../modals/employee-modal/employee-modal.component';
+import {UpdateWorkingOnProjectModalComponent} from "../../../modals/update-working-on-project-modal/update-working-on-project-modal.component";
+import {UpdateEmployeeModalComponent} from "../../../modals/update-employee-modal/update-employee-modal.component";
 
 @Component({
   selector: 'app-employee-detail',
@@ -81,7 +81,7 @@ export class EmployeeDetailComponent implements OnInit {
         workload: workingOnProject.workload
       }
     };
-    this.modalRef = this.modalService.show(WorkingOnModalComponent, config);
+    this.modalRef = this.modalService.show(UpdateWorkingOnProjectModalComponent, config);
   }
 
   onOpenProjectDetail(projectId: number) {
@@ -94,12 +94,10 @@ export class EmployeeDetailComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        isNew: false,
-        employee: this.employee,
-        header: 'Update'
+        employee: this.employee
       }
     };
-    this.modalRef = this.modalService.show(EmployeeModalComponent, config);
+    this.modalRef = this.modalService.show(UpdateEmployeeModalComponent, config);
   }
 
   filterProjects(allProjects: ProjectModel[], existingProjects: WorkingOnProjectModel[]) {

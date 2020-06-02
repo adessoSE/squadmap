@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CreateWorkingOnModel} from '../../models/createWorkingOn.model';
 import {WorkingOnModel} from '../../models/workingOn.model';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class WorkingOnService {
   constructor(private http: HttpClient) {}
 
   createWorkingOn(createWorkingOn: CreateWorkingOnModel) {
-    return this.http.post('http://localhost:8080/api/workingOn/create', {
+    return this.http.post(environment.base_api_url + '/workingOn/create', {
       employeeId: createWorkingOn.employeeId,
       projectId: createWorkingOn.projectId,
       since: createWorkingOn.since,
@@ -20,11 +21,11 @@ export class WorkingOnService {
   }
 
   deleteWorkingOn(id: number) {
-    return this.http.delete('http://localhost:8080/api/workingOn/delete/' + id);
+    return this.http.delete(environment.base_api_url + '/workingOn/delete/' + id);
   }
 
   updateWorkingOn(workingOnId: number, employeeId: number, projectId: number, since: Date, until: Date, workload: number) {
-    return this.http.put('http://localhost:8080/api/workingOn/update/' + workingOnId, {
+    return this.http.put(environment.base_api_url + '/workingOn/update/' + workingOnId, {
       employeeId,
       projectId,
       since,
@@ -34,6 +35,6 @@ export class WorkingOnService {
   }
 
   getWorkingOn(workingOnId: number) {
-    return this.http.get<WorkingOnModel>('http://localhost:8080/api/workingOn/' + workingOnId);
+    return this.http.get<WorkingOnModel>(environment.base_api_url + '/workingOn/' + workingOnId);
   }
 }

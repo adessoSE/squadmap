@@ -8,8 +8,6 @@ import {MapComponent} from "../../map-view/map/map.component";
 import {EmployeeComponent} from "../../employee-view/employee/employee.component";
 import {ProjectComponent} from "./project.component";
 import {ProjectDetailComponent} from "../project-detail/project-detail.component";
-import {MapProjectDetailComponent} from "../../map-view/map-project-detail/map-project-detail.component";
-import {MapEmployeeDetailComponent} from "../../map-view/map-employee-detail/map-employee-detail.component";
 import {PageNotFoundComponent} from "../../page-not-found-view/page-not-found.component";
 import {Router} from "@angular/router";
 import {BrowserDynamicTestingModule} from "@angular/platform-browser-dynamic/testing";
@@ -47,8 +45,6 @@ describe('Project Component', () => {
         ProjectComponent,
         EmployeeDetailComponent,
         ProjectDetailComponent,
-        MapProjectDetailComponent,
-        MapEmployeeDetailComponent,
         PageNotFoundComponent,
         FilterEmployeesPipe,
         FilterProjectsPipe,

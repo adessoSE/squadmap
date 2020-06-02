@@ -41,7 +41,7 @@
     <div class="col-md-7">
       <tabset>
         <tab heading="Mapview">
-          <app-map-project-detail></app-map-project-detail>
+          <app-map></app-map>
         </tab>
         <tab heading="Tableview">
           <table class="table">
@@ -64,9 +64,9 @@
               <td>{{employee.until.toDateString()}}</td>
               <td>{{employee.workload}}%</td>
               <td>
-                <button class="btn btn-outline-info btn-sm" type="button" (click)="onEdit(employee)" >Edit</button>
-                <button class="btn btn-outline-danger btn-sm" type="button" (click)="onDelete(employee)">Delete</button>
                 <button class="btn btn-outline-secondary btn-sm employee-link" type="button" (click)="onOpenEmployeeDetail(employee.employee.employeeId)">Details</button>
+                <button class="btn btn-outline-info btn-sm" type="button" (click)="onEdit(employee)" >Edit</button>
+                <button class="btn btn-outline-danger btn-sm" type="button" (click)="onDelete(employee.workingOnId)">Delete</button>
               </td>
             </tr>
             </tbody>

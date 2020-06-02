@@ -8,7 +8,6 @@ import {EmployeeComponent} from '../views/employee-view/employee/employee.compon
 import {ProjectComponent} from '../views/project-view/project/project.component';
 import {EmployeeDetailComponent} from '../views/employee-view/employee-detail/employee-detail.component';
 import {ProjectDetailComponent} from '../views/project-view/project-detail/project-detail.component';
-import {MapProjectDetailComponent} from '../views/map-view/map-project-detail/map-project-detail.component';
 import {PageNotFoundComponent} from '../views/page-not-found-view/page-not-found.component';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {FormsModule} from '@angular/forms';
@@ -17,7 +16,6 @@ import {FilterEmployeesPipe} from '../pipes/filterEmployees/filterEmployees.pipe
 import {AppComponent} from '../app.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {routes} from '../app.routing';
-import {MapEmployeeDetailComponent} from '../views/map-view/map-employee-detail/map-employee-detail.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 
@@ -43,8 +41,6 @@ describe('NavigationComponent - Routing', () => {
         ProjectComponent,
         EmployeeDetailComponent,
         ProjectDetailComponent,
-        MapProjectDetailComponent,
-        MapEmployeeDetailComponent,
         PageNotFoundComponent,
         FilterProjectsPipe,
         FilterEmployeesPipe,
@@ -69,7 +65,11 @@ describe('NavigationComponent - Routing', () => {
 
 describe('NavigationComponent', () => {
   let fixture;
+  let component;
   let element;
+  let bsModalService;
+  let showModalServiceSpy;
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -83,9 +83,11 @@ describe('NavigationComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(NavigationComponent);
-    // navigation = fixture.componentInstance;     // to access properties and methods
-    element = fixture.nativeElement;            // to access DOM element
-    // de = fixture.debugElement;                  // test helper
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+
+    bsModalService = fixture.debugElement.injector.get(BsModalService);
+    showModalServiceSpy = spyOn(bsModalService, 'show');
   });
 
   it('should render the title in the navigation bar',  async(() => {
@@ -94,5 +96,15 @@ describe('NavigationComponent', () => {
       expect(element.querySelector('.navbar-brand').innerText).toBe('Squadmap');
     });
   }));
+
+  it('should call the show method with createEmployee',  ()=> {
+    component.addEmployeeModal();
+    expect(showModalServiceSpy).toHaveBeenCalled();
+  });
+
+  it('should call the show method with createProject',  ()=> {
+    component.addProjectModal();
+    expect(showModalServiceSpy).toHaveBeenCalled();
+  });
 });
 

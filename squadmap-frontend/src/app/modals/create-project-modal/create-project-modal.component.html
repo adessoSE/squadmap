@@ -1,0 +1,45 @@
+<div class="modal-header d-flex justify-content-center">
+  <h4 class="modal-title">Create Project</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Project title</label>
+      <input type="text" id="title" name="title" class="form-control" formControlName="title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea  type="text" id="description" name="description" class="form-control"  formControlName="description" rows="7"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="since">Since</label>
+      <input type="date" id="since" name="since" min="1900-01-01" class="form-control"  formControlName="since">
+    </div>
+    <div class="form-group">
+      <label for="until">Until</label>
+      <input type="date" id="until" name="until" min="1900-01-01" class="form-control"  formControlName="until">
+    </div>
+    <div class="form-group">
+      <label for="sites">Sites</label>
+      <textarea type="text" id="sites" name="sites" class="form-control"  formControlName="sitestring" placeholder="Bitte hier nur gültige URLs mit http als kommaseparierte Liste hinzufügen"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="isExternal">External</label>
+      <div>
+        <input class="checkbox" type="checkbox" id="isExternal" name="isExternal" formControlName="isExternal">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row justify-content-center">
+        <button type="submit" class="btn btn-success" [disabled]="form.invalid">Create Project</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="errorOccurred" class="alert alert-danger">
+    {{errorMessage}}
+  </div>
+</div>
+

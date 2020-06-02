@@ -3,7 +3,8 @@ import {ProjectModel} from '../../../models/project.model';
 import {ProjectService} from '../../../services/project/project.service';
 import {Router} from '@angular/router';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ProjectModalComponent} from '../../../modals/project-modal/project-modal.component';
+import {CreateProjectModalComponent} from "../../../modals/create-project-modal/create-project-modal.component";
+import {UpdateProjectModalComponent} from "../../../modals/update-project-modal/update-project-modal.component";
 
 @Component({
   selector: 'app-project',
@@ -44,21 +45,17 @@ export class ProjectComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       initialState: {
-        project,
-        actionName: 'Update'
+        project
       }
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, config);
+    this.modalRef = this.modalService.show(UpdateProjectModalComponent, config);
   }
 
   onAddProject() {
     const config = {
       backdrop: true,
-      ignoreBackdropClick: true,
-      initialState: {
-        actionName: 'Add'
-      }
+      ignoreBackdropClick: true
     };
-    this.modalRef = this.modalService.show(ProjectModalComponent, config);
+    this.modalRef = this.modalService.show(CreateProjectModalComponent, config);
   }
 }
