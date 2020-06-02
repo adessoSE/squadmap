@@ -117,8 +117,6 @@ describe('MapComponent', () => {
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
-    // component.employees = employees;
-    // component.projects = projects;
   });
 
   it('should be created', () => {
