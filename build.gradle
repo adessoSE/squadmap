@@ -31,18 +31,9 @@ sonarqube {
     }
 }
 
-project(":squadmap-backend") {
-    sonarqube {
-        properties {
-            property "sonar.module", "squadmap-backend"
-        }
-    }
-}
-
 project(":squadmap-frontend") {
     sonarqube {
         properties {
-            property "sonar.module", "squadmap-frontend"
             property "sonar.sources", "src"
             property "sonar.exclusions", ["**/node_modules/**", "**/*.spec.ts"]
             property "sonar.tests", "src"
