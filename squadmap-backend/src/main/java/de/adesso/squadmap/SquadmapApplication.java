@@ -15,7 +15,7 @@ public class SquadmapApplication {
         SpringApplication.run(SquadmapApplication.class, args);
         try {
             Runtime rt = Runtime.getRuntime();
-            rt.exec("rundll32 url.dll,FileProtocolHandler " + "http://localhost:8080/");
+            rt.exec("rundll32 url.dll,FileProtocolHandler " + "http://localhost:8080/map");
         } catch (Exception exception) {
             logger.log(Level.SEVERE, "Could not open browser", exception);
         }
