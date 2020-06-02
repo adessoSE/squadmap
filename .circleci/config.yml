@@ -9,7 +9,7 @@ jobs:
           path: ~/squadmap
       - restore_cache:
           keys:
-            - squadmap-dependencies-{{ checksum "build.gradle" }}
+            - squadmap-dependencies-{{ checksum "build.gradle" }}-{{ checksum "adapter/persistence/build.gradle"}}-{{ checksum "adapter/web/build.gradle"}}-{{ checksum "application/build.gradle"}}-{{ checksum "common/build.gradle"}}-{{ checksum "configuration/build.gradle"}}-{{ checksum "test-data/build.gradle"}}
             - squadmap-dependencies-
       - run:
           name: Dependencies
@@ -17,7 +17,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: squadmap-dependencies-{{ checksum "build.gradle" }}
+          key: squadmap-dependencies-{{ checksum "build.gradle" }}-{{ checksum "adapter/persistence/build.gradle"}}-{{ checksum "adapter/web/build.gradle"}}-{{ checksum "application/build.gradle"}}-{{ checksum "common/build.gradle"}}-{{ checksum "configuration/build.gradle"}}-{{ checksum "test-data/build.gradle"}}
       - run:
           name: Build
           command: ../gradlew :squadmap-backend:build
