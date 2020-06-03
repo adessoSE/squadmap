@@ -3,7 +3,6 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.domain.Project;
 import de.adesso.squadmap.domain.ProjectMother;
 import de.adesso.squadmap.domain.exceptions.ProjectAlreadyExistsException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -38,7 +38,7 @@ class CreateProjectAdapterTest {
         long found = createProjectAdapter.createProject(project);
 
         //then
-        Assertions.assertThat(found).isEqualTo(project.getProjectId());
+        assertThat(found).isEqualTo(project.getProjectId());
         verify(projectRepository, times(1)).existsByTitle(project.getTitle());
         verify(projectRepository, times(1)).save(projectNeo4JEntity);
         verify(projectPersistenceMapper, times(1)).mapToNeo4JEntity(project);

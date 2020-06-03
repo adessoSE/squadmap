@@ -9,7 +9,6 @@ import de.adesso.squadmap.domain.EmployeeMother;
 import de.adesso.squadmap.domain.WorkingOn;
 import de.adesso.squadmap.domain.WorkingOnMother;
 import de.adesso.squadmap.domain.mapper.EmployeeResponseMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,7 +54,7 @@ class ListEmployeeServiceTest {
         List<GetEmployeeResponse> responses = listEmployeeService.listEmployees();
 
         //then
-        Assertions.assertThat(responses).isEqualTo(Collections.singletonList(employeeResponse));
+        assertThat(responses).isEqualTo(Collections.singletonList(employeeResponse));
         verify(listEmployeePort, times(1)).listEmployees();
         verify(listWorkingOnPort, times(1)).listWorkingOn();
         verify(employeeResponseMapper, times(1))

@@ -3,7 +3,6 @@ package de.adesso.squadmap.adapter.persistence;
 import de.adesso.squadmap.domain.Employee;
 import de.adesso.squadmap.domain.EmployeeMother;
 import de.adesso.squadmap.domain.exceptions.EmployeeAlreadyExistsException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -38,7 +38,7 @@ class CreateEmployeeAdapterTest {
         long found = createEmployeeAdapter.createEmployee(employee);
 
         //then
-        Assertions.assertThat(found).isEqualTo(employee.getEmployeeId());
+        assertThat(found).isEqualTo(employee.getEmployeeId());
         verify(employeeRepository, times(1)).existsByEmail(employee.getEmail());
         verify(employeePersistenceMapper, times(1)).mapToNeo4JEntity(employee);
         verify(employeeRepository, times(1)).save(employeeNeo4JEntity);

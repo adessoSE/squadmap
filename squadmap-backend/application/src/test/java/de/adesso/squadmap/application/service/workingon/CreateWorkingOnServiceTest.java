@@ -7,7 +7,6 @@ import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorking
 import de.adesso.squadmap.application.port.driver.workingon.create.CreateWorkingOnCommandMother;
 import de.adesso.squadmap.domain.*;
 import de.adesso.squadmap.domain.mapper.WorkingOnDomainMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,7 +58,7 @@ class CreateWorkingOnServiceTest {
         long found = createWorkingOnService.createWorkingOn(createWorkingOnCommand);
 
         //then
-        Assertions.assertThat(found).isEqualTo(workingOnId);
+        assertThat(found).isEqualTo(workingOnId);
         verify(getEmployeePort, times(1)).getEmployee(employeeId);
         verify(getProjectPort, times(1)).getProject(projectId);
         verify(workingOnDomainMapper, times(1)).mapToDomainEntity(createWorkingOnCommand, employee, project);

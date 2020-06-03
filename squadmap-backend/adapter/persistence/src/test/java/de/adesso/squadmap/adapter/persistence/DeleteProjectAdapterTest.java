@@ -1,7 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
 import de.adesso.squadmap.domain.exceptions.ProjectNotFoundException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,7 +43,7 @@ class DeleteProjectAdapterTest {
         when(projectRepository.existsById(projectId)).thenReturn(false);
 
         //when
-        Assertions.assertThrows(ProjectNotFoundException.class, () -> deleteProjectAdapter.deleteProject(projectId));
+        assertThrows(ProjectNotFoundException.class, () -> deleteProjectAdapter.deleteProject(projectId));
 
         //then
         verify(projectRepository, times(1)).existsById(projectId);

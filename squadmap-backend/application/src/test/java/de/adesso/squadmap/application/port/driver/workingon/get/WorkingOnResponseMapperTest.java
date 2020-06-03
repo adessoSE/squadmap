@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -19,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -48,8 +48,8 @@ class WorkingOnResponseMapperTest {
         GetEmployeeResponse employeeResponse = GetEmployeeResponseMother.complete().build();
         GetProjectResponse projectResponse = GetProjectResponseMother.complete().build();
         List<WorkingOn> workingOnList = Collections.singletonList(workingOn);
-        Mockito.when(employeeResponseMapper.mapToResponseEntity(employee, workingOnList)).thenReturn(employeeResponse);
-        Mockito.when(projectResponseMapper.mapToResponseEntity(project, workingOnList)).thenReturn(projectResponse);
+        when(employeeResponseMapper.mapToResponseEntity(employee, workingOnList)).thenReturn(employeeResponse);
+        when(projectResponseMapper.mapToResponseEntity(project, workingOnList)).thenReturn(projectResponse);
 
         //when
         GetWorkingOnResponse getWorkingOnResponse = workingOnResponseMapper
@@ -62,7 +62,7 @@ class WorkingOnResponseMapperTest {
         assertThat(getWorkingOnResponse.getWorkload()).isEqualTo(workingOn.getWorkload());
         assertThat(getWorkingOnResponse.getEmployee()).isEqualTo(employeeResponse);
         assertThat(getWorkingOnResponse.getProject()).isEqualTo(projectResponse);
-        Mockito.verify(employeeResponseMapper, Mockito.times(1)).mapToResponseEntity(employee, workingOnList);
-        Mockito.verify(projectResponseMapper, Mockito.times(1)).mapToResponseEntity(project, workingOnList);
+        verify(employeeResponseMapper, times(1)).mapToResponseEntity(employee, workingOnList);
+        verify(projectResponseMapper, times(1)).mapToResponseEntity(project, workingOnList);
     }
 }
