@@ -1,5 +1,6 @@
 package de.adesso.squadmap.adapter.persistence;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -27,7 +28,7 @@ class ProjectNeo4JEntity {
     private List<String> sites;
 
     @Relationship(type = "WORKING_ON", direction = Relationship.UNDIRECTED)
-//    @JsonIgnore
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<WorkingOnNeo4JEntity> employees;
