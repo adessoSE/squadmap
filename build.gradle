@@ -31,6 +31,14 @@ sonarqube {
     }
 }
 
+project(":squadmap-backend") {
+    sonarqube {
+        properties {
+            property "sonar.exclusions", ["**/de/adesso/squadmap/common/**", "**de/adesso/squadmap/**/*Mother.java"]
+        }
+    }
+}
+
 project(":squadmap-frontend") {
     sonarqube {
         properties {

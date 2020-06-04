@@ -1,0 +1,33 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
+}
+
+dependencies {
+    runtimeOnly project(':squadmap-frontend')
+
+    implementation project(':squadmap-backend:common')
+    implementation project(':squadmap-backend:application')
+    implementation project(':squadmap-backend:adapter:web')
+    implementation project(':squadmap-backend:adapter:persistence')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    testImplementation project(':squadmap-backend:test-data')
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.platform:junit-platform-launcher'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

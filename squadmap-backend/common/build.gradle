@@ -1,0 +1,9 @@
+dependencies {
+    implementation 'javax.validation:validation-api'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
