@@ -10,7 +10,8 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 export const routes: Routes = [
   {
     path: '',
-    component: MapComponent
+    redirectTo: 'map',
+    pathMatch: 'full'
   },
   {
     path: 'map',
