@@ -7,12 +7,12 @@
   <div class="col-md-5 d-flex justify-content-between">
     <div>
       <div class="btn-group">
-        <label class="btn btn-outline-secondary" [(ngModel)]="checkedOldProjects" btnCheckbox tabindex="0" >Hide old</label>
-        <label class="btn btn-outline-secondary" [(ngModel)]="checkedExternalProjects" btnCheckbox tabindex="0" >Hide external</label>
+        <label id="hideOld" class="btn btn-outline-secondary" [(ngModel)]="checkedOldProjects" btnCheckbox tabindex="0" >Hide old</label>
+        <label id="hideExternal" class="btn btn-outline-secondary" [(ngModel)]="checkedExternalProjects" btnCheckbox tabindex="0" >Hide external</label>
       </div>
     </div>
     <div>
-      <button class="btn btn-secondary" type="button" (click)="onAddProject()">+ Add Project</button>
+      <button id="addProjectButton" class="btn btn-secondary" type="button" (click)="onAddProject()">+ Add Project</button>
     </div>
   </div>
 </div>
