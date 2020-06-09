@@ -8,6 +8,7 @@ import {Subscription} from "rxjs";
 import {filter} from "rxjs/operators";
 import {emailValidator} from "../../validators/email-validator";
 import {phoneNumberValidator} from "../../validators/phone-number-validator";
+import {dateInPastValidator} from "../../validators/date-in-past-validator";
 
 @Component({
   selector: 'app-create-employee-modal',
@@ -44,7 +45,8 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
       ]],
       birthday: ['', [
         Validators.required,
-        minimumDateValidator
+        minimumDateValidator,
+        dateInPastValidator
       ]],
       email: ['', [
         Validators.required,

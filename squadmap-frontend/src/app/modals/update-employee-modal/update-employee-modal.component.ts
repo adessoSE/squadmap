@@ -8,6 +8,9 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {CreateEmployeeModel} from "../../models/createEmployee.model";
 import {emailValidator} from "../../validators/email-validator";
 import {phoneNumberValidator} from "../../validators/phone-number-validator";
+import {dateInPastValidator} from "../../validators/date-in-past-validator";
+import {filter} from "rxjs/operators";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-update-employee-modal',
@@ -25,6 +28,7 @@ export class UpdateEmployeeModalComponent implements OnInit {
   imageSeed: string;
 
   form: FormGroup;
+  private sub: Subscription;
 
   constructor(private modalRef: BsModalRef,
               public employeeService: EmployeeService,
@@ -41,7 +45,7 @@ export class UpdateEmployeeModalComponent implements OnInit {
     this.imageType = imageSplit.pop();
     if (this.imageType === '' || this.imageType === 'initials') {
       this.imageType = 'initials';
-      this.imageSeed = '';
+      this.imageSeed = this.employee.firstName.charAt(0) + '_' + this.employee.lastName.charAt(0);
     }
     this.imageSeed = this.imageType + '/' + this.imageSeed;
 
@@ -56,7 +60,8 @@ export class UpdateEmployeeModalComponent implements OnInit {
       ]],
       birthday: [this.dateFormatterService.formatDate(this.employee.birthday), [
         Validators.required,
-        minimumDateValidator
+        minimumDateValidator,
+        dateInPastValidator
       ]],
       email: [this.employee.email, [
         Validators.required,
@@ -66,11 +71,14 @@ export class UpdateEmployeeModalComponent implements OnInit {
         Validators.required,
         phoneNumberValidator
       ]],
-      imageType: [this.imageType,[
-      ]],
-      isExternal: [this.employee.isExternal,[
-      ]]
+      imageType: [this.imageType, []],
+      isExternal: [this.employee.isExternal, []]
     });
+
+    this.sub = this.form.statusChanges
+      .pipe(
+        filter(() => this.form.valid))
+      .subscribe(() => this.changeSeed());
   }
 
   onSubmit() {
@@ -81,7 +89,7 @@ export class UpdateEmployeeModalComponent implements OnInit {
       this.form.value.email,
       this.form.value.phone,
       this.form.value.isExternal,
-      this.form.value.imageType + '/' + this.generateRandomString()
+      this.imageSeed
     );
     this.employeeService.updateEmployee(employee, this.employee.employeeId).subscribe(() => {
       this.modalRef.hide();
