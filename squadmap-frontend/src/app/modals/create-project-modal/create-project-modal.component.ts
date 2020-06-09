@@ -4,10 +4,12 @@ import {ProjectService} from "../../services/project/project.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {CreateProjectModel} from "../../models/createProject.model";
+import {siteUrlValidator} from "../../validators/siteUrl-validator";
 
 @Component({
   selector: 'app-create-project-modal',
-  templateUrl: './create-project-modal.component.html'
+  templateUrl: './create-project-modal.component.html',
+  styleUrls: ['./create-project-modal.component.css']
 })
 export class CreateProjectModalComponent implements OnInit {
 
@@ -24,8 +26,10 @@ export class CreateProjectModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       title: ['',[
         Validators.required,
+        Validators.maxLength(100)
       ]],
       description: ['',[
+        Validators.maxLength(1000)
       ]],
       since: ['',[
         Validators.required,
@@ -36,6 +40,7 @@ export class CreateProjectModalComponent implements OnInit {
         minimumDateValidator
       ]],
       sitestring: ['',[
+        siteUrlValidator
       ]],
       isExternal: ['',[
       ]],
@@ -44,11 +49,11 @@ export class CreateProjectModalComponent implements OnInit {
 
   onSubmit() {
     let sites: string[] = [];
-    if (this.form.value.sites) {
-      sites = this.form.value.sites.split(',');
-      sites = sites.map( url => url.trim());
+    if (this.form.value.sitestring) {
+      sites = this.form.value.sitestring.split(',');
+      sites = sites.map(url => url.trim());
     }
-    if(!this.form.value.isExternal){
+    if (!this.form.value.isExternal) {
       this.form.value.isExternal = false;
     }
     this.projectService.addProject(

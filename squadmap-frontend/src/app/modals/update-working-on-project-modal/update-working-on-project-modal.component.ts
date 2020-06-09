@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WorkingOnProjectModel} from "../../models/workingOnProject.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef} from "ngx-bootstrap";
@@ -8,7 +8,8 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 
 @Component({
   selector: 'app-update-working-on-project-modal',
-  templateUrl: './update-working-on-project-modal.component.html'
+  templateUrl: './update-working-on-project-modal.component.html',
+  styleUrls: ['./update-working-on-project-modal.component.css']
 })
 export class UpdateWorkingOnProjectModalComponent implements OnInit {
 

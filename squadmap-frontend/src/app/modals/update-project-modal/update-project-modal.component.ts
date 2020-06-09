@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef} from "ngx-bootstrap";
 import {ProjectService} from "../../services/project/project.service";
@@ -6,10 +6,12 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {CreateProjectModel} from "../../models/createProject.model";
 import {ProjectModel} from "../../models/project.model";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
+import {siteUrlValidator} from "../../validators/siteUrl-validator";
 
 @Component({
   selector: 'app-update-project-modal',
-  templateUrl: './update-project-modal.component.html'
+  templateUrl: './update-project-modal.component.html',
+  styleUrls: ['./update-project-modal.component.css']
 })
 export class UpdateProjectModalComponent implements OnInit {
 
@@ -29,31 +31,33 @@ export class UpdateProjectModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       title: [this.project.title,[
         Validators.required,
+        Validators.maxLength(100)
       ]],
       description: [this.project.description,[
+        Validators.maxLength(1000)
       ]],
-      since: [this.dateFormatterService.formatDate(this.project.since),[
+      since: [this.dateFormatterService.formatDate(this.project.since), [
         Validators.required,
         minimumDateValidator
       ]],
-      until: [this.dateFormatterService.formatDate(this.project.until),[
+      until: [this.dateFormatterService.formatDate(this.project.until), [
         Validators.required,
         minimumDateValidator
       ]],
-      sitestring: [this.project.sites,[
+      sitestring: [this.project.sites.toString(), [
+        siteUrlValidator
       ]],
-      isExternal: [this.project.isExternal,[
-      ]],
+      isExternal: [this.project.isExternal, []],
     });
   }
 
   onSubmit() {
     let sites: string[] = [];
-    if (this.form.value.sites) {
-      sites = this.form.value.sites.split(',');
-      sites = sites.map( url => url.trim());
+    if (this.form.value.sitestring) {
+      sites = this.form.value.sitestring.split(',');
+      sites = sites.map(url => url.trim());
     }
-    if(!this.form.value.isExternal){
+    if (!this.form.value.isExternal) {
       this.form.value.isExternal = false;
     }
     this.projectService.updateProject(

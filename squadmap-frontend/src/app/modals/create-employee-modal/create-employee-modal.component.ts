@@ -6,13 +6,15 @@ import {CreateEmployeeModel} from "../../models/createEmployee.model";
 import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {Subscription} from "rxjs";
 import {filter} from "rxjs/operators";
+import {emailValidator} from "../../validators/email-validator";
+import {phoneNumberValidator} from "../../validators/phone-number-validator";
 
 @Component({
   selector: 'app-create-employee-modal',
   templateUrl: './create-employee-modal.component.html',
   styleUrls: ['./create-employee-modal.component.css']
 })
-export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
+export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
 
 
   public errorMessage: string;
@@ -32,26 +34,28 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.errorMessage = '';
     this.form = this.formBuilder.group({
-      firstName: ['',[
-        Validators.required
+      firstName: ['', [
+        Validators.required,
+        Validators.maxLength(50)
       ]],
-      lastName: ['',[
-        Validators.required
+      lastName: ['', [
+        Validators.required,
+        Validators.maxLength(50)
       ]],
-      birthday: ['',[
+      birthday: ['', [
         Validators.required,
         minimumDateValidator
       ]],
-      email: ['',[
+      email: ['', [
         Validators.required,
+        emailValidator
       ]],
-      phone: ['',[
+      phone: ['', [
         Validators.required,
+        phoneNumberValidator
       ]],
-      imageType: ['initials',[
-      ]],
-      isExternal: [false,[
-      ]]
+      imageType: ['initials', []],
+      isExternal: [false, []]
     });
 
     this.sub = this.form.statusChanges
@@ -61,7 +65,7 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(): void {
-   this.sub.unsubscribe();
+    this.sub.unsubscribe();
   }
 
   onSubmit() {
@@ -74,11 +78,11 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
       this.form.value.isExternal,
       this.form.value.imageType + '/' + this.generateRandomString()
     );
-      this.employeeService.addEmployee(employee).subscribe(() => {
-        this.closeModal();
-      }, error => {
-        this.handleError(error.error.message);
-      });
+    this.employeeService.addEmployee(employee).subscribe(() => {
+      this.closeModal();
+    }, error => {
+      this.handleError(error.error.message);
+    });
   }
 
   closeModal() {
@@ -104,9 +108,9 @@ export class CreateEmployeeModalComponent implements OnInit,OnDestroy {
   }
 
   changeSeed() {
-    if(this.form.value.imageType === '' || this.form.value.imageType === 'initials'){
-      this.imageSeed ='initials/' + this.form.value.firstName.charAt(0) + '_' + this.form.value.lastName.charAt(0);
-    }else {
+    if (this.form.value.imageType === '' || this.form.value.imageType === 'initials') {
+      this.imageSeed = 'initials/' + this.form.value.firstName.charAt(0) + '_' + this.form.value.lastName.charAt(0);
+    } else {
       this.imageSeed = this.form.value.imageType + '/' + this.generateRandomString();
     }
   }

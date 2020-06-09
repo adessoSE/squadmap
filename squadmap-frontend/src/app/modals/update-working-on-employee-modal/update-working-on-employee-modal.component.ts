@@ -8,7 +8,8 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 
 @Component({
   selector: 'app-update-working-on-employee-modal',
-  templateUrl: './update-working-on-employee-modal.component.html'
+  templateUrl: './update-working-on-employee-modal.component.html',
+  styleUrls: ['./update-working-on-employee-modal.component.css']
 })
 export class UpdateWorkingOnEmployeeModalComponent implements OnInit {
 

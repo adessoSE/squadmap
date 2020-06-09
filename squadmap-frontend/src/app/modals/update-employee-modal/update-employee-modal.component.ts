@@ -6,10 +6,13 @@ import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.s
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {minimumDateValidator} from "../../validators/minimum-date-validator";
 import {CreateEmployeeModel} from "../../models/createEmployee.model";
+import {emailValidator} from "../../validators/email-validator";
+import {phoneNumberValidator} from "../../validators/phone-number-validator";
 
 @Component({
   selector: 'app-update-employee-modal',
-  templateUrl: './update-employee-modal.component.html'
+  templateUrl: './update-employee-modal.component.html',
+  styleUrls: ['./update-employee-modal.component.css']
 })
 export class UpdateEmployeeModalComponent implements OnInit {
 
@@ -43,21 +46,25 @@ export class UpdateEmployeeModalComponent implements OnInit {
     this.imageSeed = this.imageType + '/' + this.imageSeed;
 
     this.form = this.formBuilder.group({
-      firstName: [this.employee.firstName,[
-        Validators.required
+      firstName: [this.employee.firstName, [
+        Validators.required,
+        Validators.maxLength(50)
       ]],
-      lastName: [this.employee.lastName,[
-        Validators.required
+      lastName: [this.employee.lastName, [
+        Validators.required,
+        Validators.maxLength(50)
       ]],
-      birthday: [this.dateFormatterService.formatDate(this.employee.birthday),[
+      birthday: [this.dateFormatterService.formatDate(this.employee.birthday), [
         Validators.required,
         minimumDateValidator
       ]],
-      email: [this.employee.email,[
+      email: [this.employee.email, [
         Validators.required,
+        emailValidator
       ]],
-      phone: [this.employee.phone,[
+      phone: [this.employee.phone, [
         Validators.required,
+        phoneNumberValidator
       ]],
       imageType: [this.imageType,[
       ]],
