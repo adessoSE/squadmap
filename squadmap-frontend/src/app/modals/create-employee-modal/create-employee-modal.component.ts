@@ -76,7 +76,7 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
       this.form.value.email,
       this.form.value.phone,
       this.form.value.isExternal,
-      this.form.value.imageType + '/' + this.generateRandomString()
+      this.imageSeed
     );
     this.employeeService.addEmployee(employee).subscribe(() => {
       this.closeModal();
