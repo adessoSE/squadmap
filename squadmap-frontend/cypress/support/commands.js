@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('addDummyProject',() =>{
+  cy.visit('/project');
+  cy.get('#addProjectButton').click();
+  cy.get('#title').type('testProject');
+  cy.get('#description').type('testDescription');
+  const mockDate = new Date();
+  cy.get('#since').type(mockDate.toISOString().slice(0,10));
+  cy.get('#until').type(mockDate.toISOString().slice(0,10));
+  cy.get('#sites').type('www.google.de,');
+  cy.get('#isExternal').check();
+  cy.get('.row > .btn').click();
+});
