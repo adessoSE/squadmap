@@ -33,7 +33,7 @@
             <tr><td >{{project.isExternal}}</td></tr>
           </table>
           <div class="row justify-content-center">
-            <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onUpdate()">Edit</button>
+            <button id="editButton" class="btn btn-outline-secondary btn-sm" type="button" (click)="onUpdate()">Edit</button>
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@
         </tab>
       </tabset>
       <div class="row justify-content-center">
-        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onOpenAddEmployeeModal()">Add employee</button>
+        <button id="openAddEmployeeModal" class="btn btn-outline-secondary btn-sm" type="button" (click)="onOpenAddEmployeeModal()">Add employee</button>
       </div>
     </div>
   </div>
