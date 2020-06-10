@@ -9,7 +9,7 @@ jobs:
           path: ~/squadmap
       - restore_cache:
           keys:
-            - squadmap-dependencies-{{ checksum "build.gradle" }}
+            - squadmap-dependencies-{{ checksum "build.gradle" }}-{{ checksum "adapter/persistence/build.gradle"}}-{{ checksum "adapter/web/build.gradle"}}-{{ checksum "application/build.gradle"}}-{{ checksum "common/build.gradle"}}-{{ checksum "configuration/build.gradle"}}-{{ checksum "test-data/build.gradle"}}
             - squadmap-dependencies-
       - run:
           name: Dependencies
@@ -17,25 +17,22 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: squadmap-dependencies-{{ checksum "build.gradle" }}
+          key: squadmap-dependencies-{{ checksum "build.gradle" }}-{{ checksum "adapter/persistence/build.gradle"}}-{{ checksum "adapter/web/build.gradle"}}-{{ checksum "application/build.gradle"}}-{{ checksum "common/build.gradle"}}-{{ checksum "configuration/build.gradle"}}-{{ checksum "test-data/build.gradle"}}
       - run:
           name: Build
           command: ../gradlew :squadmap-backend:build
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/test-results
-      - store_artifacts:
-          path: ~/test-results/junit
       - persist_to_workspace:
           root: ~/
           paths:
             - squadmap/.gradle
             - squadmap/squadmap-backend/build
+            - squadmap/squadmap-backend/common/build
+            - squadmap/squadmap-backend/configuration/build
+            - squadmap/squadmap-backend/application/build
+            - squadmap/squadmap-backend/adapter/build
+            - squadmap/squadmap-backend/adapter/web/build
+            - squadmap/squadmap-backend/adapter/persistence/build
+            - squadmap/squadmap-backend/test-data/build
             - squadmap/squadmap-frontend/.gradle
             - squadmap/squadmap-frontend/build
             - squadmap/squadmap-frontend/dist
