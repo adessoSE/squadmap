@@ -47,6 +47,10 @@ export class UpdateWorkingOnProjectModalComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.workingOnService.updateWorkingOn(
       this.workingOnProject.workingOnId,
       this.employeeId,

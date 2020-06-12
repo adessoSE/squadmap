@@ -9,22 +9,27 @@
     <div class="form-group">
       <label for="title">Project title</label>
       <input type="text" id="title" name="title" class="form-control" formControlName="title">
+      <app-show-error-message [control]="form.get('title')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="description">Description</label>
       <textarea  type="text" id="description" name="description" class="form-control"  formControlName="description" rows="7"></textarea>
+      <app-show-error-message [control]="form.get('description')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="since">Since</label>
-      <input type="date" id="since" name="since" min="1900-01-01" class="form-control"  formControlName="since">
+      <input type="date" id="since" name="since" class="form-control" formControlName="since">
+      <app-show-error-message [control]="form.get('since')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="until">Until</label>
-      <input type="date" id="until" name="until" min="1900-01-01" class="form-control"  formControlName="until">
+      <input type="date" id="until" name="until" class="form-control" formControlName="until">
+      <app-show-error-message [control]="form.get('until')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="sites">Sites</label>
       <textarea type="text" id="sites" name="sites" class="form-control"  formControlName="sitestring" placeholder="Bitte hier nur gültige URLs mit http als kommaseparierte Liste hinzufügen"></textarea>
+      <app-show-error-message [control]="form.get('sites')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="isExternal">External</label>
@@ -34,7 +39,7 @@
     </div>
     <div class="form-group">
       <div class="row justify-content-center">
-        <button type="submit" class="btn btn-success" [disabled]="form.invalid">Create Project</button>
+        <button type="submit" class="btn btn-success">Create Project</button>
       </div>
     </div>
   </form>

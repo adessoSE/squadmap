@@ -48,6 +48,10 @@ export class CreateProjectModalComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     let sites: string[] = [];
     if (this.form.value.sitestring) {
       sites = this.form.value.sitestring.split(',');

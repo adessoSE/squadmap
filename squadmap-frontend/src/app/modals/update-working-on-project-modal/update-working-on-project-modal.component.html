@@ -9,17 +9,20 @@
     <div class="form-group">
       <label for="since">Since:</label>
       <input type="date" id="since" name="since" class="form-control" formControlName="since" min="1900-01-01">
+      <app-show-error-message [control]="form.get('since')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="until">Until:</label>
       <input type="date" id="until" name="until" class="form-control" formControlName="until">
+      <app-show-error-message [control]="form.get('until')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="workload">Workload:</label>
       <input type="number" id="workload" name="workload" class="form-control" formControlName="workload">
+      <app-show-error-message [control]="form.get('workload')"></app-show-error-message>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-success" [disabled]="form.invalid">Save</button>
+      <button type="submit" class="btn btn-success">Save</button>
     </div>
   </form>
   <div *ngIf="errorOccurred" class="alert alert-danger">

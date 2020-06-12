@@ -82,6 +82,10 @@ export class UpdateEmployeeModalComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     const employee = new CreateEmployeeModel(
       this.form.value.firstName,
       this.form.value.lastName,

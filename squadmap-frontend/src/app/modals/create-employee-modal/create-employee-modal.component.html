@@ -9,22 +9,27 @@
     <div class="form-group">
       <label for="firstName">First name</label>
       <input type="text" id="firstName" name="firstName" class="form-control" formControlName="firstName">
+      <app-show-error-message [control]="form.get('firstName')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="lastName">Last name</label>
       <input type="text" id="lastName" name="lastName" class="form-control" formControlName="lastName">
+      <app-show-error-message [control]="form.get('lastName')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="birthday">Birthday</label>
       <input type="date" id="birthday" name="birthday" class="form-control" formControlName="birthday">
+      <app-show-error-message [control]="form.get('birthday')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="email">Email</label>
       <input type="text" id="email" name="email" class="form-control" formControlName="email">
+      <app-show-error-message [control]="form.get('email')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="phone">Phone</label>
       <input type="text" id="phone" name="phone" class="form-control" formControlName="phone">
+      <app-show-error-message [control]="form.get('phone')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="isExternal">External </label>
@@ -59,7 +64,7 @@
     <br>
     <div class="form-group">
       <div class="row justify-content-center">
-        <button type="submit" class="btn btn-success" [disabled]="form.invalid">Create employee</button>
+        <button type="submit" class="btn btn-success">Create employee</button>
       </div>
     </div>
   </form>

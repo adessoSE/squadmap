@@ -7,7 +7,8 @@ import {minimumDateValidator} from "../../validators/minimum-date-validator";
 
 @Component({
   selector: 'app-new-working-on-modal',
-  templateUrl: './new-working-on-modal.component.html'
+  templateUrl: './new-working-on-modal.component.html',
+  styleUrls: ['./new-working-on-modal.component.css'],
 })
 export class NewWorkingOnModalComponent implements OnInit {
 
@@ -42,14 +43,17 @@ export class NewWorkingOnModalComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     const newWorkingOn = new CreateWorkingOnModel(
       this.edgeData.from,
       this.edgeData.to,
       this.form.value.since,
       this.form.value.until,
       +this.form.value.workload);
-    this.workingOnService.createWorkingOn(
-      newWorkingOn).subscribe(() => {
+    this.workingOnService.createWorkingOn(newWorkingOn).subscribe(() => {
       this.modalRef.hide();
       location.reload();
     }, error => {
