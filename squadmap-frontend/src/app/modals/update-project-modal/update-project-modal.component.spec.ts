@@ -1,14 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UpdateProjectModalComponent } from './update-project-modal.component';
+import {UpdateProjectModalComponent} from './update-project-modal.component';
 import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
-import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {ProjectService} from "../../services/project/project.service";
-import {MapComponent} from "../../views/map-view/map/map.component";
 import {Observable} from "rxjs";
+import {ShowErrorMessageComponent} from "../error-messages/show-error-message.component";
 
 describe('UpdateProjectModalComponent', () => {
   let component: UpdateProjectModalComponent;
@@ -16,7 +15,7 @@ describe('UpdateProjectModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdateProjectModalComponent ],
+      declarations: [UpdateProjectModalComponent, ShowErrorMessageComponent],
       imports: [
         ModalModule.forRoot(),
         ReactiveFormsModule,

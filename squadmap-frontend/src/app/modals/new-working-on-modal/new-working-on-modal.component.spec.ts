@@ -1,12 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NewWorkingOnModalComponent } from './new-working-on-modal.component';
+import {NewWorkingOnModalComponent} from './new-working-on-modal.component';
 import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {DateFormatterService} from "../../services/dateFormatter/dateFormatter.service";
 import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {Observable} from "rxjs";
+import {ShowErrorMessageComponent} from "../error-messages/show-error-message.component";
 
 describe('NewWorkingOnModalComponent', () => {
   let component: NewWorkingOnModalComponent;
@@ -14,7 +15,7 @@ describe('NewWorkingOnModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewWorkingOnModalComponent ],
+      declarations: [NewWorkingOnModalComponent, ShowErrorMessageComponent],
       imports: [
         ModalModule.forRoot(),
         ReactiveFormsModule,
@@ -53,8 +54,13 @@ describe('NewWorkingOnModalComponent', () => {
       from: date,
       until: date
     }
-    component.edgeData=edgeData;
+    component.edgeData = edgeData;
     let spy = spyOn(component.workingOnService, 'createWorkingOn').and.returnValue(new Observable());
+    Object.keys(component.form.controls).forEach(key => {
+      component.form.get(key).clearValidators();
+      component.form.get(key).clearAsyncValidators();
+      component.form.get(key).updateValueAndValidity();
+    });
     component.onSubmit();
     expect(spy).toHaveBeenCalled();
   });

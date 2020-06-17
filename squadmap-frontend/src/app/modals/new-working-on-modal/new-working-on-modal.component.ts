@@ -17,7 +17,7 @@ export class NewWorkingOnModalComponent implements OnInit {
   errorOccurred: boolean;
   errorMessage: string;
 
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(private modalRef: BsModalRef,
               private formBuilder: FormBuilder,

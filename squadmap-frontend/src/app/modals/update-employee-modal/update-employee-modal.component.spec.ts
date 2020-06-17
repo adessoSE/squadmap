@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UpdateEmployeeModalComponent } from './update-employee-modal.component';
+import {UpdateEmployeeModalComponent} from './update-employee-modal.component';
 import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap";
 import {IconsModule} from "../../icons/icons.module";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
@@ -8,6 +8,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {EmployeeService} from "../../services/employee/employee.service";
 import {EmployeeModel} from "../../models/employee.model";
 import {Observable} from "rxjs";
+import {ShowErrorMessageComponent} from "../error-messages/show-error-message.component";
 
 describe('UpdateEmployeeModalComponent', () => {
   let component: UpdateEmployeeModalComponent;
@@ -15,7 +16,7 @@ describe('UpdateEmployeeModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdateEmployeeModalComponent ],
+      declarations: [UpdateEmployeeModalComponent, ShowErrorMessageComponent],
       imports: [
         ModalModule.forRoot(),
         IconsModule,
@@ -35,7 +36,17 @@ describe('UpdateEmployeeModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateEmployeeModalComponent);
     component = fixture.componentInstance;
-    component.employee = new EmployeeModel(1,'','',new Date(), '','',false,'',[]);
+    component.employee = new EmployeeModel(
+      1,
+      'test',
+      'test',
+      new Date(),
+      'test@test.test',
+      '0123456789',
+      false,
+      '',
+      []
+    );
     fixture.detectChanges();
   });
 
@@ -55,7 +66,7 @@ describe('UpdateEmployeeModalComponent', () => {
 
   it('should change the seed to initials',  () => {
     component.changeSeed();
-    expect(component.imageSeed).toEqual('initials/_');
+    expect(component.imageSeed).toEqual('initials/t_t');
   });
 
   it('should change the seed to an imageType',  () => {

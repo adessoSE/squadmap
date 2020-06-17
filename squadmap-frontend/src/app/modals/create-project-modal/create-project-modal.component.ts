@@ -16,7 +16,7 @@ export class CreateProjectModalComponent implements OnInit {
   errorOccurred: boolean;
   errorMessage: string;
 
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(public modalRef: BsModalRef,
               public projectService: ProjectService,

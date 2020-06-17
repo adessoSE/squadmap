@@ -9,6 +9,7 @@ import {WorkingOnService} from "../../services/workingOn/workingOn.service";
 import {WorkingOnEmployeeModel} from "../../models/workingOnEmployee.model";
 import {EmployeeModel} from "../../models/employee.model";
 import {Observable} from "rxjs";
+import {ShowErrorMessageComponent} from "../error-messages/show-error-message.component";
 
 describe('UpdateWorkingOnEmployeeModalComponent', () => {
   let component: UpdateWorkingOnEmployeeModalComponent;
@@ -16,7 +17,7 @@ describe('UpdateWorkingOnEmployeeModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdateWorkingOnEmployeeModalComponent ],
+      declarations: [UpdateWorkingOnEmployeeModalComponent, ShowErrorMessageComponent],
       imports: [
         ModalModule.forRoot(),
         ReactiveFormsModule,

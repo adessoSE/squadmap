@@ -7,6 +7,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {EmployeeService} from "../../services/employee/employee.service";
 import {IconsModule} from "../../icons/icons.module";
 import {Observable} from "rxjs";
+import {ShowErrorMessageComponent} from "../error-messages/show-error-message.component";
 
 let modalRef = {
   hide(){}
@@ -20,7 +21,7 @@ describe('CreateEmployeeModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateEmployeeModalComponent ],
+      declarations: [CreateEmployeeModalComponent, ShowErrorMessageComponent],
       imports: [
         ModalModule.forRoot(),
         IconsModule,
@@ -29,8 +30,8 @@ describe('CreateEmployeeModalComponent', () => {
       ],
       providers: [
         BsModalService,
-        {provide: BsModalRef , useValue: modalRef},
-       EmployeeService,
+        {provide: BsModalRef, useValue: modalRef},
+        EmployeeService,
         FormBuilder
       ]
     })
@@ -71,6 +72,11 @@ describe('CreateEmployeeModalComponent', () => {
 
   it('should call the addEmployee method',  () => {
     let spyEmployeeService = spyOn(component.employeeService, 'addEmployee').and.returnValue(new Observable());
+    Object.keys(component.form.controls).forEach(key => {
+      component.form.get(key).clearValidators();
+      component.form.get(key).clearAsyncValidators();
+      component.form.get(key).updateValueAndValidity();
+    });
     component.onSubmit();
     expect(spyEmployeeService).toHaveBeenCalled();
   });
