@@ -27,9 +27,10 @@
       <app-show-error-message [control]="form.get('until')"></app-show-error-message>
     </div>
     <div class="form-group">
-      <label for="sites">Sites</label>
-      <textarea type="text" id="sites" name="sites" class="form-control"  formControlName="sitestring" placeholder="Bitte hier nur gültige URLs mit http als kommaseparierte Liste hinzufügen"></textarea>
-      <app-show-error-message [control]="form.get('sites')"></app-show-error-message>
+      <label for="siteString">Sites</label>
+      <textarea type="text" id="siteString" name="sites" class="form-control" formControlName="siteString"
+                placeholder="Please only enter valid urls as comma separated list"></textarea>
+      <app-show-error-message [control]="form.get('siteString')"></app-show-error-message>
     </div>
     <div class="form-group">
       <label for="isExternal">External</label>

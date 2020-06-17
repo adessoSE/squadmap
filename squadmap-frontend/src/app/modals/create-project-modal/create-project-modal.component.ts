@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {BsModalRef} from "ngx-bootstrap";
-import {ProjectService} from "../../services/project/project.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {minimumDateValidator} from "../../validators/minimum-date-validator";
-import {CreateProjectModel} from "../../models/createProject.model";
-import {siteUrlValidator} from "../../validators/siteUrl-validator";
+import {BsModalRef} from 'ngx-bootstrap';
+import {ProjectService} from '../../services/project/project.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {minimumDateValidator} from '../../validators/minimum-date-validator';
+import {CreateProjectModel} from '../../models/createProject.model';
+import {siteUrlValidator} from '../../validators/siteUrl-validator';
 
 @Component({
   selector: 'app-create-project-modal',
@@ -24,26 +24,25 @@ export class CreateProjectModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      title: ['',[
+      title: ['', [
         Validators.required,
         Validators.maxLength(100)
       ]],
-      description: ['',[
+      description: ['', [
         Validators.maxLength(1000)
       ]],
-      since: ['',[
+      since: ['', [
         Validators.required,
         minimumDateValidator
       ]],
-      until: ['',[
+      until: ['', [
         Validators.required,
         minimumDateValidator
       ]],
-      sitestring: ['',[
+      siteString: ['', [
         siteUrlValidator
       ]],
-      isExternal: ['',[
-      ]],
+      isExternal: ['', []],
     });
   }
 
@@ -53,9 +52,9 @@ export class CreateProjectModalComponent implements OnInit {
       return;
     }
     let sites: string[] = [];
-    if (this.form.value.sitestring) {
-      sites = this.form.value.sitestring.split(',');
-      sites = sites.map(url => url.trim());
+    if (this.form.value.siteString) {
+      sites = this.form.value.siteString.split(',');
+      sites = sites.map(url => this.formatUrl(url));
     }
     if (!this.form.value.isExternal) {
       this.form.value.isExternal = false;
@@ -75,6 +74,16 @@ export class CreateProjectModalComponent implements OnInit {
     }, error => {
       this.handleError(error.error.message);
     });
+  }
+
+  formatUrl(url: string) {
+    url = url.trim();
+    console.log('Formatting URL: ' + url);
+    if (!(url.startsWith('http://') || url.startsWith('https://'))) {
+      url = 'https://' + url;
+    }
+    console.log('Formatting resulted in: ' + url);
+    return url;
   }
 
   handleError(message: string) {
