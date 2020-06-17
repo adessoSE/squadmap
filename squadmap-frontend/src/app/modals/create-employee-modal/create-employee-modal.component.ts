@@ -21,11 +21,10 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
   public errorMessage: string;
   public errorOccurred: boolean;
 
-  private imageType: string;
   imageSeed: string;
 
   form: FormGroup;
-  private sub: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(public modalRef: BsModalRef,
               public employeeService: EmployeeService,
@@ -60,14 +59,22 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
       isExternal: [false, []]
     });
 
-    this.sub = this.form.statusChanges
+    this.subscriptions.push(this.form.controls.firstName.statusChanges
       .pipe(
-        filter(() => this.form.valid))
-      .subscribe(() => this.changeSeed());
+        filter(() => this.form.controls.firstName.valid),
+        filter(() => this.form.controls.lastName.valid),
+        filter(() => this.form.value.imageType === 'initials'))
+      .subscribe(() => setTimeout(() => this.changeSeed(), 0.01)));
+    this.subscriptions.push(this.form.controls.lastName.statusChanges
+      .pipe(
+        filter(() => this.form.controls.firstName.valid),
+        filter(() => this.form.controls.lastName.valid),
+        filter(() => this.form.value.imageType === 'initials'))
+      .subscribe(() => setTimeout(() => this.changeSeed(), 0.01)));
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onSubmit() {
