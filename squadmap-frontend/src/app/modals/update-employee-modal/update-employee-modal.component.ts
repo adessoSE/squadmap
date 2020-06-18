@@ -74,18 +74,18 @@ export class UpdateEmployeeModalComponent implements OnInit, OnDestroy {
       isExternal: [this.employee.isExternal, []]
     });
 
-    this.subscriptions.push(this.form.controls.firstName.statusChanges
+    this.subscriptions.push(this.form.get('firstName').valueChanges
       .pipe(
-        filter(() => this.form.controls.firstName.valid),
-        filter(() => this.form.controls.lastName.valid),
+        filter(() => this.form.get('firstName').valid),
+        filter(() => this.form.get('lastName').valid),
         filter(() => this.form.value.imageType === 'initials'))
-      .subscribe(() => setTimeout(() => this.changeSeed(), 0.01)));
-    this.subscriptions.push(this.form.controls.lastName.statusChanges
+      .subscribe(() => this.changeSeed()));
+    this.subscriptions.push(this.form.get('lastName').valueChanges
       .pipe(
-        filter(() => this.form.controls.firstName.valid),
-        filter(() => this.form.controls.lastName.valid),
+        filter(() => this.form.get('firstName').valid),
+        filter(() => this.form.get('lastName').valid),
         filter(() => this.form.value.imageType === 'initials'))
-      .subscribe(() => setTimeout(() => this.changeSeed(), 0.01)));
+      .subscribe(() => this.changeSeed()));
   }
 
   ngOnDestroy(): void {
@@ -133,7 +133,9 @@ export class UpdateEmployeeModalComponent implements OnInit, OnDestroy {
 
   changeSeed() {
     if (this.form.value.imageType === '' || this.form.value.imageType === 'initials') {
-      this.imageSeed = 'initials/' + this.form.value.firstName.charAt(0) + '_' + this.form.value.lastName.charAt(0);
+      this.imageSeed = 'initials/'
+        + this.form.get('firstName').value.charAt(0) + '_'
+        + this.form.get('lastName').value.charAt(0);
     } else {
       this.imageSeed = this.form.value.imageType + '/' + this.generateRandomString();
     }

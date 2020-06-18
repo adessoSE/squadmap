@@ -44,7 +44,7 @@
         <div class="input-group" id="imageTypeDiv">
           <label for="imageType"></label>
           <select class="form-control" id="imageType" name="imageType"
-                  formControlName="imageType" (change)="changeSeed()" [disabled]="this.form.value.firstName === ''">
+                  formControlName="imageType" (change)="changeSeed()">
             <option value="initials">Initials</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
