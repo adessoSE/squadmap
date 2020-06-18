@@ -60,11 +60,11 @@ describe('CreateEmployeeModalComponent', () => {
 
   it('should change the seed to initials',  () => {
     component.changeSeed();
-    expect(component.imageSeed).toEqual('initials/_');
+    expect(component.imageSeed).toEqual('initials/');
   });
 
   it('should change the seed to an imageType',  () => {
-    component.form.value.imageType = 'human'
+    component.form.get('imageType').setValue('human')
     component.changeSeed();
     expect(component.imageSeed).toContain('human');
   });

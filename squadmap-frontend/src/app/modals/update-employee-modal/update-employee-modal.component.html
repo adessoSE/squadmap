@@ -44,7 +44,7 @@
         <div class="input-group" id="imageTypeDiv">
           <label for="imageType"></label>
           <select class="form-control" id="imageType" name="imageType"
-                  formControlName="imageType" (change)="changeSeed()">
+                  formControlName="imageType">
             <option value="initials">Initials</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -55,11 +55,13 @@
         </div>
       </div>
     </div>
-    <div  class="row justify-content-center" *ngIf="!form.invalid">
+    <div class="row justify-content-center" *ngIf="!form.invalid">
       <img height="100px" width="100px" src="https://avatars.dicebear.com/v2/{{imageSeed}}.svg" alt="no pic">
     </div>
-    <div class="row justify-content-center" *ngIf="!form.invalid">
-      <button type="button" class="btn btn-group" (click)="changeSeed()"><i-feather name="refresh-ccw"></i-feather></button>
+    <div class="row justify-content-center" *ngIf="!form.invalid && form.get('imageType').value !== 'initials'">
+      <button type="button" class="btn btn-group" (click)="randomizeImage()">
+        <i-feather name="refresh-ccw"></i-feather>
+      </button>
     </div>
     <br>
     <div class="form-group">

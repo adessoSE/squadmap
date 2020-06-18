@@ -10,7 +10,7 @@ import {emailValidator} from "../../validators/email-validator";
 import {phoneNumberValidator} from "../../validators/phone-number-validator";
 import {dateInPastValidator} from "../../validators/date-in-past-validator";
 import {filter} from "rxjs/operators";
-import {Subscription} from "rxjs";
+import {merge, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-update-employee-modal',
@@ -25,9 +25,10 @@ export class UpdateEmployeeModalComponent implements OnInit, OnDestroy {
   errorOccurred: boolean;
 
   imageSeed: string;
+  private lastGeneratedSeed: string;
 
   form: FormGroup;
-  private subscriptions: Subscription[] = [];
+  private sub: Subscription;
 
   constructor(private modalRef: BsModalRef,
               public employeeService: EmployeeService,
@@ -38,15 +39,14 @@ export class UpdateEmployeeModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.errorMessage = '';
 
-    const index = this.employee.image.indexOf('/');
-    const imageSplit = [this.employee.image.slice(0, index), this.employee.image.slice(index + 1)];
-    this.imageSeed = imageSplit.pop();
+    const imageSplit = this.employee.image.split('/');
+    this.lastGeneratedSeed = imageSplit.pop();
     let imageType = imageSplit.pop();
-    if (imageType === '' || imageType === 'initials') {
+    if (!imageType || imageType === '' || imageType === 'initials') {
       imageType = 'initials';
-      this.imageSeed = this.employee.firstName.charAt(0) + '_' + this.employee.lastName.charAt(0);
+      this.imageSeed = this.employee.firstName.charAt(0) + this.employee.lastName.charAt(0);
     }
-    this.imageSeed = imageType + '/' + this.imageSeed;
+    this.imageSeed = imageType + '/' + this.lastGeneratedSeed;
 
     this.form = this.formBuilder.group({
       firstName: [this.employee.firstName, [
@@ -74,22 +74,19 @@ export class UpdateEmployeeModalComponent implements OnInit, OnDestroy {
       isExternal: [this.employee.isExternal, []]
     });
 
-    this.subscriptions.push(this.form.get('firstName').valueChanges
-      .pipe(
-        filter(() => this.form.get('firstName').valid),
-        filter(() => this.form.get('lastName').valid),
-        filter(() => this.form.value.imageType === 'initials'))
-      .subscribe(() => this.changeSeed()));
-    this.subscriptions.push(this.form.get('lastName').valueChanges
-      .pipe(
-        filter(() => this.form.get('firstName').valid),
-        filter(() => this.form.get('lastName').valid),
-        filter(() => this.form.value.imageType === 'initials'))
-      .subscribe(() => this.changeSeed()));
+    this.sub = merge(
+      this.form.get('firstName').valueChanges,
+      this.form.get('lastName').valueChanges,
+      this.form.get('imageType').valueChanges
+    ).pipe(
+      filter(() => this.form.get('firstName').valid),
+      filter(() => this.form.get('lastName').valid))
+      .subscribe(() => this.changeSeed());
+
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.sub.unsubscribe();
   }
 
   onSubmit() {
@@ -131,13 +128,16 @@ export class UpdateEmployeeModalComponent implements OnInit, OnDestroy {
     return result;
   }
 
+  randomizeImage(): void {
+    this.lastGeneratedSeed = this.generateRandomString();
+    this.changeSeed();
+  }
+
   changeSeed() {
-    if (this.form.value.imageType === '' || this.form.value.imageType === 'initials') {
-      this.imageSeed = 'initials/'
-        + this.form.get('firstName').value.charAt(0) + '_'
-        + this.form.get('lastName').value.charAt(0);
+    if (this.form.get('imageType').value === '' || this.form.get('imageType').value === 'initials') {
+      this.imageSeed = 'initials/' + this.form.get('firstName').value.charAt(0) + this.form.get('lastName').value.charAt(0);
     } else {
-      this.imageSeed = this.form.value.imageType + '/' + this.generateRandomString();
+      this.imageSeed = this.form.get('imageType').value + '/' + this.lastGeneratedSeed;
     }
   }
 }

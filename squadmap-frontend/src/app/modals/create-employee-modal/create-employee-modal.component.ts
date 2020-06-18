@@ -4,7 +4,7 @@ import {BsModalRef} from "ngx-bootstrap";
 import {EmployeeService} from "../../services/employee/employee.service";
 import {CreateEmployeeModel} from "../../models/createEmployee.model";
 import {minimumDateValidator} from "../../validators/minimum-date-validator";
-import {Subscription} from "rxjs";
+import {merge, Subscription} from "rxjs";
 import {filter} from "rxjs/operators";
 import {emailValidator} from "../../validators/email-validator";
 import {phoneNumberValidator} from "../../validators/phone-number-validator";
@@ -22,9 +22,10 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
   public errorOccurred: boolean;
 
   imageSeed: string;
+  private lastGeneratedSeed: string;
 
   form: FormGroup;
-  private subscriptions: Subscription[] = [];
+  private sub: Subscription;
 
   constructor(public modalRef: BsModalRef,
               public employeeService: EmployeeService,
@@ -59,22 +60,18 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
       isExternal: [false, []]
     });
 
-    this.subscriptions.push(this.form.get('firstName').valueChanges
-      .pipe(
-        filter(() => this.form.get('firstName').valid),
-        filter(() => this.form.get('lastName').valid),
-        filter(() => this.form.value.imageType === 'initials'))
-      .subscribe(() => this.changeSeed()));
-    this.subscriptions.push(this.form.get('lastName').valueChanges
-      .pipe(
-        filter(() => this.form.get('firstName').valid),
-        filter(() => this.form.get('lastName').valid),
-        filter(() => this.form.value.imageType === 'initials'))
-      .subscribe(() => this.changeSeed()));
+    this.sub = merge(
+      this.form.get('firstName').valueChanges,
+      this.form.get('lastName').valueChanges,
+      this.form.get('imageType').valueChanges
+    ).pipe(
+      filter(() => this.form.get('firstName').valid),
+      filter(() => this.form.get('lastName').valid))
+      .subscribe(() => this.changeSeed());
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.sub.unsubscribe();
   }
 
   onSubmit() {
@@ -120,13 +117,16 @@ export class CreateEmployeeModalComponent implements OnInit, OnDestroy {
     return result;
   }
 
+  randomizeImage(): void {
+    this.lastGeneratedSeed = this.generateRandomString();
+    this.changeSeed();
+  }
+
   changeSeed() {
-    if (this.form.value.imageType === '' || this.form.value.imageType === 'initials') {
-      this.imageSeed = 'initials/'
-        + this.form.get('firstName').value.charAt(0) + '_'
-        + this.form.get('lastName').value.charAt(0);
+    if (this.form.get('imageType').value === '' || this.form.get('imageType').value === 'initials') {
+      this.imageSeed = 'initials/' + this.form.get('firstName').value.charAt(0) + this.form.get('lastName').value.charAt(0);
     } else {
-      this.imageSeed = this.form.value.imageType + '/' + this.generateRandomString();
+      this.imageSeed = this.form.get('imageType').value + '/' + this.lastGeneratedSeed;
     }
   }
 }
